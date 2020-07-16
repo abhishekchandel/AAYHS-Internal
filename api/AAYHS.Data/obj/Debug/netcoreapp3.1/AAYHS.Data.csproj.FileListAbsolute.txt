@@ -1,0 +1,7 @@
+C:\Projects\AbhishekC\AbhishekC\Official\AAYHS\api\AAYHS.Data\bin\Debug\netcoreapp3.1\AAYHS.Data.deps.json
+C:\Projects\AbhishekC\AbhishekC\Official\AAYHS\api\AAYHS.Data\bin\Debug\netcoreapp3.1\AAYHS.Data.dll
+C:\Projects\AbhishekC\AbhishekC\Official\AAYHS\api\AAYHS.Data\bin\Debug\netcoreapp3.1\AAYHS.Data.pdb
+C:\Projects\AbhishekC\AbhishekC\Official\AAYHS\api\AAYHS.Data\obj\Debug\netcoreapp3.1\AAYHS.Data.AssemblyInfoInputs.cache
+C:\Projects\AbhishekC\AbhishekC\Official\AAYHS\api\AAYHS.Data\obj\Debug\netcoreapp3.1\AAYHS.Data.AssemblyInfo.cs
+C:\Projects\AbhishekC\AbhishekC\Official\AAYHS\api\AAYHS.Data\obj\Debug\netcoreapp3.1\AAYHS.Data.dll
+C:\Projects\AbhishekC\AbhishekC\Official\AAYHS\api\AAYHS.Data\obj\Debug\netcoreapp3.1\AAYHS.Data.pdb

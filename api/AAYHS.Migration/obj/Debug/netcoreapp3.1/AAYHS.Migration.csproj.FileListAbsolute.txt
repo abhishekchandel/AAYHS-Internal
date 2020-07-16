@@ -1,0 +1,8 @@
+C:\Projects\AbhishekC\AbhishekC\Official\AAYHS\api\AAYHS.Migration\bin\Debug\netcoreapp3.1\AAYHS.Migration.deps.json
+C:\Projects\AbhishekC\AbhishekC\Official\AAYHS\api\AAYHS.Migration\bin\Debug\netcoreapp3.1\AAYHS.Migration.dll
+C:\Projects\AbhishekC\AbhishekC\Official\AAYHS\api\AAYHS.Migration\bin\Debug\netcoreapp3.1\AAYHS.Migration.pdb
+C:\Projects\AbhishekC\AbhishekC\Official\AAYHS\api\AAYHS.Migration\obj\Debug\netcoreapp3.1\AAYHS.Migration.csprojAssemblyReference.cache
+C:\Projects\AbhishekC\AbhishekC\Official\AAYHS\api\AAYHS.Migration\obj\Debug\netcoreapp3.1\AAYHS.Migration.AssemblyInfoInputs.cache
+C:\Projects\AbhishekC\AbhishekC\Official\AAYHS\api\AAYHS.Migration\obj\Debug\netcoreapp3.1\AAYHS.Migration.AssemblyInfo.cs
+C:\Projects\AbhishekC\AbhishekC\Official\AAYHS\api\AAYHS.Migration\obj\Debug\netcoreapp3.1\AAYHS.Migration.dll
+C:\Projects\AbhishekC\AbhishekC\Official\AAYHS\api\AAYHS.Migration\obj\Debug\netcoreapp3.1\AAYHS.Migration.pdb
