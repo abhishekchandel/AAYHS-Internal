@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AAYHS.Data.DBEntities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,6 +12,8 @@ namespace AAYHS.Data.DBContext
         {
 
         }
+
+        public virtual DbSet<Classes> Classes { get; set; }
     }
 
   

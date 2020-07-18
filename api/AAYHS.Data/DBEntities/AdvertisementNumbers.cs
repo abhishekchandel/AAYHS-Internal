@@ -1,11 +1,12 @@
-﻿using AAYHS.Data.DBEntities;
+﻿using AAYHS.Data.Base;
+using AAYHS.Data.DBEntities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace Cleng.DataAccess.HorseShowEntities
+namespace AAYHS.Data.DBEntities
 {
     public class AdvertisementNumbers : BaseEntity
     {
