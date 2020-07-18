@@ -14,6 +14,8 @@ namespace AAYHS.Data.DBContext
         }
 
         public virtual DbSet<Classes> Classes { get; set; }
+        public virtual DbSet<ScheduleDates> ScheduleDates { get; set; }
+        public virtual DbSet<ExhibitorClass> ExhibitorClass { get; set; }
     }
 
   

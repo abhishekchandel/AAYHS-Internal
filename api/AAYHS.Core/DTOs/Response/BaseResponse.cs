@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AAYHS.Core.DTOs.Response.Common;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -16,8 +17,8 @@ namespace AAYHS.Core.DTOs.Response
     public class MainResponse : BaseResponse
     {
         public BaseResponse BaseResponse { get; set; }
-       
-
+        public ClassResponse ClassResponse { get; set; }
+        public GetAllClasses GetAllClasses { get; set; }
     }
     public class Response<T> : BaseResponse
     {
