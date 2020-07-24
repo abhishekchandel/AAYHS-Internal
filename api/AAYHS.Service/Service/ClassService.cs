@@ -1,21 +1,15 @@
 ﻿using AAYHS.Core.DTOs.Request;
 using AAYHS.Core.DTOs.Response;
-using AAYHS.Core.DTOs.Response.Common;
 using AAYHS.Core.Shared.Static;
-using AAYHS.Data.DBEntities;
 using AAYHS.Repository.IRepository;
-using AAYHS.Repository.Repository;
 using AAYHS.Service.IService;
 using AutoMapper;
 using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AAYHS.Service.Service
 {
-    public class ClassService: IClassService
+    public class ClassService : IClassService
     {
         #region readonly
         private readonly IClassRepository _classRepository;
@@ -36,7 +30,7 @@ namespace AAYHS.Service.Service
         public MainResponse GetAllClasses(ClassRequest classRequest)
         {
             var allClasses = _classRepository.GetAllClasses(classRequest);
-            if (allClasses.GetAllClasses.classResponses.Count!=0)
+            if (allClasses.GetAllClasses.classResponses.Count != 0)
             {
                 _mainResponse.GetAllClasses = allClasses.GetAllClasses;
                 _mainResponse.Success = true;
@@ -51,9 +45,56 @@ namespace AAYHS.Service.Service
         public async Task<MainResponse> CreateClass(AddClassRequest addClassRequest)
         {
             _mainResponse = await _classRepository.CreateClass(addClassRequest);
-            if (_mainResponse.Success==true)
+            if (_mainResponse.Success == true)
             {
                 _mainResponse.Message = Constants.CLASS_CREATED;
+            }
+            return _mainResponse;
+        }
+        public async Task<MainResponse> AddExhibitorToClass(AddClassExhibitor addClassExhibitor)
+        {
+            _mainResponse = await _classRepository.AddExhibitorToClass(addClassExhibitor);
+            if (_mainResponse.Success == true)
+            {
+                _mainResponse.Message = Constants.CLASS_EXHIBITOR;
+            }
+            return _mainResponse;
+        }
+
+        public MainResponse GetClassExhibitors(ClassRequest classRequest)
+        {
+            _mainResponse = _classRepository.GetClassExhibitors(classRequest);
+            return _mainResponse;
+        }
+
+        public async Task<MainResponse> RemoveClass(RemoveClass removeClass)
+        {
+            var _class = _classRepository.GetSingle(x => x.ClassId == removeClass.ClassId);
+            if (_class != null)
+            {
+                _class.IsDeleted = true;
+                _class.DeletedBy = removeClass.ActionBy;
+                _class.DeletedDate = DateTime.Now;
+                await _classRepository.UpdateAsync(_class);
+
+                _mainResponse.Success = true;
+                _mainResponse.Message = Constants.CLASS_REMOVED;
+            }
+            else
+            {
+                _mainResponse.Success = true;
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+            }
+
+            return _mainResponse;
+        }
+
+        public async Task<MainResponse> SplitClass(SplitRequest splitRequest)
+        {
+            _mainResponse = await _classRepository.SplitClass(splitRequest);
+            if (_mainResponse.Success == true)
+            {
+                _mainResponse.Message = Constants.SPLIT_CREATED;
             }
             return _mainResponse;
         }

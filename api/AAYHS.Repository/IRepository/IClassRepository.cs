@@ -11,6 +11,10 @@ namespace AAYHS.Repository.IRepository
     public interface IClassRepository: IGenericRepository<Classes>
     {
         MainResponse GetAllClasses(ClassRequest classRequest);
+        MainResponse GetClass(ClassRequest classRequest);
         Task<MainResponse> CreateClass(AddClassRequest addClassRequest);
+        Task<MainResponse> AddExhibitorToClass(AddClassExhibitor addClassExhibitor);
+        MainResponse GetClassExhibitors(ClassRequest classRequest);
+        Task<MainResponse> SplitClass(SplitRequest splitRequest);
     }
 }

@@ -19,7 +19,9 @@ namespace AAYHS.Core.DTOs.Response
         public BaseResponse BaseResponse { get; set; }
         public ClassResponse ClassResponse { get; set; }
         public GetAllClasses GetAllClasses { get; set; }
+        public GetClass GetClass { get; set; }
         public GlobalCodeMainResponse GlobalCodeMainResponse { get; set; }
+        public GetAllClassExhibitor GetAllClassExhibitor { get; set; }
     }
     public class Response<T> : BaseResponse
     {

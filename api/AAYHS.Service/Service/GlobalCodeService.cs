@@ -43,5 +43,20 @@ namespace AAYHS.Service.Service
             }
             return _mainResponse;
         }
+        public async Task<MainResponse> GetSponsorType()
+        {
+            var globalCodeResponse = await _globalCodeRepository.GetCodes("SponsorType");
+            if (globalCodeResponse.totalRecords != 0)
+            {
+
+                _mainResponse.Success = true;
+                _mainResponse.GlobalCodeMainResponse = globalCodeResponse;
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+            }
+            return _mainResponse;
+        }
     }
 }

@@ -12,5 +12,8 @@ namespace AAYHS.Core.Shared.Static
 
         //Class
         public const string CLASS_CREATED = "Class created successfully";
+        public const string CLASS_EXHIBITOR = "Exhibitor added successfully";
+        public const string CLASS_REMOVED = "Class removed successfully";
+        public const string SPLIT_CREATED = "Class Split created successfully";
     }
 }

@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace AAYHS.Data.DBEntities
 {
     public partial class Apilogs
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key]
         public int ApilogId { get; set; }
         public string Apiurl { get; set; }
         public string Apiparams { get; set; }

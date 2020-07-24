@@ -20,6 +20,25 @@ namespace AAYHS.Core.DTOs.Request
         public int ToAge { get; set; }
         public DateTime ScheduleDate { get; set; }
         public TimeSpan ScheduleTime { get; set; }
-        public string CreatedBy { get; set; }
+        public string ActionBy { get; set; }
+    }
+    public class AddClassExhibitor
+    {
+        public int ExhibitorId { get; set; }
+        public int ClassId { get; set; }     
+        public int HorseId { get; set; }
+        public string ActionBy { get; set; }
+    }
+    public class RemoveClass
+    {
+        public int ClassId { get; set; }
+        public string ActionBy { get; set; }
+    }
+    public class SplitRequest
+    {
+        public int ClassId { get; set; }
+        public int SplitNumber { get; set; }
+        public int Quantity { get; set; }
+        public String ActionBy { get; set; }
     }
 }

@@ -14,5 +14,6 @@ namespace AAYHS.Data.DBEntities
         public int ExhibitorClassId { get; set; }
         public int ExhibitorId { get; set; }
         public int ClassId { get; set; }
+        public int HorseId { get; set; }
     }
 }

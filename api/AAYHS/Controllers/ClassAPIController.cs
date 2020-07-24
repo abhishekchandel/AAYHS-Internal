@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AAYHS.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class ClassAPIController : ControllerBase
     {
@@ -39,8 +39,8 @@ namespace AAYHS.API.Controllers
         /// <param name="classRequest"></param>
         /// <returns></returns>
         [HttpPost]
-        [Authorize]
-        public IActionResult GetAllClasses(ClassRequest classRequest)
+        //[Authorize]
+        public IActionResult GetAllClasses([FromBody] ClassRequest classRequest)
         {
             _mainResponse = _classService.GetAllClasses(classRequest);
             _jsonString = Mapper.Convert<GetAllClasses>(_mainResponse);
@@ -52,13 +52,64 @@ namespace AAYHS.API.Controllers
         /// <param name="addClassRequest"></param>
         /// <returns></returns>
         [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> CreateClass(AddClassRequest addClassRequest)
+        //[Authorize]
+        public async Task<IActionResult> CreateClass([FromBody] AddClassRequest addClassRequest)
         {
             _mainResponse = await _classService.CreateClass(addClassRequest);
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
-
+        /// <summary>
+        /// This api used for adding the exhibitor to a class
+        /// </summary>
+        /// <param name="addClassExhibitor"></param>
+        /// <returns></returns>
+        [HttpPost]
+        //[Authorize]
+        public async Task<IActionResult> AddExhibitorToClass(AddClassExhibitor addClassExhibitor)
+        {
+            _mainResponse = await _classService.AddExhibitorToClass(addClassExhibitor);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to fetch class exhibitors
+        /// </summary>
+        /// <param name="classRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        //[Authorize]
+        public IActionResult GetClassExhibitors(ClassRequest classRequest)
+        {
+            _mainResponse = _classService.GetClassExhibitors(classRequest);
+            _jsonString = Mapper.Convert<GetAllClassExhibitor>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used for removing the class
+        /// </summary>
+        /// <param name="removeClass"></param>
+        /// <returns></returns>
+        [HttpPost]
+        //[Authorize]
+        public async Task<IActionResult> RemoveClass(RemoveClass removeClass)
+        {
+            _mainResponse =await _classService.RemoveClass(removeClass);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used for split the class
+        /// </summary>
+        /// <param name="splitRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        //[Authorize]
+        public async Task<IActionResult>SplitClass(SplitRequest splitRequest)
+        {
+            _mainResponse = await _classService.SplitClass(splitRequest);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
     }
 }
