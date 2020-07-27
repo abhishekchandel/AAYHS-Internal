@@ -8,23 +8,23 @@
     ".NETCoreApp,Version=v3.1": []
   },
   "packageFolders": {
-    "C:\\Users\\DITSDEV44\\.nuget\\packages\\": {},
+    "C:\\Users\\Ditsdev17\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS\\api\\AAYHS.Migration\\AAYHS.Migration.csproj",
+      "projectUniqueName": "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Migration\\AAYHS.Migration.csproj",
       "projectName": "AAYHS.Migration",
-      "projectPath": "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS\\api\\AAYHS.Migration\\AAYHS.Migration.csproj",
-      "packagesPath": "C:\\Users\\DITSDEV44\\.nuget\\packages\\",
-      "outputPath": "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS\\api\\AAYHS.Migration\\obj\\",
+      "projectPath": "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Migration\\AAYHS.Migration.csproj",
+      "packagesPath": "C:\\Users\\Ditsdev17\\.nuget\\packages\\",
+      "outputPath": "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Migration\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\DITSDEV44\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Ditsdev17\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -62,7 +62,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.302\\RuntimeIdentifierGraph.json"
       }
     }
   }
