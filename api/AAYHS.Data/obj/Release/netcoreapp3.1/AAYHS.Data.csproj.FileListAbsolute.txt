@@ -1,0 +1,9 @@
+C:\Projects\AAYHS\AAYHS-Internal\api\AAYHS.Data\bin\Release\netcoreapp3.1\AAYHS.Data.deps.json
+C:\Projects\AAYHS\AAYHS-Internal\api\AAYHS.Data\bin\Release\netcoreapp3.1\AAYHS.Data.dll
+C:\Projects\AAYHS\AAYHS-Internal\api\AAYHS.Data\bin\Release\netcoreapp3.1\AAYHS.Data.pdb
+C:\Projects\AAYHS\AAYHS-Internal\api\AAYHS.Data\obj\Release\netcoreapp3.1\AAYHS.Data.csprojAssemblyReference.cache
+C:\Projects\AAYHS\AAYHS-Internal\api\AAYHS.Data\obj\Release\netcoreapp3.1\AAYHS.Data.AssemblyInfoInputs.cache
+C:\Projects\AAYHS\AAYHS-Internal\api\AAYHS.Data\obj\Release\netcoreapp3.1\AAYHS.Data.AssemblyInfo.cs
+C:\Projects\AAYHS\AAYHS-Internal\api\AAYHS.Data\obj\Release\netcoreapp3.1\AAYHS.Data.csproj.CoreCompileInputs.cache
+C:\Projects\AAYHS\AAYHS-Internal\api\AAYHS.Data\obj\Release\netcoreapp3.1\AAYHS.Data.dll
+C:\Projects\AAYHS\AAYHS-Internal\api\AAYHS.Data\obj\Release\netcoreapp3.1\AAYHS.Data.pdb

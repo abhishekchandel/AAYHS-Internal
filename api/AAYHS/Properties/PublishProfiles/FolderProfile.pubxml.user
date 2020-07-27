@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <_PublishTargetUrl>C:\Users\Ditsdev17\Desktop\HorseShowPublish</_PublishTargetUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="ApplicationContext">
+      <Value>Data Source=.%3bInitial Catalog=AAYHS%3bPersist Security Info=True%3bUser ID=sa%3bPassword=Techie%40123</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+</Project>
