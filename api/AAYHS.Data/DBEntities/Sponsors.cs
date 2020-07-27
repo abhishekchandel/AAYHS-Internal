@@ -12,16 +12,13 @@ namespace AAYHS.Data.DBEntities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public int SponsorId { get; set; }
-        public int SponsorTypeId { get; set; }
-        public int AddSizeId { get; set; }
-        public int AddNumberId { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string SponsorName { get; set; }
         public string ContactName { get; set; }
+        public string Phone { get; set; }
         public string Email { get; set; }
         public float AmountReceived { get; set; }
-        public string Phone { get; set; }
-        public string Comments { get; set; }
+        public int AddressId { get; set; }
+
 
     }
 }

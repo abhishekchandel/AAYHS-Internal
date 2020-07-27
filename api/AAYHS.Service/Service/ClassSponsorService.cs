@@ -42,8 +42,8 @@ namespace AAYHS.Service.Service
             {
                 SponsorId = request.SponsorId,
                 ClassId = request.ClassId,
-                AgeFrom = request.AgeFrom,
-                AgeTo = request.AgeTo,
+                AgeGroup = request.AgeGroup,
+                
                 CreatedDate = DateTime.Now
             };
             _ClassSponsorRepository.Add(classsponsor);
@@ -57,8 +57,7 @@ namespace AAYHS.Service.Service
             var classsponsor = _ClassSponsorRepository.GetSingle(x => x.ClassSponsorId == request.ClassSponsorId);
                 classsponsor.SponsorId = request.SponsorId;
                 classsponsor.ClassId = request.ClassId;
-                classsponsor.AgeFrom = request.AgeFrom;
-                classsponsor.AgeTo = request.AgeTo;
+                classsponsor.AgeGroup = request.AgeGroup;
                 classsponsor.CreatedDate = DateTime.Now;
           
             _ClassSponsorRepository.Update(classsponsor);

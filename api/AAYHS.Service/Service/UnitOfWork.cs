@@ -1,10 +1,11 @@
-﻿using System;
+﻿using AAYHS.Service.IService;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace AAYHS.Service.Service
 {
-  public  class UnitOfWork
+  public  class UnitOfWork: IUnitOfWork
     {
     }
 }

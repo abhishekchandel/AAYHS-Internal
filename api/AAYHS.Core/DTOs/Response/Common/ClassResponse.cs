@@ -12,8 +12,7 @@ namespace AAYHS.Core.DTOs.Response.Common
         public int ClassNumber { get; set; }
         public string Name { get; set; }
         public string Location { get; set; }
-        public int FromAge { get; set; }
-        public int ToAge { get; set; }       
+        public string AgeGroup { get; set; }
         public int Entries { get; set; }
     }
     public class GetAllClasses
@@ -27,8 +26,7 @@ namespace AAYHS.Core.DTOs.Response.Common
         public int ClassNumber { get; set; }
         public string Name { get; set; }
         public string Location { get; set; }
-        public int FromAge { get; set; }
-        public int ToAge { get; set; }
+        public string AgeGroup { get; set; }
         public DateTime ScheduleDate { get; set; }
         public TimeSpan SchedulTime { get; set; }
     }

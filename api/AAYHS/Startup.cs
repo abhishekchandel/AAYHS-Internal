@@ -122,12 +122,22 @@ namespace AAYHS
 
             //Dependency injection in ASP.NET Core (Services)
             services.AddTransient<IAPIErrorLogService, APIErrorLogService>();
-            
+            services.AddTransient<IClassSponsorService, ClassSponsorService>();
+            services.AddTransient<IExhibitorService, ExhibitorService>();
+            services.AddTransient<ISponsorExhibitorService, SponsorExhibitorService>();
+            services.AddTransient<ISponsorService, SponsorService>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+
 
             //Dependency injection in ASP.NET Core (Repositories)
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddTransient<IAPIErrorLogRepository, APIErrorLogRepository>();
-            
+            services.AddTransient<IAddressRepository, AddressRepository>();
+            services.AddTransient<IClassSponsorRepository, ClassSponsorRepository>();
+            services.AddTransient<IExhibitorRepository, ExhibitorRepository>();
+            services.AddTransient<ISponsorExhibitorRepository, SponsorExhibitorRepository>();
+            services.AddTransient<ISponsorRepository, SponsorRepository>();
+
             services.AddControllers();
         }
 

@@ -40,6 +40,32 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "dependencies": {
+            "Microsoft.Extensions.Configuration": {
+              "target": "Package",
+              "version": "[5.0.0-preview.6.20305.6, )"
+            },
+            "Microsoft.Extensions.Configuration.Abstractions": {
+              "target": "Package",
+              "version": "[5.0.0-preview.6.20305.6, )"
+            },
+            "Microsoft.Extensions.Configuration.FileExtensions": {
+              "target": "Package",
+              "version": "[5.0.0-preview.6.20305.6, )"
+            },
+            "Microsoft.Extensions.Configuration.Json": {
+              "target": "Package",
+              "version": "[5.0.0-preview.6.20305.6, )"
+            },
+            "dbup-core": {
+              "target": "Package",
+              "version": "[4.4.0, )"
+            },
+            "dbup-sqlserver": {
+              "target": "Package",
+              "version": "[4.4.0, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

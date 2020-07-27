@@ -45,8 +45,8 @@ namespace AAYHS.Repository.Repository
                       ClassNumber=c.ClassNumber,
                       Name=c.Name,
                       Entries= _ObjContext.ExhibitorClass.Where(x=>x.ClassId==c.ClassId).Select(x=>x.ExhibitorClassId).Count(),
-                      FromAge =c.FromAge,
-                      ToAge=c.ToAge
+                       AgeGroup=c.AgeGroup,
+                      
                                  
                   });
             if (data.Count()!=0)
@@ -69,7 +69,7 @@ namespace AAYHS.Repository.Repository
                     getAllClasses.classResponses = data.Skip((classRequest.Page - 1) * classRequest.Limit).Take(classRequest.Limit).ToList();
 
                 }
-                _mainResponse.GetAllClasses = getAllClasses;
+                _mainResponse.Data.GetAllClasses = getAllClasses;
                
             }
             return _mainResponse;
@@ -89,10 +89,9 @@ namespace AAYHS.Repository.Repository
                         ClassId=c.ClassId,
                         ClassNumber=c.ClassNumber,
                         Name=c.Name,
-                        FromAge=c.FromAge,
-                        ToAge=c.ToAge,
+                        AgeGroup=c.AgeGroup,
                         Location=c.Location,
-                        SponsorName=s.FirstName+" "+s.LastName,
+                        SponsorName=s.SponsorName,
                         ScheduleDate=sd.Date,
                         SchedulTime=sd.Time
                     });
@@ -116,7 +115,7 @@ namespace AAYHS.Repository.Repository
                     getClass = data.Skip((classRequest.Page - 1) * classRequest.Limit).Take(classRequest.Limit).FirstOrDefault();
 
                 }
-                _mainResponse.GetClass = getClass;
+                _mainResponse.Data.GetClass = getClass;
                
             }
             return _mainResponse;
@@ -130,8 +129,8 @@ namespace AAYHS.Repository.Repository
                 classes.ClassNumber = addClassRequest.ClassNumber;
                 classes.Name = addClassRequest.Name;
                 classes.Location = addClassRequest.Location;
-                classes.FromAge = addClassRequest.FromAge;
-                classes.ToAge = addClassRequest.ToAge;
+                classes.AgeGroup = addClassRequest.AgeGroup;
+               
                 classes.IsActive = true;
                 classes.CreatedBy = addClassRequest.ActionBy;
                 classes.CreatedDate = DateTime.Now;
@@ -139,11 +138,11 @@ namespace AAYHS.Repository.Repository
                 await _ObjContext.SaveChangesAsync();
                 int classId = classes.ClassId;
 
-                ClassSponsor classSponsor = new ClassSponsor();
+                ClassSponsors classSponsor = new ClassSponsors();
                 classSponsor.SponsorId = addClassRequest.SponsorId;
                 classSponsor.ClassId = classId;
-                classSponsor.AgeFrom = addClassRequest.FromAge;
-                classSponsor.AgeTo = addClassRequest.ToAge;
+                classSponsor.AgeGroup = addClassRequest.AgeGroup;
+                
                 classSponsor.IsActive = true;
                 classSponsor.CreatedBy = addClassRequest.ActionBy;
                 classSponsor.CreatedDate = DateTime.Now;
@@ -227,7 +226,7 @@ namespace AAYHS.Repository.Repository
                     getAllClassExhibitor.getClassExhibitors = data.Skip((classRequest.Page - 1) * classRequest.Limit).Take(classRequest.Limit).ToList();
 
                 }
-                _mainResponse.GetAllClassExhibitor = getAllClassExhibitor;
+                _mainResponse.Data.GetAllClassExhibitor = getAllClassExhibitor;
 
             }
             return _mainResponse;
@@ -238,7 +237,7 @@ namespace AAYHS.Repository.Repository
             {
                 ClassId = splitRequest.ClassId,
                 SplitNumber = splitRequest.SplitNumber,
-                Quantity = splitRequest.Quantity,
+                Entries = splitRequest.Entries,
                 IsActive = true,
                 CreatedBy = splitRequest.ActionBy,
                 CreatedDate = DateTime.Now

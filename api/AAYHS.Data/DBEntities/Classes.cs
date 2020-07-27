@@ -15,7 +15,7 @@ namespace AAYHS.Data.DBEntities
         public int ClassNumber { get; set; }
         public string Name { get; set; }
         public string Location { get; set; }
-        public int FromAge { get; set; }
-        public int ToAge { get; set; }
+        public string AgeGroup { get; set; }
+     
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AAYHS.Core.DTOs.Request;
+using AAYHS.Core.DTOs.Response;
 using AAYHS.Data.DBEntities;
 using AutoMapper;
 using System;
@@ -11,10 +12,21 @@ namespace AAYHS.Core.AutoMapper
     {
         public AutoMapping()
         {
-            // Request Mapping
+             CreateMap<APILogRequest, Apilogs>();
+            CreateMap<SponsorRequest, Sponsors>();
+            CreateMap<ExhibitorRequest, Sponsors>();
+            CreateMap<SponsorExhibitorRequest, SponsorExhibitor>();
             CreateMap<APILogRequest, Apilogs>();
 
+
+
+
+
+
             // Response Mapping
+            CreateMap<Sponsors, SponsorResponse>();
+            CreateMap<Exhibitors, ExhibitorResponse>();
+            CreateMap<ClassSponsors, ClassSponsorResponse>();
 
         }
     }

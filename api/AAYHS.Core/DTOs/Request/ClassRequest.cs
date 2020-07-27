@@ -16,8 +16,8 @@ namespace AAYHS.Core.DTOs.Request
         public int ClassNumber { get; set; }
         public string Name { get; set; }
         public string Location { get; set; }
-        public int FromAge { get; set; }
-        public int ToAge { get; set; }
+        public string AgeGroup { get; set; }
+      
         public DateTime ScheduleDate { get; set; }
         public TimeSpan ScheduleTime { get; set; }
         public string ActionBy { get; set; }
@@ -38,7 +38,7 @@ namespace AAYHS.Core.DTOs.Request
     {
         public int ClassId { get; set; }
         public int SplitNumber { get; set; }
-        public int Quantity { get; set; }
+        public int Entries { get; set; }
         public String ActionBy { get; set; }
     }
 }

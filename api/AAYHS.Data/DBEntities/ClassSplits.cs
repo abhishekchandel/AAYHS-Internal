@@ -14,7 +14,8 @@ namespace AAYHS.Data.DBEntities
         public int ClassSplitId { get; set; }
         public int ClassId { get; set; }
         public int SplitNumber { get; set; }
-        public int Quantity { get; set; }
+        public int Entries { get; set; }
+        public bool ChampionShipIndicator { get; set; }
        
     }
 }

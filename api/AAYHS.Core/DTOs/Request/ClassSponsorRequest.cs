@@ -9,8 +9,7 @@ namespace AAYHS.Core.DTOs.Request
         public int ClassSponsorId { get; set; }
         public int SponsorId { get; set; }
         public int ClassId { get; set; }
-        public int AgeFrom { get; set; }
-        public int AgeTo { get; set; }
+        public string AgeGroup { get; set; }
     }
     public class GetClassSponsorRequest
     {
