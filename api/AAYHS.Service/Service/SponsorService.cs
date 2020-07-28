@@ -55,7 +55,7 @@ namespace AAYHS.Service.Service
                 CreatedDate = DateTime.Now
             };
                  _SponsorRepository.Add(sponsor);
-                 _MainResponse.Data = null;
+                 _MainResponse = null;
                 _MainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
                 _MainResponse.Success = true;
                 return _MainResponse;
@@ -67,7 +67,7 @@ namespace AAYHS.Service.Service
                 _MainResponse.TotalRecords = data.Count();
             if (_MainResponse.TotalRecords != 0)
             {
-                _MainResponse.Data.SponsorListResponse = data;
+                _MainResponse.SponsorListResponse = data;
                 _MainResponse.Message = Constants.RECORD_FOUND;
                 _MainResponse.Success = true;
                 _MainResponse.TotalRecords = data.Count();
@@ -88,7 +88,7 @@ namespace AAYHS.Service.Service
             _MainResponse.TotalRecords = data.Count();
             if (_MainResponse.TotalRecords != 0)
             {
-                _MainResponse.Data.SponsorListResponse = data; 
+                _MainResponse.SponsorListResponse = data; 
                 _MainResponse.Message = Constants.RECORD_FOUND;
                 _MainResponse.Success = true;
                 _MainResponse.TotalRecords = data.Count();
@@ -106,7 +106,7 @@ namespace AAYHS.Service.Service
             var data = _SponsorRepository.GetSponsorById(request);
             if (data != null)
             {
-                _MainResponse.Data.SponsorResponse = data;
+                _MainResponse.SponsorResponse = data;
                 _MainResponse.Message = Constants.RECORD_FOUND;
                 _MainResponse.Success = true;
             }
@@ -137,7 +137,7 @@ namespace AAYHS.Service.Service
             _AddressRepository.Update(address);
 
             _MainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
-            _MainResponse.Data = null;
+            _MainResponse = null;
                 _MainResponse.Success = true;
             return _MainResponse;
         }

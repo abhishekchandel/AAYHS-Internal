@@ -1,5 +1,6 @@
 ﻿using AAYHS.Core.DTOs.Request;
 using AAYHS.Core.DTOs.Response;
+using AAYHS.Core.DTOs.Response.Common;
 using AAYHS.Data.DBEntities;
 using AutoMapper;
 using System;
@@ -27,6 +28,8 @@ namespace AAYHS.Core.AutoMapper
             CreateMap<Sponsors, SponsorResponse>();
             CreateMap<Exhibitors, ExhibitorResponse>();
             CreateMap<ClassSponsors, ClassSponsorResponse>();
+            CreateMap<Classes, GetAllClasses>();
+            CreateMap<ExhibitorClass, GetAllClassExhibitor>();
 
         }
     }

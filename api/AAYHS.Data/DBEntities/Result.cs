@@ -13,8 +13,7 @@ namespace AAYHS.Data.DBEntities
         [Key]
         public int ResultId { get; set; }
         public int ClassId { get; set; }
-        public int AgeFrom { get; set; }
-        public int AgeTo { get; set; }
+        public string AgeGroup { get; set; }
         public int ExhibitorId { get; set; }
         [Column(TypeName = "varchar(50)")]
         public string Placement { get; set; }       

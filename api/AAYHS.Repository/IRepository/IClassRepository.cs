@@ -1,5 +1,6 @@
 ﻿using AAYHS.Core.DTOs.Request;
 using AAYHS.Core.DTOs.Response;
+using AAYHS.Core.DTOs.Response.Common;
 using AAYHS.Data.DBEntities;
 using System;
 using System.Collections.Generic;
@@ -12,9 +13,8 @@ namespace AAYHS.Repository.IRepository
     {
         MainResponse GetAllClasses(ClassRequest classRequest);
         MainResponse GetClass(ClassRequest classRequest);
-        Task<MainResponse> CreateClass(AddClassRequest addClassRequest);
-        Task<MainResponse> AddExhibitorToClass(AddClassExhibitor addClassExhibitor);
         MainResponse GetClassExhibitors(ClassRequest classRequest);
-        Task<MainResponse> SplitClass(SplitRequest splitRequest);
+        List<GetBackNumber> GetBackNumberForAllExhibitor(BackNumberRequest backNumberRequest);
+        ResultExhibitorDetails GetResultExhibitorDetails(ResultExhibitorRequest resultExhibitorRequest);
     }
 }

@@ -63,7 +63,7 @@ namespace AAYHS.Service.Service
             var data = _SponsorExhibitorRepository.GetSponsorExhibitorBySponsorId(request);
             if (data != null && data.Count>0)
             {
-                _MainResponse.Data.SponsorExhibitorListResponses = data;
+                _MainResponse.SponsorExhibitorListResponses = data;
                 _MainResponse.Message = Constants.RECORD_FOUND;
                 _MainResponse.Success = true;
             }

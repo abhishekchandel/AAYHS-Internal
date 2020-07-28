@@ -20,16 +20,6 @@ namespace AAYHS.Core.DTOs.Response
 
     public class MainResponse : BaseResponse
     {
-    
-
-        public MainResponse()
-        {
-            Data = new Data();
-        }
-        public Data Data { get; set; }
-    }
-    public class Data
-    {
         public BaseResponse BaseResponse { get; set; }
         public ClassResponse ClassResponse { get; set; }
         public GetAllClasses GetAllClasses { get; set; }
@@ -46,8 +36,12 @@ namespace AAYHS.Core.DTOs.Response
         public List<ExhibitorResponse> ExhibitorListResponse { get; set; }
         public List<SponsorExhibitorResponse> SponsorExhibitorListResponses { get; set; }
         public SponsorExhibitorResponse SponsorExhibitorResponse { get; set; }
+        public ResultExhibitorDetails ResultExhibitorDetails { get; set; }
+        public GetAllBackNumber GetAllBackNumber { get; set; }
+
 
     }
+   
     public class Response<T> : BaseResponse
     {
         public T Data { get; set; }

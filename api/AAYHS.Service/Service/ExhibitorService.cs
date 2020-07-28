@@ -46,7 +46,7 @@ namespace AAYHS.Service.Service
             _MainResponse.TotalRecords = data.Count();
             if (_MainResponse.TotalRecords != 0)
             {
-                _MainResponse.Data.ExhibitorListResponse = _Mapper.Map<List<ExhibitorResponse>>(data);
+                _MainResponse.ExhibitorListResponse = _Mapper.Map<List<ExhibitorResponse>>(data);
                 _MainResponse.Message = Constants.RECORD_FOUND;
                 _MainResponse.Success = true;
             }
@@ -66,7 +66,7 @@ namespace AAYHS.Service.Service
             _MainResponse.TotalRecords = data.Count();
             if (_MainResponse.TotalRecords != 0)
             {
-                _MainResponse.Data.ExhibitorListResponse = _Mapper.Map<List<ExhibitorResponse>>(data); ;
+                _MainResponse.ExhibitorListResponse = _Mapper.Map<List<ExhibitorResponse>>(data); ;
                 _MainResponse.Message = Constants.RECORD_FOUND;
                 _MainResponse.Success = true;
             }
@@ -83,7 +83,7 @@ namespace AAYHS.Service.Service
             var data = _ExhibitorRepository.GetSingle(x => x.ExhibitorId == request.ExhibitorId && x.IsActive == true && x.IsDeleted == false);
             if (data != null)
             {
-                _MainResponse.Data.ExhibitorResponse = _Mapper.Map<ExhibitorResponse>(data);
+                _MainResponse.ExhibitorResponse = _Mapper.Map<ExhibitorResponse>(data);
                 _MainResponse.Message = Constants.RECORD_FOUND;
                 _MainResponse.Success = true;
             }

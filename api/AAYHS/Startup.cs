@@ -127,7 +127,7 @@ namespace AAYHS
             services.AddTransient<ISponsorExhibitorService, SponsorExhibitorService>();
             services.AddTransient<ISponsorService, SponsorService>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
-
+            services.AddTransient<IClassService, ClassService>();
 
             //Dependency injection in ASP.NET Core (Repositories)
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
@@ -137,6 +137,10 @@ namespace AAYHS
             services.AddTransient<IExhibitorRepository, ExhibitorRepository>();
             services.AddTransient<ISponsorExhibitorRepository, SponsorExhibitorRepository>();
             services.AddTransient<ISponsorRepository, SponsorRepository>();
+            services.AddTransient<IClassRepository, ClassRepository>();
+            services.AddTransient<IScheduleDateRepository, ScheduleDateRepository>();
+            services.AddTransient<IExhibitorClassRepository, ExhibitorClassRepository>();
+            services.AddTransient<ISplitClassRepository, SplitClassRepository>();
 
             services.AddControllers();
         }

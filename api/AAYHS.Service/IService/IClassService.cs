@@ -10,10 +10,13 @@ namespace AAYHS.Service.IService
     public interface IClassService
     {
         MainResponse GetAllClasses(ClassRequest classRequest);
-        Task<MainResponse> CreateClass(AddClassRequest addClassRequest);
-        Task<MainResponse> AddExhibitorToClass(AddClassExhibitor addClassExhibitor);
+        MainResponse GetClass(ClassRequest classRequest);
+        Task<MainResponse> CreateUpdateClass(AddClassRequest addClassRequest, string actionBy);
+        Task<MainResponse> AddExhibitorToClass(AddClassExhibitor addClassExhibitor, string actionBy);
         MainResponse GetClassExhibitors(ClassRequest classRequest);
-        Task<MainResponse> RemoveClass(RemoveClass removeClass);
-        Task<MainResponse> SplitClass(SplitRequest splitRequest);
+        Task<MainResponse> RemoveClass(RemoveClass removeClass, string actionBy);
+        Task<MainResponse> AddUpdateSplitClass(List<SplitRequest> splitRequest, string actionBy);
+        MainResponse GetBackNumberForAllExhibitor(BackNumberRequest backNumberRequest);
+        MainResponse GetResultExhibitorDetails(ResultExhibitorRequest resultExhibitorRequest);
     }
 }
