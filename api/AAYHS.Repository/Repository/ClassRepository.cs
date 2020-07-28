@@ -23,14 +23,14 @@ namespace AAYHS.Repository.Repository
         #endregion
 
         #region private 
-        private MainResponse _mainResponse;
+        private MainResponse _MainResponse;
         #endregion
 
         public ClassRepository(AAYHSDBContext ObjContext, IMapper Mapper) :base(ObjContext)
         {
             _ObjContext = ObjContext;
             _Mapper = Mapper;
-            _mainResponse = new MainResponse();
+            _MainResponse = new MainResponse();
         }
 
         public  MainResponse GetAllClasses(ClassRequest classRequest)
@@ -69,10 +69,10 @@ namespace AAYHS.Repository.Repository
                     getAllClasses.classResponses = data.Skip((classRequest.Page - 1) * classRequest.Limit).Take(classRequest.Limit).ToList();
 
                 }
-                _mainResponse.GetAllClasses = getAllClasses;
+                _MainResponse.GetAllClasses = getAllClasses;
                
             }
-            return _mainResponse;
+            return _MainResponse;
         }
         public MainResponse GetClass(ClassRequest classRequest)
         {
@@ -113,10 +113,10 @@ namespace AAYHS.Repository.Repository
                     getClass = data.Skip((classRequest.Page - 1) * classRequest.Limit).Take(classRequest.Limit).FirstOrDefault();
 
                 }
-                _mainResponse.GetClass = getClass;
+                _MainResponse.GetClass = getClass;
                
             }
-            return _mainResponse;
+            return _MainResponse;
         }               
         public MainResponse GetClassExhibitors(ClassRequest classRequest)
         {
@@ -160,17 +160,17 @@ namespace AAYHS.Repository.Repository
                     getAllClassExhibitor.getClassExhibitors = data.Skip((classRequest.Page - 1) * classRequest.Limit).Take(classRequest.Limit).ToList();
 
                 }
-                _mainResponse.GetAllClassExhibitor = getAllClassExhibitor;
+                _MainResponse.GetAllClassExhibitor = getAllClassExhibitor;
 
             }
-            return _mainResponse;
+            return _MainResponse;
         }      
-        public List< GetBackNumber> GetBackNumberForAllExhibitor(BackNumberRequest backNumberRequest)
+        public List< GetBackNumber> GetBackNumberForAllExhibitor(int ClassId)
         {
             var backNumber = (from exhibitorsClass in _ObjContext.ExhibitorClass
                               join exhibitors in _ObjContext.Exhibitors on exhibitorsClass.ExhibitorId equals exhibitors.ExhibitorId
                               where exhibitorsClass.IsActive == true && exhibitorsClass.IsDeleted == false
-                              && exhibitorsClass.ClassId == backNumberRequest.ClassId
+                              && exhibitorsClass.ClassId == ClassId
                               select new GetBackNumber
                               {
                                   BackNumber = exhibitors.BackNumber
@@ -191,6 +191,7 @@ namespace AAYHS.Repository.Repository
                              && exhibitorsClass.IsActive == true && exhibitorsClass.IsDeleted == false
                              select new ResultExhibitorDetails
                              {
+                                 ExhibitorId=exhibitors.ExhibitorId,
                                  ExhibitorName = exhibitors.FirstName + " " + exhibitors.LastName,
                                  BirthYear = exhibitors.BirthYear,
                                  HorseName = _ObjContext.Horses.Where(x => x.HorseId == exhibitorsClass.HorseId).Select(x => x.Name).FirstOrDefault(),

@@ -107,10 +107,10 @@ namespace AAYHS.API.Controllers
         /// <returns></returns>
         [HttpPost]
         //[Authorize]
-        public async Task<IActionResult> RemoveClass(RemoveClass removeClass)
+        public async Task<IActionResult> RemoveClass(int ClassId)
         {
              string actionBy = User.Identity.Name;
-            _mainResponse =await _classService.RemoveClass(removeClass, actionBy);
+            _mainResponse =await _classService.RemoveClass(ClassId, actionBy);
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
@@ -135,10 +135,10 @@ namespace AAYHS.API.Controllers
         /// <returns></returns>
         [HttpPost]
         //[Authorize]
-        public IActionResult GetBackNumberForAllExhibitor(BackNumberRequest backNumberRequest)
+        public IActionResult GetBackNumberForAllExhibitor(int ClassId)
         {
 
-            _mainResponse = _classService.GetBackNumberForAllExhibitor(backNumberRequest);
+            _mainResponse = _classService.GetBackNumberForAllExhibitor(ClassId);
             _jsonString = Mapper.Convert<GetAllBackNumber>(_mainResponse);      
             return new OkObjectResult(_jsonString);
         }
@@ -156,6 +156,19 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<ResultExhibitorDetails>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
-        
+        /// <summary>
+        /// This api used to add class result
+        /// </summary>
+        /// <param name="resultExhibitorRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        //[Authorize]
+        public async Task< IActionResult> AddClassResult(AddClassResultRequest addClassResultRequest)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = await _classService.AddClassResult(addClassResultRequest, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
     }
 }

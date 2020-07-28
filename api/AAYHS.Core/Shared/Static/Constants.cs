@@ -12,7 +12,8 @@ namespace AAYHS.Core.Shared.Static
         public const string CLASS_UPDATED = "Class updated successfully";
         public const string CLASS_EXHIBITOR = "Exhibitor added successfully";
         public const string CLASS_REMOVED = "Class removed successfully";
-        public const string SPLIT_CREATED = "Class Split created successfully";
+        public const string SPLIT_CREATED = "Class Splited successfully";
+        public const string CLASS_RESULT_ADDED = "Class result added successfully";
         public const string ERROR_OCCURRED = "Error Occurred";
         public const string NO_RECORD_FOUND = "No Record Found";       
         public const string NO_RECORD_Exist_WITH_ID = "No Record Exist With Given Id";

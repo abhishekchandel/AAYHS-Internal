@@ -20,6 +20,7 @@ namespace AAYHS.Service.Service
         private IScheduleDateRepository _scheduleDateRepository;
         private readonly IExhibitorClassRepository _exhibitorClassRepositor;
         private ISplitClassRepository _splitClassRepository;
+        private readonly IResultRepository _resultRepository;
         private IMapper _mapper;
         #endregion
 
@@ -28,12 +29,13 @@ namespace AAYHS.Service.Service
         #endregion
 
         public ClassService(IClassRepository classRepository,IScheduleDateRepository scheduleDateRepository,IExhibitorClassRepository exhibitorClassRepository,
-                            ISplitClassRepository splitClassRepository,IMapper Mapper)
+                            ISplitClassRepository splitClassRepository,IResultRepository resultRepository,IMapper Mapper)
         {
             _classRepository = classRepository;
             _scheduleDateRepository = scheduleDateRepository;
             _exhibitorClassRepositor = exhibitorClassRepository;
             _splitClassRepository = splitClassRepository;
+            _resultRepository = resultRepository;
             _mapper = Mapper;
             _mainResponse = new MainResponse();
         }
@@ -160,9 +162,9 @@ namespace AAYHS.Service.Service
             }
             return _mainResponse;
         }
-        public async Task<MainResponse> RemoveClass(RemoveClass removeClass,string actionBy)
+        public async Task<MainResponse> RemoveClass(int ClassId, string actionBy)
         {
-            var _class = _classRepository.GetSingle(x => x.ClassId == removeClass.ClassId);
+            var _class = _classRepository.GetSingle(x => x.ClassId == ClassId);
             if (_class != null)
             {
                 _class.IsDeleted = true;
@@ -202,10 +204,10 @@ namespace AAYHS.Service.Service
             _mainResponse.Success = true;           
             return _mainResponse;
         }
-        public MainResponse GetBackNumberForAllExhibitor(BackNumberRequest backNumberRequest)
+        public MainResponse GetBackNumberForAllExhibitor(int ClassId)
         {
             GetAllBackNumber allBackNumber = new GetAllBackNumber();
-            var backNumber = _classRepository.GetBackNumberForAllExhibitor(backNumberRequest);
+            var backNumber = _classRepository.GetBackNumberForAllExhibitor(ClassId);
             if ( backNumber.Count!=0)
             {
                 allBackNumber.getBackNumbers = backNumber.ToList();
@@ -236,6 +238,29 @@ namespace AAYHS.Service.Service
             }
             return _mainResponse;
         }
+        public async Task<MainResponse> AddClassResult(AddClassResultRequest addClassResultRequest,string actionBy)
+        {
+            var ageGroup = _classRepository.GetSingle(x => x.ClassId == addClassResultRequest.ClassId);
 
+            foreach (var addRequest in addClassResultRequest.addClassResults)
+            {
+                var addResult = new Result
+                {
+                    ClassId = addClassResultRequest.ClassId,
+                    AgeGroup = ageGroup.AgeGroup,
+                    ExhibitorId = addRequest.ExhibitorId,
+                    Placement = addRequest.Place,
+                    IsActive = true,
+                    CreatedBy = actionBy,
+                    CreatedDate = DateTime.Now
+                };
+
+                await _resultRepository.AddAsync(addResult);
+
+            }
+            _mainResponse.Message = Constants.CLASS_RESULT_ADDED;
+            _mainResponse.Success = true;
+            return _mainResponse;
+        }
     }
 }

@@ -26,10 +26,7 @@ namespace AAYHS.Core.DTOs.Request
         public int HorseId { get; set; }
         public bool Scratch { get; set; }
     }
-    public class RemoveClass
-    {
-        public int ClassId { get; set; }
-    }
+    
     public class SplitRequest
     {
         public int ClassId { get; set; }
@@ -40,9 +37,15 @@ namespace AAYHS.Core.DTOs.Request
     {
         public int BackNumber { get; set; }
         public int ClassId { get; set; }
-    }
-    public class BackNumberRequest
+    }  
+    public class AddClassResultRequest
     {
         public int ClassId { get; set; }
+        public List<AddClassResult> addClassResults { get; set; }
+    }
+    public class AddClassResult
+    {
+        public int ExhibitorId { get; set; }
+        public string Place { get; set; }
     }
 }

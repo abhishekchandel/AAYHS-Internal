@@ -141,6 +141,7 @@ namespace AAYHS
             services.AddTransient<IScheduleDateRepository, ScheduleDateRepository>();
             services.AddTransient<IExhibitorClassRepository, ExhibitorClassRepository>();
             services.AddTransient<ISplitClassRepository, SplitClassRepository>();
+            services.AddTransient<IResultRepository, ResultRepository>();
 
             services.AddControllers();
         }

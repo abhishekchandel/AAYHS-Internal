@@ -14,9 +14,10 @@ namespace AAYHS.Service.IService
         Task<MainResponse> CreateUpdateClass(AddClassRequest addClassRequest, string actionBy);
         Task<MainResponse> AddExhibitorToClass(AddClassExhibitor addClassExhibitor, string actionBy);
         MainResponse GetClassExhibitors(ClassRequest classRequest);
-        Task<MainResponse> RemoveClass(RemoveClass removeClass, string actionBy);
+        Task<MainResponse> RemoveClass(int ClassId, string actionBy);
         Task<MainResponse> AddUpdateSplitClass(List<SplitRequest> splitRequest, string actionBy);
-        MainResponse GetBackNumberForAllExhibitor(BackNumberRequest backNumberRequest);
+        MainResponse GetBackNumberForAllExhibitor(int ClassId);
         MainResponse GetResultExhibitorDetails(ResultExhibitorRequest resultExhibitorRequest);
+        Task<MainResponse> AddClassResult(AddClassResultRequest addClassResultRequest, string actionBy);
     }
 }

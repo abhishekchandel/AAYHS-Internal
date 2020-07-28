@@ -53,6 +53,7 @@ namespace AAYHS.Core.DTOs.Response.Common
     }
     public class ResultExhibitorDetails
     {
+        public int ExhibitorId { get; set; }
         public string ExhibitorName { get; set; }
         public DateTime BirthYear { get; set; }
         public string HorseName { get; set; }
