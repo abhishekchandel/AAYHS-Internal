@@ -22,7 +22,7 @@ namespace AAYHS.Service.Service
         #endregion
 
         #region private
-        private MainResponse _MainResponse;
+        private MainResponse _mainResponse;
         private ISponsorRepository _SponsorRepository;
         private IAddressRepository _AddressRepository;
         #endregion
@@ -32,134 +32,148 @@ namespace AAYHS.Service.Service
             _SponsorRepository = SponsorRepository;
             _AddressRepository = AddressRepository;
             _Mapper = Mapper;
-            _MainResponse = new MainResponse();
+            _mainResponse = new MainResponse();
         }
 
-        public MainResponse AddSponsor(SponsorRequest request)
+        public MainResponse AddUpdateSponsor(SponsorRequest request)
         {
-            var addressEntity = new Addresses
+            if (request.SponsorId <= 0)
             {
-                Address = request.Address,
-                CityId = request.CityId,
-                ZipCode = request.ZipCode,
-                CreatedDate=DateTime.Now
-            };
-            var address = _AddressRepository.Add(addressEntity);
-            var sponsor = new Sponsors {
-                SponsorName = request.SponsorName,
-                ContactName = request.ContactName,
-                Phone = request.Phone,
-                Email =request.Email,
-                AmountReceived =request.AmountReceived,
-                AddressId = address.AddressId,
-                CreatedDate = DateTime.Now
-            };
-                 _SponsorRepository.Add(sponsor);
-                 _MainResponse.Data = null;
-                _MainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
-                _MainResponse.Success = true;
-                return _MainResponse;
+                var checkexist = _SponsorRepository.GetSingle(x => x.SponsorName == request.SponsorName);
+                if (checkexist != null && checkexist.SponsorId > 0)
+                {
+                    _mainResponse.Message = Constants.NAME_ALREADY_EXIST;
+                    _mainResponse.Success = false;
+                    return _mainResponse;
+                }
+
+                var addressEntity = new Addresses
+                {
+                    Address = request.Address,
+                    CityId = request.CityId,
+                    ZipCode = request.ZipCode,
+                    CreatedDate = DateTime.Now
+                };
+                var address = _AddressRepository.Add(addressEntity);
+                var sponsor = new Sponsors
+                {
+                    SponsorName = request.SponsorName,
+                    ContactName = request.ContactName,
+                    Phone = request.Phone,
+                    Email = request.Email,
+                    AmountReceived = request.AmountReceived,
+                    AddressId = address!=null? address.AddressId:0,
+                    CreatedDate = DateTime.Now
+                };
+                _SponsorRepository.Add(sponsor);
+                _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                var sponsor = _SponsorRepository.GetSingle(x => x.SponsorId == request.SponsorId);
+                if (sponsor != null && sponsor.SponsorId>0)
+                {
+                    sponsor.SponsorName = request.SponsorName;
+                    sponsor.ContactName = request.ContactName;
+                    sponsor.Phone = request.Phone;
+                    sponsor.Email = request.Email;
+                    sponsor.AmountReceived = request.AmountReceived;
+                    sponsor.ModifiedDate = DateTime.Now;
+                    _SponsorRepository.Update(sponsor);
+
+                    var address = _AddressRepository.GetSingle(x => x.AddressId == sponsor.AddressId);
+                    if (address != null && address.AddressId > 0)
+                    {
+                        address.Address = request.Address;
+                        address.CityId = request.CityId;
+                        address.ZipCode = request.ZipCode;
+                        address.ModifiedDate = DateTime.Now;
+                        _AddressRepository.Update(address);
+                    }
+                    _mainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
+                    _mainResponse.Success = true;
+                }
+                else
+                {
+                    _mainResponse.Message = Constants.NO_RECORD_EXIST_WITH_ID;
+                    _mainResponse.Success = false;
+                }
+            }
+                return _mainResponse;
         }
 
         public MainResponse GetAllSponsorsWithFilter(BaseRecordFilterRequest request)
         {
-                var data = _SponsorRepository.GetAllSponsorsWithFilter(request);
-                _MainResponse.TotalRecords = data.Count();
-            if (_MainResponse.TotalRecords != 0)
+            _mainResponse = _SponsorRepository.GetAllSponsorsWithFilter(request);
+            if (_mainResponse.SponsorListResponse.sponsorResponses != null && _mainResponse.SponsorListResponse.sponsorResponses.Count() > 0)
             {
-                _MainResponse.Data.SponsorListResponse = data;
-                _MainResponse.Message = Constants.RECORD_FOUND;
-                _MainResponse.Success = true;
-                _MainResponse.TotalRecords = data.Count();
+                _mainResponse.Message = Constants.RECORD_FOUND;
+                _mainResponse.Success = true;
+                _mainResponse.TotalRecords = _mainResponse.SponsorListResponse.sponsorResponses.Count();
             }
             else
             {
-                _MainResponse.Message = Constants.NO_RECORD_FOUND;
-                _MainResponse.Success = false;
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+                _mainResponse.Success = false;
             }
               
            
-            return _MainResponse;
+            return _mainResponse;
         }
 
         public MainResponse GetAllSponsors()
         {
-            var data = _SponsorRepository.GetAllSponsor();
-            _MainResponse.TotalRecords = data.Count();
-            if (_MainResponse.TotalRecords != 0)
+            _mainResponse = _SponsorRepository.GetAllSponsor();
+            if (_mainResponse.SponsorListResponse.sponsorResponses != null && _mainResponse.SponsorListResponse.sponsorResponses.Count() > 0)
             {
-                _MainResponse.Data.SponsorListResponse = data; 
-                _MainResponse.Message = Constants.RECORD_FOUND;
-                _MainResponse.Success = true;
-                _MainResponse.TotalRecords = data.Count();
+                _mainResponse.Message = Constants.RECORD_FOUND;
+                _mainResponse.Success = true;
+                _mainResponse.TotalRecords = _mainResponse.SponsorListResponse.sponsorResponses.Count();
             }
             else
             {
-                _MainResponse.Message = Constants.NO_RECORD_FOUND;
-                _MainResponse.Success = false;
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+                _mainResponse.Success = false;
             }
-            return _MainResponse;
+            return _mainResponse;
         }
 
         public MainResponse GetSponsorById(GetSponsorRequest request)
         {
-            var data = _SponsorRepository.GetSponsorById(request);
-            if (data != null)
+            _mainResponse = _SponsorRepository.GetSponsorById(request);
+            if (_mainResponse.SponsorResponse != null&& _mainResponse.SponsorResponse.SponsorId>0)
             {
-                _MainResponse.Data.SponsorResponse = data;
-                _MainResponse.Message = Constants.RECORD_FOUND;
-                _MainResponse.Success = true;
+                _mainResponse.Message = Constants.RECORD_FOUND;
+                _mainResponse.Success = true;
             }
             else
             {
-                _MainResponse.Message = Constants.NO_RECORD_FOUND;
-                _MainResponse.Success = false;
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+                _mainResponse.Success = false;
             }
-            return _MainResponse;
+            return _mainResponse;
         }
 
-        public MainResponse UpdateSponsor(SponsorRequest request)
-        {
-            var sponsor = _SponsorRepository.GetSingle(x => x.SponsorId == request.SponsorId);
-                sponsor.SponsorName = request.SponsorName;
-                sponsor.ContactName = request.ContactName;
-                sponsor.Phone = request.Phone;
-                sponsor.Email = request.Email;
-                sponsor.AmountReceived = request.AmountReceived;
-                sponsor.ModifiedDate = DateTime.Now;
-                _SponsorRepository.Update(sponsor);
-
-            var address = _AddressRepository.GetSingle(x=>x.AddressId== sponsor.AddressId);
-            address.Address = request.Address;
-            address.CityId = request.CityId;
-            address.ZipCode = request.ZipCode;
-            address.ModifiedDate = DateTime.Now;
-            _AddressRepository.Update(address);
-
-            _MainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
-            _MainResponse.Data = null;
-                _MainResponse.Success = true;
-            return _MainResponse;
-        }
-
+      
         public MainResponse DeleteSponsor(GetSponsorRequest request)
         {
             var sponsor = _SponsorRepository.GetSingle(x => x.SponsorId == request.SponsorId);
-            if (sponsor != null)
+            if (sponsor != null&& sponsor.SponsorId>0)
             {
                 sponsor.IsDeleted = true;
                 sponsor.IsActive = false;
                 sponsor.DeletedDate = DateTime.Now;
                 _SponsorRepository.Update(sponsor);
-                _MainResponse.Message = Constants.RECORD_DELETE_SUCCESS;
-                _MainResponse.Success = true;
+                _mainResponse.Message = Constants.RECORD_DELETE_SUCCESS;
+                _mainResponse.Success = true;
             }
             else
             {
-                _MainResponse.Message = Constants.NO_RECORD_Exist_WITH_ID;
-                _MainResponse.Success = false;
+                _mainResponse.Message = Constants.NO_RECORD_EXIST_WITH_ID;
+                _mainResponse.Success = false;
             }
-            return _MainResponse;
+            return _mainResponse;
         }
     }
 }

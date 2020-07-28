@@ -9,11 +9,10 @@ namespace AAYHS.Service.IService
 {
     public interface ISponsorService
     {
-        MainResponse AddSponsor(SponsorRequest request);
+        MainResponse AddUpdateSponsor(SponsorRequest request);
         MainResponse GetAllSponsorsWithFilter(BaseRecordFilterRequest request);
         MainResponse GetAllSponsors();
         MainResponse GetSponsorById(GetSponsorRequest request);
-        MainResponse UpdateSponsor(SponsorRequest request);
         MainResponse DeleteSponsor(GetSponsorRequest request);
     }
 }

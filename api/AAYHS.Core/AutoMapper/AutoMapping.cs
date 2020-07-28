@@ -15,13 +15,9 @@ namespace AAYHS.Core.AutoMapper
              CreateMap<APILogRequest, Apilogs>();
             CreateMap<SponsorRequest, Sponsors>();
             CreateMap<ExhibitorRequest, Sponsors>();
-            CreateMap<SponsorExhibitorRequest, SponsorExhibitor>();
+            CreateMap<SponsorExhibitorRequest, SponsorExhibitor>(); 
             CreateMap<APILogRequest, Apilogs>();
-
-
-
-
-
+            CreateMap<ExhibitorRequest, Exhibitors>();
 
             // Response Mapping
             CreateMap<Sponsors, SponsorResponse>();

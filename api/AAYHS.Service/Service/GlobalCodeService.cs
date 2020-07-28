@@ -35,7 +35,7 @@ namespace AAYHS.Service.Service
             {
 
                 _mainResponse.Success = true;
-                _mainResponse.Data.GlobalCodeMainResponse = globalCodeResponse;
+                _mainResponse.GlobalCodeMainResponse = globalCodeResponse;
             }
             else
             {
@@ -50,7 +50,7 @@ namespace AAYHS.Service.Service
             {
 
                 _mainResponse.Success = true;
-                _mainResponse.Data.GlobalCodeMainResponse = globalCodeResponse;
+                _mainResponse.GlobalCodeMainResponse = globalCodeResponse;
             }
             else
             {

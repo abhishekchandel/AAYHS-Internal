@@ -9,6 +9,6 @@ namespace AAYHS.Repository.IRepository
 {
    public interface ISponsorExhibitorRepository : IGenericRepository<SponsorExhibitor>
     {
-        List<SponsorExhibitorResponse> GetSponsorExhibitorBySponsorId(GetSponsorExhibitorRequest request);
+        MainResponse GetSponsorExhibitorBySponsorId(GetSponsorExhibitorRequest request);
     }
 }

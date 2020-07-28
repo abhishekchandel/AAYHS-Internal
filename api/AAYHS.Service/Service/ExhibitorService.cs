@@ -20,7 +20,7 @@ namespace AAYHS.Service.Service
         #endregion
 
         #region private
-        private MainResponse _MainResponse;
+        private MainResponse _mainResponse;
         private IExhibitorRepository _ExhibitorRepository;
         #endregion
 
@@ -28,100 +28,99 @@ namespace AAYHS.Service.Service
         {
             _ExhibitorRepository = ExhibitorRepository;
             _Mapper = Mapper;
-            _MainResponse = new MainResponse();
+            _mainResponse = new MainResponse();
         }
 
-        public MainResponse AddExhibitor(ExhibitorRequest request)
+        public MainResponse AddUpdateExhibitor(ExhibitorRequest request)
         {
-            var Exhibitor = _Mapper.Map<Exhibitors>(request);
-            _ExhibitorRepository.Add(Exhibitor);
-            _MainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
-            _MainResponse.Success = true;
-            return _MainResponse;
+            if (request.ExhibitorId <= 0)
+            {
+                var Exhibitor = _Mapper.Map<Exhibitors>(request);
+                _ExhibitorRepository.Add(Exhibitor);
+                _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                var Exhibitor = _Mapper.Map<Exhibitors>(request);
+                Exhibitor.ModifiedDate = DateTime.Now;
+                _ExhibitorRepository.Update(Exhibitor);
+                _mainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
+                _mainResponse.Success = true;
+            }
+            return _mainResponse;
         }
 
         public MainResponse GetAllExhibitorsWithFilter(BaseRecordFilterRequest request)
         {
-            var data = _ExhibitorRepository.GetRecordsWithFilters(request.Page, request.Limit, request.OrderBy, request.OrderByDescending, request.AllRecords, x => x.IsActive == true && x.IsDeleted == false);
-            _MainResponse.TotalRecords = data.Count();
-            if (_MainResponse.TotalRecords != 0)
+            _mainResponse = _ExhibitorRepository.GetAllExhibitorsWithFilters(request);
+            if (_mainResponse.ExhibitorListResponse.exhibitorResponses != null && _mainResponse.ExhibitorListResponse.exhibitorResponses.Count > 0)
             {
-                _MainResponse.Data.ExhibitorListResponse = _Mapper.Map<List<ExhibitorResponse>>(data);
-                _MainResponse.Message = Constants.RECORD_FOUND;
-                _MainResponse.Success = true;
+                _mainResponse.TotalRecords = _mainResponse.ExhibitorListResponse.exhibitorResponses.Count();
+                _mainResponse.Message = Constants.RECORD_FOUND;
+                _mainResponse.Success = true;
             }
             else
             {
-                _MainResponse.Message = Constants.NO_RECORD_FOUND;
-                _MainResponse.Success = false;
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+                _mainResponse.Success = false;
             }
-
-
-            return _MainResponse;
+            return _mainResponse;
         }
 
         public MainResponse GetAllExhibitors()
         {
-            var data = _ExhibitorRepository.GetAll(x => x.IsActive == true && x.IsDeleted == false);
-            _MainResponse.TotalRecords = data.Count();
-            if (_MainResponse.TotalRecords != 0)
+            _mainResponse = _ExhibitorRepository.GetAllExhibitors();
+            if (_mainResponse.ExhibitorListResponse.exhibitorResponses != null && _mainResponse.ExhibitorListResponse.exhibitorResponses.Count > 0)
             {
-                _MainResponse.Data.ExhibitorListResponse = _Mapper.Map<List<ExhibitorResponse>>(data); ;
-                _MainResponse.Message = Constants.RECORD_FOUND;
-                _MainResponse.Success = true;
+                _mainResponse.TotalRecords = _mainResponse.ExhibitorListResponse.exhibitorResponses.Count();
+                _mainResponse.Message = Constants.RECORD_FOUND;
+                _mainResponse.Success = true;
             }
             else
             {
-                _MainResponse.Message = Constants.NO_RECORD_FOUND;
-                _MainResponse.Success = false;
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+                _mainResponse.Success = false;
             }
-            return _MainResponse;
+            return _mainResponse;
         }
 
         public MainResponse GetExhibitorById(GetExhibitorRequest request)
         {
             var data = _ExhibitorRepository.GetSingle(x => x.ExhibitorId == request.ExhibitorId && x.IsActive == true && x.IsDeleted == false);
-            if (data != null)
+            if (data != null && data.ExhibitorId > 0)
             {
-                _MainResponse.Data.ExhibitorResponse = _Mapper.Map<ExhibitorResponse>(data);
-                _MainResponse.Message = Constants.RECORD_FOUND;
-                _MainResponse.Success = true;
+                _mainResponse.ExhibitorResponse = _Mapper.Map<ExhibitorResponse>(data);
+                _mainResponse.Message = Constants.RECORD_FOUND;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+                _mainResponse.Success = false;
             }
 
-            _MainResponse.Message = Constants.NO_RECORD_FOUND;
-            _MainResponse.Success = false;
-
-            return _MainResponse;
-        }
-
-        public MainResponse UpdateExhibitor(ExhibitorRequest request)
-        {
-
-            var Exhibitor = _Mapper.Map<Exhibitors>(request);
-            Exhibitor.ModifiedDate = DateTime.Now;
-            _ExhibitorRepository.Update(Exhibitor);
-            _MainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
-            _MainResponse.Success = true;
-            return _MainResponse;
+            return _mainResponse;
         }
 
         public MainResponse DeleteExhibitor(GetExhibitorRequest request)
         {
             var Exhibitor = _ExhibitorRepository.GetSingle(x => x.ExhibitorId == request.ExhibitorId);
-            if (Exhibitor != null)
+            if (Exhibitor != null && Exhibitor.ExhibitorId>0)
             {
                 Exhibitor.IsDeleted = true;
+                Exhibitor.IsActive = false;
                 Exhibitor.DeletedDate = DateTime.Now;
                 _ExhibitorRepository.Update(Exhibitor);
-                _MainResponse.Message = Constants.RECORD_DELETE_SUCCESS;
-                _MainResponse.Success = true;
+                _mainResponse.Message = Constants.RECORD_DELETE_SUCCESS;
+                _mainResponse.Success = true;
             }
             else
             {
-                _MainResponse.Message = Constants.NO_RECORD_Exist_WITH_ID;
-                _MainResponse.Success = false;
+                _mainResponse.Message = Constants.NO_RECORD_EXIST_WITH_ID;
+                _mainResponse.Success = false;
             }
-            return _MainResponse;
+            return _mainResponse;
         }
     }
 }

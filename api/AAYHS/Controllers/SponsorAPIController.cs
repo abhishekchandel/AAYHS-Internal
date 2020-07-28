@@ -8,6 +8,8 @@ using AAYHS.Service.IService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
+using AAYHS.Core.DTOs.Response.Common;
+using AAYHS.Core.Shared.Static;
 namespace AAYHS.API.Controllers
 {
     [Route("api/[controller]/[action]")]
@@ -15,11 +17,12 @@ namespace AAYHS.API.Controllers
     public class SponsorAPIController : ControllerBase
     {
         private readonly ISponsorService _SponsorService;
-        private MainResponse _response;
+        private MainResponse _mainResponse;
+        private string _jsonString = string.Empty;
         public SponsorAPIController(ISponsorService SponsorService)
         {
             _SponsorService = SponsorService;
-            _response = new MainResponse();
+            _mainResponse = new MainResponse();
         }
 
         /// <summary>
@@ -31,8 +34,9 @@ namespace AAYHS.API.Controllers
         public ActionResult GetAllSponsors()
         {
             
-                _response = _SponsorService.GetAllSponsors();
-                return new OkObjectResult(_response);
+                _mainResponse = _SponsorService.GetAllSponsors();
+            _jsonString = Mapper.Convert<SponsorListResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
         }
 
 
@@ -45,8 +49,9 @@ namespace AAYHS.API.Controllers
         public ActionResult GetAllSponsorsWithFilter(BaseRecordFilterRequest request)
         {
          
-                _response = _SponsorService.GetAllSponsorsWithFilter(request);
-                return new OkObjectResult(_response);
+                _mainResponse = _SponsorService.GetAllSponsorsWithFilter(request);
+            _jsonString = Mapper.Convert<SponsorListResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
         }
 
         /// <summary>
@@ -57,33 +62,24 @@ namespace AAYHS.API.Controllers
         [HttpPost]
         public ActionResult GetSponsorById(GetSponsorRequest request)
         {
-                _response = _SponsorService.GetSponsorById(request);
-                return new OkObjectResult(_response);
+                _mainResponse = _SponsorService.GetSponsorById(request);
+            _jsonString = Mapper.Convert<SponsorResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
         }
 
         /// <summary>
-        /// This API is used to add new  Sponsor.
+        /// This API is used to add/update new  Sponsor.
         /// </summary>
         /// <param name="Sponsor detail is required"></param>
         /// <returns> success true or false with message</returns>
         [HttpPost]
-        public ActionResult AddSponsor([FromBody] SponsorRequest request)
+        public ActionResult AddUpdateSponsor([FromBody] SponsorRequest request)
         {
-                _response = _SponsorService.AddSponsor(request);
-                return new OkObjectResult(_response);
+                _mainResponse = _SponsorService.AddUpdateSponsor(request);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
         }
 
-        /// <summary>
-        /// This API is used to update existing Sponsor.
-        /// </summary>
-        /// <param name="Sponsor detail with Sponsor id is required"></param>
-        /// <returns> success true or false with message</returns>
-        [HttpPut]
-        public ActionResult UpdateSponsor([FromBody] SponsorRequest request)
-        {
-                _response = _SponsorService.UpdateSponsor(request);
-                return new OkObjectResult(_response);
-        }
 
         /// <summary>
         /// This API is used to delete existing Sponsor.
@@ -93,8 +89,9 @@ namespace AAYHS.API.Controllers
         [HttpDelete]
         public ActionResult DeleteSponsor([FromBody] GetSponsorRequest request)
         {
-            _response = _SponsorService.DeleteSponsor(request);
-            return new OkObjectResult(_response);
+            _mainResponse = _SponsorService.DeleteSponsor(request);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
         }
 
     }

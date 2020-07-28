@@ -30,9 +30,9 @@ namespace AAYHS.Service.Service
         public MainResponse GetAllClasses(ClassRequest classRequest)
         {
             var allClasses = _classRepository.GetAllClasses(classRequest);
-            if (allClasses.Data.GetAllClasses.classResponses.Count != 0)
+            if (allClasses.GetAllClasses.classResponses.Count != 0)
             {
-                _mainResponse.Data.GetAllClasses = allClasses.Data.GetAllClasses;
+                _mainResponse.GetAllClasses = allClasses.GetAllClasses;
                 _mainResponse.Success = true;
             }
             else

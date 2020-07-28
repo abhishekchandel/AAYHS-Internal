@@ -20,16 +20,7 @@ namespace AAYHS.Core.DTOs.Response
 
     public class MainResponse : BaseResponse
     {
-    
 
-        public MainResponse()
-        {
-            Data = new Data();
-        }
-        public Data Data { get; set; }
-    }
-    public class Data
-    {
         public BaseResponse BaseResponse { get; set; }
         public ClassResponse ClassResponse { get; set; }
         public GetAllClasses GetAllClasses { get; set; }
@@ -37,17 +28,16 @@ namespace AAYHS.Core.DTOs.Response
         public GlobalCodeMainResponse GlobalCodeMainResponse { get; set; }
         public GetAllClassExhibitor GetAllClassExhibitor { get; set; }
         public SponsorResponse SponsorResponse { get; set; }
-        public List<SponsorResponse> SponsorListResponse { get; set; }
-
+        public SponsorListResponse SponsorListResponse { get; set; }
         public ClassSponsorResponse ClassSponsorResponse { get; set; }
         public List<ClassSponsorResponse> ClassSponsorListResponse { get; set; }
-
         public ExhibitorResponse ExhibitorResponse { get; set; }
-        public List<ExhibitorResponse> ExhibitorListResponse { get; set; }
-        public List<SponsorExhibitorResponse> SponsorExhibitorListResponses { get; set; }
+        public ExhibitorListResponse ExhibitorListResponse { get; set; }
+        public SponsorExhibitorListResponse SponsorExhibitorListResponse { get; set; }
         public SponsorExhibitorResponse SponsorExhibitorResponse { get; set; }
 
     }
+  
     public class Response<T> : BaseResponse
     {
         public T Data { get; set; }

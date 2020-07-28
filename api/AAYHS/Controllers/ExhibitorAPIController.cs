@@ -8,6 +8,9 @@ using AAYHS.Service.IService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
+using AAYHS.Core.DTOs.Response.Common;
+using AAYHS.Core.Shared.Static;
+
 namespace AAYHS.API.Controllers
 {
 
@@ -16,11 +19,12 @@ namespace AAYHS.API.Controllers
     public class ExhibitorAPIController : ControllerBase
     {
         private readonly IExhibitorService _ExhibitorService;
-        private MainResponse _response;
+        private MainResponse _mainResponse;
+        private string _jsonString = string.Empty;
         public ExhibitorAPIController(IExhibitorService ExhibitorService)
         {
             _ExhibitorService = ExhibitorService;
-            _response = new MainResponse();
+            _mainResponse = new MainResponse();
         }
 
         /// <summary>
@@ -32,8 +36,9 @@ namespace AAYHS.API.Controllers
         public ActionResult GetAllExhibitors()
         {
 
-            _response = _ExhibitorService.GetAllExhibitors();
-            return new OkObjectResult(_response);
+            _mainResponse = _ExhibitorService.GetAllExhibitors(); 
+              _jsonString = Mapper.Convert<ExhibitorListResponse> (_mainResponse);
+            return new OkObjectResult(_jsonString);
         }
 
 
@@ -46,8 +51,9 @@ namespace AAYHS.API.Controllers
         public ActionResult GetAllExhibitorsWithFilter([FromBody] BaseRecordFilterRequest request)
         {
 
-            _response = _ExhibitorService.GetAllExhibitorsWithFilter(request);
-            return new OkObjectResult(_response);
+            _mainResponse = _ExhibitorService.GetAllExhibitorsWithFilter(request);
+            _jsonString = Mapper.Convert<ExhibitorListResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
         }
 
         /// <summary>
@@ -58,33 +64,24 @@ namespace AAYHS.API.Controllers
         [HttpPost]
         public ActionResult GetExhibitorById([FromBody] GetExhibitorRequest request)
         {
-            _response = _ExhibitorService.GetExhibitorById(request);
-            return new OkObjectResult(_response);
+            _mainResponse = _ExhibitorService.GetExhibitorById(request);
+            _jsonString = Mapper.Convert<ExhibitorResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
         }
 
         /// <summary>
-        /// This API is used to add new  Exhibitor.
+        /// This API is used to add/update new  Exhibitor.
         /// </summary>
         /// <param name="Exhibitor detail is required"></param>
         /// <returns> success true or false with message</returns>
         [HttpPost]
-        public ActionResult AddExhibitor([FromBody] ExhibitorRequest request)
+        public ActionResult AddUpdateExhibitor([FromBody] ExhibitorRequest request)
         {
-            _response = _ExhibitorService.AddExhibitor(request);
-            return new OkObjectResult(_response);
+            _mainResponse = _ExhibitorService.AddUpdateExhibitor(request);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
         }
 
-        /// <summary>
-        /// This API is used to update existing Exhibitor.
-        /// </summary>
-        /// <param name="Exhibitor detail with Exhibitor id is required"></param>
-        /// <returns> success true or false with message</returns>
-        [HttpPost]
-        public ActionResult UpdateExhibitor([FromBody] ExhibitorRequest request)
-        {
-            _response = _ExhibitorService.AddExhibitor(request);
-            return new OkObjectResult(_response);
-        }
 
         /// <summary>
         /// This API is used to delete existing Exhibitor.
@@ -94,8 +91,9 @@ namespace AAYHS.API.Controllers
         [HttpPost]
         public ActionResult DeleteExhibitor([FromBody] GetExhibitorRequest request)
         {
-            _response = _ExhibitorService.DeleteExhibitor(request);
-            return new OkObjectResult(_response);
+            _mainResponse = _ExhibitorService.DeleteExhibitor(request);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
         }
 
     }
