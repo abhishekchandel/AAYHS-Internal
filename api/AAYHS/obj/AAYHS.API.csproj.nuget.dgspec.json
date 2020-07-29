@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS\\AAYHS.API.csproj": {}
+    "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS\\AAYHS.API.csproj": {}
   },
   "projects": {
-    "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Core\\AAYHS.Core.csproj": {
+    "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Core\\AAYHS.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Core\\AAYHS.Core.csproj",
+        "projectUniqueName": "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Core\\AAYHS.Core.csproj",
         "projectName": "AAYHS.Core",
-        "projectPath": "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Core\\AAYHS.Core.csproj",
-        "packagesPath": "C:\\Users\\Ditsdev17\\.nuget\\packages\\",
-        "outputPath": "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Core\\obj\\",
+        "projectPath": "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Core\\AAYHS.Core.csproj",
+        "packagesPath": "C:\\Users\\DITSDEV44\\.nuget\\packages\\",
+        "outputPath": "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Core\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Ditsdev17\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\DITSDEV44\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -30,8 +30,8 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Data\\AAYHS.Data.csproj": {
-                "projectPath": "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Data\\AAYHS.Data.csproj"
+              "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Data\\AAYHS.Data.csproj": {
+                "projectPath": "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Data\\AAYHS.Data.csproj"
               }
             }
           }
@@ -73,24 +73,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.302\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Data\\AAYHS.Data.csproj": {
+    "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Data\\AAYHS.Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Data\\AAYHS.Data.csproj",
+        "projectUniqueName": "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Data\\AAYHS.Data.csproj",
         "projectName": "AAYHS.Data",
-        "projectPath": "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Data\\AAYHS.Data.csproj",
-        "packagesPath": "C:\\Users\\Ditsdev17\\.nuget\\packages\\",
-        "outputPath": "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Data\\obj\\",
+        "projectPath": "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Data\\AAYHS.Data.csproj",
+        "packagesPath": "C:\\Users\\DITSDEV44\\.nuget\\packages\\",
+        "outputPath": "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Data\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Ditsdev17\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\DITSDEV44\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -138,24 +138,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.302\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Repository\\AAYHS.Repository.csproj": {
+    "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Repository\\AAYHS.Repository.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Repository\\AAYHS.Repository.csproj",
+        "projectUniqueName": "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Repository\\AAYHS.Repository.csproj",
         "projectName": "AAYHS.Repository",
-        "projectPath": "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Repository\\AAYHS.Repository.csproj",
-        "packagesPath": "C:\\Users\\Ditsdev17\\.nuget\\packages\\",
-        "outputPath": "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Repository\\obj\\",
+        "projectPath": "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Repository\\AAYHS.Repository.csproj",
+        "packagesPath": "C:\\Users\\DITSDEV44\\.nuget\\packages\\",
+        "outputPath": "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Repository\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Ditsdev17\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\DITSDEV44\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -168,11 +168,11 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Core\\AAYHS.Core.csproj": {
-                "projectPath": "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Core\\AAYHS.Core.csproj"
+              "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Core\\AAYHS.Core.csproj": {
+                "projectPath": "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Core\\AAYHS.Core.csproj"
               },
-              "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Data\\AAYHS.Data.csproj": {
-                "projectPath": "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Data\\AAYHS.Data.csproj"
+              "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Data\\AAYHS.Data.csproj": {
+                "projectPath": "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Data\\AAYHS.Data.csproj"
               }
             }
           }
@@ -206,24 +206,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.302\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Service\\AAYHS.Service.csproj": {
+    "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Service\\AAYHS.Service.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Service\\AAYHS.Service.csproj",
+        "projectUniqueName": "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Service\\AAYHS.Service.csproj",
         "projectName": "AAYHS.Service",
-        "projectPath": "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Service\\AAYHS.Service.csproj",
-        "packagesPath": "C:\\Users\\Ditsdev17\\.nuget\\packages\\",
-        "outputPath": "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Service\\obj\\",
+        "projectPath": "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Service\\AAYHS.Service.csproj",
+        "packagesPath": "C:\\Users\\DITSDEV44\\.nuget\\packages\\",
+        "outputPath": "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Service\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Ditsdev17\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\DITSDEV44\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -236,11 +236,11 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Core\\AAYHS.Core.csproj": {
-                "projectPath": "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Core\\AAYHS.Core.csproj"
+              "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Core\\AAYHS.Core.csproj": {
+                "projectPath": "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Core\\AAYHS.Core.csproj"
               },
-              "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Repository\\AAYHS.Repository.csproj": {
-                "projectPath": "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Repository\\AAYHS.Repository.csproj"
+              "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Repository\\AAYHS.Repository.csproj": {
+                "projectPath": "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Repository\\AAYHS.Repository.csproj"
               }
             }
           }
@@ -268,24 +268,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.302\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS\\AAYHS.API.csproj": {
+    "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS\\AAYHS.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS\\AAYHS.API.csproj",
+        "projectUniqueName": "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS\\AAYHS.API.csproj",
         "projectName": "AAYHS.API",
-        "projectPath": "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS\\AAYHS.API.csproj",
-        "packagesPath": "C:\\Users\\Ditsdev17\\.nuget\\packages\\",
-        "outputPath": "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS\\obj\\",
+        "projectPath": "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS\\AAYHS.API.csproj",
+        "packagesPath": "C:\\Users\\DITSDEV44\\.nuget\\packages\\",
+        "outputPath": "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Ditsdev17\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\DITSDEV44\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -298,14 +298,14 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Core\\AAYHS.Core.csproj": {
-                "projectPath": "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Core\\AAYHS.Core.csproj"
+              "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Core\\AAYHS.Core.csproj": {
+                "projectPath": "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Core\\AAYHS.Core.csproj"
               },
-              "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Repository\\AAYHS.Repository.csproj": {
-                "projectPath": "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Repository\\AAYHS.Repository.csproj"
+              "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Repository\\AAYHS.Repository.csproj": {
+                "projectPath": "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Repository\\AAYHS.Repository.csproj"
               },
-              "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Service\\AAYHS.Service.csproj": {
-                "projectPath": "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Service\\AAYHS.Service.csproj"
+              "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Service\\AAYHS.Service.csproj": {
+                "projectPath": "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Service\\AAYHS.Service.csproj"
               }
             }
           }
@@ -360,7 +360,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.302\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -14,3 +14,11 @@ C:\Projects\AAYHS\AAYHS-Internal\api\AAYHS.Data\obj\Debug\netcoreapp3.1\AAYHS.Da
 C:\Projects\AAYHS\AAYHS-Internal\api\AAYHS.Data\obj\Debug\netcoreapp3.1\AAYHS.Data.dll
 C:\Projects\AAYHS\AAYHS-Internal\api\AAYHS.Data\obj\Debug\netcoreapp3.1\AAYHS.Data.pdb
 C:\Projects\AAYHS\AAYHS-Internal\api\AAYHS.Data\obj\Debug\netcoreapp3.1\AAYHS.Data.csprojAssemblyReference.cache
+C:\Projects\AbhishekC\AbhishekC\Official\AAYHS-New\api\AAYHS.Data\bin\Debug\netcoreapp3.1\AAYHS.Data.deps.json
+C:\Projects\AbhishekC\AbhishekC\Official\AAYHS-New\api\AAYHS.Data\bin\Debug\netcoreapp3.1\AAYHS.Data.dll
+C:\Projects\AbhishekC\AbhishekC\Official\AAYHS-New\api\AAYHS.Data\bin\Debug\netcoreapp3.1\AAYHS.Data.pdb
+C:\Projects\AbhishekC\AbhishekC\Official\AAYHS-New\api\AAYHS.Data\obj\Debug\netcoreapp3.1\AAYHS.Data.csprojAssemblyReference.cache
+C:\Projects\AbhishekC\AbhishekC\Official\AAYHS-New\api\AAYHS.Data\obj\Debug\netcoreapp3.1\AAYHS.Data.AssemblyInfoInputs.cache
+C:\Projects\AbhishekC\AbhishekC\Official\AAYHS-New\api\AAYHS.Data\obj\Debug\netcoreapp3.1\AAYHS.Data.AssemblyInfo.cs
+C:\Projects\AbhishekC\AbhishekC\Official\AAYHS-New\api\AAYHS.Data\obj\Debug\netcoreapp3.1\AAYHS.Data.dll
+C:\Projects\AbhishekC\AbhishekC\Official\AAYHS-New\api\AAYHS.Data\obj\Debug\netcoreapp3.1\AAYHS.Data.pdb

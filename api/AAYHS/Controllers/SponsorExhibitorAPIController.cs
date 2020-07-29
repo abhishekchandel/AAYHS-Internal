@@ -28,7 +28,7 @@ namespace AAYHS.API.Controllers
         /// <param name="Sponsor Id parameter is required"></param>
         /// <returns> Exhibitors Sponsor list</returns>
         [HttpPost]
-        public ActionResult GetSponsorExhibitorBySponsorId(GetSponsorExhibitorRequest request)
+        public ActionResult GetSponsorExhibitorBySponsorId([FromBody] GetSponsorExhibitorRequest request)
         {
             _response = _SponsorExhibitorService.GetSponsorExhibitorBySponsorId(request);
             return new OkObjectResult(_response);

@@ -28,6 +28,8 @@ export class TokenInterceptor implements HttpInterceptor {
       });
     }
 
+    
+
     // add authorization header with jwt token if available
     const isLoggedIn = this.localStorageService.isAuthenticated();
     if (isLoggedIn) {

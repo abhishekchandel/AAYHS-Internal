@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import{  ClassViewModel} from '../../../../../core/models/class-model'
 import {  ConfirmDialogComponent,ConfirmDialogModel} from '../../../../../shared/ui/modals/confirmation-modal/confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
 
 const ELEMENT_DATA: ClassViewModel[] = [
   {ClassNumber: '103 N', ClassName: 'Barrels Pony',AgeGroup:'15',Enteries:15},
@@ -19,6 +20,8 @@ export class ClassComponent implements OnInit {
   classesDisplayedColumns: string[] = ['ClassNumber', 'ClassName', 'AgeGroup','Enteries','Remove'];
   data: ClassViewModel[] = ELEMENT_DATA;
   result: string = '';
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  totalItems: number=10;
 
 
 
