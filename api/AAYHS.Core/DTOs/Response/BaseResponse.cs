@@ -25,7 +25,8 @@ namespace AAYHS.Core.DTOs.Response
         public GetAllClasses GetAllClasses { get; set; }
         public GetClass GetClass { get; set; }
         public GlobalCodeMainResponse GlobalCodeMainResponse { get; set; }
-        public GetAllClassExhibitor GetAllClassExhibitor { get; set; }
+        public GetClassAllExhibitors GetClassAllExhibitors { get; set; }
+        public GetAllClassEntries GetAllClassEntries { get; set; }
         public SponsorResponse SponsorResponse { get; set; }
         public List<SponsorResponse> SponsorListResponse { get; set; }
 

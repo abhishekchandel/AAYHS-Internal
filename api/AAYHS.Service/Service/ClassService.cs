@@ -21,6 +21,7 @@ namespace AAYHS.Service.Service
         private readonly IExhibitorClassRepository _exhibitorClassRepositor;
         private ISplitClassRepository _splitClassRepository;
         private readonly IResultRepository _resultRepository;
+        private IExhibitorRepository _exhibitorRepository;
         private IMapper _mapper;
         #endregion
 
@@ -29,13 +30,14 @@ namespace AAYHS.Service.Service
         #endregion
 
         public ClassService(IClassRepository classRepository,IScheduleDateRepository scheduleDateRepository,IExhibitorClassRepository exhibitorClassRepository,
-                            ISplitClassRepository splitClassRepository,IResultRepository resultRepository,IMapper Mapper)
+                            ISplitClassRepository splitClassRepository,IResultRepository resultRepository,IExhibitorRepository exhibitorRepository, IMapper Mapper)
         {
             _classRepository = classRepository;
             _scheduleDateRepository = scheduleDateRepository;
             _exhibitorClassRepositor = exhibitorClassRepository;
             _splitClassRepository = splitClassRepository;
             _resultRepository = resultRepository;
+            _exhibitorRepository = exhibitorRepository;
             _mapper = Mapper;
             _mainResponse = new MainResponse();
         }
@@ -43,10 +45,9 @@ namespace AAYHS.Service.Service
         public MainResponse GetAllClasses(ClassRequest classRequest)
         {
             var allClasses = _classRepository.GetAllClasses(classRequest);
-            if (allClasses.GetAllClasses != null)
+            if (allClasses.GetAllClasses != null && allClasses.TotalRecords!=0 )
             {
                 _mainResponse.GetAllClasses = allClasses.GetAllClasses;
-                _mainResponse.TotalRecords = _mainResponse.GetAllClasses.classResponses.Count();
                 _mainResponse.Success = true;
             }
             else
@@ -56,9 +57,9 @@ namespace AAYHS.Service.Service
             }
             return _mainResponse;
         }
-        public MainResponse GetClass(ClassRequest classRequest)
+        public MainResponse GetClass(int ClassId)
         {
-            var getClass = _classRepository.GetClass(classRequest);
+            var getClass = _classRepository.GetClass(ClassId);
             if (getClass.GetClass!=null)
             {
                 _mainResponse.GetClass = getClass.GetClass;
@@ -69,6 +70,63 @@ namespace AAYHS.Service.Service
                 _mainResponse.Message = Constants.NO_RECORD_FOUND;
                 _mainResponse.Success = false;
             }
+            return _mainResponse;
+        }
+        public MainResponse GetClassExhibitors(int ClassId)
+        {
+            GetClassAllExhibitors getClassAllExhibitors = new GetClassAllExhibitors();
+            List < GetClassExhibitors> getClassListExhibitors = new List<GetClassExhibitors>();
+            var allExhibitor = _exhibitorRepository.GetAll(x=>x.IsActive==true && x.IsDeleted==false);
+            if (allExhibitor!=null)
+            {
+                var exhibitorClasses = _exhibitorClassRepositor.GetAll(x => x.ClassId == ClassId && x.IsActive == true && x.IsDeleted == false);
+                if (exhibitorClasses!=null)
+                {
+                    for (int i = 0; i < allExhibitor.Count(); i++)
+                    {
+                        GetClassExhibitors getClassExhibitors = new GetClassExhibitors();
+                        if (i<=exhibitorClasses.Count()-1)
+                        {
+                            if (allExhibitor[i].ExhibitorId != exhibitorClasses[i].ExhibitorId)
+                            {
+                                getClassExhibitors.ExhibitorId = allExhibitor[i].ExhibitorId;
+                                getClassExhibitors.Exhibitor = allExhibitor[i].ExhibitorId + " " + allExhibitor[i].FirstName + " " + allExhibitor[i].LastName;
+                                getClassListExhibitors.Add(getClassExhibitors);
+                            }
+                        }
+                        else
+                        {
+                            getClassExhibitors.ExhibitorId = allExhibitor[i].ExhibitorId;
+                            getClassExhibitors.Exhibitor = allExhibitor[i].ExhibitorId + " " + allExhibitor[i].FirstName + " " + allExhibitor[i].LastName;
+                            getClassListExhibitors.Add(getClassExhibitors);
+                        }
+                        
+                    }
+                    getClassAllExhibitors.getClassExhibitors = getClassListExhibitors;
+                    _mainResponse.GetClassAllExhibitors = getClassAllExhibitors;
+                    _mainResponse.Success = true;
+                }
+                else
+                {
+                    for (int i = 0; i < allExhibitor.Count(); i++)
+                    {
+                        GetClassExhibitors getClassExhibitors = new GetClassExhibitors();
+
+                        getClassExhibitors.ExhibitorId = allExhibitor[i].ExhibitorId;
+                        getClassExhibitors.Exhibitor = allExhibitor[i].ExhibitorId + " " + allExhibitor[i].FirstName + " " + allExhibitor[i].LastName;
+                        getClassListExhibitors.Add(getClassExhibitors);
+                    }
+                    getClassAllExhibitors.getClassExhibitors = getClassListExhibitors;
+                    _mainResponse.GetClassAllExhibitors = getClassAllExhibitors;
+                    _mainResponse.Success = true;
+                }
+                
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+                _mainResponse.Success = false;
+            }          
             return _mainResponse;
         }
         public async Task<MainResponse> CreateUpdateClass(AddClassRequest addClassRequest,string actionBy)
@@ -147,12 +205,12 @@ namespace AAYHS.Service.Service
             return _mainResponse;
            
         }
-        public MainResponse GetClassExhibitors(ClassRequest classRequest)
+        public MainResponse GetClassEntries(ClassRequest classRequest)
         {
-            var allExhibitor = _classRepository.GetClassExhibitors(classRequest);
-            if (allExhibitor.GetAllClassExhibitor!=null)
+            var allExhibitor = _classRepository.GetClassEntries(classRequest);
+            if (allExhibitor.GetAllClassEntries!=null && allExhibitor.TotalRecords!=0)
             {
-                _mainResponse.GetAllClassExhibitor.getClassExhibitors = allExhibitor.GetAllClassExhibitor.getClassExhibitors;
+                _mainResponse.GetAllClassEntries.getClassEntries = allExhibitor.GetAllClassEntries.getClassEntries;
                 _mainResponse.Success = true;
             }
             else
@@ -212,7 +270,6 @@ namespace AAYHS.Service.Service
             {
                 allBackNumber.getBackNumbers = backNumber.ToList();
                 _mainResponse.GetAllBackNumber = allBackNumber;
-                _mainResponse.Message = Constants.RECORD_FOUND;
                 _mainResponse.Success = true;
             }
             else
@@ -228,7 +285,6 @@ namespace AAYHS.Service.Service
             if (exhibitorDetails!=null)
             {
                 _mainResponse.ResultExhibitorDetails = exhibitorDetails;
-                _mainResponse.Message = Constants.RECORD_FOUND;
                 _mainResponse.Success = true;
             }
             else

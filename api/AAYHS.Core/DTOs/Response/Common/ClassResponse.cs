@@ -29,11 +29,20 @@ namespace AAYHS.Core.DTOs.Response.Common
         public DateTime ScheduleDate { get; set; }
         public TimeSpan SchedulTime { get; set; }
     }
-    public class GetAllClassExhibitor
+    public class GetClassAllExhibitors
     {
-        public List<GetClassExhibitor> getClassExhibitors { get; set; }
+        public List<GetClassExhibitors> getClassExhibitors { get; set; }
     }
-    public class GetClassExhibitor
+    public class GetClassExhibitors
+    {
+        public int ExhibitorId { get; set; }
+        public string Exhibitor { get; set; }
+    }
+    public class GetAllClassEntries
+    {
+        public List<GetClassEntries> getClassEntries { get; set; }
+    }
+    public class GetClassEntries
     {
         public int ExhibitorClassId { get; set; }
         public string Exhibitor { get; set; }

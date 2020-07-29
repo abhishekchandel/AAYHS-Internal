@@ -53,10 +53,23 @@ namespace AAYHS.API.Controllers
         /// <returns></returns>
         [HttpPost]
         //[Authorize]
-        public IActionResult GetClass(ClassRequest classRequest)
+        public IActionResult GetClass(int ClassId)
         {
-            _mainResponse = _classService.GetClass(classRequest);
+            _mainResponse = _classService.GetClass(ClassId);
             _jsonString = Mapper.Convert<GetClass>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to get class Exhibitors
+        /// </summary>
+        /// <param name="ClassId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        //[Authorize]
+        public IActionResult GetClassExhibitors(int ClassId)
+        {
+            _mainResponse = _classService.GetClassExhibitors(ClassId);
+            _jsonString = Mapper.Convert<GetClassAllExhibitors>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
         /// <summary>
@@ -94,10 +107,10 @@ namespace AAYHS.API.Controllers
         /// <returns></returns>
         [HttpPost]
         //[Authorize]
-        public IActionResult GetClassExhibitors(ClassRequest classRequest)
+        public IActionResult GetClassEntries(ClassRequest classRequest)
         {
-            _mainResponse = _classService.GetClassExhibitors(classRequest);
-            _jsonString = Mapper.Convert<GetAllClassExhibitor>(_mainResponse);
+            _mainResponse = _classService.GetClassEntries(classRequest);
+            _jsonString = Mapper.Convert<GetAllClassEntries>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
         /// <summary>

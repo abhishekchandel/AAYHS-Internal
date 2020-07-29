@@ -70,11 +70,11 @@ namespace AAYHS.Repository.Repository
 
                 }
                 _MainResponse.GetAllClasses = getAllClasses;
-               
+                _MainResponse.TotalRecords = getAllClasses.classResponses.Count();
             }
             return _MainResponse;
         }
-        public MainResponse GetClass(ClassRequest classRequest)
+        public MainResponse GetClass(int ClassId)
         {
             IEnumerable<GetClass> data;
             GetClass getClass = new GetClass();
@@ -82,7 +82,7 @@ namespace AAYHS.Repository.Repository
             data = (from classes in _ObjContext.Classes
                     join scheduleDate in _ObjContext.ScheduleDates on classes.ClassId equals scheduleDate.ClassId into scheduleDate1
                     from scheduleDate2 in scheduleDate1.DefaultIfEmpty()
-                    where classes.IsActive == true && classes.IsDeleted == false && classes.ClassId == classRequest.ClassId
+                    where classes.IsActive == true && classes.IsDeleted == false && classes.ClassId == ClassId
                     select new GetClass 
                     {
                         ClassId= classes.ClassId,
@@ -93,35 +93,13 @@ namespace AAYHS.Repository.Repository
                         ScheduleDate= scheduleDate2.Date,
                         SchedulTime= scheduleDate2.Time
                     });
-            if (data.Count()!=0)
-            {
-                 if (classRequest.OrderByDescending == true)
-                {
-                    data = data.OrderByDescending(x => x.GetType().GetProperty(classRequest.OrderBy).GetValue(x));
-                }
-                else
-                {
-                    data = data.OrderBy(x => x.GetType().GetProperty(classRequest.OrderBy).GetValue(x));
-                }
-
-                if (classRequest.AllRecords)
-                {
-                    getClass = data.FirstOrDefault();
-                }
-                else
-                {
-                    getClass = data.Skip((classRequest.Page - 1) * classRequest.Limit).Take(classRequest.Limit).FirstOrDefault();
-
-                }
-                _MainResponse.GetClass = getClass;
-               
-            }
-            return _MainResponse;
-        }               
-        public MainResponse GetClassExhibitors(ClassRequest classRequest)
+            _MainResponse.GetClass = data.FirstOrDefault();
+            return _MainResponse;           
+        }                      
+        public MainResponse GetClassEntries(ClassRequest classRequest)
         {
-            IEnumerable<GetClassExhibitor> data;
-            GetAllClassExhibitor getAllClassExhibitor = new GetAllClassExhibitor();
+            IEnumerable<GetClassEntries> data;
+            GetAllClassEntries getAllClassEntries = new GetAllClassEntries(); 
 
             data = (from exhibitorclasses in _ObjContext.ExhibitorClass
                     join exhibitors in _ObjContext.Exhibitors on exhibitorclasses.ExhibitorId equals exhibitors.ExhibitorId
@@ -130,10 +108,10 @@ namespace AAYHS.Repository.Repository
                     join f in _ObjContext.Fees on paymentdetails.FeeId equals f.FeeId
                     where exhibitorclasses.IsDeleted == false && exhibitors.IsDeleted == false && exhibitorclasses.IsActive == true && exhibitors.IsActive == true &&
                     exhibitorclasses.ClassId== classRequest.ClassId
-                    select new GetClassExhibitor
+                    select new GetClassEntries
                     {
                         ExhibitorClassId= exhibitorclasses.ExhibitorClassId,
-                        Exhibitor= exhibitors.BackNumber+ " " + exhibitors.FirstName + " " + exhibitors.LastName,
+                        Exhibitor= exhibitors.ExhibitorId+ " " + exhibitors.FirstName + " " + exhibitors.LastName,
                         Horse= horses.Name,
                         BirthYear= exhibitors.BirthYear,
                         AmountPaid= paymentdetails.Amount,
@@ -153,15 +131,15 @@ namespace AAYHS.Repository.Repository
 
                 if (classRequest.AllRecords)
                 {
-                    getAllClassExhibitor.getClassExhibitors = data.ToList();
+                    getAllClassEntries.getClassEntries = data.ToList();
                 }
                 else
                 {
-                    getAllClassExhibitor.getClassExhibitors = data.Skip((classRequest.Page - 1) * classRequest.Limit).Take(classRequest.Limit).ToList();
+                    getAllClassEntries.getClassEntries = data.Skip((classRequest.Page - 1) * classRequest.Limit).Take(classRequest.Limit).ToList();
 
                 }
-                _MainResponse.GetAllClassExhibitor = getAllClassExhibitor;
-
+                _MainResponse.GetAllClassEntries = getAllClassEntries;
+                _MainResponse.TotalRecords = getAllClassEntries.getClassEntries.Count();
             }
             return _MainResponse;
         }      
