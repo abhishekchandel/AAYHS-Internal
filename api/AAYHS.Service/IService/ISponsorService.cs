@@ -12,8 +12,8 @@ namespace AAYHS.Service.IService
         MainResponse AddSponsor(SponsorRequest request);
         MainResponse GetAllSponsorsWithFilter(BaseRecordFilterRequest request);
         MainResponse GetAllSponsors();
-        MainResponse GetSponsorById(GetSponsorRequest request);
+        MainResponse GetSponsorById(int sponsorId);
         MainResponse UpdateSponsor(SponsorRequest request);
-        MainResponse DeleteSponsor(GetSponsorRequest request);
+        MainResponse DeleteSponsor(int sponsorId);
     }
 }

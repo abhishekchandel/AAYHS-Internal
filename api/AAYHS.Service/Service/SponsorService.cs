@@ -101,9 +101,9 @@ namespace AAYHS.Service.Service
             return _MainResponse;
         }
 
-        public MainResponse GetSponsorById(GetSponsorRequest request)
+        public MainResponse GetSponsorById(int sponsorId)
         {
-            var data = _SponsorRepository.GetSponsorById(request);
+            var data = _SponsorRepository.GetSponsorById(sponsorId);
             if (data != null)
             {
                 _MainResponse.SponsorResponse = data;
@@ -142,9 +142,9 @@ namespace AAYHS.Service.Service
             return _MainResponse;
         }
 
-        public MainResponse DeleteSponsor(GetSponsorRequest request)
+        public MainResponse DeleteSponsor(int sponsorId)
         {
-            var sponsor = _SponsorRepository.GetSingle(x => x.SponsorId == request.SponsorId);
+            var sponsor = _SponsorRepository.GetSingle(x => x.SponsorId == sponsorId);
             if (sponsor != null)
             {
                 sponsor.IsDeleted = true;

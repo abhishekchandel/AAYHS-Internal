@@ -10,7 +10,7 @@ namespace AAYHS.Repository.IRepository
    public interface ISponsorRepository : IGenericRepository<Sponsors>
    
     {
-        SponsorResponse GetSponsorById(GetSponsorRequest request);
+        SponsorResponse GetSponsorById(int sponsorId);
         List<SponsorResponse> GetAllSponsor();
         List<SponsorResponse> GetAllSponsorsWithFilter(BaseRecordFilterRequest request);
     }

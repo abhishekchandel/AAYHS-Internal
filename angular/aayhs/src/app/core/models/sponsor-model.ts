@@ -8,7 +8,7 @@ export interface SponsorInformationViewModel
     City:string;
     State:string;
     ZipCode:string;
-    Amount:number;
+    AmountReceived :number;
     SponsorId:number;
     sponsorExhibitors:Array<SponsorExhibitors>;
     sponsorClasses:Array<SponsorClasses>
@@ -30,7 +30,12 @@ export interface SponsorClasses{
     Exhibitor:string,
     HorseName:string
 }
-export interface SponserViewModel{
+export interface SponsorViewModel  {
     SponsorId:number,
     SponsorName:string
+}
+
+export interface BaseResponse{
+    Success:boolean,
+    Message:string
 }
