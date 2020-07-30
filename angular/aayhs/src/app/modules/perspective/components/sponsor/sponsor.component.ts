@@ -14,57 +14,6 @@ import{SponsorViewModel} from '../../../../core/models/sponsor-model'
 import PerfectScrollbar from 'perfect-scrollbar';
 
 
-export interface SponserViewModel {
-  SponsorId: number;
-  Sponsor: string;
-}
-
-export interface SponsorExhibitors {
-  ExhibitorId: number;
-  ExhibitorName: string;
-  SponsorType: string;
-  IdNumber: string;
-  BirthYear: number;
-
-}
-
-export interface SponsorClass {
-  ClassNumber: string;
-  ClassName: string;
-  AgeGroup: string;
-  Exhibitor: string;
-  HorseName: string;
-
-}
-
-const ELEMENT_DATA: SponserViewModel[] = [
-  {SponsorId: 1, Sponsor: 'Abigail Roberts'},
-  {SponsorId: 2, Sponsor: 'Apple Bee'},
-  {SponsorId: 3, Sponsor: 'Miller Apple Hill'},
-  {SponsorId: 4, Sponsor: 'Summit Eq Vet Service'},
-];
-
-const data1:SponsorExhibitors[] =[
-  {ExhibitorId:2536,ExhibitorName:'Kristyn Monoroe',SponsorType:'Cooler',IdNumber:'',BirthYear:2011},
-  {ExhibitorId:2537,ExhibitorName:'Kristyn Monoroe',SponsorType:'Add',IdNumber:'307',BirthYear:2011},
-  {ExhibitorId:7421,ExhibitorName:'Margaret Hamilton',SponsorType:'Class',IdNumber:'92E',BirthYear:2007},
-
-]
-
-const data2:SponsorClass[] =[
-  {ClassNumber:'10W',ClassName:'Poles Horse',AgeGroup:'12',Exhibitor:'',HorseName:'2011'},
-  {ClassNumber:'92E',ClassName:'Western Showmanship',AgeGroup:'13',Exhibitor:'307',HorseName:'2011'},
-  {ClassNumber:'31',ClassName:'Barrels Horse',AgeGroup:'13-15',Exhibitor:'92E',HorseName:'2007'},
-
-]
-
-interface Food {
-  value: string;
-  value1: string;
-}
-
-
-
 @Component({
   selector: 'app-sponsor',
   templateUrl: './sponsor.component.html',
@@ -81,19 +30,13 @@ export class SponsorComponent implements OnInit {
   @ViewChild('tabGroup') tabGroup: MatTabGroup;
   @ViewChild('perfect-scrollbar ')perfectScrollbar:PerfectScrollbar
   selectedRowIndex:any;
-
-  columnsToDisplay: string[] = this.sponsersDisplayedColumns.slice();
-  data: SponserViewModel[]=[{
-SponsorId:null,
-Sponsor:null
-  }];
-  data12: SponsorExhibitors[]= data1;
-  data13: SponsorClass[]= data2;
+ 
 
   result: string = '';
   totalItems: number=0;
   enablePagination: boolean = true;
-
+  sortColumn:string="";
+  reverseSort : boolean = false
   loading = false;
    sponsorInfo:SponsorInformationViewModel = {
     SponsorName: null,
@@ -110,19 +53,15 @@ Sponsor:null
     sponsorClasses: null,
    
   }
-
+sponsorsList:any
  baseRequest :BaseRecordFilterRequest={
   Page: 1,
   Limit: 10,
-  OrderBy: 'SponsorName',
-  OrderByDescending: false,
+  OrderBy: 'SponsorId',
+  OrderByDescending: true,
   AllRecords: false
  }
-  foods: Food[] = [
-    {value: 'steak-0',value1:'s'},
-    {value: 'pizza-1',value1:'d'},
-    {value: 'tacos-2',value1:'s'}
-  ];
+ 
 
   sponsors:SponsorInformationViewModel[];
 
@@ -136,7 +75,11 @@ Sponsor:null
 
 
   getAllSponsors(){
+    debugger;
     this.sponsorService.getAllSponsers(this.baseRequest).subscribe(response =>{
+      this.sponsorsList=response.Data.sponsorResponses;
+      debugger;
+console.log( this.sponsorsList)
     },error=>{
     }
     )
@@ -172,7 +115,6 @@ confirmRemoveExhibitor(index, data): void {
 
   dialogRef.afterClosed().subscribe(dialogResult => {
     this.result = dialogResult;
-     this.data12.splice(index,1)
   });
 
 }
@@ -192,6 +134,7 @@ confirmRemoveClass(index, data): void {
 
 }
 confirmRemoveSponsor(e, index, data): void {
+  debugger;
   e.stopPropagation();
   const message = `Are you sure you want to remove the sponsor?`;
   const dialogData = new ConfirmDialogModel("Confirm Action", message);
@@ -204,7 +147,6 @@ confirmRemoveSponsor(e, index, data): void {
     if(this.result)this.deleteSponsor(data)
   // this.data=   this.data.splice(index,1);
   debugger;
-  this.data.splice(index,1)
   });
 }
 deleteSponsor(id:number){
@@ -235,8 +177,23 @@ getNext(event,type) {
 }
 
   highlight(row,i){
+    debugger;
         this.selectedRowIndex=i;
         // this.getSponsorDetails(row.SponsorId);
 
+}
+
+sortData(column){
+  this.reverseSort=(this.sortColumn===column)?!this.reverseSort:false
+  this.sortColumn=column
+}
+
+getSort(column){
+
+  if(this.sortColumn===column)
+  {
+  return this.reverseSort ? 'arrow-down'
+  : 'arrow-up';
+  }
 }
 }

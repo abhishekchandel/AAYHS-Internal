@@ -22,6 +22,7 @@
     "@angular/platform-browser-dynamic": "~10.0.3",
     "@angular/router": "~10.0.3",
     "bootstrap": "^4.5.0",
+    "classlist.js": "^1.1.20150312",
     "font-awesome": "^4.7.0",
     "mask": "^0.2.2",
     "ngx": "^2.4.0",
@@ -30,6 +31,7 @@
     "perfect-scrollbar": "^1.5.0",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
+    "web-animations-js": "^2.3.2",
     "zone.js": "~0.10.3"
   },
   "devDependencies": {

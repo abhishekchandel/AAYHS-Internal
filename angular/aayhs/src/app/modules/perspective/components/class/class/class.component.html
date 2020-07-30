@@ -1,13 +1,6 @@
 <div class="innerContent">
 	<div class="sortData">
 	   <div class="sponBtn"><button class="btn btn-red btnCss">Add new Classes</button></div>
-		<div class="sorting">
-		  <select class="form-control">
-			<option value="0" selected> Sort By:</option>
-			 <option value="1" > Ascending</option>	
-			 <option value="2" > Descending</option>	
-		  </select>
-		</div>
    </div>
    <!---->
 	<div class="gridTable addBlueStrip">
@@ -15,14 +8,27 @@
 		 <table class="table table-bordered tableBodyScroll">
 		   <thead>
 			  <tr>
-				<th>Class No.</th> 
-				 <th>Class Name</th> 
-				 <th>Age Group</th>
-				 <th>Enteries</th>
+				<th (click)="sortData('classNumber')">Class No.
+					<span [ngClass]="getSort('classNumber')">
+										  
+					</span>
+				</th> 
+				 <th (click)="sortData('className')"> Class Name
+					<span [ngClass]="getSort('className')">
+										  
+					</span>
+				 </th> 
+				 <th >Age Group
+				
+				 </th>
+				 <th>Enteries
+					
+				 </th>
 				 <th>Remove</th> 
 			  </tr>	
 		   </thead> 
-			   <tbody id="boxscroll">
+		   <perfect-scrollbar class="nicescrollBar-1"> 
+			   <tbody>
 				 <tr>
 					 <td data-label="Class No.">103 N</td>
 					 <td data-label="Class Name">Barrels Pony</td>
@@ -71,10 +77,9 @@
 					 <td data-label="Age Group">18</td>
 					 <td data-label="Enteries">11</td>
 					 <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-				 </tr>
-				 
-				 
+				 </tr>				 
 			   </tbody>
+			</perfect-scrollbar >
 		 </table> 
 		 <div class="paginationWrapper mt-4 text-center">
 			 <ul class="pagination">
@@ -88,8 +93,8 @@
 			 </ul>
 		 </div>
 
-		 <mat-paginator [length]="totalItems" [pageSizeOptions]="[10]" >
-		</mat-paginator>
+		 <!-- <mat-paginator [length]="totalItems" [pageSizeOptions]="[10]" >
+		</mat-paginator> -->
 
 	   </div>
 	</div>
@@ -272,8 +277,8 @@
 				
 				 <div class="col-sm-12 mt-4">
 					<div class="buttons text-right">
-						 <button class="btn btn-red btnCss roundBtn">Next</button> 
-						 <button class="btn-red btnCss roundBtn" data-toggle="modal" data-target="#classSplit">Class Split</button> 
+						 <button (click)='tabGroup.selectedIndex = 1' class="btn btn-red btnCss roundBtn">Next</button> 
+						 <button class="btn-red btnCss roundBtn" data-toggle="modal" (click)="showSplitClass()" data-target="#classSplit">Class Split</button> 
 						 <button class="btn btn-red btnCss roundBtn">Submit</button> 
 					</div> 
 				  </div>
@@ -284,396 +289,298 @@
 
 		<mat-tab  class="nav-link active nav nav-tabs" label="Enteries">
 
-		  <div class="card">
+		  <div class="card dataEntriesTable">
 			<div class="card-body">  
 					<div class="table-responsive" id="contentscroll2">
-					 <table class="table table-bordered">
-					 <thead>
-						 <tr>
-							 <th>Exhibitor no/Name</th> 
-							 <th>Horse</th> 
-							 <th>Birth Year</th> 
-							 <th>Amount Paid</th> 
-							 <th>Amount Due</th>
-							 <th>Scratch</th> 
-							 <th>Remove</th> 
-						 </tr>	
-					 </thead> 
-					 <tbody>
-						 <tr>
-							 <td data-label="Exhibitor no/Name">
-								 <select class="dynDataSeclect">
-									 <option>002 Ada Lovelace</option>
-									 <option>0029 Mathews Averie</option>
-									 <option>0200 Miller Sidney</option>
-								 </select>
-							 </td>
-							 <td data-label="Horse">
-								 <select class="dynDataSeclect">
-									 <option>Big Boy</option>
-									 <option>Windy</option>
-									 <option>Joey</option>
-								 </select>
-							 </td>
-							 <td data-label="Birth Year">2011</td>
-							 <td data-label="Amount Paid">125.00</td>
-							 <td data-label="Amount Due">0.00</td>
-							 <td data-label="Scratch">
-								 <div class="sizzerIcon">
-									 <img src="assets/images/sizzer-icon.png" alt="image" />
-								 </div>
-							 </td>
-							 <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-						 </tr>
-						 <tr>
-							 <td data-label="Exhibitor no/Name">
-								 <select class="dynDataSeclect">
-									 <option>090 George Williams</option>
-									 <option>0809 Morgan Mya</option>
-									 <option>0200 Miller Sidney</option>
-								 </select>
-							 </td>
-							 <td data-label="Horse">
-								 <select class="dynDataSeclect">
-									 <option>Windy</option>
-									 <option>Big Boy</option>
-									 <option>Joey</option>
-								 </select>
-							 </td>
-							 <td data-label="Birth Year">2015</td>
-							 <td data-label="Amount Paid">125.00</td>
-							 <td data-label="Amount Due">0.00</td>
-							 <td data-label="Scratch">
-								 <div class="sizzerIcon">
-									 <img src="assets/images/sizzer-icon.png" alt="image" />
-								 </div>
-							 </td>
-							 <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-						 </tr>
-						 <tr>
-							 <td data-label="Exhibitor no/Name">
-								 <select class="dynDataSeclect">
-									 <option>0029 Mathews Averie</option>
-									 <option>0036 Lowe Abigail</option>
-									 <option>0809 Morgan Mya</option>
-								 </select>
-							 </td>
-							 <td data-label="Horse">
-								 <select class="dynDataSeclect">
-									 <option>Joey</option>
-									 <option>Big Boy</option>
-									 <option>Windy</option>
-								 </select>
-							 </td>
-							 <td data-label="Birth Year">2017</td>
-							 <td data-label="Amount Paid">125.00</td>
-							 <td data-label="Amount Due">25.00</td>
-							 <td data-label="Scratch">
-								 <div class="sizzerIcon">
-									 <img src="assets/images/sizzer-icon.png" alt="image" />
-								 </div>
-							 </td>
-							 <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-						 </tr>
-						 <tr>
-							 <td data-label="Exhibitor no/Name">
-								 <select class="dynDataSeclect">
-									 <option>0029 Mathews Averie</option>
-									 <option>0036 Lowe Abigail</option>
-									 <option>0809 Morgan Mya</option>
-								 </select>
-							 </td>
-							 <td data-label="Horse">
-								 <select class="dynDataSeclect">
-									 <option>Windy</option>
-									 <option>Joey</option>
-									 <option>Big Boy</option>
-								 </select>
-							 </td>
-							 <td data-label="Birth Year">2015</td>
-							 <td data-label="Amount Paid">125.00</td>
-							 <td data-label="Amount Due">0.00</td>
-							 <td data-label="Scratch">
-								 <div class="sizzerIcon">
-									 <img src="assets/images/sizzer-icon.png" alt="image" />
-								 </div>
-							 </td>
-							 <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-						 </tr>
-						 <tr>
-							 <td data-label="Exhibitor no/Name">
-								 <select class="dynDataSeclect">
-									 <option>0029 Mathews Averie</option>
-									 <option>0036 Lowe Abigail</option>
-									 <option>0809 Morgan Mya</option>
-								 </select>
-							 </td>
-							 <td data-label="Horse">
-								 <select class="dynDataSeclect">
-									 <option>Joey</option>
-									 <option>Big Boy</option>
-									 <option>Windy</option>
-								 </select>
-							 </td>
-							 <td data-label="Birth Year">2017</td>
-							 <td data-label="Amount Paid">125.00</td>
-							 <td data-label="Amount Due">25.00</td>
-							 <td data-label="Scratch">
-								 <div class="sizzerIcon">
-									 <img src="assets/images/sizzer-icon.png" alt="image" />
-								 </div>
-							 </td>
-							 <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-						 </tr>
-						 <tr>
-							 <td data-label="Exhibitor no/Name">
-								 <select class="dynDataSeclect">
-									 <option>0029 Mathews Averie</option>
-									 <option>0036 Lowe Abigail</option>
-									 <option>0809 Morgan Mya</option>
-								 </select>
-							 </td>
-							 <td data-label="Horse">
-								 <select class="dynDataSeclect">
-									 <option>Joey</option>
-									 <option>Big Boy</option>
-									 <option>Windy</option>
-								 </select>
-							 </td>
-							 <td data-label="Birth Year">2017</td>
-							 <td data-label="Amount Paid">125.00</td>
-							 <td data-label="Amount Due">25.00</td>
-							 <td data-label="Scratch">
-								 <div class="sizzerIcon">
-									 <img src="assets/images/sizzer-icon.png" alt="image" />
-								 </div>
-							 </td>
-							 <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-						 </tr>
-						 <tr>
-							 <td data-label="Exhibitor no/Name">
-								 <select class="dynDataSeclect">
-									 <option>0029 Mathews Averie</option>
-									 <option>0036 Lowe Abigail</option>
-									 <option>0809 Morgan Mya</option>
-								 </select>
-							 </td>
-							 <td data-label="Horse">
-								 <select class="dynDataSeclect">
-									 <option>Joey</option>
-									 <option>Big Boy</option>
-									 <option>Windy</option>
-								 </select>
-							 </td>
-							 <td data-label="Birth Year">2017</td>
-							 <td data-label="Amount Paid">125.00</td>
-							 <td data-label="Amount Due">25.00</td>
-							 <td data-label="Scratch">
-								 <div class="sizzerIcon">
-									 <img src="assets/images/sizzer-icon.png" alt="image" />
-								 </div>
-							 </td>
-							 <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-						 </tr>
-						 <tr>
-							 <td data-label="Exhibitor no/Name">
-								 <select class="dynDataSeclect">
-									 <option>0029 Mathews Averie</option>
-									 <option>0036 Lowe Abigail</option>
-									 <option>0809 Morgan Mya</option>
-								 </select>
-							 </td>
-							 <td data-label="Horse">
-								 <select class="dynDataSeclect">
-									 <option>Joey</option>
-									 <option>Big Boy</option>
-									 <option>Windy</option>
-								 </select>
-							 </td>
-							 <td data-label="Birth Year">2017</td>
-							 <td data-label="Amount Paid">125.00</td>
-							 <td data-label="Amount Due">25.00</td>
-							 <td data-label="Scratch">
-								 <div class="sizzerIcon">
-									 <img src="assets/images/sizzer-icon.png" alt="image" />
-								 </div>
-							 </td>
-							 <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-						 </tr>
-						 <tr>
-							 <td data-label="Exhibitor no/Name">
-								 <select class="dynDataSeclect">
-									 <option>0029 Mathews Averie</option>
-									 <option>0036 Lowe Abigail</option>
-									 <option>0809 Morgan Mya</option>
-								 </select>
-							 </td>
-							 <td data-label="Horse">
-								 <select class="dynDataSeclect">
-									 <option>Joey</option>
-									 <option>Big Boy</option>
-									 <option>Windy</option>
-								 </select>
-							 </td>
-							 <td data-label="Birth Year">2017</td>
-							 <td data-label="Amount Paid">125.00</td>
-							 <td data-label="Amount Due">25.00</td>
-							 <td data-label="Scratch">
-								 <div class="sizzerIcon">
-									 <img src="assets/images/sizzer-icon.png" alt="image" />
-								 </div>
-							 </td>
-							 <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-						 </tr>
-						 <tr>
-							 <td data-label="Exhibitor no/Name">
-								 <select class="dynDataSeclect">
-									 <option>0029 Mathews Averie</option>
-									 <option>0036 Lowe Abigail</option>
-									 <option>0809 Morgan Mya</option>
-								 </select>
-							 </td>
-							 <td data-label="Horse">
-								 <select class="dynDataSeclect">
-									 <option>Joey</option>
-									 <option>Big Boy</option>
-									 <option>Windy</option>
-								 </select>
-							 </td>
-							 <td data-label="Birth Year">2017</td>
-							 <td data-label="Amount Paid">125.00</td>
-							 <td data-label="Amount Due">25.00</td>
-							 <td data-label="Scratch">
-								 <div class="sizzerIcon">
-									 <img src="assets/images/sizzer-icon.png" alt="image" />
-								 </div>
-							 </td>
-							 <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-						 </tr>
-						 <tr>
-							 <td data-label="Exhibitor no/Name">
-								 <select class="dynDataSeclect">
-									 <option>0029 Mathews Averie</option>
-									 <option>0036 Lowe Abigail</option>
-									 <option>0809 Morgan Mya</option>
-								 </select>
-							 </td>
-							 <td data-label="Horse">
-								 <select class="dynDataSeclect">
-									 <option>Joey</option>
-									 <option>Big Boy</option>
-									 <option>Windy</option>
-								 </select>
-							 </td>
-							 <td data-label="Birth Year">2017</td>
-							 <td data-label="Amount Paid">125.00</td>
-							 <td data-label="Amount Due">25.00</td>
-							 <td data-label="Scratch">
-								 <div class="sizzerIcon">
-									 <img src="assets/images/sizzer-icon.png" alt="image" />
-								 </div>
-							 </td>
-							 <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-						 </tr>
-						 <tr>
-							 <td data-label="Exhibitor no/Name">
-								 <select class="dynDataSeclect">
-									 <option>0029 Mathews Averie</option>
-									 <option>0036 Lowe Abigail</option>
-									 <option>0809 Morgan Mya</option>
-								 </select>
-							 </td>
-							 <td data-label="Horse">
-								 <select class="dynDataSeclect">
-									 <option>Joey</option>
-									 <option>Big Boy</option>
-									 <option>Windy</option>
-								 </select>
-							 </td>
-							 <td data-label="Birth Year">2017</td>
-							 <td data-label="Amount Paid">125.00</td>
-							 <td data-label="Amount Due">25.00</td>
-							 <td data-label="Scratch">
-								 <div class="sizzerIcon">
-									 <img src="assets/images/sizzer-icon.png" alt="image" />
-								 </div>
-							 </td>
-							 <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-						 </tr>
-						 <tr>
-							 <td data-label="Exhibitor no/Name">
-								 <select class="dynDataSeclect">
-									 <option>0029 Mathews Averie</option>
-									 <option>0036 Lowe Abigail</option>
-									 <option>0809 Morgan Mya</option>
-								 </select>
-							 </td>
-							 <td data-label="Horse">
-								 <select class="dynDataSeclect">
-									 <option>Joey</option>
-									 <option>Big Boy</option>
-									 <option>Windy</option>
-								 </select>
-							 </td>
-							 <td data-label="Birth Year">2017</td>
-							 <td data-label="Amount Paid">125.00</td>
-							 <td data-label="Amount Due">25.00</td>
-							 <td data-label="Scratch">
-								 <div class="sizzerIcon">
-									 <img src="assets/images/sizzer-icon.png" alt="image" />
-								 </div>
-							 </td>
-							 <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-						 </tr>
-						 <tr>
-							 <td data-label="Exhibitor no/Name">
-								 <select class="dynDataSeclect">
-									 <option>0029 Mathews Averie</option>
-									 <option>0036 Lowe Abigail</option>
-									 <option>0809 Morgan Mya</option>
-								 </select>
-							 </td>
-							 <td data-label="Horse">
-								 <select class="dynDataSeclect">
-									 <option>Joey</option>
-									 <option>Big Boy</option>
-									 <option>Windy</option>
-								 </select>
-							 </td>
-							 <td data-label="Birth Year"></td>
-							 <td data-label="Amount Paid"></td>
-							 <td data-label="Amount Due"></td>
-							 <td data-label="Scratch"></td>
-							 <td data-label="Remove"></td>
-						 </tr>
-						 
-					 </tbody>
-					 </table> 
+						<table class="table table-bordered tableBodyScroll">
+							<thead>
+								<tr>
+									<th>Exhibitor no/Name</th> 
+									<th>Horse</th> 
+									<th>Birth Year</th> 
+									<th>Amount Paid</th> 
+									<th>Amount Due</th>
+									<th>Scratch</th> 
+									<th>Remove</th> 
+								</tr>	
+							</thead> 
+							<perfect-scrollbar class="nicescrollBar-2"> 
+							<tbody>
+								<tr>
+									<td data-label="Exhibitor no/Name">002 Ada Lovelace</td>
+									<td data-label="Horse">
+										<select class="dynDataSeclect">
+											<option>Big Boy</option>
+											<option>Windy</option>
+											<option>Joey</option>
+										</select>
+									</td>
+									<td data-label="Birth Year">2011</td>
+									<td data-label="Amount Paid">125.00</td>
+									<td data-label="Amount Due">0.00</td>
+									<td data-label="Scratch">
+										<div class="sizzerIcon">
+											<img src="assets/images/sizzer-icon.png" alt="image" />
+										</div>
+									</td>
+									<td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+								</tr>
+								<tr>
+									<td data-label="Exhibitor no/Name">090 George Williams</td>
+									<td data-label="Horse">
+										<select class="dynDataSeclect">
+											<option>Windy</option>
+											<option>Big Boy</option>
+											<option>Joey</option>
+										</select>
+									</td>
+									<td data-label="Birth Year">2015</td>
+									<td data-label="Amount Paid">125.00</td>
+									<td data-label="Amount Due">0.00</td>
+									<td data-label="Scratch">
+										<div class="sizzerIcon">
+											<img src="assets/images/sizzer-icon.png" alt="image" />
+										</div>
+									</td>
+									<td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+								</tr>
+								<tr>
+									<td data-label="Exhibitor no/Name">0029 Mathews Averie</td>
+									<td data-label="Horse">
+										<select class="dynDataSeclect">
+											<option>Joey</option>
+											<option>Big Boy</option>
+											<option>Windy</option>
+										</select>
+									</td>
+									<td data-label="Birth Year">2017</td>
+									<td data-label="Amount Paid">125.00</td>
+									<td data-label="Amount Due">25.00</td>
+									<td data-label="Scratch">
+										<div class="sizzerIcon">
+											<img src="assets/images/sizzer-icon.png" alt="image" />
+										</div>
+									</td>
+									<td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+								</tr>
+								<tr>
+									<td data-label="Exhibitor no/Name">0036 Lowe Abigail</td>
+									<td data-label="Horse">
+										<select class="dynDataSeclect">
+											<option>Windy</option>
+											<option>Joey</option>
+											<option>Big Boy</option>
+										</select>
+									</td>
+									<td data-label="Birth Year">2015</td>
+									<td data-label="Amount Paid">125.00</td>
+									<td data-label="Amount Due">0.00</td>
+									<td data-label="Scratch">
+										<div class="sizzerIcon">
+											<img src="assets/images/sizzer-icon.png" alt="image" />
+										</div>
+									</td>
+									<td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+								</tr>
+								<tr>
+									<td data-label="Exhibitor no/Name">0809 Morgan Mya</td>
+									<td data-label="Horse">
+										<select class="dynDataSeclect">
+											<option>Joey</option>
+											<option>Big Boy</option>
+											<option>Windy</option>
+										</select>
+									</td>
+									<td data-label="Birth Year">2017</td>
+									<td data-label="Amount Paid">125.00</td>
+									<td data-label="Amount Due">25.00</td>
+									<td data-label="Scratch">
+										<div class="sizzerIcon">
+											<img src="assets/images/sizzer-icon.png" alt="image" />
+										</div>
+									</td>
+									<td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+								</tr>
+								<tr>
+									<td data-label="Exhibitor no/Name">0036 Lowe Abigail</td>
+									<td data-label="Horse">
+										<select class="dynDataSeclect">
+											<option>Joey</option>
+											<option>Big Boy</option>
+											<option>Windy</option>
+										</select>
+									</td>
+									<td data-label="Birth Year">2017</td>
+									<td data-label="Amount Paid">125.00</td>
+									<td data-label="Amount Due">25.00</td>
+									<td data-label="Scratch">
+										<div class="sizzerIcon">
+											<img src="assets/images/sizzer-icon.png" alt="image" />
+										</div>
+									</td>
+									<td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+								</tr>
+								<tr>
+									<td data-label="Exhibitor no/Name">0029 Mathews Averie</td>
+									<td data-label="Horse">
+										<select class="dynDataSeclect">
+											<option>Joey</option>
+											<option>Big Boy</option>
+											<option>Windy</option>
+										</select>
+									</td>
+									<td data-label="Birth Year">2017</td>
+									<td data-label="Amount Paid">125.00</td>
+									<td data-label="Amount Due">25.00</td>
+									<td data-label="Scratch">
+										<div class="sizzerIcon">
+											<img src="assets/images/sizzer-icon.png" alt="image" />
+										</div>
+									</td>
+									<td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+								</tr>
+								<tr>
+									<td data-label="Exhibitor no/Name">0036 Lowe Abigail</td>
+									<td data-label="Horse">
+										<select class="dynDataSeclect">
+											<option>Joey</option>
+											<option>Big Boy</option>
+											<option>Windy</option>
+										</select>
+									</td>
+									<td data-label="Birth Year">2017</td>
+									<td data-label="Amount Paid">125.00</td>
+									<td data-label="Amount Due">25.00</td>
+									<td data-label="Scratch">
+										<div class="sizzerIcon">
+											<img src="assets/images/sizzer-icon.png" alt="image" />
+										</div>
+									</td>
+									<td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+								</tr>
+								<tr>
+									<td data-label="Exhibitor no/Name">0809 Morgan Mya<</td>
+									<td data-label="Horse">
+										<select class="dynDataSeclect">
+											<option>Joey</option>
+											<option>Big Boy</option>
+											<option>Windy</option>
+										</select>
+									</td>
+									<td data-label="Birth Year">2017</td>
+									<td data-label="Amount Paid">125.00</td>
+									<td data-label="Amount Due">25.00</td>
+									<td data-label="Scratch">
+										<div class="sizzerIcon">
+											<img src="assets/images/sizzer-icon.png" alt="image" />
+										</div>
+									</td>
+									<td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+								</tr>
+								<tr>
+									<td data-label="Exhibitor no/Name">0029 Mathews Averie</td>
+									<td data-label="Horse">
+										<select class="dynDataSeclect">
+											<option>Joey</option>
+											<option>Big Boy</option>
+											<option>Windy</option>
+										</select>
+									</td>
+									<td data-label="Birth Year">2017</td>
+									<td data-label="Amount Paid">125.00</td>
+									<td data-label="Amount Due">25.00</td>
+									<td data-label="Scratch">
+										<div class="sizzerIcon">
+											<img src="assets/images/sizzer-icon.png" alt="image" />
+										</div>
+									</td>
+									<td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+								</tr>
+								<tr>
+									<td data-label="Exhibitor no/Name">0029 Mathews Averie</td>
+									<td data-label="Horse">
+										<select class="dynDataSeclect">
+											<option>Joey</option>
+											<option>Big Boy</option>
+											<option>Windy</option>
+										</select>
+									</td>
+									<td data-label="Birth Year">2017</td>
+									<td data-label="Amount Paid">125.00</td>
+									<td data-label="Amount Due">25.00</td>
+									<td data-label="Scratch">
+										<div class="sizzerIcon">
+											<img src="assets/images/sizzer-icon.png" alt="image" />
+										</div>
+									</td>
+									<td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+								</tr>
+								<tr>
+									<td data-label="Exhibitor no/Name">0809 Morgan Mya</td>
+									<td data-label="Horse">
+										<select class="dynDataSeclect">
+											<option>Joey</option>
+											<option>Big Boy</option>
+											<option>Windy</option>
+										</select>
+									</td>
+									<td data-label="Birth Year">2017</td>
+									<td data-label="Amount Paid">125.00</td>
+									<td data-label="Amount Due">25.00</td>
+									<td data-label="Scratch">
+										<div class="sizzerIcon">
+											<img src="assets/images/sizzer-icon.png" alt="image" />
+										</div>
+									</td>
+									<td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+								</tr>
+								<tr>
+									<td data-label="Exhibitor no/Name">0036 Lowe Abigail</td>
+									<td data-label="Horse">
+										<select class="dynDataSeclect">
+											<option>Joey</option>
+											<option>Big Boy</option>
+											<option>Windy</option>
+										</select>
+									</td>
+									<td data-label="Birth Year">2017</td>
+									<td data-label="Amount Paid">125.00</td>
+									<td data-label="Amount Due">25.00</td>
+									<td data-label="Scratch">
+										<div class="sizzerIcon">
+											<img src="assets/images/sizzer-icon.png" alt="image" />
+										</div>
+									</td>
+									<td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+								</tr>
+								<tr>
+									<td colspan="2">
+										<select class="dynDataSeclect">
+											<option>0029 Mathews Averie</option>
+											<option>0036 Lowe Abigail</option>
+											<option>0809 Morgan Mya</option>
+										</select>
+									</td>
+									<td colspan="2">
+										<select class="dynDataSeclect">
+											<option>Joey</option>
+											<option>Big Boy</option>
+											<option>Windy</option>
+										</select>
+									</td>
+									<td colspan="3"></td>
+								</tr>
+								
+							</tbody>
+						   </perfect-scrollbar> 
+							</table> 
 				 </div>
-					 <div class="addData mt-3">
-						 <div class="row">
-							 <div class="col-sm-12 col-md-4">
-								 <select class="dynDataSeclect">
-									 <option>0029 Mathews Averie</option>
-									 <option>0036 Lowe Abigail</option>
-									 <option>0809 Morgan Mya</option>
-								 </select>
-							 </div>
-							 <div class="col-sm-12 col-md-4">
-								 <select class="dynDataSeclect">
-									 <option>Sponsor Type</option>
-									 <option>#42</option>
-									 <option>#54</option>
-								 </select>
-							 </div>
-						 </div>
-					 </div>
 			 </div>
 			 <div class="actionBtn text-right mt-3 mb-3">
-				 <button class="btn btn-red btnCss">Previous</button>									
+				 <button (click)='tabGroup.selectedIndex = 0' class="btn btn-red btnCss">Previous</button>									
 				 <button class="btn btn-red btnCss">+ Exhibitor</button>
 				 <button class="btn btn-red btnCss">Submit</button>
-				 <button class="btn btn-red btnCss">Next</button>
+				 <button (click)='tabGroup.selectedIndex = 2' class="btn btn-red btnCss">Next</button>
 				 <button class="btn btn-red btnCss">Display/Print</button>
 			 </div>
 
@@ -683,120 +590,123 @@
 		</mat-tab>
 			<mat-tab  class="nav-link active nav nav-tabs" label="Results">
 
-			 <div class="card">
+			 <div class="card dataEntriesTable">
 				 <div class="card-body">    
 					 <div class="table-responsive tableTab">
-						 <table class="table table-bordered">
-						 <thead>
-							 <tr>
-								 <th>Result</th> 
-								 <th>Back No</th> 
-								 <th>Exhibitor Name</th> 
-								 <th>Birth Year</th> 
-								 <th>Horse Name</th>
-								 <th>City, St. Zip</th> 
-								 <th>Amount paid</th>
-								 <th>Amount Due</th>
-							 </tr>	
-						 </thead> 
-						 <tbody>
-							 <tr>
-								 <td data-label="Result">1st</td>
-								 <td data-label="Back No">090</td>
-								 <td data-label="Exhibitor Name">George Williams</td>
-								 <td data-label="Birth Year">2011</td>
-								 <td data-label="Horse Name">Big Boy</td>
-								 <td data-label="City, St. Zip">Newark, OH</td>
-								 <td data-label="Amount paid">125.00</td>
-								 <td data-label="Amount Due">0.00</td>
-							 </tr>
-							 <tr>
-								 <td data-label="Result">2nd</td>
-								 <td data-label="Back No">022</td>
-								 <td data-label="Exhibitor Name">Aubree Wrangler</td>
-								 <td data-label="Birth Year">2013</td>
-								 <td data-label="Horse Name">Better Then Enough</td>
-								 <td data-label="City, St. Zip">Kenton, OH</td>
-								 <td data-label="Amount paid">125.00</td>
-								 <td data-label="Amount Due">0.00</td>
-							 </tr>	
-							 <tr>
-								 <td data-label="Result">3rd</td>
-								 <td data-label="Back No">040</td>
-								 <td data-label="Exhibitor Name">Aleah Arthur</td>
-								 <td data-label="Birth Year">2012</td>
-								 <td data-label="Horse Name">Wimpy Little wilda</td>
-								 <td data-label="City, St. Zip">Irwin, PA</td>
-								 <td data-label="Amount paid">100.00</td>
-								 <td data-label="Amount Due">25.00</td>
-							 </tr>
-							 <tr>
-								 <td data-label="Result">4th</td>
-								 <td data-label="Back No">010</td>
-								 <td data-label="Exhibitor Name">Bask Creek Crystal</td>
-								 <td data-label="Birth Year">2013</td>
-								 <td data-label="Horse Name">Big Boy</td>
-								 <td data-label="City, St. Zip">Columbia, OH</td>
-								 <td data-label="Amount paid">50.00</td>
-								 <td data-label="Amount Due">125.00</td>
-							 </tr>
-							 <tr>
-								 <td data-label="Result">5th</td>
-								 <td data-label="Back No">010</td>
-								 <td data-label="Exhibitor Name">Bask Creek Crystal</td>
-								 <td data-label="Birth Year">2013</td>
-								 <td data-label="Horse Name">Big Boy</td>
-								 <td data-label="City, St. Zip">Columbia, OH</td>
-								 <td data-label="Amount paid">50.00</td>
-								 <td data-label="Amount Due">125.00</td>
-							 </tr>
-							 <tr>
-								 <td data-label="Result">6th</td>
-								 <td data-label="Back No">010</td>
-								 <td data-label="Exhibitor Name">Bask Creek Crystal</td>
-								 <td data-label="Birth Year">2013</td>
-								 <td data-label="Horse Name">Big Boy</td>
-								 <td data-label="City, St. Zip">Columbia, OH</td>
-								 <td data-label="Amount paid">50.00</td>
-								 <td data-label="Amount Due">125.00</td>
-							 </tr>
-							 <tr>
-								 <td data-label="Result">7th</td>
-								 <td data-label="Back No">010</td>
-								 <td data-label="Exhibitor Name">Bask Creek Crystal</td>
-								 <td data-label="Birth Year">2013</td>
-								 <td data-label="Horse Name">Big Boy</td>
-								 <td data-label="City, St. Zip">Columbia, OH</td>
-								 <td data-label="Amount paid">50.00</td>
-								 <td data-label="Amount Due">125.00</td>
-							 </tr>
-							 <tr>
-								 <td data-label="Result">8th</td>
-								 <td data-label="Back No">010</td>
-								 <td data-label="Exhibitor Name">Bask Creek Crystal</td>
-								 <td data-label="Birth Year">2013</td>
-								 <td data-label="Horse Name">Big Boy</td>
-								 <td data-label="City, St. Zip">Columbia, OH</td>
-								 <td data-label="Amount paid">50.00</td>
-								 <td data-label="Amount Due">125.00</td>
-							 </tr>
-							 <tr>
-								 <td data-label="Result"></td>
-								 <td data-label="Back No"></td>
-								 <td data-label="Exhibitor Name"></td>
-								 <td data-label="Birth Year"></td>
-								 <td data-label="Horse Name"></td>
-								 <td data-label="City, St. Zip"></td>
-								 <td data-label="Amount paid"></td>
-								 <td data-label="Amount Due"></td>
-							 </tr>
-							 
-						 </tbody>
-						 </table> 
+						<table class="table table-bordered tableBodyScroll">
+							<thead>
+								<tr>
+									<th>Result</th> 
+									<th>Back No</th> 
+									<th>Exhibitor Name</th> 
+									<th>Birth Year</th> 
+									<th>Horse Name</th>
+									<th>City, St. Zip</th> 
+									<th>Amount paid</th>
+									<th>Amount Due</th>
+								</tr>	
+							</thead> 
+							<perfect-scrollbar class="nicescrollBar-2"> 
+							<tbody>
+								<tr>
+									<td data-label="Result">1st</td>
+									<td data-label="Back No">090</td>
+									<td data-label="Exhibitor Name">George Williams</td>
+									<td data-label="Birth Year">2011</td>
+									<td data-label="Horse Name">Big Boy</td>
+									<td data-label="City, St. Zip">Newark, OH</td>
+									<td data-label="Amount paid">125.00</td>
+									<td data-label="Amount Due">0.00</td>
+								</tr>
+								<tr>
+									<td data-label="Result">2nd</td>
+									<td data-label="Back No">022</td>
+									<td data-label="Exhibitor Name">Aubree Wrangler</td>
+									<td data-label="Birth Year">2013</td>
+									<td data-label="Horse Name">Better Then Enough</td>
+									<td data-label="City, St. Zip">Kenton, OH</td>
+									<td data-label="Amount paid">125.00</td>
+									<td data-label="Amount Due">0.00</td>
+								</tr>	
+								<tr>
+									<td data-label="Result">3rd</td>
+									<td data-label="Back No">040</td>
+									<td data-label="Exhibitor Name">Aleah Arthur</td>
+									<td data-label="Birth Year">2012</td>
+									<td data-label="Horse Name">Wimpy Little wilda</td>
+									<td data-label="City, St. Zip">Irwin, PA</td>
+									<td data-label="Amount paid">100.00</td>
+									<td data-label="Amount Due">25.00</td>
+								</tr>
+								<tr>
+									<td data-label="Result">4th</td>
+									<td data-label="Back No">010</td>
+									<td data-label="Exhibitor Name">Bask Creek Crystal</td>
+									<td data-label="Birth Year">2013</td>
+									<td data-label="Horse Name">Big Boy</td>
+									<td data-label="City, St. Zip">Columbia, OH</td>
+									<td data-label="Amount paid">50.00</td>
+									<td data-label="Amount Due">125.00</td>
+								</tr>
+								<tr>
+									<td data-label="Result">5th</td>
+									<td data-label="Back No">010</td>
+									<td data-label="Exhibitor Name">Bask Creek Crystal</td>
+									<td data-label="Birth Year">2013</td>
+									<td data-label="Horse Name">Big Boy</td>
+									<td data-label="City, St. Zip">Columbia, OH</td>
+									<td data-label="Amount paid">50.00</td>
+									<td data-label="Amount Due">125.00</td>
+								</tr>
+								<tr>
+									<td data-label="Result">6th</td>
+									<td data-label="Back No">010</td>
+									<td data-label="Exhibitor Name">Bask Creek Crystal</td>
+									<td data-label="Birth Year">2013</td>
+									<td data-label="Horse Name">Big Boy</td>
+									<td data-label="City, St. Zip">Columbia, OH</td>
+									<td data-label="Amount paid">50.00</td>
+									<td data-label="Amount Due">125.00</td>
+								</tr>
+								<tr>
+									<td data-label="Result">7th</td>
+									<td data-label="Back No">010</td>
+									<td data-label="Exhibitor Name">Bask Creek Crystal</td>
+									<td data-label="Birth Year">2013</td>
+									<td data-label="Horse Name">Big Boy</td>
+									<td data-label="City, St. Zip">Columbia, OH</td>
+									<td data-label="Amount paid">50.00</td>
+									<td data-label="Amount Due">125.00</td>
+								</tr>
+								<tr>
+									<td data-label="Result">8th</td>
+									<td data-label="Back No">010</td>
+									<td data-label="Exhibitor Name">Bask Creek Crystal</td>
+									<td data-label="Birth Year">2013</td>
+									<td data-label="Horse Name">Big Boy</td>
+									<td data-label="City, St. Zip">Columbia, OH</td>
+									<td data-label="Amount paid">50.00</td>
+									<td data-label="Amount Due">125.00</td>
+								</tr>
+								<tr>
+									<td></td>
+									<td data-label="Back No" colspan="3">
+									   <select class="dynDataSeclect">
+										   <option>0029 Mathews Averie</option>
+										   <option>0036 Lowe Abigail</option>
+										   <option>0809 Morgan Mya</option>
+									   </select>
+									</td>
+									<td colspan="4"></td>
+								</tr>
+								
+							</tbody>
+						   </perfect-scrollbar> 
+							</table> 
 					 </div>
 				 </div>
 				 <div class="actionBtn text-right mt-3 mb-3">
-					 <button class="btn btn-red btnCss">Previous</button>
+					 <button (click)='tabGroup.selectedIndex = 1'class="btn btn-red btnCss">Previous</button>
 					 <button class="btn btn-red btnCss addDataType1">Print</button>
 					 <button class="btn btn-red btnCss addDataType1">Download</button>
 					 <button class="btn btn-red btnCss">Submit</button>

@@ -24,7 +24,8 @@ export class SponsorService {
   }
 
   getAllSponsers(data){
-    return this.http.get<any>(`${this.api}SponsorAPI/GetAllSponsors`,data);
+    
+    return this.http.post<any>(`${this.api}SponsorAPI/GetAllSponsorsWithFilter`,data);
   }
 
   deleteSponsor(id:number){

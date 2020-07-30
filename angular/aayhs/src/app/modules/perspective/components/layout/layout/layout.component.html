@@ -7,7 +7,7 @@
                     <app-sidebar></app-sidebar>
                 </div>
                 <div class="col-md-9">
-                    <router-outlet></router-outlet>
+                    <router-outlet (activate)="onActivate($event)"></router-outlet>
                 </div>
             </div>
         </div>

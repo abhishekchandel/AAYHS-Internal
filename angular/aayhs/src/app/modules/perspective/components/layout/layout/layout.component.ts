@@ -11,5 +11,7 @@ export class LayoutComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
-}
+  onActivate(e) {
+    debugger;
+    console.log(1);
+  }}
