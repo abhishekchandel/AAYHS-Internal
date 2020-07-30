@@ -40,10 +40,36 @@ namespace AAYHS.API.Controllers
         /// <returns></returns>
         [HttpPost]
         //[Authorize]
-        public IActionResult GetAllClasses([FromBody] ClassRequest classRequest)
+        public IActionResult GetAllClasses(ClassRequest classRequest)
         {
             _mainResponse = _classService.GetAllClasses(classRequest);
             _jsonString = Mapper.Convert<GetAllClasses>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used for fetching one classs details
+        /// </summary>
+        /// <param name="classRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        //[Authorize]
+        public IActionResult GetClass(int ClassId)
+        {
+            _mainResponse = _classService.GetClass(ClassId);
+            _jsonString = Mapper.Convert<GetClass>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to get class Exhibitors
+        /// </summary>
+        /// <param name="ClassId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        //[Authorize]
+        public IActionResult GetClassExhibitors(int ClassId)
+        {
+            _mainResponse = _classService.GetClassExhibitors(ClassId);
+            _jsonString = Mapper.Convert<GetClassAllExhibitors>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
         /// <summary>
@@ -53,9 +79,10 @@ namespace AAYHS.API.Controllers
         /// <returns></returns>
         [HttpPost]
         //[Authorize]
-        public async Task<IActionResult> CreateClass([FromBody] AddClassRequest addClassRequest)
+        public async Task<IActionResult> CreateUpdateClass(AddClassRequest addClassRequest)
         {
-            _mainResponse = await _classService.CreateClass(addClassRequest);
+            string actionBy = User.Identity.Name;
+            _mainResponse = await _classService.CreateUpdateClass(addClassRequest, actionBy);
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
@@ -68,7 +95,8 @@ namespace AAYHS.API.Controllers
         //[Authorize]
         public async Task<IActionResult> AddExhibitorToClass(AddClassExhibitor addClassExhibitor)
         {
-            _mainResponse = await _classService.AddExhibitorToClass(addClassExhibitor);
+            string actionBy = User.Identity.Name;
+            _mainResponse = await _classService.AddExhibitorToClass(addClassExhibitor, actionBy);
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
@@ -79,10 +107,10 @@ namespace AAYHS.API.Controllers
         /// <returns></returns>
         [HttpPost]
         //[Authorize]
-        public IActionResult GetClassExhibitors(ClassRequest classRequest)
+        public IActionResult GetClassEntries(ClassRequest classRequest)
         {
-            _mainResponse = _classService.GetClassExhibitors(classRequest);
-            _jsonString = Mapper.Convert<GetAllClassExhibitor>(_mainResponse);
+            _mainResponse = _classService.GetClassEntries(classRequest);
+            _jsonString = Mapper.Convert<GetAllClassEntries>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
         /// <summary>
@@ -92,9 +120,10 @@ namespace AAYHS.API.Controllers
         /// <returns></returns>
         [HttpPost]
         //[Authorize]
-        public async Task<IActionResult> RemoveClass(RemoveClass removeClass)
+        public async Task<IActionResult> RemoveClass(int ClassId)
         {
-            _mainResponse =await _classService.RemoveClass(removeClass);
+             string actionBy = User.Identity.Name;
+            _mainResponse =await _classService.RemoveClass(ClassId, actionBy);
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
@@ -105,9 +134,52 @@ namespace AAYHS.API.Controllers
         /// <returns></returns>
         [HttpPost]
         //[Authorize]
-        public async Task<IActionResult>SplitClass(SplitRequest splitRequest)
+        public async Task<IActionResult>AddUpdateSplitClass(List<SplitRequest> splitRequest)
         {
-            _mainResponse = await _classService.SplitClass(splitRequest);
+             string actionBy = User.Identity.Name;
+            _mainResponse = await _classService.AddUpdateSplitClass(splitRequest, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to get back number of a class exhibitors
+        /// </summary>
+        /// <param name="backNumberRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        //[Authorize]
+        public IActionResult GetBackNumberForAllExhibitor(int ClassId)
+        {
+
+            _mainResponse = _classService.GetBackNumberForAllExhibitor(ClassId);
+            _jsonString = Mapper.Convert<GetAllBackNumber>(_mainResponse);      
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to get exhibitor details for a class
+        /// </summary>
+        /// <param name="resultExhibitorRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        //[Authorize]
+        public IActionResult GetResultExhibitorDetails(ResultExhibitorRequest resultExhibitorRequest)
+        {
+           
+            _mainResponse =  _classService.GetResultExhibitorDetails(resultExhibitorRequest);
+            _jsonString = Mapper.Convert<ResultExhibitorDetails>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to add class result
+        /// </summary>
+        /// <param name="resultExhibitorRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        //[Authorize]
+        public async Task< IActionResult> AddClassResult(AddClassResultRequest addClassResultRequest)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = await _classService.AddClassResult(addClassResultRequest, actionBy);
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
