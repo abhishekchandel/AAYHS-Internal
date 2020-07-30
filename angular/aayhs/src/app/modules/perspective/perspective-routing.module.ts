@@ -10,31 +10,46 @@ import { LayoutComponent } from './components/layout/layout/layout.component';
 
 const routes: Routes = [
   {
-  path: "",
+    path: "",
     component: LayoutComponent,
-    children:   [
-  {
-    path: "sponsor",
-    component: SponsorComponent
-  },
-  {
-    path: "horse",
-    component: HorseComponent
-  },
-  {
-    path: "exhibitor",
-    component: ExhibitorComponent
-  },
-  {
-    path: "class",
-    component: ClassComponent
-  },
-  {
-    path: "group",
-    component: GroupComponent
-  },
-],
-}
+    children: [
+      {
+        path: "sponsor",
+        component: SponsorComponent,
+        data: {
+          title: "Sponser"
+        }
+      },
+      {
+        path: "horse",
+        component: HorseComponent,
+        data: {
+          title: "Horse"
+        }
+      },
+      {
+        path: "exhibitor",
+        component: ExhibitorComponent,
+        data: {
+          title: "Exhibitor"
+        }
+      },
+      {
+        path: "class",
+        component: ClassComponent,
+        data: {
+          title: "Class"
+        }
+      },
+      {
+        path: "group",
+        component: GroupComponent,
+        data: {
+          title: "Group"
+        }
+      },
+    ],
+  }
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],
