@@ -31,11 +31,19 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackbarComponent } from './ui/mat-snackbar/mat-snackbar/mat-snackbar.component';
 import { ConfirmDialogComponent } from './ui/modals/confirmation-modal/confirm-dialog/confirm-dialog.component';
+import { NgxMaskModule, IConfig } from 'ngx-mask';
+import { AddSplitClassModalComponent } from './ui/modals/add-split-class-modal/add-split-class-modal.component'
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
+import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 
-
+export var options: Partial<IConfig> | (() => Partial<IConfig>);
+const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
+  suppressScrollX: true
+};
 
 @NgModule({
-  declarations: [HeaderComponent, FooterComponent,SidebarComponent, MatSnackbarComponent, ConfirmDialogComponent],
+  declarations: [HeaderComponent, FooterComponent,SidebarComponent, MatSnackbarComponent, ConfirmDialogComponent, AddSplitClassModalComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -57,15 +65,17 @@ import { ConfirmDialogComponent } from './ui/modals/confirmation-modal/confirm-d
     MatTabsModule,
     MatTableModule,
     MatPaginatorModule,
+    MatSnackBarModule,
     // All third party imports here //
-    
-    MatSelectModule
+    NgxMaskModule.forRoot(options),
+    MatSelectModule,
+    PerfectScrollbarModule
   ],
   exports: [
     HeaderComponent,
     FooterComponent,
     SidebarComponent,
-
+    MatSnackbarComponent,
     RouterModule,
     FormsModule,
     HttpClientModule,
@@ -85,15 +95,18 @@ import { ConfirmDialogComponent } from './ui/modals/confirmation-modal/confirm-d
     MatTabsModule,
     MatTableModule,
     MatPaginatorModule,
+    MatSnackBarModule,
     // All third party exports here //
-  
-    MatSelectModule
+    NgxMaskModule,
+    MatSelectModule,
+    PerfectScrollbarModule
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
   ],
   providers: [
-  
+    MatSnackbarComponent,
+      
   ]
 })
 export class SharedModule { }

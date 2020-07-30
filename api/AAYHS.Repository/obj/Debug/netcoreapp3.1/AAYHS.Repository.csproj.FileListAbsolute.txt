@@ -25,3 +25,16 @@ C:\Projects\AAYHS\AAYHS-Internal\api\AAYHS.Repository\obj\Debug\netcoreapp3.1\AA
 C:\Projects\AAYHS\AAYHS-Internal\api\AAYHS.Repository\obj\Debug\netcoreapp3.1\AAYHS.Repository.csproj.CopyComplete
 C:\Projects\AAYHS\AAYHS-Internal\api\AAYHS.Repository\obj\Debug\netcoreapp3.1\AAYHS.Repository.dll
 C:\Projects\AAYHS\AAYHS-Internal\api\AAYHS.Repository\obj\Debug\netcoreapp3.1\AAYHS.Repository.pdb
+C:\Projects\AbhishekC\AbhishekC\Official\AAYHS-New\api\AAYHS.Repository\bin\Debug\netcoreapp3.1\AAYHS.Repository.deps.json
+C:\Projects\AbhishekC\AbhishekC\Official\AAYHS-New\api\AAYHS.Repository\bin\Debug\netcoreapp3.1\AAYHS.Repository.dll
+C:\Projects\AbhishekC\AbhishekC\Official\AAYHS-New\api\AAYHS.Repository\bin\Debug\netcoreapp3.1\AAYHS.Repository.pdb
+C:\Projects\AbhishekC\AbhishekC\Official\AAYHS-New\api\AAYHS.Repository\bin\Debug\netcoreapp3.1\AAYHS.Core.dll
+C:\Projects\AbhishekC\AbhishekC\Official\AAYHS-New\api\AAYHS.Repository\bin\Debug\netcoreapp3.1\AAYHS.Data.dll
+C:\Projects\AbhishekC\AbhishekC\Official\AAYHS-New\api\AAYHS.Repository\bin\Debug\netcoreapp3.1\AAYHS.Core.pdb
+C:\Projects\AbhishekC\AbhishekC\Official\AAYHS-New\api\AAYHS.Repository\bin\Debug\netcoreapp3.1\AAYHS.Data.pdb
+C:\Projects\AbhishekC\AbhishekC\Official\AAYHS-New\api\AAYHS.Repository\obj\Debug\netcoreapp3.1\AAYHS.Repository.csprojAssemblyReference.cache
+C:\Projects\AbhishekC\AbhishekC\Official\AAYHS-New\api\AAYHS.Repository\obj\Debug\netcoreapp3.1\AAYHS.Repository.AssemblyInfoInputs.cache
+C:\Projects\AbhishekC\AbhishekC\Official\AAYHS-New\api\AAYHS.Repository\obj\Debug\netcoreapp3.1\AAYHS.Repository.AssemblyInfo.cs
+C:\Projects\AbhishekC\AbhishekC\Official\AAYHS-New\api\AAYHS.Repository\obj\Debug\netcoreapp3.1\AAYHS.Repository.csproj.CopyComplete
+C:\Projects\AbhishekC\AbhishekC\Official\AAYHS-New\api\AAYHS.Repository\obj\Debug\netcoreapp3.1\AAYHS.Repository.dll
+C:\Projects\AbhishekC\AbhishekC\Official\AAYHS-New\api\AAYHS.Repository\obj\Debug\netcoreapp3.1\AAYHS.Repository.pdb

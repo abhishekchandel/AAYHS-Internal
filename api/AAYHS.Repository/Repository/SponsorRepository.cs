@@ -31,14 +31,14 @@ namespace AAYHS.Repository.Repository
             _context = ObjContext;
             _Mapper = Mapper;
         }
-        public SponsorResponse GetSponsorById(GetSponsorRequest request)
+        public SponsorResponse GetSponsorById(int sponsorId)
         {
             var sponsorResponse = (from sponsor in _context.Sponsors
                                    join address in _context.Addresses
                                         on sponsor.AddressId equals address.AddressId
                                         into data1
                                    from data in data1.DefaultIfEmpty()
-                                   where sponsor.SponsorId == request.SponsorId 
+                                   where sponsor.SponsorId == sponsorId
                                    select new SponsorResponse
                                    {
                                        SponsorId = sponsor.SponsorId,
