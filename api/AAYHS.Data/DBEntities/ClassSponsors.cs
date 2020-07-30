@@ -14,7 +14,6 @@ namespace AAYHS.Data.DBEntities
         public int ClassSponsorId { get; set; }
         public int SponsorId { get; set; }
         public int ClassId { get; set; }
-        public string AgeGroup { get; set; }
           
     }
 }

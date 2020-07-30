@@ -13,6 +13,7 @@ namespace AAYHS.Service.IService
         Task<MainResponse> CreateClass(AddClassRequest addClassRequest);
         Task<MainResponse> AddExhibitorToClass(AddClassExhibitor addClassExhibitor);
         MainResponse GetClassExhibitors(ClassRequest classRequest);
+        MainResponse GetClassExhibitorsAndHorses(ClassExhibitorHorsesRequest request);
         Task<MainResponse> RemoveClass(RemoveClass removeClass);
         Task<MainResponse> SplitClass(SplitRequest splitRequest);
     }

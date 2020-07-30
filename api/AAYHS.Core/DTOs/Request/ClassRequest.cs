@@ -41,4 +41,8 @@ namespace AAYHS.Core.DTOs.Request
         public int Entries { get; set; }
         public String ActionBy { get; set; }
     }
+    public class ClassExhibitorHorsesRequest 
+    {
+        public int ClassId { get; set; }
+    }
 }

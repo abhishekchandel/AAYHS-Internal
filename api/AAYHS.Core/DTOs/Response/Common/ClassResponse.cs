@@ -34,6 +34,10 @@ namespace AAYHS.Core.DTOs.Response.Common
     {
         public List<GetClassExhibitor> getClassExhibitors { get; set; }
     }
+    public class ClassExhibitorHorses
+    {
+        public List<string> ClassExhibitorHorse { get; set; }
+    }
     public class GetClassExhibitor
     {
         public int ExhibitorClassId { get; set; }

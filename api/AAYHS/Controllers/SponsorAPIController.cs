@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AAYHS.Core.DTOs.Request;
+﻿using AAYHS.Core.DTOs.Request;
 using AAYHS.Core.DTOs.Response;
 using AAYHS.Service.IService;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
-using AAYHS.Core.DTOs.Response.Common;
 using AAYHS.Core.Shared.Static;
+
 namespace AAYHS.API.Controllers
 {
     [Route("api/[controller]/[action]")]

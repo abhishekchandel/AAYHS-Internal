@@ -15,6 +15,7 @@ namespace AAYHS.Repository.IRepository
         Task<MainResponse> CreateClass(AddClassRequest addClassRequest);
         Task<MainResponse> AddExhibitorToClass(AddClassExhibitor addClassExhibitor);
         MainResponse GetClassExhibitors(ClassRequest classRequest);
+        MainResponse GetClassExhibitorsAndHorses(ClassExhibitorHorsesRequest classRequest);
         Task<MainResponse> SplitClass(SplitRequest splitRequest);
     }
 }

@@ -27,10 +27,13 @@ namespace AAYHS.Core.DTOs.Response
         public GetClass GetClass { get; set; }
         public GlobalCodeMainResponse GlobalCodeMainResponse { get; set; }
         public GetAllClassExhibitor GetAllClassExhibitor { get; set; }
+        public ClassExhibitorHorses ClassExhibitorHorses { get; set; }
         public SponsorResponse SponsorResponse { get; set; }
+        
         public SponsorListResponse SponsorListResponse { get; set; }
         public ClassSponsorResponse ClassSponsorResponse { get; set; }
-        public List<ClassSponsorResponse> ClassSponsorListResponse { get; set; }
+        public ClassSponsorListResponse ClassSponsorListResponse { get; set; }
+        public SponsorClassesListResponse SponsorClassesListResponse { get; set; }
         public ExhibitorResponse ExhibitorResponse { get; set; }
         public ExhibitorListResponse ExhibitorListResponse { get; set; }
         public SponsorExhibitorListResponse SponsorExhibitorListResponse { get; set; }

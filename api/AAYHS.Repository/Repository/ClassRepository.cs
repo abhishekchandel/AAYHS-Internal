@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using System.Security.Cryptography;
 
 namespace AAYHS.Repository.Repository
 {
@@ -139,7 +140,6 @@ namespace AAYHS.Repository.Repository
                 ClassSponsors classSponsor = new ClassSponsors();
                 classSponsor.SponsorId = addClassRequest.SponsorId;
                 classSponsor.ClassId = classId;
-                classSponsor.AgeGroup = addClassRequest.AgeGroup;
                 
                 classSponsor.IsActive = true;
                 classSponsor.CreatedBy = addClassRequest.ActionBy;
@@ -179,6 +179,36 @@ namespace AAYHS.Repository.Repository
             await _ObjContext.SaveChangesAsync();
 
             _mainResponse.Success = true;
+            return _mainResponse;
+        }
+      public  MainResponse GetClassExhibitorsAndHorses(ClassExhibitorHorsesRequest classRequest)
+        {
+            ClassExhibitorHorses classExhibitorHorses = new ClassExhibitorHorses();
+            List<string> list = new List<string>();
+            var exhibitorClass = (from ce in _ObjContext.ExhibitorClass where ce.ClassId==classRequest.ClassId 
+                                  select ce).ToList();
+          
+            foreach(var data in exhibitorClass)
+            {
+                var exhibitor = (from ex in _ObjContext.Exhibitors where ex.ExhibitorId==data.ExhibitorId select ex).FirstOrDefault();
+                if(exhibitor!=null)
+                {
+                    var horses= (from hr in _ObjContext.Horses select hr).ToList();
+                    if(horses!=null && horses.Count>0)
+                    {
+                        foreach (var horse in horses)
+                        {
+                            var name = exhibitor.FirstName + ' ' + exhibitor.LastName + '/' + horse.Name;
+                            if(!list.Contains(name))
+                            list.Add(name);
+                        }
+                    }
+                }
+                
+            }
+            
+            classExhibitorHorses.ClassExhibitorHorse = list;
+            _mainResponse.ClassExhibitorHorses = classExhibitorHorses;
             return _mainResponse;
         }
         public MainResponse GetClassExhibitors(ClassRequest classRequest)

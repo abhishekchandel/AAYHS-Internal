@@ -23,7 +23,7 @@ namespace AAYHS.Service.Service
         #endregion
 
         #region private
-        private MainResponse _MainResponse;
+        private MainResponse _mainResponse;
         private IClassSponsorRepository _ClassSponsorRepository;
        
         #endregion
@@ -33,64 +33,89 @@ namespace AAYHS.Service.Service
             _ClassSponsorRepository = ClassSponsorRepository;
           
             _Mapper = Mapper;
-            _MainResponse = new MainResponse();
+            _mainResponse = new MainResponse();
         }
 
-        public MainResponse AddClassSponsor(ClassSponsorRequest request)
+        public MainResponse AddUpdateClassSponsor(ClassSponsorRequest request)
         {
-            var classsponsor = new ClassSponsors
+            if (request.ClassSponsorId <= 0)
             {
-                SponsorId = request.SponsorId,
-                ClassId = request.ClassId,
-                AgeGroup = request.AgeGroup,
-                
-                CreatedDate = DateTime.Now
-            };
-            _ClassSponsorRepository.Add(classsponsor);
-            _MainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
-            _MainResponse.Success = true;
-            return _MainResponse;
-        }
-
-        public MainResponse UpdateClassSponsor(ClassSponsorRequest request)
-        {
-            var classsponsor = _ClassSponsorRepository.GetSingle(x => x.ClassSponsorId == request.ClassSponsorId);
-                classsponsor.SponsorId = request.SponsorId;
-                classsponsor.ClassId = request.ClassId;
-                classsponsor.AgeGroup = request.AgeGroup;
-                classsponsor.CreatedDate = DateTime.Now;
-          
-            _ClassSponsorRepository.Update(classsponsor);
-            _MainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
-            _MainResponse.Success = true;
-            return _MainResponse;
+                var checkexist = _ClassSponsorRepository.GetSingle(x => x.ClassId == request.ClassId && x.SponsorId==request.SponsorId);
+                if (checkexist != null && checkexist.ClassSponsorId > 0)
+                {
+                    _mainResponse.Message = Constants.RECORD_AlREADY_EXIST;
+                    _mainResponse.Success = false;
+                }
+                else
+                {
+                    var classsponsor = new ClassSponsors
+                    {
+                        SponsorId = request.SponsorId,
+                        ClassId = request.ClassId,
+                        CreatedDate = DateTime.Now
+                    };
+                    _ClassSponsorRepository.Add(classsponsor);
+                    _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
+                    _mainResponse.Success = true;
+                }
+            }
+            else
+            {
+                var classsponsor = _ClassSponsorRepository.GetSingle(x => x.ClassSponsorId == request.ClassSponsorId);
+                if (classsponsor != null && classsponsor.ClassSponsorId > 0)
+                {
+                    classsponsor.SponsorId = request.SponsorId;
+                    classsponsor.ClassId = request.ClassId;
+                    classsponsor.ModifiedDate = DateTime.Now;
+                    _ClassSponsorRepository.Update(classsponsor);
+                    _mainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
+                    _mainResponse.Success = true;
+                }
+                else
+                {
+                    _mainResponse.Message = Constants.NO_RECORD_EXIST_WITH_ID;
+                    _mainResponse.Success = false;
+                }
+            }
+            return _mainResponse;
         }
 
         public MainResponse GetClassSponsorbyId(GetClassSponsorRequest request)
         {
-            var classsponsor = _ClassSponsorRepository.GetSingle(x => x.ClassSponsorId == request.ClassSponsorId);
-            _MainResponse.ClassSponsorResponse = _Mapper.Map<ClassSponsorResponse>(classsponsor);
-            _MainResponse.Message = Constants.RECORD_FOUND;
-            _MainResponse.Success = true;
-            return _MainResponse;
+            _mainResponse = _ClassSponsorRepository.GetClassSponsorbyId(request);
+            if (_mainResponse.ClassSponsorResponse != null)
+            {
+                _mainResponse.Message = Constants.RECORD_FOUND;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_RECORD_EXIST_WITH_ID;
+                _mainResponse.Success = false;
+            }
+            return _mainResponse;
         }
 
         public MainResponse GetAllClassSponsor()
         {
-            var classsponsor = _ClassSponsorRepository.GetAll(x => x.IsActive == true && x.IsDeleted==false);
-            _MainResponse.ClassSponsorListResponse = _Mapper.Map<List<ClassSponsorResponse>>(classsponsor);
-            _MainResponse.Message = Constants.RECORD_FOUND;
-            _MainResponse.Success = true;
-            return _MainResponse;
+            _mainResponse = _ClassSponsorRepository.GetAllClassSponsor();
+            if (_mainResponse.ClassSponsorListResponse.classSponsorResponses != null && _mainResponse.ClassSponsorListResponse.classSponsorResponses.Count > 0)
+            {
+                _mainResponse.Message = Constants.RECORD_FOUND;
+                _mainResponse.Success = true;
+            }
+            return _mainResponse;
         }
 
         public MainResponse GetAllClassSponsorWithFilter(BaseRecordFilterRequest request)
         {
-            var classsponsor = _ClassSponsorRepository.GetRecordsWithFilters(request.Page,request.Limit,request.OrderBy,request.OrderByDescending,request.AllRecords,x => x.IsActive == true && x.IsDeleted == false);
-            _MainResponse.ClassSponsorListResponse = _Mapper.Map<List<ClassSponsorResponse>>(classsponsor);
-            _MainResponse.Message = Constants.RECORD_FOUND;
-            _MainResponse.Success = true;
-            return _MainResponse;
+            _mainResponse = _ClassSponsorRepository.GetAllClassSponsorWithFilters(request);
+            if (_mainResponse.ClassSponsorListResponse.classSponsorResponses != null && _mainResponse.ClassSponsorListResponse.classSponsorResponses.Count > 0)
+            {
+                _mainResponse.Message = Constants.RECORD_FOUND;
+                _mainResponse.Success = true;
+            }
+            return _mainResponse;
         }
       
         public MainResponse DeleteClassSponsor(GetClassSponsorRequest request)
@@ -101,15 +126,26 @@ namespace AAYHS.Service.Service
                 classsponsor.IsDeleted = true;
                 classsponsor.DeletedDate = DateTime.Now;
                 _ClassSponsorRepository.Update(classsponsor);
-                _MainResponse.Message = Constants.RECORD_DELETE_SUCCESS;
-                _MainResponse.Success = true;
+                _mainResponse.Message = Constants.RECORD_DELETE_SUCCESS;
+                _mainResponse.Success = true;
             }
             else
             {
-                _MainResponse.Message = Constants.NO_RECORD_EXIST_WITH_ID;
-                _MainResponse.Success = false;
+                _mainResponse.Message = Constants.NO_RECORD_EXIST_WITH_ID;
+                _mainResponse.Success = false;
             }
-            return _MainResponse;
+            return _mainResponse;
+        }
+
+        public MainResponse GetSponsorClassesbySponsorId(GetBySponsorIdRequest request)
+        {
+            _mainResponse = _ClassSponsorRepository.GetSponsorClassesbySponsorId(request);
+            if (_mainResponse.SponsorClassesListResponse.sponsorClassesListResponses != null && _mainResponse.SponsorClassesListResponse.sponsorClassesListResponses.Count > 0)
+            {
+                _mainResponse.Message = Constants.RECORD_FOUND;
+                _mainResponse.Success = true;
+            }
+            return _mainResponse;
         }
     }
 }
