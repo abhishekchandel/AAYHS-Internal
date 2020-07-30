@@ -15,6 +15,5 @@ namespace AAYHS.Data.DBEntities
         public int ExhibitorId { get; set; }
         public int SponsorId { get; set; }
         public int SponsorTypeId { get; set; }
-        public int TypeId { get; set; }
     }
 }

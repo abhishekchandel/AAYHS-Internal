@@ -14,8 +14,7 @@ namespace AAYHS.Core.Shared.Static
         public const string SPLIT_CREATED = "Class Split created successfully";
         public const string ERROR_OCCURRED = "Error Occurred";
         public const string NO_RECORD_FOUND = "No Record Found";       
-        public const string NO_RECORD_EXIST_WITH_ID = "No Record Exist With Given Id";
-        public const string RECORD_AlREADY_EXIST = "Record Already Exist";
+        public const string NO_RECORD_Exist_WITH_ID = "No Record Exist With Given Id";
         public const string RECORD_FOUND = "Record Found";
         public const string RECORD_ADDED_SUCCESS = "Record Added Successfully";       
         public const string RECORD_ADDED_FAILED = "Record Added Failed";
@@ -23,7 +22,6 @@ namespace AAYHS.Core.Shared.Static
         public const string RECORD_UPDATE_FAILED = "Record Updated Failed";
         public const string RECORD_DELETE_SUCCESS = "Record Deleted Successfully";
         public const string RECORD_DELETE_FAILED = "Record Deleted Failed";
-        public const string NAME_ALREADY_EXIST = "Name Already Exist";
 
     }
 }

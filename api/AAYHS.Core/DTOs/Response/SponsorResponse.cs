@@ -17,8 +17,4 @@ namespace AAYHS.Core.DTOs.Response
         public int CityId { get; set; }
         public int StateId { get; set; }
     }
-    public class SponsorListResponse
-    {
-        public List<SponsorResponse> sponsorResponses { get; set; }
-    }
-    }
+}

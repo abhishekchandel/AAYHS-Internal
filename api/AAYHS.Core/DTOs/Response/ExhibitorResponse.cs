@@ -20,8 +20,4 @@ namespace AAYHS.Core.DTOs.Response
         public string SecondaryEmail { get; set; }
         public string Phone { get; set; }
     }
-    public class ExhibitorListResponse
-    {
-        public List<ExhibitorResponse> exhibitorResponses { get; set; }
-    }
 }

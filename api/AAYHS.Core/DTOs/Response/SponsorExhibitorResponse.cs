@@ -17,10 +17,4 @@ namespace AAYHS.Core.DTOs.Response
         public int IdNumber { get; set; }
 
     }
-    public class SponsorExhibitorListResponse
-    {
-        public List<SponsorExhibitorResponse> SponsorExhibitorResponses { get; set; }
-       
-
-    }
 }

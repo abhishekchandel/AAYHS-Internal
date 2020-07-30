@@ -20,7 +20,7 @@ namespace AAYHS.Repository.Repository
         #endregion
 
         #region Private
-        private MainResponse _mainResponse;
+        private MainResponse _MainResponse;
         #endregion
 
         #region public
@@ -29,7 +29,7 @@ namespace AAYHS.Repository.Repository
 
         public GlobalCodeRepository(AAYHSDBContext ObjContext, IMapper Mapper): base(ObjContext)
         {
-            _mainResponse = new MainResponse();
+            _MainResponse = new MainResponse();
             _ObjContext = ObjContext;
             _Mapper = Mapper;
         }

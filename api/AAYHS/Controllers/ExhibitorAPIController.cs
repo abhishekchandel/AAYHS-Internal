@@ -8,9 +8,6 @@ using AAYHS.Service.IService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-using AAYHS.Core.DTOs.Response.Common;
-using AAYHS.Core.Shared.Static;
-
 namespace AAYHS.API.Controllers
 {
 
@@ -19,12 +16,11 @@ namespace AAYHS.API.Controllers
     public class ExhibitorAPIController : ControllerBase
     {
         private readonly IExhibitorService _ExhibitorService;
-        private MainResponse _mainResponse;
-        private string _jsonString = string.Empty;
+        private MainResponse _response;
         public ExhibitorAPIController(IExhibitorService ExhibitorService)
         {
             _ExhibitorService = ExhibitorService;
-            _mainResponse = new MainResponse();
+            _response = new MainResponse();
         }
 
         /// <summary>
@@ -36,9 +32,8 @@ namespace AAYHS.API.Controllers
         public ActionResult GetAllExhibitors()
         {
 
-            _mainResponse = _ExhibitorService.GetAllExhibitors(); 
-              _jsonString = Mapper.Convert<ExhibitorListResponse> (_mainResponse);
-            return new OkObjectResult(_jsonString);
+            _response = _ExhibitorService.GetAllExhibitors();
+            return new OkObjectResult(_response);
         }
 
 
@@ -51,9 +46,8 @@ namespace AAYHS.API.Controllers
         public ActionResult GetAllExhibitorsWithFilter([FromBody] BaseRecordFilterRequest request)
         {
 
-            _mainResponse = _ExhibitorService.GetAllExhibitorsWithFilter(request);
-            _jsonString = Mapper.Convert<ExhibitorListResponse>(_mainResponse);
-            return new OkObjectResult(_jsonString);
+            _response = _ExhibitorService.GetAllExhibitorsWithFilter(request);
+            return new OkObjectResult(_response);
         }
 
         /// <summary>
@@ -64,24 +58,33 @@ namespace AAYHS.API.Controllers
         [HttpPost]
         public ActionResult GetExhibitorById([FromBody] GetExhibitorRequest request)
         {
-            _mainResponse = _ExhibitorService.GetExhibitorById(request);
-            _jsonString = Mapper.Convert<ExhibitorResponse>(_mainResponse);
-            return new OkObjectResult(_jsonString);
+            _response = _ExhibitorService.GetExhibitorById(request);
+            return new OkObjectResult(_response);
         }
 
         /// <summary>
-        /// This API is used to add/update new  Exhibitor.
+        /// This API is used to add new  Exhibitor.
         /// </summary>
         /// <param name="Exhibitor detail is required"></param>
         /// <returns> success true or false with message</returns>
         [HttpPost]
-        public ActionResult AddUpdateExhibitor([FromBody] ExhibitorRequest request)
+        public ActionResult AddExhibitor([FromBody] ExhibitorRequest request)
         {
-            _mainResponse = _ExhibitorService.AddUpdateExhibitor(request);
-            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
-            return new OkObjectResult(_jsonString);
+            _response = _ExhibitorService.AddExhibitor(request);
+            return new OkObjectResult(_response);
         }
 
+        /// <summary>
+        /// This API is used to update existing Exhibitor.
+        /// </summary>
+        /// <param name="Exhibitor detail with Exhibitor id is required"></param>
+        /// <returns> success true or false with message</returns>
+        [HttpPost]
+        public ActionResult UpdateExhibitor([FromBody] ExhibitorRequest request)
+        {
+            _response = _ExhibitorService.AddExhibitor(request);
+            return new OkObjectResult(_response);
+        }
 
         /// <summary>
         /// This API is used to delete existing Exhibitor.
@@ -91,9 +94,8 @@ namespace AAYHS.API.Controllers
         [HttpPost]
         public ActionResult DeleteExhibitor([FromBody] GetExhibitorRequest request)
         {
-            _mainResponse = _ExhibitorService.DeleteExhibitor(request);
-            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
-            return new OkObjectResult(_jsonString);
+            _response = _ExhibitorService.DeleteExhibitor(request);
+            return new OkObjectResult(_response);
         }
 
     }

@@ -18,7 +18,7 @@ namespace AAYHS.Repository.Repository
         #endregion
 
         #region Private
-        private MainResponse _mainResponse;
+        private MainResponse _MainResponse;
         #endregion
 
         #region public
@@ -27,14 +27,13 @@ namespace AAYHS.Repository.Repository
 
         public SponsorRepository(AAYHSDBContext ObjContext, IMapper Mapper) : base(ObjContext)
         {
-            _mainResponse = new MainResponse();
+            _MainResponse = new MainResponse();
             _context = ObjContext;
             _Mapper = Mapper;
         }
-        public MainResponse GetSponsorById(GetSponsorRequest request)
+        public SponsorResponse GetSponsorById(GetSponsorRequest request)
         {
-            SponsorResponse sponsorResponse = new SponsorResponse();
-             sponsorResponse = (from sponsor in _context.Sponsors
+            var sponsorResponse = (from sponsor in _context.Sponsors
                                    join address in _context.Addresses
                                         on sponsor.AddressId equals address.AddressId
                                         into data1
@@ -53,16 +52,12 @@ namespace AAYHS.Repository.Repository
                                        CityId = data != null ? data.CityId : 0,
                                        StateId = data != null ? _context.Cities.Where(x => x.CityId == data.CityId).Select(y => y.StateId).FirstOrDefault() : 0,
                                    }).FirstOrDefault();
-            _mainResponse.SponsorResponse = sponsorResponse;
-            return _mainResponse;
+            return sponsorResponse;
         }
 
-        public MainResponse GetAllSponsor()
+        public List<SponsorResponse> GetAllSponsor()
         {
-            IEnumerable<SponsorResponse> sponsorResponses;
-            SponsorListResponse sponsorListResponse = new SponsorListResponse();
-
-            sponsorResponses = (from sponsor in _context.Sponsors
+            var sponsorResponse = (from sponsor in _context.Sponsors
                                    join address in _context.Addresses
                                         on sponsor.AddressId equals address.AddressId
                                         into data1
@@ -81,18 +76,12 @@ namespace AAYHS.Repository.Repository
                                        CityId = data != null ? data.CityId : 0,
                                        StateId = data != null ? _context.Cities.Where(x => x.CityId == data.CityId).Select(y => y.StateId).FirstOrDefault() : 0,
                                    }).ToList();
-
-            sponsorListResponse.sponsorResponses = sponsorResponses.ToList();
-            _mainResponse.SponsorListResponse = sponsorListResponse;
-            return _mainResponse;
+            return sponsorResponse;
         }
 
-        public MainResponse GetAllSponsorsWithFilter(BaseRecordFilterRequest request)
+        public List<SponsorResponse> GetAllSponsorsWithFilter(BaseRecordFilterRequest request)
         {
-
-            IEnumerable<SponsorResponse> sponsorResponses;
-            SponsorListResponse sponsorListResponse = new SponsorListResponse();
-            sponsorResponses = (from sponsor in _context.Sponsors
+            List<SponsorResponse> sponsorResponse = (from sponsor in _context.Sponsors
                                    join address in _context.Addresses
                                         on sponsor.AddressId equals address.AddressId
                                         into data1
@@ -112,30 +101,29 @@ namespace AAYHS.Repository.Repository
                                        StateId = data != null ? _context.Cities.Where(x => x.CityId == data.CityId).Select(y => y.StateId).FirstOrDefault() : 0,
                                    }).ToList();
            
-            if (sponsorResponses.Count() > 0)
+            if (sponsorResponse.Count > 0)
             {
                 var propertyInfo = typeof(SponsorResponse).GetProperty(request.OrderBy);
                 if (request.OrderByDescending == true)
                 {
-                    sponsorResponses = sponsorResponses.OrderByDescending(s => s.GetType().GetProperty(request.OrderBy).GetValue(s)).ToList();
+                    sponsorResponse = sponsorResponse.OrderByDescending(s => s.GetType().GetProperty(request.OrderBy).GetValue(s)).ToList();
                 }
                 else
                 {
-                    sponsorResponses = sponsorResponses.AsEnumerable().OrderBy(s => propertyInfo.GetValue(s, null)).ToList();
+                    sponsorResponse = sponsorResponse.AsEnumerable().OrderBy(s => propertyInfo.GetValue(s, null)).ToList();
                 }
 
                 if (request.AllRecords == true)
                 {
-                    sponsorResponses = sponsorResponses.ToList();
+                    sponsorResponse = sponsorResponse.ToList();
                 }
                 else
                 {
-                    sponsorResponses = sponsorResponses.Skip((request.Page - 1) * request.Limit).Take(request.Limit).ToList();
+                    sponsorResponse = sponsorResponse.Skip((request.Page - 1) * request.Limit).Take(request.Limit).ToList();
                 }
             }
-            sponsorListResponse.sponsorResponses = sponsorResponses.ToList();
-            _mainResponse.SponsorListResponse = sponsorListResponse;
-            return _mainResponse;
+
+            return sponsorResponse;
         }
     }
 }

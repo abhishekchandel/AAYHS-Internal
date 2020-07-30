@@ -46,6 +46,8 @@ namespace AAYHS.Repository.Repository
                       Name=c.Name,
                       Entries= _ObjContext.ExhibitorClass.Where(x=>x.ClassId==c.ClassId).Select(x=>x.ExhibitorClassId).Count(),
                        AgeGroup=c.AgeGroup,
+                      
+                                 
                   });
             if (data.Count()!=0)
             {
@@ -67,7 +69,7 @@ namespace AAYHS.Repository.Repository
                     getAllClasses.classResponses = data.Skip((classRequest.Page - 1) * classRequest.Limit).Take(classRequest.Limit).ToList();
 
                 }
-                _mainResponse.GetAllClasses = getAllClasses;
+                _mainResponse.Data.GetAllClasses = getAllClasses;
                
             }
             return _mainResponse;
@@ -113,7 +115,7 @@ namespace AAYHS.Repository.Repository
                     getClass = data.Skip((classRequest.Page - 1) * classRequest.Limit).Take(classRequest.Limit).FirstOrDefault();
 
                 }
-                _mainResponse.GetClass = getClass;
+                _mainResponse.Data.GetClass = getClass;
                
             }
             return _mainResponse;
@@ -224,7 +226,7 @@ namespace AAYHS.Repository.Repository
                     getAllClassExhibitor.getClassExhibitors = data.Skip((classRequest.Page - 1) * classRequest.Limit).Take(classRequest.Limit).ToList();
 
                 }
-                _mainResponse.GetAllClassExhibitor = getAllClassExhibitor;
+                _mainResponse.Data.GetAllClassExhibitor = getAllClassExhibitor;
 
             }
             return _mainResponse;

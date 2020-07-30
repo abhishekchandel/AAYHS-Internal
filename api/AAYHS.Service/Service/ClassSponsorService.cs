@@ -69,7 +69,7 @@ namespace AAYHS.Service.Service
         public MainResponse GetClassSponsorbyId(GetClassSponsorRequest request)
         {
             var classsponsor = _ClassSponsorRepository.GetSingle(x => x.ClassSponsorId == request.ClassSponsorId);
-            _MainResponse.ClassSponsorResponse = _Mapper.Map<ClassSponsorResponse>(classsponsor);
+            _MainResponse.Data.ClassSponsorResponse = _Mapper.Map<ClassSponsorResponse>(classsponsor);
             _MainResponse.Message = Constants.RECORD_FOUND;
             _MainResponse.Success = true;
             return _MainResponse;
@@ -78,7 +78,7 @@ namespace AAYHS.Service.Service
         public MainResponse GetAllClassSponsor()
         {
             var classsponsor = _ClassSponsorRepository.GetAll(x => x.IsActive == true && x.IsDeleted==false);
-            _MainResponse.ClassSponsorListResponse = _Mapper.Map<List<ClassSponsorResponse>>(classsponsor);
+            _MainResponse.Data.ClassSponsorListResponse = _Mapper.Map<List<ClassSponsorResponse>>(classsponsor);
             _MainResponse.Message = Constants.RECORD_FOUND;
             _MainResponse.Success = true;
             return _MainResponse;
@@ -87,7 +87,7 @@ namespace AAYHS.Service.Service
         public MainResponse GetAllClassSponsorWithFilter(BaseRecordFilterRequest request)
         {
             var classsponsor = _ClassSponsorRepository.GetRecordsWithFilters(request.Page,request.Limit,request.OrderBy,request.OrderByDescending,request.AllRecords,x => x.IsActive == true && x.IsDeleted == false);
-            _MainResponse.ClassSponsorListResponse = _Mapper.Map<List<ClassSponsorResponse>>(classsponsor);
+            _MainResponse.Data.ClassSponsorListResponse = _Mapper.Map<List<ClassSponsorResponse>>(classsponsor);
             _MainResponse.Message = Constants.RECORD_FOUND;
             _MainResponse.Success = true;
             return _MainResponse;
@@ -106,7 +106,7 @@ namespace AAYHS.Service.Service
             }
             else
             {
-                _MainResponse.Message = Constants.NO_RECORD_EXIST_WITH_ID;
+                _MainResponse.Message = Constants.NO_RECORD_Exist_WITH_ID;
                 _MainResponse.Success = false;
             }
             return _MainResponse;

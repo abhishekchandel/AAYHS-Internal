@@ -19,7 +19,7 @@ namespace AAYHS.Repository.Repository
         #endregion
 
         #region Private
-        private MainResponse _mainResponse;
+        private MainResponse _MainResponse;
         #endregion
 
         #region public
@@ -28,16 +28,15 @@ namespace AAYHS.Repository.Repository
 
         public SponsorExhibitorRepository(AAYHSDBContext ObjContext, IMapper Mapper) : base(ObjContext)
         {
-            _mainResponse = new MainResponse();
+            _MainResponse = new MainResponse();
             _context = ObjContext;
             _Mapper = Mapper;
         }
 
-        public MainResponse GetSponsorExhibitorBySponsorId(GetSponsorExhibitorRequest request)
+        public List<SponsorExhibitorResponse> GetSponsorExhibitorBySponsorId(GetSponsorExhibitorRequest request)
         {
-            IEnumerable<SponsorExhibitorResponse> sponsorExhibitorResponses = null;
-            SponsorExhibitorListResponse sponsorExhibitorListResponses = new SponsorExhibitorListResponse();
-            sponsorExhibitorResponses = (from sponsorexhibitor in _context.SponsorExhibitor
+
+            var data = (from sponsorexhibitor in _context.SponsorExhibitor
                         join exhibitor in _context.Exhibitors
                         on sponsorexhibitor.ExhibitorId equals exhibitor.ExhibitorId
                         into data1
@@ -58,9 +57,9 @@ namespace AAYHS.Repository.Repository
                                        :(sponsorexhibitor.SponsorTypeId == (int)SponsorTypes.Add? _context.Advertisements.Where(x => x.AdvertisementId == sponsorexhibitor.TypeId).Select(x => x.AdvertisementId).FirstOrDefault()
                                        :0),
                         }).ToList();
-            sponsorExhibitorListResponses.SponsorExhibitorResponses = sponsorExhibitorResponses.ToList();
-            _mainResponse.SponsorExhibitorListResponse = sponsorExhibitorListResponses;
-            return _mainResponse;
+
+
+            return data;
         }
 
     }
