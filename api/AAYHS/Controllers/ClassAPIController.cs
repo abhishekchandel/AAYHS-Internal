@@ -38,7 +38,7 @@ namespace AAYHS.API.Controllers
         /// </summary>
         /// <param name="classRequest"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpGet]
         //[Authorize]
         public IActionResult GetAllClasses(ClassRequest classRequest)
         {
@@ -51,7 +51,7 @@ namespace AAYHS.API.Controllers
         /// </summary>
         /// <param name="classRequest"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpGet]
         //[Authorize]
         public IActionResult GetClass(int ClassId)
         {
@@ -64,7 +64,7 @@ namespace AAYHS.API.Controllers
         /// </summary>
         /// <param name="ClassId"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpGet]
         //[Authorize]
         public IActionResult GetClassExhibitors(int ClassId)
         {
@@ -105,7 +105,7 @@ namespace AAYHS.API.Controllers
         /// </summary>
         /// <param name="classRequest"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpGet]
         //[Authorize]
         public IActionResult GetClassEntries(ClassRequest classRequest)
         {
@@ -118,7 +118,7 @@ namespace AAYHS.API.Controllers
         /// </summary>
         /// <param name="ExhibitorClassId"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpDelete]
         //[Authorize]
         public async Task<IActionResult> DeleteClassExhibitor(int ExhibitorClassId)
         {
@@ -132,7 +132,7 @@ namespace AAYHS.API.Controllers
         /// </summary>
         /// <param name="removeClass"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpDelete]
         //[Authorize]
         public async Task<IActionResult> RemoveClass(int ClassId)
         {
@@ -160,7 +160,7 @@ namespace AAYHS.API.Controllers
         /// </summary>
         /// <param name="backNumberRequest"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpGet]
         //[Authorize]
         public IActionResult GetBackNumberForAllExhibitor(int ClassId)
         {
@@ -174,7 +174,7 @@ namespace AAYHS.API.Controllers
         /// </summary>
         /// <param name="resultExhibitorRequest"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpGet]
         //[Authorize]
         public IActionResult GetResultExhibitorDetails(ResultExhibitorRequest resultExhibitorRequest)
         {

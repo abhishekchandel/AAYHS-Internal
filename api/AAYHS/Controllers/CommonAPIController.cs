@@ -49,7 +49,7 @@ namespace AAYHS.API.Controllers
         /// </summary>
         /// <param name="stateId"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpGet]
         public IActionResult GetCities(int stateId)
         {
 
