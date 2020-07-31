@@ -79,7 +79,7 @@ namespace AAYHS.Service.Service
         public MainResponse GetAllCities(int StateId)
         {
             var cities = _cityRepository.GetAll(x => x.StateId == StateId && x.IsDeleted == false && x.IsActive == true).OrderBy(x => x.Name);
-            var cityResponse = _mapper.Map<List<Cities>>(cities);
+            var cityResponse = _mapper.Map<List<City>>(cities);
             CityResponse city = new CityResponse();
             city.City = cityResponse;
             _mainResponse.CityResponse = city;

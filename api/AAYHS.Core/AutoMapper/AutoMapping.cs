@@ -13,12 +13,13 @@ namespace AAYHS.Core.AutoMapper
     {
         public AutoMapping()
         {
-             CreateMap<APILogRequest, Apilogs>();
+            CreateMap<APILogRequest, Apilogs>();
             CreateMap<SponsorRequest, Sponsors>();
             CreateMap<ExhibitorRequest, Sponsors>();
             CreateMap<SponsorExhibitorRequest, SponsorExhibitor>();
             CreateMap<APILogRequest, Apilogs>();
-
+            CreateMap<States, State>();
+            CreateMap<Cities, City>();
 
 
 

@@ -11,7 +11,7 @@ namespace AAYHS.Core.DTOs.Response.Common
     public class State
     {
         public int StateId { get; set; }
-        public string Abbreviations { get; set; }
+        public string Code { get; set; }
         public string Name { get; set; }
     }
 }

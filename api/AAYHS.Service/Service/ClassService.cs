@@ -45,9 +45,10 @@ namespace AAYHS.Service.Service
         public MainResponse GetAllClasses(ClassRequest classRequest)
         {
             var allClasses = _classRepository.GetAllClasses(classRequest);
-            if (allClasses.GetAllClasses != null && allClasses.TotalRecords!=0 )
+            if (allClasses.GetAllClasses != null && allClasses.GetAllClasses.TotalRecords != 0 )
             {
                 _mainResponse.GetAllClasses = allClasses.GetAllClasses;
+                _mainResponse.GetAllClasses.TotalRecords = allClasses.GetAllClasses.classResponses.Count();
                 _mainResponse.Success = true;
             }
             else
@@ -208,9 +209,10 @@ namespace AAYHS.Service.Service
         public MainResponse GetClassEntries(ClassRequest classRequest)
         {
             var allExhibitor = _classRepository.GetClassEntries(classRequest);
-            if (allExhibitor.GetAllClassEntries!=null && allExhibitor.TotalRecords!=0)
+            if (allExhibitor.GetAllClassEntries!=null && allExhibitor.GetAllClassEntries.TotalRecords != 0)
             {
                 _mainResponse.GetAllClassEntries.getClassEntries = allExhibitor.GetAllClassEntries.getClassEntries;
+                _mainResponse.GetAllClassEntries.TotalRecords = allExhibitor.GetAllClassEntries.getClassEntries.Count();
                 _mainResponse.Success = true;
             }
             else

@@ -6,10 +6,10 @@ namespace AAYHS.Core.DTOs.Response.Common
 {
     public class CityResponse
     {
-        public List<Cities> City { get; set; }
+        public List<City> City { get; set; }
     }
 
-    public class Cities
+    public class City
     {
         public int CityId { get; set; }
         public int StateId { get; set; }

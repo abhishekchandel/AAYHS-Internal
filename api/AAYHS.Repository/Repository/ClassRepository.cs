@@ -70,7 +70,7 @@ namespace AAYHS.Repository.Repository
 
                 }
                 _MainResponse.GetAllClasses = getAllClasses;
-                _MainResponse.TotalRecords = getAllClasses.classResponses.Count();
+                _MainResponse.GetAllClasses.TotalRecords = getAllClasses.classResponses.Count();
             }
             return _MainResponse;
         }
@@ -143,7 +143,7 @@ namespace AAYHS.Repository.Repository
 
                 }
                 _MainResponse.GetAllClassEntries = getAllClassEntries;
-                _MainResponse.TotalRecords = getAllClassEntries.getClassEntries.Count();
+                _MainResponse.GetAllClassEntries.TotalRecords = getAllClassEntries.getClassEntries.Count();
             }
             return _MainResponse;
         }      

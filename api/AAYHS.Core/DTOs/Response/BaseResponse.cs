@@ -12,10 +12,9 @@ namespace AAYHS.Core.DTOs.Response
     /// </summary>
     public class BaseResponse
     {
-        public string Message { get; set; }
-        public int TotalRecords { get; set; }
+        public string Message { get; set; }     
         public bool Success { get; set; } = true;
-        
+        public int TotalRecords { get; set; }
     }
 
     public class MainResponse : BaseResponse
