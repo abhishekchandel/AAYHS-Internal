@@ -54,9 +54,14 @@ namespace AAYHS.API.Logging
                     }
 
                     httpContext.Response.Body = responseBodyStream;
-
+                    long length = 0;
+                    httpContext.Response.OnStarting(() =>
+                    {
+                        httpContext.Response.Headers.ContentLength = length;
+                        return Task.CompletedTask;
+                    });
                     await _next(httpContext);
-
+                    length = httpContext.Response.Body.Length;
                     //Format the response from the server
                     var response = FormatResponse(httpContext.Response, httpContext);
 

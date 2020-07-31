@@ -12,10 +12,10 @@ namespace AAYHS.Repository.IRepository
     {
         MainResponse GetAllClasses(ClassRequest classRequest);
         MainResponse GetClass(ClassRequest classRequest);
-        Task<MainResponse> CreateClass(AddClassRequest addClassRequest);
-        Task<MainResponse> AddExhibitorToClass(AddClassExhibitor addClassExhibitor);
+        MainResponse CreateClass(AddClassRequest addClassRequest);
+        MainResponse AddExhibitorToClass(AddClassExhibitor addClassExhibitor);
         MainResponse GetClassExhibitors(ClassRequest classRequest);
         MainResponse GetClassExhibitorsAndHorses(ClassExhibitorHorsesRequest classRequest);
-        Task<MainResponse> SplitClass(SplitRequest splitRequest);
+        MainResponse SplitClass(SplitRequest splitRequest);
     }
 }

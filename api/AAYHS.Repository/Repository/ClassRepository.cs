@@ -119,7 +119,7 @@ namespace AAYHS.Repository.Repository
             }
             return _mainResponse;
         } 
-        public async Task<MainResponse> CreateClass(AddClassRequest addClassRequest)
+        public MainResponse CreateClass(AddClassRequest addClassRequest)
         {
             if (addClassRequest.ClassId == 0)
             {
@@ -134,7 +134,7 @@ namespace AAYHS.Repository.Repository
                 classes.CreatedBy = addClassRequest.ActionBy;
                 classes.CreatedDate = DateTime.Now;
                 _ObjContext.Classes.Add(classes);
-                await _ObjContext.SaveChangesAsync();
+                 _ObjContext.SaveChanges();
                 int classId = classes.ClassId;
 
                 ClassSponsors classSponsor = new ClassSponsors();
@@ -145,7 +145,7 @@ namespace AAYHS.Repository.Repository
                 classSponsor.CreatedBy = addClassRequest.ActionBy;
                 classSponsor.CreatedDate = DateTime.Now;
                 _ObjContext.ClassSponsors.Add(classSponsor);
-                await _ObjContext.SaveChangesAsync();
+                 _ObjContext.SaveChanges();
 
                 
                 ScheduleDates scheduleDates = new ScheduleDates();
@@ -156,7 +156,7 @@ namespace AAYHS.Repository.Repository
                 scheduleDates.CreatedBy = addClassRequest.ActionBy;
                 scheduleDates.CreatedDate = DateTime.Now;
                 _ObjContext.ScheduleDates.Add(scheduleDates);
-                await _ObjContext.SaveChangesAsync();
+                 _ObjContext.SaveChanges();
 
                 _mainResponse.Success = true;
 
@@ -164,7 +164,7 @@ namespace AAYHS.Repository.Repository
            
             return _mainResponse;
         }
-        public async Task<MainResponse> AddExhibitorToClass(AddClassExhibitor addClassExhibitor)
+        public MainResponse AddExhibitorToClass(AddClassExhibitor addClassExhibitor)
         {
             var addExhibitor = new ExhibitorClass
             {
@@ -176,7 +176,7 @@ namespace AAYHS.Repository.Repository
                 CreatedDate = DateTime.Now
             };
             _ObjContext.ExhibitorClass.Add(addExhibitor);
-            await _ObjContext.SaveChangesAsync();
+             _ObjContext.SaveChanges();
 
             _mainResponse.Success = true;
             return _mainResponse;
@@ -259,7 +259,7 @@ namespace AAYHS.Repository.Repository
             }
             return _mainResponse;
         }
-        public async Task<MainResponse> SplitClass(SplitRequest splitRequest)
+        public MainResponse SplitClass(SplitRequest splitRequest)
         {
             var splitClass = new ClassSplits
             {
@@ -271,7 +271,7 @@ namespace AAYHS.Repository.Repository
                 CreatedDate = DateTime.Now
             };
             _ObjContext.ClassSplits.Add(splitClass);
-            await _ObjContext.SaveChangesAsync();
+             _ObjContext.SaveChanges();
 
             _mainResponse.Success = true;
             return _mainResponse;

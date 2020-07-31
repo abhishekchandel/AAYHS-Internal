@@ -42,18 +42,18 @@ namespace AAYHS.Service.Service
             }
             return _mainResponse;
         }
-        public async Task<MainResponse> CreateClass(AddClassRequest addClassRequest)
+        public  MainResponse CreateClass(AddClassRequest addClassRequest)
         {
-            _mainResponse = await _classRepository.CreateClass(addClassRequest);
+            _mainResponse =  _classRepository.CreateClass(addClassRequest);
             if (_mainResponse.Success == true)
             {
                 _mainResponse.Message = Constants.CLASS_CREATED;
             }
             return _mainResponse;
         }
-        public async Task<MainResponse> AddExhibitorToClass(AddClassExhibitor addClassExhibitor)
+        public  MainResponse AddExhibitorToClass(AddClassExhibitor addClassExhibitor)
         {
-            _mainResponse = await _classRepository.AddExhibitorToClass(addClassExhibitor);
+            _mainResponse =  _classRepository.AddExhibitorToClass(addClassExhibitor);
             if (_mainResponse.Success == true)
             {
                 _mainResponse.Message = Constants.CLASS_EXHIBITOR;
@@ -77,7 +77,7 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
-        public async Task<MainResponse> RemoveClass(RemoveClass removeClass)
+        public  MainResponse RemoveClass(RemoveClass removeClass)
         {
             var _class = _classRepository.GetSingle(x => x.ClassId == removeClass.ClassId);
             if (_class != null)
@@ -85,7 +85,7 @@ namespace AAYHS.Service.Service
                 _class.IsDeleted = true;
                 _class.DeletedBy = removeClass.ActionBy;
                 _class.DeletedDate = DateTime.Now;
-                await _classRepository.UpdateAsync(_class);
+                 _classRepository.Update(_class);
 
                 _mainResponse.Success = true;
                 _mainResponse.Message = Constants.CLASS_REMOVED;
@@ -99,9 +99,9 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
-        public async Task<MainResponse> SplitClass(SplitRequest splitRequest)
+        public  MainResponse SplitClass(SplitRequest splitRequest)
         {
-            _mainResponse = await _classRepository.SplitClass(splitRequest);
+            _mainResponse =  _classRepository.SplitClass(splitRequest);
             if (_mainResponse.Success == true)
             {
                 _mainResponse.Message = Constants.SPLIT_CREATED;

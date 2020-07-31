@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -68,6 +69,13 @@ namespace AAYHS
                     Type = SecuritySchemeType.ApiKey,
                     Scheme = "Bearer"
                 });
+
+                ////var apiXmlFilePath = Path.Combine(AppContext.BaseDirectory, "AAYHS.API.xml");
+                ////c.IncludeXmlComments(apiXmlFilePath);
+                //// var apiXmlFilePathAAYHSCore = Path.Combine(AppContext.BaseDirectory, "AAYHS.Core.xml");
+                ////c.IncludeXmlComments(apiXmlFilePathAAYHSCore);
+
+
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement()
                 {
                 {
@@ -85,6 +93,7 @@ namespace AAYHS
                     },
                     new List<string>()
                     }
+
                 });
 
                 // Added custom filter lists an additional "401" response for all actions that are decorated with the AuthorizeAttribute
@@ -120,7 +129,7 @@ namespace AAYHS
                 };
             });
 
-
+         
 
 
             //Dependency injection in ASP.NET Core (Services)
@@ -182,6 +191,7 @@ namespace AAYHS
 
             app.UseAuthentication();
             app.UseAuthorization();
+           
             app.ConfigureCustomApplicationMiddleware();
 
             app.UseEndpoints(endpoints =>
