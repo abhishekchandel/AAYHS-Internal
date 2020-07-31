@@ -38,7 +38,7 @@ namespace AAYHS.API.Controllers
         /// </summary>
         /// <param name="classRequest"></param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpPost]
         //[Authorize]
         public IActionResult GetAllClasses(ClassRequest classRequest)
         {
@@ -105,7 +105,7 @@ namespace AAYHS.API.Controllers
         /// </summary>
         /// <param name="classRequest"></param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpPost]
         //[Authorize]
         public IActionResult GetClassEntries(ClassRequest classRequest)
         {
@@ -174,7 +174,7 @@ namespace AAYHS.API.Controllers
         /// </summary>
         /// <param name="resultExhibitorRequest"></param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpPost]
         //[Authorize]
         public IActionResult GetResultExhibitorDetails(ResultExhibitorRequest resultExhibitorRequest)
         {

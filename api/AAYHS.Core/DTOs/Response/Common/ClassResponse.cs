@@ -17,7 +17,7 @@ namespace AAYHS.Core.DTOs.Response.Common
     }
     public class GetAllClasses
     {
-        public List<ClassResponse> classResponses { get; set; }
+        public List<ClassResponse> classesResponse { get; set; }
         public int TotalRecords { get; set; }
     }
     public class GetClass
