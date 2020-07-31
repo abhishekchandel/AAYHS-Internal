@@ -62,15 +62,15 @@ namespace AAYHS.Repository.Repository
 
                 if (classRequest.AllRecords)
                 {
-                    getAllClasses.classResponses = data.ToList();
+                    getAllClasses.classesResponse = data.ToList();
                 }
                 else
                 {
-                    getAllClasses.classResponses = data.Skip((classRequest.Page - 1) * classRequest.Limit).Take(classRequest.Limit).ToList();
+                    getAllClasses.classesResponse = data.Skip((classRequest.Page - 1) * classRequest.Limit).Take(classRequest.Limit).ToList();
 
                 }
                 _MainResponse.GetAllClasses = getAllClasses;
-                _MainResponse.GetAllClasses.TotalRecords = getAllClasses.classResponses.Count();
+                _MainResponse.GetAllClasses.TotalRecords = getAllClasses.classesResponse.Count();
             }
             return _MainResponse;
         }
@@ -95,11 +95,7 @@ namespace AAYHS.Repository.Repository
                     });
             _MainResponse.GetClass = data.FirstOrDefault();
             return _MainResponse;           
-        }    
-        //public MainResponse GetExhibitorHorses(int ExhibitorId)
-        //{
-
-        //}
+        }          
         public MainResponse GetClassEntries(ClassRequest classRequest)
         {
             IEnumerable<GetClassEntries> data;

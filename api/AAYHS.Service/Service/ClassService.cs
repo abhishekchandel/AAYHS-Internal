@@ -48,7 +48,7 @@ namespace AAYHS.Service.Service
             if (allClasses.GetAllClasses != null && allClasses.GetAllClasses.TotalRecords != 0 )
             {
                 _mainResponse.GetAllClasses = allClasses.GetAllClasses;
-                _mainResponse.GetAllClasses.TotalRecords = allClasses.GetAllClasses.classResponses.Count();
+                _mainResponse.GetAllClasses.TotalRecords = allClasses.GetAllClasses.classesResponse.Count();
                 _mainResponse.Success = true;
             }
             else
@@ -211,7 +211,7 @@ namespace AAYHS.Service.Service
             var allExhibitor = _classRepository.GetClassEntries(classRequest);
             if (allExhibitor.GetAllClassEntries!=null && allExhibitor.GetAllClassEntries.TotalRecords != 0)
             {
-                _mainResponse.GetAllClassEntries.getClassEntries = allExhibitor.GetAllClassEntries.getClassEntries;
+                _mainResponse.GetAllClassEntries = allExhibitor.GetAllClassEntries;
                 _mainResponse.GetAllClassEntries.TotalRecords = allExhibitor.GetAllClassEntries.getClassEntries.Count();
                 _mainResponse.Success = true;
             }
