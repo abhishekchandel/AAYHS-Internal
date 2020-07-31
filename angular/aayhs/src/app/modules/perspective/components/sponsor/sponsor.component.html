@@ -1,13 +1,6 @@
 <div class="innerContent">
 					   <div class="sortData">
 						  <div class="sponBtn"><button class="btn btn-red btnCss">Add new Sponsor</button></div>
-						   <div class="sorting">
-						     <select class="form-control">
-							   <option value="0" selected> Sort By:</option>
-								<option value="1" > Ascending</option>	
-								<option value="2" > Descending</option>	
-							 </select>
-						   </div>
 				      </div>
 					  <!---->
 					   <div class="gridTable addBlueStrip">
@@ -15,61 +8,72 @@
 						    <table class="table table-bordered tableBodyScroll">
 							  <thead>
 							     <tr>
-								   <th>Sponsor Id</th> 
-								    <th>Sponsor</th> 
+								   <th (click)="sortData('sponsorId')">Sponsor Id
+									<span [ngClass]="getSort('sponsorId')">
+										  
+									</span>
+								   </th> 
+								    <th (click)="sortData('sponsor')">Sponsor
+											<span [ngClass]="getSort('sponsor')">
+										</span>
+									</th> 
 									<th>Remove</th> 
 								 </tr>	
                               </thead> 
                               <perfect-scrollbar class="nicescrollBar-1"> 
-							  <tbody>
-							    <tr class="blueRow">
-									<td data-label="Sponsor ID">025</td>
-									<td data-label="Sponsor">Abigail Roberts</td>
-									<td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-								</tr>	
-								<tr>
-									<td data-label="Sponsor ID">307</td>
-									<td data-label="Sponsor">Apple Bee's</td>
-								     <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-								</tr>	  
-								 <tr>
-									<td data-label="Sponsor ID">101</td>
-									<td data-label="Sponsor">Miller's Apple Hill</td>
-									<td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-								</tr>
-								<tr>
-									<td data-label="Sponsor ID">307</td>
-									<td data-label="Sponsor">Apple Bee's</td>
-								     <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-								</tr>	  
-								 <tr>
-									<td data-label="Sponsor ID">101</td>
-									<td data-label="Sponsor">Miller's Apple Hill</td>
-									<td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-								</tr>
-								<tr>
-									<td data-label="Sponsor ID">307</td>
-									<td data-label="Sponsor">Apple Bee's</td>
-								     <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-								</tr>	  
-								 <tr>
-									<td data-label="Sponsor ID">101</td>
-									<td data-label="Sponsor">Miller's Apple Hill</td>
-									<td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-								</tr>
-								<tr>
-									<td data-label="Sponsor ID">307</td>
-									<td data-label="Sponsor">Apple Bee's</td>
-								     <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-								</tr>	  
-								 <tr>
-									<td data-label="Sponsor ID">101</td>
-									<td data-label="Sponsor">Miller's Apple Hill</td>
-									<td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-								</tr>
-								  
-								  
-                              </tbody>
+								<tbody>
+									<tr></tr>
+								  <tr >
+									  <td data-label="Sponsor ID">025</td>
+									  <td data-label="Sponsor">Abigail Roberts</td>
+									  <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+								  </tr>	
+								  <tr>
+									  <td data-label="Sponsor ID">307</td>
+									  <td data-label="Sponsor">Apple Bee's</td>
+									   <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+								  </tr>	  
+								   <tr>
+									  <td data-label="Sponsor ID">101</td>
+									  <td data-label="Sponsor">Miller's Apple Hill</td>
+									  <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+								  </tr>
+								  <tr>
+									  <td data-label="Sponsor ID">307</td>
+									  <td data-label="Sponsor">Apple Bee's</td>
+									   <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+								  </tr>	  
+								   <tr>
+									  <td data-label="Sponsor ID">101</td>
+									  <td data-label="Sponsor">Miller's Apple Hill</td>
+									  <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+								  </tr>
+								  <tr>
+									  <td data-label="Sponsor ID">307</td>
+									  <td data-label="Sponsor">Apple Bee's</td>
+									   <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+								  </tr>	  
+								   <tr>
+									  <td data-label="Sponsor ID">101</td>
+									  <td data-label="Sponsor">Miller's Apple Hill</td>
+									  <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+								  </tr>
+								  <tr>
+									  <td data-label="Sponsor ID">307</td>
+									  <td data-label="Sponsor">Apple Bee's</td>
+									   <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+								  </tr>	  
+								   <tr  (click)="highlight('','')">
+									  <td data-label="Sponsor ID">101</td>
+									  <td data-label="Sponsor">Miller's Apple Hill</td>
+									  <td data-label="Remove">
+										  <button class="icon" (click)="confirmRemoveSponsor($event, '1','1')"><span></span> <i class="fa fa-trash-o"
+										  aria-hidden="true"></i></button>
+									  </td>
+								  </tr>
+									
+									
+								</tbody>
                             </perfect-scrollbar > 
 							</table> 
 							<div class="paginationWrapper mt-4 text-left">
@@ -105,14 +109,15 @@
 						  <div class="tab-pane  active" id="home">
                             <mat-tab-group #tabGroup>
                                 <mat-tab  class="nav-link active nav nav-tabs" label="Sponsor Info">
+                                    <form #sponsorInfoForm="ngForm" name="sponsorInfoForm" (ngSubmit)="sponsorInfoForm.valid && addSponsor(sponsorInfoForm)" novalidate >
 							 <div class="card">
 							   <div class="card-body">
 								  <div class="row">
 								    <div class="col-sm-6">
 									  <div class="form-group">
 									    <label>Sponsor Name <span>*</span></label>	
-                                        <input type="text" class="form-control" placeholder="Sponsor Name"/>
-                                        <span class="help-block" >Sponsor Name is
+                                        <input type="text" class="form-control" placeholder="Sponsor Name" #sponsorName="ngModel" name="sponsorName" [(ngModel)]="sponsorInfo.SponsorName" required />
+                                        <span class="help-block" *ngIf="sponsorName.errors?.required && (sponsorName.touched || sponsorInfoForm.submitted)">Sponsor Name is
                                             required</span>
 								      </div>  
 									  <div class="form-group">
@@ -125,43 +130,51 @@
 								      </div> 
 									<div class="form-group">
 									    <label>Email</label>	
-										<input type="text" class="form-control" placeholder="Email"/>
+										<input type="email" class="form-control" placeholder="Email" #email="ngModel" name="email" [(ngModel)]="sponsorInfo.Email" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" />
+                                        <span class="help-block" *ngIf="email.errors?.required && (email.touched || sponsorInfoForm.submitted)">Email is
+                                            required</span>
+                                         <span class="help-block" *ngIf="!email.errors?.required && email.errors?.pattern">Email is
+                                            invalid</span>
 								      </div> 
 									<div class="form-group">
 									    <label>Address <span>*</span></label>	
-                                        <input type="text" class="form-control" placeholder="Address"/>
-                                        <span class="help-block" >Address  is
+                                        <input type="text" class="form-control" placeholder="Address" #address="ngModel" name="address" [(ngModel)]="sponsorInfo.Address" required />
+                                        <span class="help-block" *ngIf="address.errors?.required && (address.touched || sponsorInfoForm.submitted)">Address is
                                             required</span>
-								      </div> 
-									<div class="form-group">
-									    <label>City <span>*</span></label>	
-										<select class="form-control">
-											<option value="0" selected>City</option>												
-                                        </select>
-                                        <span class="help-block" >City  is
-                                            required</span>
-									  </div> 
+								      </div> 									 
 									  
 									<div class="row">
 										<div class="col-md-7">
 											<div class="form-group">
 												<label>State <span>*</span></label>	
-												<select class="form-control">
+												<select class="form-control" placeholder="State" name="state" #state="ngModel" [(ngModel)]="sponsorInfo.State" required>
 													<option value="0" selected>State</option>												
                                                 </select>
-                                                <span class="help-block" >State is
+                                                <span class="help-block" *ngIf="state.errors?.required && (state.touched || sponsorInfoForm.submitted)" >State is
                                                     required</span>
 											</div>
 										</div>
 										<div class="col-md-5">
 											<div class="form-group">
 												<label>Zip Code <span>*</span></label>	
-                                                <input type="text" class="form-control" placeholder="Zip Code"/>
-                                                <span class="help-block" >Zip is
-                                                    required</span>
+                                                <input type="text" class="form-control" maxlength="5" pattern="^[0-9]{5}(?:-[0-9]{4})?$" placeholder="Zip Code" #zipcode="ngModel" name="zipcode" [(ngModel)]="sponsorInfo.ZipCode" required />
+                                        <span class="help-block"
+                                        *ngIf="zipcode.errors?.required && (zipcode.touched || sponsorInfoForm.submitted)">Zip
+                                        is
+                                        required</span>
+                                    <span class="help-block"
+                                        *ngIf="!zipcode.errors?.required && zipcode.errors?.pattern">Zip is invalid</span>
 											</div> 
 										</div>
 									</div>
+									<div class="form-group">
+									    <label>City <span>*</span></label>	
+										<select class="form-control" placeholder="city" name="city" #city="ngModel" [(ngModel)]="sponsorInfo.City" required>
+											<option value="0" selected>City</option>												
+                                        </select>
+                                        <span class="help-block" *ngIf="city.errors?.required && (city.touched || sponsorInfoForm.submitted)">City  is
+                                            required</span>
+									  </div>
 									
 								    </div> 
 								   <div class="col-sm-6">
@@ -176,14 +189,15 @@
 								   </div>
 									 <div class="col-sm-12">
 									   <div class="buttons text-right">
-										 <button class="btn btn-red btnCss roundBtn">Next</button>  
+										 <button (click)='tabGroup.selectedIndex = 1' class="btn btn-red btnCss roundBtn">Next</button>  
 										 <button class="btn btn-red btnCss roundBtn">Submit</button> 
 									   </div> 
 									 </div>
 								  </div>
 
 								</div> 
-							 </div> 
+                             </div> 
+                            </form>
                             </mat-tab>
 
 						  <mat-tab  class="nav-link active nav nav-tabs" label="Exhibitor">
@@ -191,7 +205,7 @@
 							   <div class="card-body">  
                                 
 							   		<div class="table-responsive tableTab" id="contentscroll2">
-										<table class="table table-bordered">
+										<table class="table table-bordered tableBodyScroll">
 										<thead>
 											<tr>
 												<th>Exhibitor ID</th> 
@@ -203,7 +217,7 @@
 												<th>Remove</th> 
 											</tr>	
                                         </thead> 
-                                        
+										<perfect-scrollbar class="nicescrollBar-2">
                                             <tbody>                                                
                                                 <tr>
                                                     <td data-label="Exhibitor ID">2536</td>
@@ -341,8 +355,7 @@
                                                     <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
                                                 </tr>
                                                 <tr>
-                                                    <td data-label="Exhibitor ID"></td>
-                                                    <td data-label="Exhibitor Name">
+                                                    <td data-label="Exhibitor Name" colspan="2">
                                                         <select class="dynDataSeclect">
                                                             <option>Select Exhibitor</option>
                                                             <option>0036 Lowe Abigail</option>
@@ -351,7 +364,7 @@
                                                             <option>0809 Morgan Mya</option>
                                                         </select>
                                                     </td>
-                                                    <td data-label="Sponsor Type">
+                                                    <td data-label="Sponsor Type" colspan="2">
                                                         <select class="dynDataSeclect">
                                                             <option>Sponsor Type</option>
                                                             <option>Ad</option>
@@ -360,22 +373,19 @@
                                                             <option>Patron</option>
                                                         </select>
                                                     </td>
-                                                    <td data-label="ID Number"></td>
-                                                    <td data-label="ID Number"></td>
-                                                    <td data-label="Birth Year"></td>
-                                                    <td data-label="Remove"></td>
+                                                    <td colspan="3"></td>
                                                 </tr>
                                             </tbody>
                                         
-                                        
+										</perfect-scrollbar>
                                             
 										</table> 
                                     </div>
                                 
 								</div>
 								<div class="actionBtn text-right mt-3 mb-3 ">
-									<button class="btn btn-red btnCss roundBtn">Previous</button>
-									<button class="btn btn-red btnCss roundBtn">Next</button>
+									<button (click)='tabGroup.selectedIndex = 0' class="btn btn-red btnCss roundBtn">Previous</button>
+									<button (click)='tabGroup.selectedIndex = 2' class="btn btn-red btnCss roundBtn">Next</button>
 									<button class="btn btn-red btnCss roundBtn">+ Exhibitor</button>
 									<button class="btn btn-red btnCss roundBtn">Submit</button>
 								</div>
@@ -389,7 +399,7 @@
 								<div class="card">
 									<div class="card-body">    
 										<div class="table-responsive tableTab">
-											<table class="table table-bordered">
+											<table class="table table-bordered tableBodyScroll">
 											<thead>
 												<tr>
 													<th>Class Number</th> 
@@ -399,6 +409,7 @@
 													<th>Remove</th> 
 												</tr>	
 											</thead> 
+											<perfect-scrollbar class="nicescrollBar-2">
 											<tbody>
 												<tr>
 													<td data-label="Class Number">10W</td>
@@ -445,8 +456,7 @@
 												</tr>
 												
 												<tr>
-													<td data-label="Class Number"> </td>
-													<td data-label="Class Name">
+													<td data-label="Class Name" colspan="2">
 														<select class="dynDataSeclect">
 															<option>Select Class</option>
 															<option>8E Content Pony/Age 13-15</option>
@@ -454,17 +464,16 @@
 															<option>10w Poles Horse/Age 12 & under</option>
 														</select>
 													</td>
-													<td data-label="Age Group"></td>
-													<td data-label="Exhibitor"></td>
-													<td data-label="Remove"></td>
+													<td colspan="3"></td>
 												</tr>
 											</tbody>
+										</perfect-scrollbar>
 											</table> 
 										</div>
 										
 									</div>
 									<div class="actionBtn mt-3 mb-3 text-right">
-										<button class="btn btn-red btnCss roundBtn">Previous</button>
+										<button (click)='tabGroup.selectedIndex = 1' class="btn btn-red btnCss roundBtn">Previous</button>
 										<button class="btn btn-red btnCss roundBtn">+ Class</button>
 										<button class="btn btn-red btnCss roundBtn">Submit</button>
 									</div>
