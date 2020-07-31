@@ -36,7 +36,7 @@ namespace AAYHS.API.Controllers
         /// </summary>
         /// <param name></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpGet]
         public IActionResult GetStates()
         {
             _mainResponse = _globalCodeService.GetAllStates();
