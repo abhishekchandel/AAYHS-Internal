@@ -39,8 +39,8 @@ namespace AAYHS.Core.DTOs.Response
         public SponsorExhibitorResponse SponsorExhibitorResponse { get; set; }
         public ResultExhibitorDetails ResultExhibitorDetails { get; set; }
         public GetAllBackNumber GetAllBackNumber { get; set; }
-
-
+        public CityResponse CityResponse { get; set; }
+        public StateResponse StateResponse { get; set; }
     }
    
     public class Response<T> : BaseResponse

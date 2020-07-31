@@ -220,6 +220,26 @@ namespace AAYHS.Service.Service
             }
             return _mainResponse;
         }
+        public async Task<MainResponse>DeleteClassExhibitor(int ExhibitorClassId, string actionBy)
+        {
+            var classExhibitor = _exhibitorClassRepositor.GetSingle(x => x.ExhibitorClassId == ExhibitorClassId);
+            if (classExhibitor!=null)
+            {
+                classExhibitor.IsDeleted = true;
+                classExhibitor.DeletedBy = actionBy;
+                classExhibitor.DeletedDate = DateTime.Now;
+                await _exhibitorClassRepositor.UpdateAsync(classExhibitor);
+
+                _mainResponse.Success = true;
+                _mainResponse.Message = Constants.CLASS_EXHIBITOR_DELETED;
+            }
+            else
+            {
+                _mainResponse.Success = true;
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+            }
+            return _mainResponse;
+        }
         public async Task<MainResponse> RemoveClass(int ClassId, string actionBy)
         {
             var _class = _classRepository.GetSingle(x => x.ClassId == ClassId);

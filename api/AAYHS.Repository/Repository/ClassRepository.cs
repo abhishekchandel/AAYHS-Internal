@@ -95,7 +95,11 @@ namespace AAYHS.Repository.Repository
                     });
             _MainResponse.GetClass = data.FirstOrDefault();
             return _MainResponse;           
-        }                      
+        }    
+        //public MainResponse GetExhibitorHorses(int ExhibitorId)
+        //{
+
+        //}
         public MainResponse GetClassEntries(ClassRequest classRequest)
         {
             IEnumerable<GetClassEntries> data;

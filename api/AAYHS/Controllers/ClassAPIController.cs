@@ -114,6 +114,20 @@ namespace AAYHS.API.Controllers
             return new OkObjectResult(_jsonString);
         }
         /// <summary>
+        /// This api used to delete class exhibitor
+        /// </summary>
+        /// <param name="ExhibitorClassId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        //[Authorize]
+        public async Task<IActionResult> DeleteClassExhibitor(int ExhibitorClassId)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = await _classService.DeleteClassExhibitor(ExhibitorClassId, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
         /// This api used for removing the class
         /// </summary>
         /// <param name="removeClass"></param>

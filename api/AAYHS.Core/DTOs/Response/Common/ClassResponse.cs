@@ -70,4 +70,9 @@ namespace AAYHS.Core.DTOs.Response.Common
         public decimal AmountPaid { get; set; }
         public decimal AmountDue { get; set; }
     }
+    public class GetExhibitorHorses
+    {
+        public int HorseId { get; set; }
+    }
+
 }

@@ -142,6 +142,8 @@ namespace AAYHS
             services.AddTransient<IExhibitorClassRepository, ExhibitorClassRepository>();
             services.AddTransient<ISplitClassRepository, SplitClassRepository>();
             services.AddTransient<IResultRepository, ResultRepository>();
+            services.AddTransient<ICityRepository, CityRepository>();
+            services.AddTransient<IStateRepository, StateRepository>();
 
             services.AddControllers();
         }
