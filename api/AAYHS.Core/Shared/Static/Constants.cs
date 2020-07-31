@@ -12,6 +12,7 @@ namespace AAYHS.Core.Shared.Static
         public const string CLASS_UPDATED = "Class updated successfully";
         public const string CLASS_EXHIBITOR = "Exhibitor added successfully";
         public const string CLASS_REMOVED = "Class removed successfully";
+        public const string CLASS_EXHIBITOR_DELETED = "Exhibitor deleted successfully";
         public const string SPLIT_CREATED = "Class Splited successfully";
         public const string CLASS_RESULT_ADDED = "Class result added successfully";
         public const string ERROR_OCCURRED = "Error Occurred";

@@ -18,6 +18,7 @@ namespace AAYHS.Core.DTOs.Response.Common
     public class GetAllClasses
     {
         public List<ClassResponse> classResponses { get; set; }
+        public int TotalRecords { get; set; }
     }
     public class GetClass
     {
@@ -32,6 +33,7 @@ namespace AAYHS.Core.DTOs.Response.Common
     public class GetClassAllExhibitors
     {
         public List<GetClassExhibitors> getClassExhibitors { get; set; }
+
     }
     public class GetClassExhibitors
     {
@@ -41,6 +43,7 @@ namespace AAYHS.Core.DTOs.Response.Common
     public class GetAllClassEntries
     {
         public List<GetClassEntries> getClassEntries { get; set; }
+        public int TotalRecords { get; set; }
     }
     public class GetClassEntries
     {
@@ -70,4 +73,9 @@ namespace AAYHS.Core.DTOs.Response.Common
         public decimal AmountPaid { get; set; }
         public decimal AmountDue { get; set; }
     }
+    public class GetExhibitorHorses
+    {
+        public int HorseId { get; set; }
+    }
+
 }
