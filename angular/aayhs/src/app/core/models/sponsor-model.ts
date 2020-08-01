@@ -5,8 +5,8 @@ export interface SponsorInformationViewModel
     Phone:string;
     Email:string;
     Address:string;
-    City:string;
-    State:string;
+    CityId:number;
+    StateId:number;
     ZipCode:string;
     AmountReceived :number;
     SponsorId:number;

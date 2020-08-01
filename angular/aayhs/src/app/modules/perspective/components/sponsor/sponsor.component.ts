@@ -30,8 +30,8 @@ export class SponsorComponent implements OnInit {
   @ViewChild('tabGroup') tabGroup: MatTabGroup;
   @ViewChild('perfect-scrollbar ') perfectScrollbar: PerfectScrollbar
   selectedRowIndex: any;
-
-
+  citiesResponse: any;
+  statesResponse: any;
   result: string = '';
   totalItems: number = 0;
   enablePagination: boolean = true;
@@ -44,8 +44,8 @@ export class SponsorComponent implements OnInit {
     Phone: null,
     Email: null,
     Address: null,
-    City: null,
-    State: null,
+    CityId: null,
+    StateId: null,
     ZipCode: null,
     AmountReceived: 0,
     SponsorId: 0,
@@ -71,14 +71,13 @@ export class SponsorComponent implements OnInit {
   ) { }
   ngOnInit(): void {
     this.getAllSponsors();
+    this.getAllStates()
   }
 
 
   getAllSponsors() {
-    debugger;
     this.sponsorService.getAllSponsers(this.baseRequest).subscribe(response => {
-      this.sponsorsList = response.Data.sponsorResponses;
-      debugger;
+      // this.sponsorsList = response.Data.sponsorResponses;
       console.log(this.sponsorsList)
     }, error => {
     }
@@ -96,12 +95,18 @@ export class SponsorComponent implements OnInit {
 
   addSponsor = (sponsor) => {
     this.loading = true;
+    this.sponsorInfo.AmountReceived=Number(this.sponsorInfo.AmountReceived)
+    this.sponsorInfo.SponsorId=this.sponsorInfo.SponsorId !=null ? this.sponsorInfo.SponsorId : 0
+
     this.sponsorService.addSponsor(this.sponsorInfo).subscribe(response => {
-      this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
+      this.snackBar.openSnackBar(response.message, 'Close', 'green-snackbar');
+      this.loading = false;
+     this. resetForm()
     }, error => {
       this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
+      this.loading = false;
+
     })
-    this.loading = false;
   }
 
 
@@ -163,8 +168,8 @@ export class SponsorComponent implements OnInit {
     this.sponsorInfo.Phone = null;
     this.sponsorInfo.Email = null;
     this.sponsorInfo.Address = null;
-    this.sponsorInfo.City = null;
-    this.sponsorInfo.State = null;
+    this.sponsorInfo.CityId = null;
+    this.sponsorInfo.StateId= null;
     this.sponsorInfo.ZipCode = null;
     this.sponsorInfo.AmountReceived = 0;
     this.sponsorInfo.SponsorId = 0;
@@ -195,4 +200,29 @@ export class SponsorComponent implements OnInit {
         : 'arrow-up';
     }
   }
+
+  getCities(id: number) {
+    this.sponsorService.getCities(Number(id)).subscribe(response => {
+        this.citiesResponse = response.Data.City;
+    }, error => {
+
+    })
+  }
+    getAllStates() {
+      this.loading = true;
+      this.sponsorService.getAllStates().subscribe(response => {
+          this.statesResponse = response.Data.State;
+          this.loading = false;
+      }, error => {
+          this.loading = false;
+      })
+  }
+
+  getStateName(e) {
+    this.sponsorInfo.StateId =Number( e.target.options[e.target.selectedIndex].value)
 }
+getCityName(e) {
+  this.sponsorInfo.CityId = Number(e.target.options[e.target.selectedIndex].value)
+}
+}
+

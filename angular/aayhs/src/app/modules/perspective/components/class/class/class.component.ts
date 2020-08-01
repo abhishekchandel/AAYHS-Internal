@@ -1,11 +1,15 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
-import{  ClassViewModel} from '../../../../../core/models/class-model'
+import{  ClassViewModel,ClassInfoModel} from '../../../../../core/models/class-model'
 import {  ConfirmDialogComponent,ConfirmDialogModel} from '../../../../../shared/ui/modals/confirmation-modal/confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import {  AddSplitClassModalComponent} from '../../../../../shared/ui/modals/add-split-class-modal/add-split-class-modal.component';
 import{ClassService} from '../../../../../core/services/class.service';
 import{BaseRecordFilterRequest} from '../../../../../core/models/base-record-filter-request-model'
+import { MatSnackbarComponent } from '../../../../../shared/ui/mat-snackbar/mat-snackbar/mat-snackbar.component'
+import { MatTabGroup } from '@angular/material/tabs'
+import { NgForm } from '@angular/forms';
+import{MatTabChangeEvent}from '@angular/material/tabs'
 
 const ELEMENT_DATA: ClassViewModel[] = [
   {ClassNumber: '103 N', ClassName: 'Barrels Pony',AgeGroup:'15',Enteries:15},
@@ -20,25 +24,41 @@ const ELEMENT_DATA: ClassViewModel[] = [
   styleUrls: ['./class.component.scss']
 })
 export class ClassComponent implements OnInit {
+  @ViewChild('tabGroup') tabGroup: MatTabGroup;
+  @ViewChild('classInfoForm') classInfoForm: NgForm;
+
+
   classesDisplayedColumns: string[] = ['ClassNumber', 'ClassName', 'AgeGroup','Enteries','Remove'];
   data: ClassViewModel[] = ELEMENT_DATA;
   result: string = '';
+  selectedRowIndex: any;
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  totalItems: number=10;
+  totalItems: number=0;
   sortColumn:string="";
   reverseSort : boolean = false
-
+  classesList:any
+  loading = false;
+  classEntries:any;
   baseRequest :BaseRecordFilterRequest={
     Page: 1,
     Limit: 10,
     OrderBy: 'ClassId',
     OrderByDescending: false,
     AllRecords: false
-   }
+   };
+   classInfo: ClassInfoModel = {
+    ClassHeader:null,
+    ClassNumber:null,
+    ClassName:null,
+    Email:null,
+    AgeGroup:null,
 
+  }
   constructor(
     public dialog: MatDialog,
-    private classService: ClassService
+    private classService: ClassService,
+    private snackBar: MatSnackbarComponent
   ) { }
 
   ngOnInit(): void {
@@ -46,21 +66,23 @@ export class ClassComponent implements OnInit {
   }
 
 
-  confirmRemoveClass(index, data): void {
-    const message = `Are you sure you want to remove this class?`;
+confirmRemoveClass(e, index, data): void {
+    e.stopPropagation();
+    const message = `Are you sure you want to remove the class?`;
     const dialogData = new ConfirmDialogModel("Confirm Action", message);
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       maxWidth: "400px",
       data: dialogData
     });
-
     dialogRef.afterClosed().subscribe(dialogResult => {
       this.result = dialogResult;
-      // this.removeCartObit(data.ObituaryId, this.result)
+      // if (this.result) this.deleteSponsor(data)
+      // this.data=   this.data.splice(index,1);
+      debugger;
     });
 
   }
-  showSplitClass()
+showSplitClass()
 {
   const dialogRef = this.dialog.open(AddSplitClassModalComponent, {
     maxWidth: "400px",
@@ -74,8 +96,10 @@ export class ClassComponent implements OnInit {
   });
   }
 
-  getAllClasses(){
+getAllClasses(){
     this.classService.getAllClasses(this.baseRequest).subscribe(response =>{
+      this.classesList=response.Data.classesResponse;
+      this.totalItems=response.Data.TotalRecords
     },error=>{
     }
     )
@@ -93,4 +117,72 @@ getSort(column){
   : 'arrow-up';
   }
 }
+
+highlight(id, i) {
+  this.selectedRowIndex = i;
+  //  this.getSponsorDetails(id);
+
+}
+getClassDetails = (id: number) => {
+  this.classService.getClassById(id).subscribe(response => {
+    this.classInfo = response.Data
+  }, error => {
+  }
+  )
+}
+
+addClass = (sponsor) => {
+  this.loading = true;
+  this.classService.createUpdateClass(this.classInfo).subscribe(response => {
+    this.snackBar.openSnackBar(response.message, 'Close', 'green-snackbar');
+    this.loading = false;
+   this. resetForm()
+  }, error => {
+    this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
+    this.loading = false;
+
+  })
+}
+
+resetForm() {
+  this.classInfo.ClassHeader = null;
+  this.classInfo.ClassName = null;
+  this.classInfo.ClassNumber = null;
+  this.classInfo.AgeGroup = null;
+ 
+  this.classInfoForm.resetForm();
+  this.tabGroup.selectedIndex = 0
+}
+
+getClassEntries(id:number){
+  this.loading = true;
+  this.classService.getClassEnteries(id).subscribe(response => {
+    debugger;
+    this.classEntries=response.Data.getClassEntries;
+    this.loading = false;
+   this. resetForm()
+  }, error => {
+    this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
+    this.loading = false;
+
+  })
+}
+
+onChange(event: MatTabChangeEvent) {
+  debugger;
+  const tab = event.index;
+  console.log(tab);
+  if(tab===0)
+   {
+    //  this.getClassDetails()
+    }
+    else if(tab===1)
+    {
+      // this.getClassEntries()
+    }
+    else{
+
+    }
+}
+
 }

@@ -5,9 +5,6 @@ export interface ClassInfoModel
     ClassName:string;
     Email:string;
     AgeGroup:string;
-    ClassSponsorName:string;
-    ClassEnteries:Array<ClassEnteries>;
-    ClassResults:Array<ClassResults>
 }
 
 export interface ClassEnteries{

@@ -17,35 +17,35 @@ const routes: Routes = [
         path: "sponsor",
         component: SponsorComponent,
         data: {
-          title: "Sponser"
+          title: "Sponsers"
         }
       },
       {
         path: "horse",
         component: HorseComponent,
         data: {
-          title: "Horse"
+          title: "Horses"
         }
       },
       {
         path: "exhibitor",
         component: ExhibitorComponent,
         data: {
-          title: "Exhibitor"
+          title: "Exhibitors"
         }
       },
       {
         path: "class",
         component: ClassComponent,
         data: {
-          title: "Class"
+          title: "Classes"
         }
       },
       {
         path: "group",
         component: GroupComponent,
         data: {
-          title: "Group"
+          title: "Groups"
         }
       },
     ],

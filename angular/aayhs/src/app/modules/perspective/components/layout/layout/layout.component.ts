@@ -12,7 +12,6 @@ export class LayoutComponent implements OnInit {
     router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.title = this.getTitle(router.routerState, router.routerState.root).join('-');
-        console.log('title', this.title);
       }
     });
   }

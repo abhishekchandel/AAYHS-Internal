@@ -31,4 +31,11 @@ export class SponsorService {
   deleteSponsor(id:number){
     return this.http.delete<any>(`${this.api}SponsorAPI/DeleteSponsor?sponsorId=${id}`);
   }
+
+  getCities(stateId:number){
+    return this.http.post<any>(`${this.api}CommonAPI/GetCities?stateId=${stateId}`,"");
+  }
+  getAllStates(){
+    return this.http.post<any>(`${this.api}CommonAPI/GetStates`,{});
+  }
 }

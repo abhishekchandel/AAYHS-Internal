@@ -21,7 +21,7 @@
 				 <th >Age Group
 				
 				 </th>
-				 <th>Enteries
+				 <th>Entries
 					
 				 </th>
 				 <th>Remove</th> 
@@ -29,55 +29,17 @@
 		   </thead> 
 		   <perfect-scrollbar class="nicescrollBar-1"> 
 			   <tbody>
-				 <tr>
-					 <td data-label="Class No.">103 N</td>
-					 <td data-label="Class Name">Barrels Pony</td>
-					 <td data-label="Age Group">15</td>
-					 <td data-label="Enteries">15</td>
-					 <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+				 <tr *ngFor="let class of classesList;let i = index " (click)="highlight(class.ClassId,i)" [ngClass]="{'blueRow': selectedRowIndex == i}">
+					 <td data-label="Class No.">{{class.ClassNumber}}</td>
+					 <td data-label="Class Name">{{class.Name}}</td>
+					 <td data-label="Age Group">{{class.AgeGroup}}</td>
+					 <td data-label="Enteries">{{class.Entries}}</td>
+					 <td data-label="Remove">
+						<button class="icon" (click)="confirmRemoveClass($event, i,class.ClassId)"><span></span> <i class="fa fa-trash-o"
+							aria-hidden="true"></i></button>
+						</td>
 				 </tr>
-				 <tr>
-					 <td data-label="Class No.">121 W</td>
-					 <td data-label="Class Name">Barrels Pony</td>
-					 <td data-label="Age Group">18</td>
-					 <td data-label="Enteries">11</td>
-					 <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-				 </tr>
-				 <tr>
-					 <td data-label="Class No.">121 W</td>
-					 <td data-label="Class Name">Barrels Pony</td>
-					 <td data-label="Age Group">18</td>
-					 <td data-label="Enteries">11</td>
-					 <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-				 </tr>
-				 <tr>
-					 <td data-label="Class No.">121 W</td>
-					 <td data-label="Class Name">Barrels Pony</td>
-					 <td data-label="Age Group">18</td>
-					 <td data-label="Enteries">11</td>
-					 <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-				 </tr>
-				 <tr>
-					 <td data-label="Class No.">121 W</td>
-					 <td data-label="Class Name">Barrels Pony</td>
-					 <td data-label="Age Group">18</td>
-					 <td data-label="Enteries">11</td>
-					 <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-				 </tr>
-				 <tr>
-					 <td data-label="Class No.">121 W</td>
-					 <td data-label="Class Name">Barrels Pony</td>
-					 <td data-label="Age Group">18</td>
-					 <td data-label="Enteries">11</td>
-					 <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-				 </tr>
-				 <tr>
-					 <td data-label="Class No.">121 W</td>
-					 <td data-label="Class Name">Barrels Pony</td>
-					 <td data-label="Age Group">18</td>
-					 <td data-label="Enteries">11</td>
-					 <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-				 </tr>				 
+																									 
 			   </tbody>
 			</perfect-scrollbar >
 		 </table> 
@@ -93,8 +55,8 @@
 			 </ul>
 		 </div>
 
-		 <!-- <mat-paginator [length]="totalItems" [pageSizeOptions]="[10]" >
-		</mat-paginator> -->
+		 <mat-paginator [length]="totalItems" [pageSizeOptions]="[10]" >
+		</mat-paginator>
 
 	   </div>
 	</div>
@@ -117,27 +79,36 @@
 	 <!-- Tab panes -->
 	 <div class="tab-content">
 	   <div class="tab-pane  active" id="home">
-		<mat-tab-group #tabGroup>
+		<mat-tab-group #tabGroup (selectedTabChange)="onChange($event)">
 			<mat-tab  class="nav-link active nav nav-tabs" label="Class Info">
+				<form #classInfoForm="ngForm" name="classInfoForm" (ngSubmit)="classInfoForm.valid && addClass(classInfoForm)" novalidate >
 		  <div class="card">
 			<div class="card-body">
 			   <div class="row">
 				 <div class="col-sm-6">
 					 <div class="form-group">
 						 <label>Class Header <span>*</span></label>	
-						 <input type="text" class="form-control" placeholder="Class Header"/>
+						 <input type="text" class="form-control" #classHeader="ngModel" name="classHeader" required [(ngModel)]="classInfo.ClassHeader" placeholder="Class Header"/>
+						 <span class="help-block" *ngIf="classHeader.errors?.required && (classHeader.touched || classInfoForm.submitted)">Class Header is
+							required</span>
 					 </div>
 					 <div class="form-group">
 						 <label>Class Number <span>*</span></label>	
-						 <input type="text" class="form-control" placeholder="Class Number"/>
+						 <input type="text" class="form-control" #classNumber="ngModel" required name="classNumber" [(ngModel)]="classInfo.ClassNumber" placeholder="Class Number"/>
+						 <span class="help-block" *ngIf="classNumber.errors?.required && (classNumber.touched || classInfoForm.submitted)">Class Number is
+							required</span>
 					 </div>  
 					 <div class="form-group">
 						 <label>Class Name <span>*</span></label>	
-						 <input type="text" class="form-control" placeholder="Class Name"/>
+						 <input type="text" class="form-control"  #className="ngModel" required name="className" [(ngModel)]="classInfo.ClassName" placeholder="Class Name"/>
+						 <span class="help-block" *ngIf="className.errors?.required && (className.touched || classInfoForm.submitted)">Class Name is
+							required</span>
 					 </div> 
 					 <div class="form-group">
 						<label>Age Group <span>*</span></label>	
-						<input type="text" class="form-control" placeholder="Age Group"/>
+						<input type="text" class="form-control" #ageGroup="ngModel" required name="ageGroup" [(ngModel)]="classInfo.AgeGroup" placeholder="Age Group"/>
+						<span class="help-block" *ngIf="ageGroup.errors?.required && (ageGroup.touched || classInfoForm.submitted)">Age group is
+							required</span>
 					</div>
 					 
 				 </div> 
@@ -285,6 +256,8 @@
 			   </div>
 			  </div> 
 		  </div>
+		</form>
+
 		</mat-tab>
 
 		<mat-tab  class="nav-link active nav nav-tabs" label="Enteries">
@@ -690,14 +663,14 @@
 								</tr>
 								<tr>
 									<td></td>
-									<td data-label="Back No" colspan="3">
+									<td data-label="Back No" colspan="2">
 									   <select class="dynDataSeclect">
 										   <option>0029 Mathews Averie</option>
 										   <option>0036 Lowe Abigail</option>
 										   <option>0809 Morgan Mya</option>
 									   </select>
 									</td>
-									<td colspan="4"></td>
+									<td colspan="5"></td>
 								</tr>
 								
 							</tbody>

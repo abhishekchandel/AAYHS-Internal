@@ -122,11 +122,11 @@
 								      </div>  
 									  <div class="form-group">
 									    <label>Contact Name</label>	
-										<input type="text" class="form-control" placeholder="Contact Name"/>
+										<input type="text" #contactName="ngModel" name="contactName" [(ngModel)]="sponsorInfo.ContactName" class="form-control" placeholder="Contact Name"/>
 								      </div> 
 									<div class="form-group">
 									    <label>Phone</label>	
-										<input type="text" class="form-control" placeholder="Phone"/>
+										<input mask="(000) 000-0000" #phone="ngModel" name="phone" [(ngModel)]="sponsorInfo.Phone" type="text" class="form-control" placeholder="Phone"/>
 								      </div> 
 									<div class="form-group">
 									    <label>Email</label>	
@@ -147,8 +147,16 @@
 										<div class="col-md-7">
 											<div class="form-group">
 												<label>State <span>*</span></label>	
-												<select class="form-control" placeholder="State" name="state" #state="ngModel" [(ngModel)]="sponsorInfo.State" required>
-													<option value="0" selected>State</option>												
+												<select required class="form-control" placeholder="State" name="state" #state="ngModel" [(ngModel)]="sponsorInfo.StateId" (change)="getCities($event.target.value);getStateName($event)">
+													
+													<option value="null" disabled="true" [selected]="true">
+														Select State
+													</option>
+													<option *ngFor="let state of statesResponse"
+														[value]="state.StateId">{{state.Name}} -
+														{{state.Abbreviations}}
+													</option>
+																									
                                                 </select>
                                                 <span class="help-block" *ngIf="state.errors?.required && (state.touched || sponsorInfoForm.submitted)" >State is
                                                     required</span>
@@ -169,8 +177,11 @@
 									</div>
 									<div class="form-group">
 									    <label>City <span>*</span></label>	
-										<select class="form-control" placeholder="city" name="city" #city="ngModel" [(ngModel)]="sponsorInfo.City" required>
-											<option value="0" selected>City</option>												
+										<select required class="form-control" placeholder="city" (change)="getCityName($event)" name="city" #city="ngModel" [(ngModel)]="sponsorInfo.CityId" >
+											<option value="0" selected>City</option>
+											<option *ngFor="let city of citiesResponse"
+														[value]="city.CityId">{{city.Name}}
+													</option>												
                                         </select>
                                         <span class="help-block" *ngIf="city.errors?.required && (city.touched || sponsorInfoForm.submitted)">City  is
                                             required</span>
@@ -180,11 +191,11 @@
 								   <div class="col-sm-6">
 									<div class="form-group">
 									    <label>Amount Received</label>	
-										<input type="text" class="form-control" placeholder="Amount Received"/>
+										<input type="number" class="form-control" #amountReceieved="ngModel"name="amountReceieved" [(ngModel)]="sponsorInfo.AmountReceived" placeholder="Amount Received"/>
 								      </div> 
 									<div class="form-group">
 									    <label>Sponsor ID</label>	
-										<input type="text" class="form-control" placeholder="Sponsor ID"/>
+										<input type="text"  readonly="true" class="form-control" name="sponsorId" #sponsorId="ngModel" [(ngModel)]="sponsorInfo.SponsorId" placeholder="Sponsor ID"/>
 								      </div>   
 								   </div>
 									 <div class="col-sm-12">
@@ -488,6 +499,6 @@
 						</div>
 					  <!---->
                     </div>
-                    <div class="loaderDiv" *ngIf="loading">
-                        <mat-spinner></mat-spinner>
-                    </div>
+                    <div class="loaderWrapper" *ngIf="loading"> 
+                        <div class="loader"></div>
+                     </div> 
