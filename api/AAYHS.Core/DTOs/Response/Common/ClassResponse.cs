@@ -8,12 +8,13 @@ namespace AAYHS.Core.DTOs.Response.Common
     public class ClassResponse
     {
         public int ClassId { get; set; }
-        public int SponsorId { get; set; }
         public int ClassNumber { get; set; }
         public string Name { get; set; }
         public string Location { get; set; }
         public string AgeGroup { get; set; }
         public int Entries { get; set; }
+        public DateTime ScheduleDate { get; set; }
+        public TimeSpan SchedulTime { get; set; }
     }
     public class GetAllClasses
     {
@@ -22,13 +23,8 @@ namespace AAYHS.Core.DTOs.Response.Common
     }
     public class GetClass
     {
-        public int ClassId { get; set; } 
-        public int ClassNumber { get; set; }
-        public string Name { get; set; }
-        public string Location { get; set; }
-        public string AgeGroup { get; set; }
-        public DateTime ScheduleDate { get; set; }
-        public TimeSpan SchedulTime { get; set; }
+      public List<ClassResponse> classResponse { get; set; }
+      public int TotalRecords { get; set; }
     }
     public class GetClassAllExhibitors
     {
@@ -73,9 +69,15 @@ namespace AAYHS.Core.DTOs.Response.Common
         public decimal AmountPaid { get; set; }
         public decimal AmountDue { get; set; }
     }
+    public class GetExhibitorAllHorses
+    {
+        public List<GetExhibitorHorses> getExhibitorHorses { get; set; }
+        public int TotalRecords { get; set; }
+    }
     public class GetExhibitorHorses
     {
         public int HorseId { get; set; }
+        public string Horse { get; set; }
     }
 
 }

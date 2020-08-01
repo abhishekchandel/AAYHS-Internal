@@ -20,7 +20,6 @@ namespace AAYHS.Core.DTOs.Response
     public class MainResponse : BaseResponse
     {
         public BaseResponse BaseResponse { get; set; }
-        public ClassResponse ClassResponse { get; set; }
         public GetAllClasses GetAllClasses { get; set; }
         public GetClass GetClass { get; set; }
         public GlobalCodeMainResponse GlobalCodeMainResponse { get; set; }
@@ -40,6 +39,7 @@ namespace AAYHS.Core.DTOs.Response
         public GetAllBackNumber GetAllBackNumber { get; set; }
         public CityResponse CityResponse { get; set; }
         public StateResponse StateResponse { get; set; }
+        public GetExhibitorAllHorses GetExhibitorAllHorses { get; set; }
     }
    
     public class Response<T> : BaseResponse

@@ -61,7 +61,7 @@ namespace AAYHS.Service.Service
         public MainResponse GetClass(int ClassId)
         {
             var getClass = _classRepository.GetClass(ClassId);
-            if (getClass.GetClass!=null)
+            if (getClass.GetClass!=null && getClass.GetClass.TotalRecords!=0)
             {
                 _mainResponse.GetClass = getClass.GetClass;
                 _mainResponse.Success = true;
@@ -72,7 +72,7 @@ namespace AAYHS.Service.Service
                 _mainResponse.Success = false;
             }
             return _mainResponse;
-        }
+        }       
         public MainResponse GetClassExhibitors(int ClassId)
         {
             GetClassAllExhibitors getClassAllExhibitors = new GetClassAllExhibitors();
@@ -128,6 +128,23 @@ namespace AAYHS.Service.Service
                 _mainResponse.Message = Constants.NO_RECORD_FOUND;
                 _mainResponse.Success = false;
             }          
+            return _mainResponse;
+        }
+        public MainResponse GetExhibitorHorses(int ExhibitorId)
+        {
+            var exhibotorHorses = _classRepository.GetExhibitorHorses(ExhibitorId);
+            if (exhibotorHorses.GetExhibitorAllHorses != null && exhibotorHorses.GetExhibitorAllHorses.TotalRecords != 0)
+            {
+                _mainResponse.GetExhibitorAllHorses = exhibotorHorses.GetExhibitorAllHorses;
+                _mainResponse.GetExhibitorAllHorses.TotalRecords = exhibotorHorses.GetExhibitorAllHorses.TotalRecords;
+                _mainResponse.Success = true;
+
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+                _mainResponse.Success = false;
+            }
             return _mainResponse;
         }
         public async Task<MainResponse> CreateUpdateClass(AddClassRequest addClassRequest,string actionBy)
