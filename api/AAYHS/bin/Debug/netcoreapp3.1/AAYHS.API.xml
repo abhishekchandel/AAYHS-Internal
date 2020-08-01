@@ -1,0 +1,183 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AAYHS.API</name>
+    </assembly>
+    <members>
+        <member name="M:AAYHS.API.Controllers.ClassAPIController.GetAllClasses(AAYHS.Core.DTOs.Request.ClassRequest)">
+            <summary>
+            This api used for fetching all classes
+            </summary>
+            <param name="classRequest"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AAYHS.API.Controllers.ClassAPIController.CreateClass(AAYHS.Core.DTOs.Request.AddClassRequest)">
+            <summary>
+            This api used for adding the class
+            </summary>
+            <param name="addClassRequest"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AAYHS.API.Controllers.ClassAPIController.AddExhibitorToClass(AAYHS.Core.DTOs.Request.AddClassExhibitor)">
+            <summary>
+            This api used for adding the exhibitor to a class
+            </summary>
+            <param name="addClassExhibitor"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AAYHS.API.Controllers.ClassAPIController.GetClassExhibitors(AAYHS.Core.DTOs.Request.ClassRequest)">
+            <summary>
+            This api used to fetch class exhibitors
+            </summary>
+            <param name="classRequest"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AAYHS.API.Controllers.ClassAPIController.GetClassExhibitorsAndHorses(AAYHS.Core.DTOs.Request.ClassExhibitorHorsesRequest)">
+            <summary>
+            This api used to fetch class exhibitors and horse names
+            </summary>
+            <param name="classRequest"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AAYHS.API.Controllers.ClassAPIController.RemoveClass(AAYHS.Core.DTOs.Request.RemoveClass)">
+            <summary>
+            This api used for removing the class
+            </summary>
+            <param name="removeClass"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AAYHS.API.Controllers.ClassAPIController.SplitClass(AAYHS.Core.DTOs.Request.SplitRequest)">
+            <summary>
+            This api used for split the class
+            </summary>
+            <param name="splitRequest"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AAYHS.API.Controllers.ClassSponsorAPIController.GetAllClassSponsors">
+            <summary>
+            This API is used to get all Class Sponsors.
+            </summary>
+            <param name="No parameter is requiredparameterisrequired"></param>
+            <returns>All Class Sponsors list</returns>
+        </member>
+        <member name="M:AAYHS.API.Controllers.ClassSponsorAPIController.GetAllClassSponsorsWithFilter(AAYHS.Core.DTOs.Request.BaseRecordFilterRequest)">
+            <summary>
+            This API is used to get all Class Sponsors with filters.
+            </summary>
+            <param name="filter parameters is requiredparametersisrequired"></param>
+            <returns>All Class Sponsors list with filter</returns>
+        </member>
+        <member name="M:AAYHS.API.Controllers.ClassSponsorAPIController.GetClassSponsorById(AAYHS.Core.DTOs.Request.GetClassSponsorRequest)">
+            <summary>
+            This API is used to get Class Sponsor by Class Sponsor id.
+            </summary>
+            <param name="Class Sponsor id parameter is requiredSponsoridparameterisrequired"></param>
+            <returns> Single Class Sponsor record</returns>
+        </member>
+        <member name="M:AAYHS.API.Controllers.ClassSponsorAPIController.AddUpdateClassSponsor(AAYHS.Core.DTOs.Request.ClassSponsorRequest)">
+            <summary>
+            This API is used to add new Class Sponsor.
+            </summary>
+            <param name="Class Sponsor detail is requiredSponsordetailisrequired"></param>
+            <returns> success true or false with message</returns>
+        </member>
+        <member name="M:AAYHS.API.Controllers.ClassSponsorAPIController.DeleteClassSponsor(AAYHS.Core.DTOs.Request.GetClassSponsorRequest)">
+            <summary>
+            This API is used to delete existing Class Sponsor.
+            </summary>
+            <param name="Class Sponsor detail with Class Sponsor id is requiredSponsordetailwithClassSponsoridisrequired"></param>
+            <returns> success true or false with message</returns>
+        </member>
+        <member name="M:AAYHS.API.Controllers.ExhibitorAPIController.GetAllExhibitors">
+            <summary>
+            This API is used to get all Exhibitors.
+            </summary>
+            <param name="No parameter is requiredparameterisrequired"></param>
+            <returns>All Exhibitors list</returns>
+        </member>
+        <member name="M:AAYHS.API.Controllers.ExhibitorAPIController.GetAllExhibitorsWithFilter(AAYHS.Core.DTOs.Request.BaseRecordFilterRequest)">
+            <summary>
+            This API is used to get all Exhibitors with filters.
+            </summary>
+            <param name="filter parameters is requiredparametersisrequired"></param>
+            <returns>All Exhibitors list with filter</returns>
+        </member>
+        <member name="M:AAYHS.API.Controllers.ExhibitorAPIController.GetExhibitorById(AAYHS.Core.DTOs.Request.GetExhibitorRequest)">
+            <summary>
+            This API is used to get  Exhibitor by Exhibitor id.
+            </summary>
+            <param name="Exhibitor id parameter is requiredidparameterisrequired"></param>
+            <returns> Single Exhibitor record</returns>
+        </member>
+        <member name="M:AAYHS.API.Controllers.ExhibitorAPIController.AddUpdateExhibitor(AAYHS.Core.DTOs.Request.ExhibitorRequest)">
+            <summary>
+            This API is used to add/update new  Exhibitor.
+            </summary>
+            <param name="Exhibitor detail is requireddetailisrequired"></param>
+            <returns> success true or false with message</returns>
+        </member>
+        <member name="M:AAYHS.API.Controllers.ExhibitorAPIController.DeleteExhibitor(AAYHS.Core.DTOs.Request.GetExhibitorRequest)">
+            <summary>
+            This API is used to delete existing Exhibitor.
+            </summary>
+            <param name="Exhibitor detail with Exhibitor id is requireddetailwithExhibitoridisrequired"></param>
+            <returns> success true or false with message</returns>
+        </member>
+        <member name="M:AAYHS.API.Controllers.SponsorAPIController.GetAllSponsors">
+            <summary>
+            This API is used to get all Sponsors.
+            </summary>
+            <param name="No parameter is requiredparameterisrequired"></param>
+            <returns>All Sponsors list</returns>
+        </member>
+        <member name="M:AAYHS.API.Controllers.SponsorAPIController.GetAllSponsorsWithFilter(AAYHS.Core.DTOs.Request.BaseRecordFilterRequest)">
+            <summary>
+            This API is used to get all Sponsors with filters.
+            </summary>
+            <param name="filter parameters is requiredparametersisrequired"></param>
+            <returns>All Sponsors list with filter</returns>
+        </member>
+        <member name="M:AAYHS.API.Controllers.SponsorAPIController.GetSponsorById(AAYHS.Core.DTOs.Request.GetSponsorRequest)">
+            <summary>
+            This API is used to get  Sponsor by Sponsor id.
+            </summary>
+            <param name="Sponsor id parameter is requiredidparameterisrequired"></param>
+            <returns> Single Sponsor record</returns>
+        </member>
+        <member name="M:AAYHS.API.Controllers.SponsorAPIController.AddUpdateSponsor(AAYHS.Core.DTOs.Request.SponsorRequest)">
+            <summary>
+            This API is used to add/update new  Sponsor.
+            </summary>
+            <param name="Sponsor detail is requireddetailisrequired"></param>
+            <returns> success true or false with message</returns>
+        </member>
+        <member name="M:AAYHS.API.Controllers.SponsorAPIController.DeleteSponsor(AAYHS.Core.DTOs.Request.GetSponsorRequest)">
+            <summary>
+            This API is used to delete existing Sponsor.
+            </summary>
+            <param name="Sponsor detail with Sponsor id is requireddetailwithSponsoridisrequired"></param>
+            <returns> success true or false with message</returns>
+        </member>
+        <member name="M:AAYHS.API.Controllers.SponsorExhibitorAPIController.GetSponsorExhibitorBySponsorId(AAYHS.Core.DTOs.Request.GetSponsorExhibitorRequest)">
+            <summary>
+            This API is used to get all Sponsor Exhibitors .
+            </summary>
+            <param name="Sponsor Id parameter is requiredIdparameterisrequired"></param>
+            <returns> Exhibitors Sponsor list</returns>
+        </member>
+        <member name="M:AAYHS.API.Controllers.SponsorExhibitorAPIController.DeleteSponsorExhibitor(AAYHS.Core.DTOs.Request.DeleteSponsorExhibitorRequest)">
+            <summary>
+            This API is used to delete Exhibitors Sponsor.
+            </summary>
+            <param name="Exhibitor Sponsor Id parameters is requiredSponsorIdparametersisrequired"></param>
+            <returns>Success  true or false with message</returns>
+        </member>
+        <member name="M:AAYHS.API.Controllers.SponsorExhibitorAPIController.AddUpdateSponsorExhibitor(AAYHS.Core.DTOs.Request.SponsorExhibitorRequest)">
+            <summary>
+            This API is used to Add/update  Exhibitor Sponsor.
+            </summary>
+            <param name="Exhibitor Sponsor detail parameter is requiredSponsordetailparameterisrequired"></param>
+            <returns> Success  true or false with message</returns>
+        </member>
+    </members>
+</doc>

@@ -441,3 +441,4 @@ C:\Projects\AbhishekC\AbhishekC\Official\AAYHS-New\api\AAYHS\obj\Debug\netcoreap
 C:\Projects\AbhishekC\AbhishekC\Official\AAYHS-New\api\AAYHS\obj\Debug\netcoreapp3.1\AAYHS.API.csproj.CopyComplete
 C:\Projects\AbhishekC\AbhishekC\Official\AAYHS-New\api\AAYHS\obj\Debug\netcoreapp3.1\AAYHS.API.dll
 C:\Projects\AbhishekC\AbhishekC\Official\AAYHS-New\api\AAYHS\obj\Debug\netcoreapp3.1\AAYHS.API.pdb
+C:\Projects\AAYHS\AAYHS-Internal\api\AAYHS\bin\Debug\netcoreapp3.1\AAYHS.Core.xml

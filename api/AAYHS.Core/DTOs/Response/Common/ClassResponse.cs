@@ -20,6 +20,14 @@ namespace AAYHS.Core.DTOs.Response.Common
         public List<ClassResponse> classesResponse { get; set; }
         public int TotalRecords { get; set; }
     }
+    public class ClassExhibitorHorses
+    {
+        public List<string> ClassExhibitorHorse { get; set; }
+    }
+    public class ClassExhibitorHorses
+    {
+        public List<string> ClassExhibitorHorse { get; set; }
+    }
     public class GetClass
     {
         public int ClassId { get; set; } 

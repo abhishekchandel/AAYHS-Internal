@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Data\\AAYHS.Data.csproj": {}
+    "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Data\\AAYHS.Data.csproj": {}
   },
   "projects": {
-    "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Data\\AAYHS.Data.csproj": {
+    "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Data\\AAYHS.Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Data\\AAYHS.Data.csproj",
+        "projectUniqueName": "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Data\\AAYHS.Data.csproj",
         "projectName": "AAYHS.Data",
-        "projectPath": "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Data\\AAYHS.Data.csproj",
-        "packagesPath": "C:\\Users\\DITSDEV44\\.nuget\\packages\\",
-        "outputPath": "C:\\Projects\\AbhishekC\\AbhishekC\\Official\\AAYHS-New\\api\\AAYHS.Data\\obj\\",
+        "projectPath": "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Data\\AAYHS.Data.csproj",
+        "packagesPath": "C:\\Users\\Ditsdev17\\.nuget\\packages\\",
+        "outputPath": "C:\\Projects\\AAYHS\\AAYHS-Internal\\api\\AAYHS.Data\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\DITSDEV44\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Ditsdev17\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -65,7 +65,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.302\\RuntimeIdentifierGraph.json"
         }
       }
     }

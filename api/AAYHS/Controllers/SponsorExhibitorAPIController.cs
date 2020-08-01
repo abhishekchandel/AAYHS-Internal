@@ -8,6 +8,10 @@ using AAYHS.Service.IService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
+using AAYHS.Core.DTOs.Response.Common;
+using AAYHS.Core.Shared.Static;
+
+
 namespace AAYHS.API.Controllers
 {
     [Route("api/[controller]/[action]")]
@@ -15,11 +19,12 @@ namespace AAYHS.API.Controllers
     public class SponsorExhibitorAPIController : ControllerBase
     {
         private readonly ISponsorExhibitorService _SponsorExhibitorService;
-        private MainResponse _response;
+        private MainResponse _mainResponse;
+        private string _jsonString = string.Empty;
         public SponsorExhibitorAPIController(ISponsorExhibitorService SponsorExhibitorService)
         {
             _SponsorExhibitorService = SponsorExhibitorService;
-            _response = new MainResponse();
+            _mainResponse = new MainResponse();
         }
 
         /// <summary>
@@ -28,10 +33,11 @@ namespace AAYHS.API.Controllers
         /// <param name="Sponsor Id parameter is required"></param>
         /// <returns> Exhibitors Sponsor list</returns>
         [HttpPost]
-        public ActionResult GetSponsorExhibitorBySponsorId([FromBody] GetSponsorExhibitorRequest request)
+        public ActionResult GetSponsorExhibitorBySponsorId(GetSponsorExhibitorRequest request)
         {
-            _response = _SponsorExhibitorService.GetSponsorExhibitorBySponsorId(request);
-            return new OkObjectResult(_response);
+            _mainResponse = _SponsorExhibitorService.GetSponsorExhibitorBySponsorId(request);
+            _jsonString = Mapper.Convert<SponsorExhibitorListResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
         }
 
 
@@ -43,26 +49,23 @@ namespace AAYHS.API.Controllers
         [HttpDelete]
         public ActionResult DeleteSponsorExhibitor([FromBody] DeleteSponsorExhibitorRequest request)
         {
-            _response = _SponsorExhibitorService.DeleteSponsorExhibitor(request);
-            return new OkObjectResult(_response);
+            _mainResponse = _SponsorExhibitorService.DeleteSponsorExhibitor(request);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
         }
 
         /// <summary>
-        /// This API is used to Add  Exhibitor Sponsor.
+        /// This API is used to Add/update  Exhibitor Sponsor.
         /// </summary>
         /// <param name="Exhibitor Sponsor detail parameter is required"></param>
         /// <returns> Success  true or false with message</returns>
         [HttpPost]
-        public ActionResult AddSponsorExhibitor([FromBody] SponsorExhibitorRequest request)
+        public ActionResult AddUpdateSponsorExhibitor([FromBody] SponsorExhibitorRequest request)
         {
-            _response = _SponsorExhibitorService.AddSponsorExhibitor(request);
-            return new OkObjectResult(_response);
+            _mainResponse = _SponsorExhibitorService.AddUpdateSponsorExhibitor(request);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
         }
-        [HttpPost]
-        public ActionResult UpdateSponsorExhibitor([FromBody] SponsorExhibitorRequest request)
-        {
-            _response = _SponsorExhibitorService.UpdateSponsorExhibitor(request);
-            return new OkObjectResult(_response);
-        }
+       
     }
 }

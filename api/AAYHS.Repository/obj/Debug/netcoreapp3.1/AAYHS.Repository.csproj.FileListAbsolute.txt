@@ -38,3 +38,4 @@ C:\Projects\AbhishekC\AbhishekC\Official\AAYHS-New\api\AAYHS.Repository\obj\Debu
 C:\Projects\AbhishekC\AbhishekC\Official\AAYHS-New\api\AAYHS.Repository\obj\Debug\netcoreapp3.1\AAYHS.Repository.csproj.CopyComplete
 C:\Projects\AbhishekC\AbhishekC\Official\AAYHS-New\api\AAYHS.Repository\obj\Debug\netcoreapp3.1\AAYHS.Repository.dll
 C:\Projects\AbhishekC\AbhishekC\Official\AAYHS-New\api\AAYHS.Repository\obj\Debug\netcoreapp3.1\AAYHS.Repository.pdb
+C:\Projects\AAYHS\AAYHS-Internal\api\AAYHS.Repository\bin\Debug\netcoreapp3.1\AAYHS.Core.xml

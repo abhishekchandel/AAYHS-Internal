@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AAYHS.Core.DTOs.Request;
 using AAYHS.Core.DTOs.Response;
+using AAYHS.Core.Shared.Static;
 using AAYHS.Service.IService;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace AAYHS.API.Controllers
 {
@@ -15,11 +13,12 @@ namespace AAYHS.API.Controllers
     public class ClassSponsorAPIController : ControllerBase
     {
         private readonly IClassSponsorService _ClassSponsorService;
-        private MainResponse _response;
+        private MainResponse _mainResponse;
+        private string _jsonString = string.Empty;
         public ClassSponsorAPIController(IClassSponsorService ClassClassSponsorService)
         {
             _ClassSponsorService = ClassClassSponsorService;
-            _response = new MainResponse();
+            _mainResponse = new MainResponse();
         }
 
 
@@ -32,8 +31,9 @@ namespace AAYHS.API.Controllers
         public ActionResult GetAllClassSponsors()
         {
 
-            _response = _ClassSponsorService.GetAllClassSponsor();
-            return new OkObjectResult(_response);
+            _mainResponse = _ClassSponsorService.GetAllClassSponsor();
+            _jsonString = Mapper.Convert<ClassSponsorListResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
         }
 
 
@@ -42,12 +42,13 @@ namespace AAYHS.API.Controllers
         /// </summary>
         /// <param name="filter parameters is required"></param>
         /// <returns>All Class Sponsors list with filter</returns>
-        [HttpGet]
+        [HttpPost]
         public ActionResult GetAllClassSponsorsWithFilter([FromBody] BaseRecordFilterRequest request)
         {
 
-            _response = _ClassSponsorService.GetAllClassSponsorWithFilter(request);
-            return new OkObjectResult(_response);
+            _mainResponse = _ClassSponsorService.GetAllClassSponsorWithFilter(request);
+            _jsonString = Mapper.Convert<ClassSponsorListResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
         }
 
         /// <summary>
@@ -55,11 +56,12 @@ namespace AAYHS.API.Controllers
         /// </summary>
         /// <param name="Class Sponsor id parameter is required"></param>
         /// <returns> Single Class Sponsor record</returns>
-        [HttpGet]
+        [HttpPost]
         public ActionResult GetClassSponsorById([FromBody] GetClassSponsorRequest request)
         {
-            _response = _ClassSponsorService.GetClassSponsorbyId(request);
-            return new OkObjectResult(_response);
+            _mainResponse = _ClassSponsorService.GetClassSponsorbyId(request);
+            _jsonString = Mapper.Convert<ClassSponsorResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
         }
 
         /// <summary>
@@ -68,23 +70,13 @@ namespace AAYHS.API.Controllers
         /// <param name="Class Sponsor detail is required"></param>
         /// <returns> success true or false with message</returns>
         [HttpPost]
-        public ActionResult AddClassSponsor([FromBody] ClassSponsorRequest request)
+        public ActionResult AddUpdateClassSponsor([FromBody] ClassSponsorRequest request)
         {
-            _response = _ClassSponsorService.AddClassSponsor(request);
-            return new OkObjectResult(_response);
+            _mainResponse = _ClassSponsorService.AddUpdateClassSponsor(request);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
         }
 
-        /// <summary>
-        /// This API is used to update existing Class Sponsor.
-        /// </summary>
-        /// <param name="Class Sponsor detail with Class Sponsor id is required"></param>
-        /// <returns> success true or false with message</returns>
-        [HttpPut]
-        public ActionResult UpdateClassSponsor([FromBody] ClassSponsorRequest request)
-        {
-            _response = _ClassSponsorService.UpdateClassSponsor(request);
-            return new OkObjectResult(_response);
-        }
 
         /// <summary>
         /// This API is used to delete existing Class Sponsor.
@@ -94,9 +86,16 @@ namespace AAYHS.API.Controllers
         [HttpDelete]
         public ActionResult DeleteClassSponsor([FromBody] GetClassSponsorRequest request)
         {
-            _response = _ClassSponsorService.DeleteClassSponsor(request);
-            return new OkObjectResult(_response);
+            _mainResponse = _ClassSponsorService.DeleteClassSponsor(request);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
         }
-
+        [HttpPost]
+        public ActionResult GetSponsorClassesbySponsorId([FromBody] GetBySponsorIdRequest request)
+        {
+            _mainResponse = _ClassSponsorService.GetSponsorClassesbySponsorId(request);
+            _jsonString = Mapper.Convert<SponsorClassesListResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
     }
 }

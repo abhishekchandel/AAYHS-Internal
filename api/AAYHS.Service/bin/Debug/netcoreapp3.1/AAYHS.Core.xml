@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AAYHS.Core</name>
+    </assembly>
+    <members>
+        <member name="P:AAYHS.Core.DTOs.Request.BaseRecordFilterRequest.Page">
+            <summary>
+            Send According to the number of page required
+            </summary>
+        </member>
+        <member name="P:AAYHS.Core.DTOs.Request.BaseRecordFilterRequest.Limit">
+            <summary>
+            Number of record required on a page
+            </summary>
+        </member>
+        <member name="P:AAYHS.Core.DTOs.Request.BaseRecordFilterRequest.OrderBy">
+            <summary>
+            Need to send like UserId,CreatedOn etc
+            </summary>
+        </member>
+        <member name="P:AAYHS.Core.DTOs.Request.BaseRecordFilterRequest.OrderByDescending">
+            <summary>
+            Need to send true if record required  in descending order
+            </summary>
+        </member>
+        <member name="P:AAYHS.Core.DTOs.Request.BaseRecordFilterRequest.AllRecords">
+            <summary>
+            Need to send false when page and limit are sending and for all records send true
+            </summary>
+        </member>
+        <member name="P:AAYHS.Core.DTOs.Request.ActionBaseRequest.ActionBy">
+            <summary>
+            User logged id,leave it as blank
+            </summary>
+        </member>
+        <member name="T:AAYHS.Core.DTOs.Response.BaseResponse">
+            <summary>
+            This class will contain common property that is used by all API response in the application.
+            </summary>
+        </member>
+        <member name="T:AAYHS.Core.Enums.Exceptions">
+            <summary>  
+            Different types of exceptions.  
+            </summary>  
+        </member>
+        <member name="M:AAYHS.Core.Shared.Static.GetErrorCodes.GetErrorCode(System.Type)">
+            <summary>  
+            This method will return the status code based on the exception type.  
+            </summary>  
+            <param name="exceptionType"></param>  
+            <returns>HttpStatusCode</returns>  
+        </member>
+    </members>
+</doc>
