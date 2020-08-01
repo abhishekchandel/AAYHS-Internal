@@ -72,6 +72,23 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<GetClassAllExhibitors>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
+
+        /// <summary>
+        /// This api used to fetch class exhibitors and horse names
+        /// </summary>
+        /// <param name="classRequest"></param>
+        /// <returns></returns>
+
+        [HttpPost]
+        //[Authorize]
+        public IActionResult GetClassExhibitorsAndHorses(ClassExhibitorHorsesRequest classRequest)
+        {
+            _mainResponse = _classService.GetClassExhibitorsAndHorses(classRequest);
+            _jsonString = Mapper.Convert<ClassExhibitorHorses>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+
+
         /// <summary>
         /// This api used for adding the class
         /// </summary>

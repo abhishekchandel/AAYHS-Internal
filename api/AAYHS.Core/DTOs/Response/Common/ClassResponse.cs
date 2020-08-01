@@ -22,18 +22,7 @@ namespace AAYHS.Core.DTOs.Response.Common
     }
     public class ClassExhibitorHorses
     {
-        public List<string> ClassExhibitorHorse { get; set; }
-    }
-    public class ClassExhibitorHorses
-    {
-        public List<string> ClassExhibitorHorse { get; set; }
-    }
-    public class ClassExhibitorHorses
-    {
-        public List<string> ClassExhibitorHorse { get; set; }
-    }
-    public class ClassExhibitorHorses
-    {
+        public int TotalRecords { get; set; }
         public List<string> ClassExhibitorHorse { get; set; }
     }
     public class GetClass

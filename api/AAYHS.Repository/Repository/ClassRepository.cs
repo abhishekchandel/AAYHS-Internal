@@ -95,7 +95,38 @@ namespace AAYHS.Repository.Repository
                     });
             _MainResponse.GetClass = data.FirstOrDefault();
             return _MainResponse;           
-        }          
+        }
+        public MainResponse GetClassExhibitorsAndHorses(ClassExhibitorHorsesRequest classRequest)
+        {
+            ClassExhibitorHorses classExhibitorHorses = new ClassExhibitorHorses();
+            List<string> list = new List<string>();
+            var exhibitorClass = (from ce in _ObjContext.ExhibitorClass
+                                  where ce.ClassId == classRequest.ClassId
+                                  select ce).ToList();
+
+            foreach (var data in exhibitorClass)
+            {
+                var exhibitor = (from ex in _ObjContext.Exhibitors where ex.ExhibitorId == data.ExhibitorId select ex).FirstOrDefault();
+                if (exhibitor != null)
+                {
+                    var horses = (from hr in _ObjContext.Horses select hr).ToList();
+                    if (horses != null && horses.Count > 0)
+                    {
+                        foreach (var horse in horses)
+                        {
+                            var name = exhibitor.FirstName + ' ' + exhibitor.LastName + '/' + horse.Name;
+                            if (!list.Contains(name))
+                                list.Add(name);
+                        }
+                    }
+                }
+
+            }
+
+            classExhibitorHorses.ClassExhibitorHorse = list;
+            _MainResponse.ClassExhibitorHorses = classExhibitorHorses;
+            return _MainResponse;
+        }
         public MainResponse GetClassEntries(ClassRequest classRequest)
         {
             IEnumerable<GetClassEntries> data;

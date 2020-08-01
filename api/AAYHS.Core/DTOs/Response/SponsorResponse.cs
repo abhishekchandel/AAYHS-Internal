@@ -19,6 +19,7 @@ namespace AAYHS.Core.DTOs.Response
     }
     public class SponsorListResponse
     {
+        public int TotalRecords { get; set; }
         public List<SponsorResponse> sponsorResponses { get; set; }
     }
     }

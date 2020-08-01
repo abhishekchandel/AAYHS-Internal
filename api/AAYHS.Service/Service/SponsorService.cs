@@ -110,7 +110,7 @@ namespace AAYHS.Service.Service
             {
                 _mainResponse.Message = Constants.RECORD_FOUND;
                 _mainResponse.Success = true;
-                _mainResponse.TotalRecords = _mainResponse.SponsorListResponse.sponsorResponses.Count();
+                _mainResponse.SponsorListResponse.TotalRecords = _mainResponse.SponsorListResponse.sponsorResponses.Count();
             }
             else
             {
@@ -129,7 +129,7 @@ namespace AAYHS.Service.Service
             {
                 _mainResponse.Message = Constants.RECORD_FOUND;
                 _mainResponse.Success = true;
-                _mainResponse.TotalRecords = _mainResponse.SponsorListResponse.sponsorResponses.Count();
+                _mainResponse.SponsorListResponse.TotalRecords = _mainResponse.SponsorListResponse.sponsorResponses.Count();
             }
             else
             {

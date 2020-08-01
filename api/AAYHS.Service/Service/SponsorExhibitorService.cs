@@ -7,6 +7,7 @@ using AAYHS.Service.IService;
 using AutoMapper;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -92,6 +93,7 @@ namespace AAYHS.Service.Service
             _mainResponse = _SponsorExhibitorRepository.GetSponsorExhibitorBySponsorId(request);
             if (_mainResponse.SponsorExhibitorListResponse.SponsorExhibitorResponses != null && _mainResponse.SponsorExhibitorListResponse.SponsorExhibitorResponses.Count>0)
             {
+                _mainResponse.SponsorExhibitorListResponse.TotalRecords = _mainResponse.SponsorExhibitorListResponse.SponsorExhibitorResponses.Count();
                 _mainResponse.Message = Constants.RECORD_FOUND;
                 _mainResponse.Success = true;
             }

@@ -14,7 +14,8 @@ namespace AAYHS.Repository.IRepository
         MainResponse GetAllClasses(ClassRequest classRequest);
         MainResponse GetClass(int ClassId);      
         MainResponse GetClassEntries(ClassRequest classRequest);
-        List<GetBackNumber> GetBackNumberForAllExhibitor(int ClassId);
+        List<GetBackNumber> GetBackNumberForAllExhibitor(int ClassId); 
+        MainResponse GetClassExhibitorsAndHorses(ClassExhibitorHorsesRequest classRequest);
         ResultExhibitorDetails GetResultExhibitorDetails(ResultExhibitorRequest resultExhibitorRequest);
     }
 }

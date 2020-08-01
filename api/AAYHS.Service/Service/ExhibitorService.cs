@@ -56,7 +56,7 @@ namespace AAYHS.Service.Service
             _mainResponse = _ExhibitorRepository.GetAllExhibitorsWithFilters(request);
             if (_mainResponse.ExhibitorListResponse.exhibitorResponses != null && _mainResponse.ExhibitorListResponse.exhibitorResponses.Count > 0)
             {
-                _mainResponse.TotalRecords = _mainResponse.ExhibitorListResponse.exhibitorResponses.Count();
+                _mainResponse.ExhibitorListResponse.TotalRecords = _mainResponse.ExhibitorListResponse.exhibitorResponses.Count();
                 _mainResponse.Message = Constants.RECORD_FOUND;
                 _mainResponse.Success = true;
             }
@@ -73,7 +73,7 @@ namespace AAYHS.Service.Service
             _mainResponse = _ExhibitorRepository.GetAllExhibitors();
             if (_mainResponse.ExhibitorListResponse.exhibitorResponses != null && _mainResponse.ExhibitorListResponse.exhibitorResponses.Count > 0)
             {
-                _mainResponse.TotalRecords = _mainResponse.ExhibitorListResponse.exhibitorResponses.Count();
+                _mainResponse.ExhibitorListResponse.TotalRecords = _mainResponse.ExhibitorListResponse.exhibitorResponses.Count();
                 _mainResponse.Message = Constants.RECORD_FOUND;
                 _mainResponse.Success = true;
             }

@@ -7,14 +7,14 @@ using System.Text;
 
 namespace AAYHS.Core.DTOs.Response
 {
-    /// <summary>
+    /// <summary
     /// This class will contain common property that is used by all API response in the application.
-    /// </summary>
+    /// </summary
     public class BaseResponse
     {
         public string Message { get; set; }     
         public bool Success { get; set; } = true;
-        public int TotalRecords { get; set; }
+       
     }
 
     public class MainResponse : BaseResponse
@@ -25,16 +25,17 @@ namespace AAYHS.Core.DTOs.Response
         public GetClass GetClass { get; set; }
         public GlobalCodeMainResponse GlobalCodeMainResponse { get; set; }
         public GetClassAllExhibitors GetClassAllExhibitors { get; set; }
+        public ClassExhibitorHorses ClassExhibitorHorses { get; set; }
         public GetAllClassEntries GetAllClassEntries { get; set; }
         public SponsorResponse SponsorResponse { get; set; }
-        public List<SponsorResponse> SponsorListResponse { get; set; }
-
+        public SponsorListResponse SponsorListResponse { get; set; }
+        public SponsorClassesListResponse SponsorClassesListResponse { get; set; }
         public ClassSponsorResponse ClassSponsorResponse { get; set; }
-        public List<ClassSponsorResponse> ClassSponsorListResponse { get; set; }
+        public ClassSponsorListResponse ClassSponsorListResponse { get; set; }
 
         public ExhibitorResponse ExhibitorResponse { get; set; }
-        public List<ExhibitorResponse> ExhibitorListResponse { get; set; }
-        public List<SponsorExhibitorResponse> SponsorExhibitorListResponses { get; set; }
+        public ExhibitorListResponse ExhibitorListResponse { get; set; }
+        public SponsorExhibitorListResponse SponsorExhibitorListResponse { get; set; }
         public SponsorExhibitorResponse SponsorExhibitorResponse { get; set; }
         public ResultExhibitorDetails ResultExhibitorDetails { get; set; }
         public GetAllBackNumber GetAllBackNumber { get; set; }

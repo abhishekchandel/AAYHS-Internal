@@ -25,6 +25,10 @@ namespace AAYHS.Core.Shared.Static
         public const string RECORD_UPDATE_FAILED = "Record Updated Failed";
         public const string RECORD_DELETE_SUCCESS = "Record Deleted Successfully";
         public const string RECORD_DELETE_FAILED = "Record Deleted Failed";
+        public const string NO_RECORD_EXIST_WITH_ID = "No Record Exist With Given Id";
+        public const string RECORD_AlREADY_EXIST = "Record Already Exist";
+        public const string NAME_ALREADY_EXIST = "Name Already Exist";
+
 
     }
 }

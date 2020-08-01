@@ -12,6 +12,7 @@ namespace AAYHS.Core.DTOs.Response
     }
     public class ClassSponsorListResponse
     {
+        public int TotalRecords { get; set; }
         public List<ClassSponsorResponse> classSponsorResponses { get; set; }
     }
 
@@ -31,6 +32,7 @@ namespace AAYHS.Core.DTOs.Response
     }
     public class SponsorClassesListResponse
     {
+        public int TotalRecords { get; set; }
         public List<SponsorClassResponse> sponsorClassesListResponses { get; set; }
     }
 }

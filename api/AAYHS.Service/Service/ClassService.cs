@@ -130,6 +130,17 @@ namespace AAYHS.Service.Service
             }          
             return _mainResponse;
         }
+        public MainResponse GetClassExhibitorsAndHorses(ClassExhibitorHorsesRequest request)
+        {
+            _mainResponse = _classRepository.GetClassExhibitorsAndHorses(request);
+            if (_mainResponse.ClassExhibitorHorses.ClassExhibitorHorse != null && _mainResponse.ClassExhibitorHorses.ClassExhibitorHorse.Count > 0)
+            {
+                _mainResponse.ClassExhibitorHorses.TotalRecords = _mainResponse.ClassExhibitorHorses.ClassExhibitorHorse.Count();
+                _mainResponse.Message = Constants.RECORD_FOUND;
+                _mainResponse.Success = true;
+            }
+            return _mainResponse;
+        }
         public async Task<MainResponse> CreateUpdateClass(AddClassRequest addClassRequest,string actionBy)
         {
             if (addClassRequest.ClassId == 0)

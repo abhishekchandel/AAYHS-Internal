@@ -101,6 +101,7 @@ namespace AAYHS.Service.Service
             _mainResponse = _ClassSponsorRepository.GetAllClassSponsor();
             if (_mainResponse.ClassSponsorListResponse.classSponsorResponses != null && _mainResponse.ClassSponsorListResponse.classSponsorResponses.Count > 0)
             {
+                _mainResponse.ClassSponsorListResponse.TotalRecords = _mainResponse.ClassSponsorListResponse.classSponsorResponses.Count();
                 _mainResponse.Message = Constants.RECORD_FOUND;
                 _mainResponse.Success = true;
             }
@@ -112,7 +113,8 @@ namespace AAYHS.Service.Service
             _mainResponse = _ClassSponsorRepository.GetAllClassSponsorWithFilters(request);
             if (_mainResponse.ClassSponsorListResponse.classSponsorResponses != null && _mainResponse.ClassSponsorListResponse.classSponsorResponses.Count > 0)
             {
-                _mainResponse.Message = Constants.RECORD_FOUND;
+                _mainResponse.ClassSponsorListResponse.TotalRecords = _mainResponse.ClassSponsorListResponse.classSponsorResponses.Count();
+                   _mainResponse.Message = Constants.RECORD_FOUND;
                 _mainResponse.Success = true;
             }
             return _mainResponse;
@@ -142,7 +144,8 @@ namespace AAYHS.Service.Service
             _mainResponse = _ClassSponsorRepository.GetSponsorClassesbySponsorId(request);
             if (_mainResponse.SponsorClassesListResponse.sponsorClassesListResponses != null && _mainResponse.SponsorClassesListResponse.sponsorClassesListResponses.Count > 0)
             {
-                _mainResponse.Message = Constants.RECORD_FOUND;
+                _mainResponse.SponsorClassesListResponse.TotalRecords = _mainResponse.SponsorClassesListResponse.sponsorClassesListResponses.Count();
+                   _mainResponse.Message = Constants.RECORD_FOUND;
                 _mainResponse.Success = true;
             }
             return _mainResponse;

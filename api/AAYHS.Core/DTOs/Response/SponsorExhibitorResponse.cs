@@ -19,6 +19,7 @@ namespace AAYHS.Core.DTOs.Response
     }
     public class SponsorExhibitorListResponse
     {
+        public int TotalRecords { get; set; }
         public List<SponsorExhibitorResponse> SponsorExhibitorResponses { get; set; }
        
 
