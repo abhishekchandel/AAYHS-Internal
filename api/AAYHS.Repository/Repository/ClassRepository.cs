@@ -86,6 +86,7 @@ namespace AAYHS.Repository.Repository
                     select new ClassResponse
                     {
                         ClassId= classes.ClassId,
+                        ClassHeader=classes.ClassHeader,
                         ClassNumber= classes.ClassNumber,
                         Name= classes.Name,
                         AgeGroup= classes.AgeGroup,
@@ -237,6 +238,59 @@ namespace AAYHS.Repository.Repository
                              }).FirstOrDefault();
 
             return exhibitor;
+        }
+        public MainResponse GetResultOfClass(ClassRequest classRequest)
+        {
+            IEnumerable<GetResultOfClass> data;
+            GetResult getResult = new GetResult();
+
+            data = (from result in _ObjContext.Result
+                    join exhibitor in _ObjContext.Exhibitors on result.ExhibitorId equals exhibitor.ExhibitorId
+                    join addresses in _ObjContext.Addresses on exhibitor.AddressId equals addresses.AddressId
+                    join city in _ObjContext.Cities on addresses.CityId equals city.CityId
+                    join state in _ObjContext.States on city.StateId equals state.StateId
+                    join exhibitorsClass in _ObjContext.ExhibitorClass on exhibitor.ExhibitorId equals exhibitorsClass.ExhibitorId
+                    join paymentdetails in _ObjContext.ExhibitorPaymentDetails on exhibitor.ExhibitorId equals paymentdetails.ExhibitorId
+                    join f in _ObjContext.Fees on paymentdetails.FeeId equals f.FeeId
+                    where result.IsActive == true && result.IsDeleted == false && exhibitor.IsActive == true && exhibitor.IsDeleted == false
+                    && result.ClassId == classRequest.ClassId
+                    select new GetResultOfClass
+                    {
+                        ExhibitorId = exhibitor.ExhibitorId,
+                        Place = result.Placement,
+                        BackNumber=exhibitor.BackNumber,
+                        ExhibitorName=exhibitor.FirstName+" "+exhibitor.LastName,
+                        BirthYear=exhibitor.BirthYear,
+                        HorseName= _ObjContext.Horses.Where(x => x.HorseId == exhibitorsClass.HorseId).Select(x => x.Name).FirstOrDefault(),
+                        Address= city.Name + ", " + state.Code,
+                        AmountPaid = paymentdetails.Amount,
+                        AmountDue = ((int)(Convert.ToDecimal(f.FeeAmount) - paymentdetails.Amount))
+                    });
+
+            if (data.Count() != 0)
+            {
+                if (classRequest.OrderByDescending == true)
+                {
+                    data = data.OrderByDescending(x => x.GetType().GetProperty(classRequest.OrderBy).GetValue(x));
+                }
+                else
+                {
+                    data = data.OrderBy(x => x.GetType().GetProperty(classRequest.OrderBy).GetValue(x));
+                }
+
+                if (classRequest.AllRecords)
+                {
+                    getResult.getResultOfClass = data.ToList();
+                }
+                else
+                {
+                    getResult.getResultOfClass = data.Skip((classRequest.Page - 1) * classRequest.Limit).Take(classRequest.Limit).ToList();
+
+                }
+                _MainResponse.GetResult = getResult;
+                _MainResponse.GetResult.TotalRecords = getResult.getResultOfClass.Count();
+            }
+            return _MainResponse;
         }
     }
 }

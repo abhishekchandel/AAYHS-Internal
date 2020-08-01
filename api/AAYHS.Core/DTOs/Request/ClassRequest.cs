@@ -11,7 +11,8 @@ namespace AAYHS.Core.DTOs.Request
 
     public class AddClassRequest
     {
-        public int ClassId { get; set; }      
+        public int ClassId { get; set; }
+        public string ClassHeader { get; set; }
         public int ClassNumber { get; set; }
         public string Name { get; set; }
         public string Location { get; set; }
@@ -48,8 +49,5 @@ namespace AAYHS.Core.DTOs.Request
         public int ExhibitorId { get; set; }
         public string Place { get; set; }
     }
-    public class ClassExhibitorHorsesRequest
-    {
-        public int ClassId { get; set; }
-    }
+   
 }
