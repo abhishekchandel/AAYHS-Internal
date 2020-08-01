@@ -20,8 +20,5 @@ namespace AAYHS.Core.DTOs.Request
         public string SecondaryEmail { get; set; }
         public string Phone { get; set; }
     }
-    public class GetExhibitorRequest
-    {
-        public int ExhibitorId { get; set; }
-    }
+ 
 }

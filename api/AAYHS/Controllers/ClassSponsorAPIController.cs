@@ -57,9 +57,9 @@ namespace AAYHS.API.Controllers
         /// <param name="Class Sponsor id parameter is required"></param>
         /// <returns> Single Class Sponsor record</returns>
         [HttpPost]
-        public ActionResult GetClassSponsorById([FromBody] GetClassSponsorRequest request)
+        public ActionResult GetClassSponsorById(int ClassSponsorId)
         {
-            _mainResponse = _ClassSponsorService.GetClassSponsorbyId(request);
+            _mainResponse = _ClassSponsorService.GetClassSponsorbyId(ClassSponsorId);
             _jsonString = Mapper.Convert<ClassSponsorResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
@@ -84,16 +84,16 @@ namespace AAYHS.API.Controllers
         /// <param name="Class Sponsor detail with Class Sponsor id is required"></param>
         /// <returns> success true or false with message</returns>
         [HttpDelete]
-        public ActionResult DeleteClassSponsor([FromBody] GetClassSponsorRequest request)
+        public ActionResult DeleteClassSponsor(int ClassSponsorId)
         {
-            _mainResponse = _ClassSponsorService.DeleteClassSponsor(request);
+            _mainResponse = _ClassSponsorService.DeleteClassSponsor(ClassSponsorId);
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
         [HttpPost]
-        public ActionResult GetSponsorClassesbySponsorId([FromBody] GetBySponsorIdRequest request)
+        public ActionResult GetSponsorClassesbySponsorId(int SponsorId)
         {
-            _mainResponse = _ClassSponsorService.GetSponsorClassesbySponsorId(request);
+            _mainResponse = _ClassSponsorService.GetSponsorClassesbySponsorId(SponsorId);
             _jsonString = Mapper.Convert<SponsorClassesListResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }

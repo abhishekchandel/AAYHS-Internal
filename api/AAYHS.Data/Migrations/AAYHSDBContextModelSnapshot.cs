@@ -388,11 +388,8 @@ namespace AAYHS.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AgeFrom")
-                        .HasColumnType("int");
-
-                    b.Property<int>("AgeTo")
-                        .HasColumnType("int");
+                    b.Property<string>("AgeGroup")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ClassId")
                         .HasColumnType("int");
@@ -426,7 +423,7 @@ namespace AAYHS.Data.Migrations
 
                     b.HasKey("ClassSponsorId");
 
-                    b.ToTable("ClassSponsor");
+                    b.ToTable("ClassSponsors");
                 });
 
             modelBuilder.Entity("AAYHS.Data.DBEntities.Classes", b =>
@@ -437,6 +434,9 @@ namespace AAYHS.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AgeGroup")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClassHeader")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ClassNumber")
@@ -526,10 +526,16 @@ namespace AAYHS.Data.Migrations
                     b.Property<int>("ExhibitorId")
                         .HasColumnType("int");
 
+                    b.Property<int>("HorseId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsScratch")
                         .HasColumnType("bit");
 
                     b.Property<string>("ModifiedBy")
@@ -1060,11 +1066,8 @@ namespace AAYHS.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AgeFrom")
-                        .HasColumnType("int");
-
-                    b.Property<int>("AgeTo")
-                        .HasColumnType("int");
+                    b.Property<string>("AgeGroup")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ClassId")
                         .HasColumnType("int");

@@ -80,9 +80,9 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
-        public MainResponse GetClassSponsorbyId(GetClassSponsorRequest request)
+        public MainResponse GetClassSponsorbyId(int ClassSponsorId)
         {
-            _mainResponse = _ClassSponsorRepository.GetClassSponsorbyId(request);
+            _mainResponse = _ClassSponsorRepository.GetClassSponsorbyId(ClassSponsorId);
             if (_mainResponse.ClassSponsorResponse != null)
             {
                 _mainResponse.Message = Constants.RECORD_FOUND;
@@ -120,9 +120,9 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
       
-        public MainResponse DeleteClassSponsor(GetClassSponsorRequest request)
+        public MainResponse DeleteClassSponsor(int ClassSponsorId)
         {
-            var classsponsor = _ClassSponsorRepository.GetSingle(x => x.ClassSponsorId == request.ClassSponsorId);
+            var classsponsor = _ClassSponsorRepository.GetSingle(x => x.ClassSponsorId == ClassSponsorId);
             if (classsponsor != null)
             {
                 classsponsor.IsDeleted = true;
@@ -139,9 +139,9 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
-        public MainResponse GetSponsorClassesbySponsorId(GetBySponsorIdRequest request)
+        public MainResponse GetSponsorClassesbySponsorId(int SponsorId)
         {
-            _mainResponse = _ClassSponsorRepository.GetSponsorClassesbySponsorId(request);
+            _mainResponse = _ClassSponsorRepository.GetSponsorClassesbySponsorId(SponsorId);
             if (_mainResponse.SponsorClassesListResponse.sponsorClassesListResponses != null && _mainResponse.SponsorClassesListResponse.sponsorClassesListResponses.Count > 0)
             {
                 _mainResponse.SponsorClassesListResponse.TotalRecords = _mainResponse.SponsorClassesListResponse.sponsorClassesListResponses.Count();

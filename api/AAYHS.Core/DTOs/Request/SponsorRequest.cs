@@ -17,9 +17,5 @@ namespace AAYHS.Core.DTOs.Request
         public int CityId { get; set; }
         public int StateId { get; set; }
     }
-    
-    public class GetSponsorRequest
-    {
-        public int SponsorId { get; set; }
-    }
+   
 }

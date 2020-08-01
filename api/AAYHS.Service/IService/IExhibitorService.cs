@@ -12,7 +12,7 @@ namespace AAYHS.Service.IService
         MainResponse AddUpdateExhibitor(ExhibitorRequest request);
         MainResponse GetAllExhibitorsWithFilter(BaseRecordFilterRequest request);
         MainResponse GetAllExhibitors();
-        MainResponse GetExhibitorById(GetExhibitorRequest request);
-        MainResponse DeleteExhibitor(GetExhibitorRequest request);
+        MainResponse GetExhibitorById(int ExhibitorId);
+        MainResponse DeleteExhibitor(int ExhibitorId);
     }
 }

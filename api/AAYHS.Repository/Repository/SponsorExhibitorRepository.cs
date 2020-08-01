@@ -33,7 +33,7 @@ namespace AAYHS.Repository.Repository
             _Mapper = Mapper;
         }
 
-        public MainResponse GetSponsorExhibitorBySponsorId(GetSponsorExhibitorRequest request)
+        public MainResponse GetSponsorExhibitorBySponsorId(int SponsorId)
         {
             IEnumerable<SponsorExhibitorResponse> sponsorExhibitorResponses = null;
             SponsorExhibitorListResponse sponsorExhibitorListResponses = new SponsorExhibitorListResponse();
@@ -42,7 +42,7 @@ namespace AAYHS.Repository.Repository
                         on sponsorexhibitor.ExhibitorId equals exhibitor.ExhibitorId
                         into data1
                         from data2 in data1.DefaultIfEmpty()
-                        where sponsorexhibitor.SponsorId == request.SponsorId
+                        where sponsorexhibitor.SponsorId == SponsorId
                         && sponsorexhibitor.IsActive == true && sponsorexhibitor.IsDeleted == false
                         select new SponsorExhibitorResponse
                         {

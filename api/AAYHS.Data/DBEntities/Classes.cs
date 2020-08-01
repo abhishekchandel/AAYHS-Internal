@@ -12,6 +12,7 @@ namespace AAYHS.Data.DBEntities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public int ClassId { get; set; }
+        public string ClassHeader { get; set; }
         public int ClassNumber { get; set; }
         public string Name { get; set; }
         public string Location { get; set; }

@@ -33,8 +33,8 @@ export class ClassService {
     return this.http.post<any>(`${this.api}ClassAPI/CreateUpdateClass`,data);
   }
 
-  getClassEnteries(id:number){
-    return this.http.get<any>(`${this.api}ClassAPI/GetClassEnteries?classId=${id}`);
+  getClassEnteries(data){
+    return this.http.post<any>(`${this.api}ClassAPI/GetClassEntries`,data);
   }
 
   deleteClassExhibitor(id:number){
@@ -59,6 +59,10 @@ export class ClassService {
 
   addClassResult(data){
     return this.http.post<any>(`${this.api}ClassAPI/AddClassResult`,data);
+  }
+
+  getExhibitorHorses(id:number){
+    return this.http.get<any>(`${this.api}ClassAPI/GetExhibitorHorses?exhibitorId=${id}`);
   }
 
 }

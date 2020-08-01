@@ -68,9 +68,9 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
-        public MainResponse DeleteSponsorExhibitor(DeleteSponsorExhibitorRequest request)
+        public MainResponse DeleteSponsorExhibitor(int SponsorExhibitorId)
         {
-            var SponsorExhibitor = _SponsorExhibitorRepository.GetSingle(x => x.SponsorExhibitorId == request.SponsorExhibitorId);
+            var SponsorExhibitor = _SponsorExhibitorRepository.GetSingle(x => x.SponsorExhibitorId == SponsorExhibitorId);
             if (SponsorExhibitor != null && SponsorExhibitor.SponsorExhibitorId>0)
             {
                 SponsorExhibitor.IsDeleted = true;
@@ -88,9 +88,9 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
-        public MainResponse GetSponsorExhibitorBySponsorId(GetSponsorExhibitorRequest request)
+        public MainResponse GetSponsorExhibitorBySponsorId(int SponsorId)
         {
-            _mainResponse = _SponsorExhibitorRepository.GetSponsorExhibitorBySponsorId(request);
+            _mainResponse = _SponsorExhibitorRepository.GetSponsorExhibitorBySponsorId(SponsorId);
             if (_mainResponse.SponsorExhibitorListResponse.SponsorExhibitorResponses != null && _mainResponse.SponsorExhibitorListResponse.SponsorExhibitorResponses.Count>0)
             {
                 _mainResponse.SponsorExhibitorListResponse.TotalRecords = _mainResponse.SponsorExhibitorListResponse.SponsorExhibitorResponses.Count();

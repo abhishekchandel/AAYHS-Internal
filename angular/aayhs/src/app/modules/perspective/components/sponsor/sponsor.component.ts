@@ -34,6 +34,7 @@ export class SponsorComponent implements OnInit {
   statesResponse: any;
   result: string = '';
   totalItems: number = 0;
+  selectedSponsorId:number=1;
   enablePagination: boolean = true;
   sortColumn: string = "";
   reverseSort: boolean = false
@@ -54,6 +55,8 @@ export class SponsorComponent implements OnInit {
 
   }
   sponsorsList: any
+  sponsorsExhibitorsList: any
+  sponsorsClassesList: any
   baseRequest: BaseRecordFilterRequest = {
     Page: 1,
     Limit: 10,
@@ -71,17 +74,24 @@ export class SponsorComponent implements OnInit {
   ) { }
   ngOnInit(): void {
     this.getAllSponsors();
-    this.getAllStates()
+    this.getAllStates();
+    this.GetSponsorExhibitorBySponsorId(this.selectedSponsorId);
   }
 
 
   getAllSponsors() {
+    this.loading = true;
+    this.sponsorsList=null;
     this.sponsorService.getAllSponsers(this.baseRequest).subscribe(response => {
-      // this.sponsorsList = response.Data.sponsorResponses;
+      if(response.Data!=null && response.Data.TotalRecords>0)
+      {
+     this.sponsorsList = response.Data.sponsorResponses;
+      }
       console.log(this.sponsorsList)
     }, error => {
     }
     )
+    this.loading = false;
   }
 
 
@@ -109,6 +119,21 @@ export class SponsorComponent implements OnInit {
     })
   }
 
+  GetSponsorExhibitorBySponsorId(selectedSponsorId:number){
+    this.loading=true;
+    this.sponsorsExhibitorsList=null;
+    debugger
+    this.sponsorService.GetSponsorExhibitorBySponsorId(selectedSponsorId).subscribe(response=>{ 
+      debugger;
+      if(response.Data!=null && response.Data.TotalRecords>0)
+      {
+     this.sponsorsExhibitorsList = response.Data.SponsorExhibitorResponses;
+      }
+    },error=>{
+
+    })
+    this.loading=false;
+  }
 
   confirmRemoveExhibitor(index, data): void {
 
@@ -121,6 +146,10 @@ export class SponsorComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(dialogResult => {
       this.result = dialogResult;
+      if(this.result)
+      {
+        if (this.result){ this.deleteSponsorExhibitor(data) }
+      }
     });
 
   }
@@ -140,7 +169,7 @@ export class SponsorComponent implements OnInit {
 
   }
   confirmRemoveSponsor(e, index, data): void {
-    debugger;
+    
     e.stopPropagation();
     const message = `Are you sure you want to remove the sponsor?`;
     const dialogData = new ConfirmDialogModel("Confirm Action", message);
@@ -150,17 +179,44 @@ export class SponsorComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(dialogResult => {
       this.result = dialogResult;
-      if (this.result) this.deleteSponsor(data)
+     
+      if (this.result){ this.deleteSponsor(data) }
       // this.data=   this.data.splice(index,1);
-      debugger;
+     
     });
   }
   deleteSponsor(id: number) {
+    debugger;
     this.sponsorService.deleteSponsor(id).subscribe(response => {
+      if(response.Success==true)
+      {
+        const dialog = new ConfirmDialogModel("Confirm Action", response.Message);
+        this.getAllSponsors();
+      }
+      else{
+        const dialog = new ConfirmDialogModel("Confirm Action", response.Message);
+      }
     }, error => {
 
     })
   }
+
+  deleteSponsorExhibitor(SponsorExhibitorId: number) {
+   
+    this.sponsorService.deleteSponsorExhibitor(SponsorExhibitorId).subscribe(response => {
+      if(response.Success==true)
+      {
+        const dialog = new ConfirmDialogModel("Confirm Action", response.Message);
+        this.GetSponsorExhibitorBySponsorId(this.selectedSponsorId);
+      }
+      else{
+        const dialog = new ConfirmDialogModel("Confirm Action", response.Message);
+      }
+    }, error => {
+
+    })
+  }
+
 
   resetForm() {
     this.sponsorInfo.SponsorName = null;
@@ -180,6 +236,7 @@ export class SponsorComponent implements OnInit {
     this.baseRequest.Page = (event.pageIndex) + 1;
     this.getAllSponsors()
   }
+  
 
   highlight(row, i) {
     debugger;
@@ -208,14 +265,14 @@ export class SponsorComponent implements OnInit {
 
     })
   }
-    getAllStates() {
+  getAllStates() {
       this.loading = true;
       this.sponsorService.getAllStates().subscribe(response => {
+        debugger;
           this.statesResponse = response.Data.State;
-          this.loading = false;
       }, error => {
-          this.loading = false;
       })
+      this.loading = false;
   }
 
   getStateName(e) {

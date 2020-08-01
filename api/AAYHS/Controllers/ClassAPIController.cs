@@ -81,9 +81,9 @@ namespace AAYHS.API.Controllers
 
         [HttpPost]
         //[Authorize]
-        public IActionResult GetClassExhibitorsAndHorses(ClassExhibitorHorsesRequest classRequest)
+        public IActionResult GetClassExhibitorsAndHorses(int ClassId)
         {
-            _mainResponse = _classService.GetClassExhibitorsAndHorses(classRequest);
+            _mainResponse = _classService.GetClassExhibitorsAndHorses(ClassId);
             _jsonString = Mapper.Convert<ClassExhibitorHorses>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }

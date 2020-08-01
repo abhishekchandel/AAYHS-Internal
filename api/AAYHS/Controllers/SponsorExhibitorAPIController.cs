@@ -32,10 +32,10 @@ namespace AAYHS.API.Controllers
         /// </summary>
         /// <param name="Sponsor Id parameter is required"></param>
         /// <returns> Exhibitors Sponsor list</returns>
-        [HttpPost]
-        public ActionResult GetSponsorExhibitorBySponsorId(GetSponsorExhibitorRequest request)
+        [HttpGet]
+        public ActionResult GetSponsorExhibitorBySponsorId(int SponsorId)
         {
-            _mainResponse = _SponsorExhibitorService.GetSponsorExhibitorBySponsorId(request);
+            _mainResponse = _SponsorExhibitorService.GetSponsorExhibitorBySponsorId(SponsorId);
             _jsonString = Mapper.Convert<SponsorExhibitorListResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
@@ -47,9 +47,9 @@ namespace AAYHS.API.Controllers
         /// <param name="Exhibitor Sponsor Id parameters is required"></param>
         /// <returns>Success  true or false with message</returns>
         [HttpDelete]
-        public ActionResult DeleteSponsorExhibitor([FromBody] DeleteSponsorExhibitorRequest request)
+        public ActionResult DeleteSponsorExhibitor(int SponsorExhibitorId)
         {
-            _mainResponse = _SponsorExhibitorService.DeleteSponsorExhibitor(request);
+            _mainResponse = _SponsorExhibitorService.DeleteSponsorExhibitor(SponsorExhibitorId);
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }

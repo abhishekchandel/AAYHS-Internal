@@ -22,55 +22,20 @@
                               </thead> 
                               <perfect-scrollbar class="nicescrollBar-1"> 
 								<tbody>
-									<tr></tr>
-								  <tr >
-									  <td data-label="Sponsor ID">025</td>
-									  <td data-label="Sponsor">Abigail Roberts</td>
-									  <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-								  </tr>	
-								  <tr>
-									  <td data-label="Sponsor ID">307</td>
-									  <td data-label="Sponsor">Apple Bee's</td>
-									   <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-								  </tr>	  
-								   <tr>
-									  <td data-label="Sponsor ID">101</td>
-									  <td data-label="Sponsor">Miller's Apple Hill</td>
-									  <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-								  </tr>
-								  <tr>
-									  <td data-label="Sponsor ID">307</td>
-									  <td data-label="Sponsor">Apple Bee's</td>
-									   <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-								  </tr>	  
-								   <tr>
-									  <td data-label="Sponsor ID">101</td>
-									  <td data-label="Sponsor">Miller's Apple Hill</td>
-									  <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-								  </tr>
-								  <tr>
-									  <td data-label="Sponsor ID">307</td>
-									  <td data-label="Sponsor">Apple Bee's</td>
-									   <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-								  </tr>	  
-								   <tr>
-									  <td data-label="Sponsor ID">101</td>
-									  <td data-label="Sponsor">Miller's Apple Hill</td>
-									  <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-								  </tr>
-								  <tr>
-									  <td data-label="Sponsor ID">307</td>
-									  <td data-label="Sponsor">Apple Bee's</td>
-									   <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-								  </tr>	  
-								   <tr  (click)="highlight('','')">
-									  <td data-label="Sponsor ID">101</td>
-									  <td data-label="Sponsor">Miller's Apple Hill</td>
+									
+								  <tr *ngFor="let list of sponsorsList">
+									  <td data-label="Sponsor ID">{{list.SponsorId}}</td>
+									  <td data-label="Sponsor">{{list.SponsorName}}</td>
 									  <td data-label="Remove">
-										  <button class="icon" (click)="confirmRemoveSponsor($event, '1','1')"><span></span> <i class="fa fa-trash-o"
-										  aria-hidden="true"></i></button>
-									  </td>
-								  </tr>
+								     <button class="icon" 
+										(click)="confirmRemoveSponsor($event, '5',list.SponsorId)">
+										<span></span> <i class="fa fa-trash-o"
+										aria-hidden="true"></i>
+									</button>
+									</td>
+								  </tr>	
+								
+								   
 									
 									
 								</tbody>
@@ -230,141 +195,21 @@
                                         </thead> 
 										<perfect-scrollbar class="nicescrollBar-2">
                                             <tbody>                                                
-                                                <tr>
-                                                    <td data-label="Exhibitor ID">2536</td>
-                                                    <td data-label="Exhibitor Name">Kristyn Monroe</td>
-                                                    <td data-label="Sponsor Type">Cooler</td>
-                                                    <td data-label="ID Number"></td>
-                                                    <td data-label="ID Number"></td>
-                                                    <td data-label="Birth Year">2011</td>
-                                                    <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                                </tr>	
-                                                <tr>
-                                                    <td data-label="Exhibitor ID">2536</td>
-                                                    <td data-label="Exhibitor Name">Kristyn Monroe</td>
-                                                    <td data-label="Sponsor Type">Ad</td>
-                                                    <td data-label="ID Number"></td>
-                                                    <td data-label="ID Number">307</td>
-                                                    <td data-label="Birth Year">2011</td>
-                                                    <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                                </tr>	  
-                                                <tr>
-                                                    <td data-label="Exhibitor ID">7421</td>
-                                                    <td data-label="Exhibitor Name">Kristyn Monroe</td>
-                                                    <td data-label="Sponsor Type">Class</td>
-                                                    <td data-label="ID Number"></td>
-                                                    <td data-label="ID Number">92E</td>
-                                                    <td data-label="Birth Year">2007</td>
-                                                    <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                                </tr>
-                                                <tr>
-                                                    <td data-label="Exhibitor ID">2536</td>
-                                                    <td data-label="Exhibitor Name">Kristyn Monroe</td>
-                                                    <td data-label="Sponsor Type">Cooler</td>
-                                                    <td data-label="ID Number"></td>
-                                                    <td data-label="ID Number"></td>
-                                                    <td data-label="Birth Year">2011</td>
-                                                    <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                                </tr>	
-                                                <tr>
-                                                    <td data-label="Exhibitor ID">2536</td>
-                                                    <td data-label="Exhibitor Name">Kristyn Monroe</td>
-                                                    <td data-label="Sponsor Type">Ad</td>
-                                                    <td data-label="ID Number"></td>
-                                                    <td data-label="ID Number">307</td>
-                                                    <td data-label="Birth Year">2011</td>
-                                                    <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                                </tr>	  
-                                                <tr>
-                                                    <td data-label="Exhibitor ID">7421</td>
-                                                    <td data-label="Exhibitor Name">Kristyn Monroe</td>
-                                                    <td data-label="Sponsor Type">Class</td>
-                                                    <td data-label="ID Number"></td>
-                                                    <td data-label="ID Number">92E</td>
-                                                    <td data-label="Birth Year">2007</td>
-                                                    <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                                </tr>
-                                                <tr>
-                                                    <td data-label="Exhibitor ID">2536</td>
-                                                    <td data-label="Exhibitor Name">Kristyn Monroe</td>
-                                                    <td data-label="Sponsor Type">Ad</td>
-                                                    <td data-label="ID Number"></td>
-                                                    <td data-label="ID Number">307</td>
-                                                    <td data-label="Birth Year">2011</td>
-                                                    <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                                </tr>	
-                                                <tr>
-                                                    <td data-label="Exhibitor ID">7421</td>
-                                                    <td data-label="Exhibitor Name">Kristyn Monroe</td>
-                                                    <td data-label="Sponsor Type">Class</td>
-                                                    <td data-label="ID Number"></td>
-                                                    <td data-label="ID Number">92E</td>
-                                                    <td data-label="Birth Year">2007</td>
-                                                    <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                                </tr>
-                                                <tr>
-                                                    <td data-label="Exhibitor ID">2536</td>
-                                                    <td data-label="Exhibitor Name">Kristyn Monroe</td>
-                                                    <td data-label="Sponsor Type">Ad</td>
-                                                    <td data-label="ID Number"></td>
-                                                    <td data-label="ID Number">307</td>
-                                                    <td data-label="Birth Year">2011</td>
-                                                    <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                                </tr>
-                                                <tr>
-                                                    <td data-label="Exhibitor ID">2536</td>
-                                                    <td data-label="Exhibitor Name">Kristyn Monroe</td>
-                                                    <td data-label="Sponsor Type">Ad</td>
-                                                    <td data-label="ID Number"></td>
-                                                    <td data-label="ID Number">307</td>
-                                                    <td data-label="Birth Year">2011</td>
-                                                    <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                                </tr>	
-                                                <tr>
-                                                    <td data-label="Exhibitor ID">7421</td>
-                                                    <td data-label="Exhibitor Name">Kristyn Monroe</td>
-                                                    <td data-label="Sponsor Type">Class</td>
-                                                    <td data-label="ID Number"></td>
-                                                    <td data-label="ID Number">92E</td>
-                                                    <td data-label="Birth Year">2007</td>
-                                                    <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                                </tr>
-                                                <tr>
-                                                    <td data-label="Exhibitor ID">2536</td>
-                                                    <td data-label="Exhibitor Name">Kristyn Monroe</td>
-                                                    <td data-label="Sponsor Type">Ad</td>
-                                                    <td data-label="ID Number"></td>
-                                                    <td data-label="ID Number">307</td>
-                                                    <td data-label="Birth Year">2011</td>
-                                                    <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                                </tr>
-                                                <tr>
-                                                    <td data-label="Exhibitor ID">2536</td>
-                                                    <td data-label="Exhibitor Name">Kristyn Monroe</td>
-                                                    <td data-label="Sponsor Type">Ad</td>
-                                                    <td data-label="ID Number"></td>
-                                                    <td data-label="ID Number">307</td>
-                                                    <td data-label="Birth Year">2011</td>
-                                                    <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                                </tr>	
-                                                <tr>
-                                                    <td data-label="Exhibitor ID">7421</td>
-                                                    <td data-label="Exhibitor Name">Kristyn Monroe</td>
-                                                    <td data-label="Sponsor Type">Class</td>
-                                                    <td data-label="ID Number"></td>
-                                                    <td data-label="ID Number">92E</td>
-                                                    <td data-label="Birth Year">2007</td>
-                                                    <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                                </tr>
-                                                <tr>
-                                                    <td data-label="Exhibitor ID">2536</td>
-                                                    <td data-label="Exhibitor Name">Kristyn Monroe</td>
-                                                    <td data-label="Sponsor Type">Ad</td>
-                                                    <td data-label="ID Number"></td>
-                                                    <td data-label="ID Number">307</td>
-                                                    <td data-label="Birth Year">2011</td>
-                                                    <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                                </tr>
+                                                <tr *ngFor="let list of sponsorsExhibitorsList">
+                                                    <td data-label="Exhibitor ID">{{list.ExhibitorId}}</td>
+                                                    <td data-label="Exhibitor Name">{{list.FirstName}} {{list.LastName}}</td>
+                                                    <td data-label="Sponsor Type">{{list.SponsorTypeId}}</td>
+                                                    <td data-label="ID Type">{{list.TypeId}}</td>
+                                                    <td data-label="ID Number">{{list.IdNumber}}</td>
+                                                    <td data-label="Birth Year">{{list.BirthYear}}</td>
+													<td data-label="Remove">
+														<button class="icon" 
+														(click)="confirmRemoveExhibitor('5',list.SponsorExhibitorId)">
+														<span></span> <i class="fa fa-trash-o"
+														aria-hidden="true"></i>
+													</button></td>
+												</tr>	
+                                               
                                                 <tr>
                                                     <td data-label="Exhibitor Name" colspan="2">
                                                         <select class="dynDataSeclect">

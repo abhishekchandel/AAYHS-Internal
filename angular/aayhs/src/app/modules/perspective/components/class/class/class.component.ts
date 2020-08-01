@@ -32,7 +32,14 @@ export class ClassComponent implements OnInit {
   data: ClassViewModel[] = ELEMENT_DATA;
   result: string = '';
   selectedRowIndex: any;
-
+  classRequest={
+    ClassId:0,
+    Page: 1,
+    Limit: 10,
+    OrderBy: 'ExhibitorClassId',
+    OrderByDescending: true,
+    AllRecords: false
+  }
   @ViewChild(MatPaginator) paginator: MatPaginator;
   totalItems: number=0;
   sortColumn:string="";
@@ -40,6 +47,8 @@ export class ClassComponent implements OnInit {
   classesList:any
   loading = false;
   classEntries:any;
+  exhibitorsResponse:any
+  exhibitorsHorsesResponse:any
   baseRequest :BaseRecordFilterRequest={
     Page: 1,
     Limit: 10,
@@ -53,6 +62,7 @@ export class ClassComponent implements OnInit {
     ClassName:null,
     Email:null,
     AgeGroup:null,
+    ScheduleDate:null
 
   }
   constructor(
@@ -119,14 +129,22 @@ getSort(column){
 }
 
 highlight(id, i) {
+  debugger;
   this.selectedRowIndex = i;
   //  this.getSponsorDetails(id);
-
+  this.getClassEntries(id);
+  this.getClassExhibitors(id)
 }
 getClassDetails = (id: number) => {
+  this.loading=true;
+
   this.classService.getClassById(id).subscribe(response => {
-    this.classInfo = response.Data
+    this.classInfo = response.Data;
+    this.loading=false;
+
   }, error => {
+    this.loading=false;
+    this.classInfo =null;
   }
   )
 }
@@ -156,15 +174,17 @@ resetForm() {
 
 getClassEntries(id:number){
   this.loading = true;
-  this.classService.getClassEnteries(id).subscribe(response => {
+  this.classRequest.ClassId=id
+  this.classService.getClassEnteries(this.classRequest).subscribe(response => {
     debugger;
     this.classEntries=response.Data.getClassEntries;
     this.loading = false;
    this. resetForm()
   }, error => {
-    this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
+    debugger;
+    this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
     this.loading = false;
-
+    this.classEntries=null
   })
 }
 
@@ -185,4 +205,20 @@ onChange(event: MatTabChangeEvent) {
     }
 }
 
+getClassExhibitors(id:number){
+  this.classService.getClassExhibitors(id).subscribe(response => {
+    this.exhibitorsResponse = response.Data.getClassExhibitors;
+}, error => {
+
+})
+}
+
+getExhibitorHorses(id:number){
+  this.classService.getExhibitorHorses(id).subscribe(response => {
+    this.exhibitorsHorsesResponse = response.Data.getExhibitorHorses;
+}, error => {
+
+})
+
+}
 }

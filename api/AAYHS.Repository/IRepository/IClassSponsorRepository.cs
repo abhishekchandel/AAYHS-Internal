@@ -11,7 +11,7 @@ namespace AAYHS.Repository.IRepository
     {
         MainResponse GetAllClassSponsor();
         MainResponse GetAllClassSponsorWithFilters(BaseRecordFilterRequest request);
-        MainResponse GetClassSponsorbyId (GetClassSponsorRequest request);
-        MainResponse GetSponsorClassesbySponsorId(GetBySponsorIdRequest request);
+        MainResponse GetClassSponsorbyId (int ClassSponsorId);
+        MainResponse GetSponsorClassesbySponsorId(int SponsorId);
     }
 }

@@ -97,11 +97,11 @@ namespace AAYHS.Repository.Repository
             return _mainResponse;
         }
 
-        public MainResponse GetClassSponsorbyId(GetClassSponsorRequest request)
+        public MainResponse GetClassSponsorbyId(int ClassSponsorId)
         {
             ClassSponsorResponse classSponsorResponse=new ClassSponsorResponse();
             classSponsorResponse = (from classSponsor in _context.ClassSponsors
-                                     where classSponsor.ClassSponsorId==request.ClassSponsorId
+                                     where classSponsor.ClassSponsorId==ClassSponsorId
                                      select new ClassSponsorResponse
                                      {
                                          ClassSponsorId = classSponsor.ClassSponsorId,
@@ -113,7 +113,7 @@ namespace AAYHS.Repository.Repository
             return _mainResponse;
         }
 
-       public MainResponse GetSponsorClassesbySponsorId(GetBySponsorIdRequest request)
+       public MainResponse GetSponsorClassesbySponsorId(int SponsorId)
         {
             IEnumerable<SponsorClassResponse> sponsorClassResponses;
             SponsorClassesListResponse sponsorClassesListResponse = new SponsorClassesListResponse();
@@ -121,7 +121,7 @@ namespace AAYHS.Repository.Repository
             sponsorClassResponses = (from classes in _context.Classes join sponsorClass
                                      in _context.ClassSponsors on classes.ClassId equals sponsorClass.ClassId
                                      
-                                     where sponsorClass.SponsorId==request.SponsorId && classes.IsActive ==true
+                                     where sponsorClass.SponsorId==SponsorId && classes.IsActive ==true
                                      && classes.IsDeleted ==false
                                      select new SponsorClassResponse
                                      {

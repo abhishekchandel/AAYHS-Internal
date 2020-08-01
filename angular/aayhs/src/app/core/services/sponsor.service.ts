@@ -24,18 +24,23 @@ export class SponsorService {
   }
 
   getAllSponsers(data){
-    
     return this.http.post<any>(`${this.api}SponsorAPI/GetAllSponsorsWithFilter`,data);
   }
 
   deleteSponsor(id:number){
     return this.http.delete<any>(`${this.api}SponsorAPI/DeleteSponsor?sponsorId=${id}`);
   }
-
+  deleteSponsorExhibitor(SponsorExhibitorId:number){
+    return this.http.delete<any>(`${this.api}SponsorExhibitorAPI/DeleteSponsorExhibitor?SponsorExhibitorId=${SponsorExhibitorId}`);
+  }
   getCities(stateId:number){
     return this.http.post<any>(`${this.api}CommonAPI/GetCities?stateId=${stateId}`,"");
   }
   getAllStates(){
     return this.http.post<any>(`${this.api}CommonAPI/GetStates`,{});
   }
+  GetSponsorExhibitorBySponsorId(sponsorId:number){
+    return this.http.get<any>(`${this.api}SponsorExhibitorAPI/GetSponsorExhibitorBySponsorId?sponsorId=${sponsorId}`);
+  }
+ 
 }

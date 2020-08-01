@@ -10,12 +10,6 @@ namespace AAYHS.Core.DTOs.Request
         public int SponsorId { get; set; }
         public int ClassId { get; set; }
     }
-    public class GetClassSponsorRequest
-    {
-        public int ClassSponsorId { get; set; }
-    }
-    public class GetBySponsorIdRequest
-    {
-        public int SponsorId { get; set; }
-    }
+  
+ 
 }

@@ -96,12 +96,12 @@ namespace AAYHS.Repository.Repository
             _MainResponse.GetClass = data.FirstOrDefault();
             return _MainResponse;           
         }
-        public MainResponse GetClassExhibitorsAndHorses(ClassExhibitorHorsesRequest classRequest)
+        public MainResponse GetClassExhibitorsAndHorses(int ClassId)
         {
             ClassExhibitorHorses classExhibitorHorses = new ClassExhibitorHorses();
             List<string> list = new List<string>();
             var exhibitorClass = (from ce in _ObjContext.ExhibitorClass
-                                  where ce.ClassId == classRequest.ClassId
+                                  where ce.ClassId == ClassId
                                   select ce).ToList();
 
             foreach (var data in exhibitorClass)

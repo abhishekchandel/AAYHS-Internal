@@ -10,11 +10,11 @@ namespace AAYHS.Service.IService
     {
 
          MainResponse AddUpdateClassSponsor(ClassSponsorRequest request);
-        MainResponse GetClassSponsorbyId(GetClassSponsorRequest request);
+        MainResponse GetClassSponsorbyId(int ClassSponsorId);
         MainResponse GetAllClassSponsor();
         MainResponse GetAllClassSponsorWithFilter(BaseRecordFilterRequest request);
-        MainResponse DeleteClassSponsor(GetClassSponsorRequest request);
-        MainResponse GetSponsorClassesbySponsorId(GetBySponsorIdRequest request);
+        MainResponse DeleteClassSponsor(int ClassSponsorId);
+        MainResponse GetSponsorClassesbySponsorId(int SponsorId);
 
     }
 }

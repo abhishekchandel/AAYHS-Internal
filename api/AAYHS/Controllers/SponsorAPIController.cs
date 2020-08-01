@@ -54,9 +54,9 @@ namespace AAYHS.API.Controllers
         /// <param name="Sponsor id parameter is required"></param>
         /// <returns> Single Sponsor record</returns>
         [HttpPost]
-        public ActionResult GetSponsorById(GetSponsorRequest request)
+        public ActionResult GetSponsorById(int SponsorId)
         {
-                _mainResponse = _SponsorService.GetSponsorById(request);
+                _mainResponse = _SponsorService.GetSponsorById(SponsorId);
             _jsonString = Mapper.Convert<SponsorResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
@@ -81,9 +81,9 @@ namespace AAYHS.API.Controllers
         /// <param name="Sponsor detail with Sponsor id is required"></param>
         /// <returns> success true or false with message</returns>
         [HttpDelete]
-        public ActionResult DeleteSponsor([FromBody] GetSponsorRequest request)
+        public ActionResult DeleteSponsor(int SponsorId)
         {
-            _mainResponse = _SponsorService.DeleteSponsor(request);
+            _mainResponse = _SponsorService.DeleteSponsor(SponsorId);
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }

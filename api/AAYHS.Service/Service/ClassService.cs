@@ -130,9 +130,9 @@ namespace AAYHS.Service.Service
             }          
             return _mainResponse;
         }
-        public MainResponse GetClassExhibitorsAndHorses(ClassExhibitorHorsesRequest request)
+        public MainResponse GetClassExhibitorsAndHorses(int ClassId)
         {
-            _mainResponse = _classRepository.GetClassExhibitorsAndHorses(request);
+            _mainResponse = _classRepository.GetClassExhibitorsAndHorses(ClassId);
             if (_mainResponse.ClassExhibitorHorses.ClassExhibitorHorse != null && _mainResponse.ClassExhibitorHorses.ClassExhibitorHorse.Count > 0)
             {
                 _mainResponse.ClassExhibitorHorses.TotalRecords = _mainResponse.ClassExhibitorHorses.ClassExhibitorHorse.Count();

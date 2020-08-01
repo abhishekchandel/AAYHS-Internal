@@ -31,7 +31,7 @@ namespace AAYHS.Repository.Repository
             _context = ObjContext;
             _Mapper = Mapper;
         }
-        public MainResponse GetSponsorById(GetSponsorRequest request)
+        public MainResponse GetSponsorById(int SponsorId)
         {
             SponsorResponse sponsorResponse = new SponsorResponse();
              sponsorResponse = (from sponsor in _context.Sponsors
@@ -39,7 +39,7 @@ namespace AAYHS.Repository.Repository
                                         on sponsor.AddressId equals address.AddressId
                                         into data1
                                    from data in data1.DefaultIfEmpty()
-                                   where sponsor.SponsorId == request.SponsorId 
+                                   where sponsor.SponsorId == SponsorId 
                                    select new SponsorResponse
                                    {
                                        SponsorId = sponsor.SponsorId,

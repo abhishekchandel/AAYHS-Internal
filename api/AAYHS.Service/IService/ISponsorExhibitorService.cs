@@ -9,7 +9,7 @@ namespace AAYHS.Service.IService
    public interface ISponsorExhibitorService
     {
         MainResponse AddUpdateSponsorExhibitor(SponsorExhibitorRequest request);
-        MainResponse GetSponsorExhibitorBySponsorId(GetSponsorExhibitorRequest request);
-        MainResponse DeleteSponsorExhibitor(DeleteSponsorExhibitorRequest request);
+        MainResponse GetSponsorExhibitorBySponsorId(int SponsorId);
+        MainResponse DeleteSponsorExhibitor(int SponsorExhibitorId);
     }
 }

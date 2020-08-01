@@ -5,6 +5,7 @@ export interface ClassInfoModel
     ClassName:string;
     Email:string;
     AgeGroup:string;
+    ScheduleDate:Date
 }
 
 export interface ClassEnteries{

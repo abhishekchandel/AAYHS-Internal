@@ -62,9 +62,9 @@ namespace AAYHS.API.Controllers
         /// <param name="Exhibitor id parameter is required"></param>
         /// <returns> Single Exhibitor record</returns>
         [HttpPost]
-        public ActionResult GetExhibitorById([FromBody] GetExhibitorRequest request)
+        public ActionResult GetExhibitorById(int ExhibitorId)
         {
-            _mainResponse = _ExhibitorService.GetExhibitorById(request);
+            _mainResponse = _ExhibitorService.GetExhibitorById(ExhibitorId);
             _jsonString = Mapper.Convert<ExhibitorResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
@@ -89,9 +89,9 @@ namespace AAYHS.API.Controllers
         /// <param name="Exhibitor detail with Exhibitor id is required"></param>
         /// <returns> success true or false with message</returns>
         [HttpPost]
-        public ActionResult DeleteExhibitor([FromBody] GetExhibitorRequest request)
+        public ActionResult DeleteExhibitor(int ExhibitorId)
         {
-            _mainResponse = _ExhibitorService.DeleteExhibitor(request);
+            _mainResponse = _ExhibitorService.DeleteExhibitor(ExhibitorId);
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }

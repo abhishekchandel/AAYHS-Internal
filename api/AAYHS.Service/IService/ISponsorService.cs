@@ -12,7 +12,7 @@ namespace AAYHS.Service.IService
         MainResponse AddUpdateSponsor(SponsorRequest request);
         MainResponse GetAllSponsorsWithFilter(BaseRecordFilterRequest request);
         MainResponse GetAllSponsors();
-        MainResponse GetSponsorById(GetSponsorRequest request);
-        MainResponse DeleteSponsor(GetSponsorRequest request);
+        MainResponse GetSponsorById(int SponsorId);
+        MainResponse DeleteSponsor(int SponsorId);
     }
 }

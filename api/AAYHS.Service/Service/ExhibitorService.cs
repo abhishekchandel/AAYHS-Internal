@@ -85,9 +85,9 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
-        public MainResponse GetExhibitorById(GetExhibitorRequest request)
+        public MainResponse GetExhibitorById(int ExhibitorId)
         {
-            var data = _ExhibitorRepository.GetSingle(x => x.ExhibitorId == request.ExhibitorId && x.IsActive == true && x.IsDeleted == false);
+            var data = _ExhibitorRepository.GetSingle(x => x.ExhibitorId == ExhibitorId && x.IsActive == true && x.IsDeleted == false);
             if (data != null && data.ExhibitorId > 0)
             {
                 _mainResponse.ExhibitorResponse = _Mapper.Map<ExhibitorResponse>(data);
@@ -103,9 +103,9 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
-        public MainResponse DeleteExhibitor(GetExhibitorRequest request)
+        public MainResponse DeleteExhibitor(int ExhibitorId)
         {
-            var Exhibitor = _ExhibitorRepository.GetSingle(x => x.ExhibitorId == request.ExhibitorId);
+            var Exhibitor = _ExhibitorRepository.GetSingle(x => x.ExhibitorId == ExhibitorId);
             if (Exhibitor != null && Exhibitor.ExhibitorId>0)
             {
                 Exhibitor.IsDeleted = true;
