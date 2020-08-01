@@ -8,6 +8,7 @@ namespace AAYHS.Core.DTOs.Response.Common
     public class ClassResponse
     {
         public int ClassId { get; set; }
+        public string ClassHeader { get; set; }
         public int ClassNumber { get; set; }
         public string Name { get; set; }
         public string Location { get; set; }
@@ -79,5 +80,21 @@ namespace AAYHS.Core.DTOs.Response.Common
         public int HorseId { get; set; }
         public string Horse { get; set; }
     }
-
+    public class GetResultOfClass
+    {
+        public string Place { get; set; }
+        public int BackNumber { get; set; }
+        public int ExhibitorId { get; set; }
+        public string ExhibitorName { get; set; }
+        public DateTime BirthYear { get; set; }
+        public string HorseName { get; set; }
+        public string Address { get; set; }
+        public decimal AmountPaid { get; set; }
+        public decimal AmountDue { get; set; }
+    }
+    public class GetResult
+    {
+        public List<GetResultOfClass> getResultOfClass { get; set; }
+        public int TotalRecords { get; set; }
+    }
 }

@@ -64,6 +64,7 @@ namespace AAYHS.Service.Service
             if (getClass.GetClass!=null && getClass.GetClass.TotalRecords!=0)
             {
                 _mainResponse.GetClass = getClass.GetClass;
+                _mainResponse.GetClass.TotalRecords = getClass.GetClass.TotalRecords;
                 _mainResponse.Success = true;
             }
             else
@@ -154,6 +155,7 @@ namespace AAYHS.Service.Service
                 var classes = new Classes
                 {
                     ClassNumber = addClassRequest.ClassNumber,
+                    ClassHeader=addClassRequest.ClassHeader,
                     Name = addClassRequest.Name,
                     Location = addClassRequest.Location,
                     AgeGroup = addClassRequest.AgeGroup,
@@ -183,6 +185,7 @@ namespace AAYHS.Service.Service
                 if (updateClass!=null)
                 {
                     updateClass.ClassNumber = addClassRequest.ClassNumber;
+                    updateClass.ClassHeader = addClassRequest.ClassHeader;
                     updateClass.Name = addClassRequest.Name;
                     updateClass.Location = addClassRequest.Location;
                     updateClass.AgeGroup = addClassRequest.AgeGroup;
@@ -355,6 +358,22 @@ namespace AAYHS.Service.Service
             }
             _mainResponse.Message = Constants.CLASS_RESULT_ADDED;
             _mainResponse.Success = true;
+            return _mainResponse;
+        }
+        public MainResponse GetResultOfClass(ClassRequest classRequest)
+        {
+            var getResult = _classRepository.GetResultOfClass(classRequest);
+            if (getResult.GetResult!=null && getResult.GetResult.TotalRecords!=0)
+            {
+                _mainResponse.GetResult = getResult.GetResult;
+                _mainResponse.GetResult.TotalRecords = getResult.GetResult.TotalRecords;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+                _mainResponse.Success = false;
+            }
             return _mainResponse;
         }
     }
