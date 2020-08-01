@@ -283,15 +283,16 @@ namespace AAYHS.Service.Service
 
             return _mainResponse;
         }
-        public async Task<MainResponse> AddUpdateSplitClass(List<SplitRequest> splitRequest,string actionBy)
+        public async Task<MainResponse> AddUpdateSplitClass(SplitRequest splitRequest,string actionBy)
         {
             _splitClassRepository.DeleteSplitsByClassId(splitRequest);
-                foreach(var split in splitRequest)
+
+                foreach(var split in splitRequest.splitEntries)
                 {
                     var splitClass = new ClassSplits
                     {
-                        ClassId = split.ClassId,
-                        SplitNumber = split.SplitNumber,
+                        ClassId = splitRequest.ClassId,
+                        SplitNumber = splitRequest.SplitNumber,
                         Entries = split.Entries,
                         IsActive = true,
                         CreatedBy = actionBy,

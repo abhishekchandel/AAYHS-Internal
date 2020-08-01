@@ -16,6 +16,14 @@ namespace AAYHS.Core.DTOs.Response.Common
         public int Entries { get; set; }
         public DateTime ScheduleDate { get; set; }
         public TimeSpan SchedulTime { get; set; }
+        public int SplitNumber { get; set; }
+        public bool ChampionShipIndicator { get; set; }
+        public List<GetSplitClass> getSplitClass { get; set; }
+    }
+    public class GetSplitClass
+    {       
+        public int Entries { get; set; }
+       
     }
     public class GetAllClasses
     {

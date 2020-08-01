@@ -32,6 +32,10 @@ namespace AAYHS.Core.DTOs.Request
     {
         public int ClassId { get; set; }
         public int SplitNumber { get; set; }
+        public List<SplitEntries> splitEntries { get; set; }
+    }
+    public class SplitEntries
+    {
         public int Entries { get; set; }
     }
     public class ResultExhibitorRequest
