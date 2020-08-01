@@ -19,7 +19,7 @@ namespace AAYHS.Service.IService
         MainResponse GetClassEntries(ClassRequest classRequest);
         Task<MainResponse> DeleteClassExhibitor(int ExhibitorClassId, string actionBy);
         Task<MainResponse> RemoveClass(int ClassId, string actionBy);
-        Task<MainResponse> AddUpdateSplitClass(List<SplitRequest> splitRequest, string actionBy);
+        Task<MainResponse> AddUpdateSplitClass(SplitRequest splitRequest, string actionBy);
         MainResponse GetBackNumberForAllExhibitor(int ClassId);
         MainResponse GetResultExhibitorDetails(ResultExhibitorRequest resultExhibitorRequest);
         Task<MainResponse> AddClassResult(AddClassResultRequest addClassResultRequest, string actionBy);

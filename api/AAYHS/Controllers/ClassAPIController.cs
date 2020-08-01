@@ -175,7 +175,7 @@ namespace AAYHS.API.Controllers
         /// <returns></returns>
         [HttpPost]
         //[Authorize]
-        public async Task<IActionResult>AddUpdateSplitClass(List<SplitRequest> splitRequest)
+        public async Task<IActionResult>AddUpdateSplitClass(SplitRequest splitRequest)
         {
              string actionBy = User.Identity.Name;
             _mainResponse = await _classService.AddUpdateSplitClass(splitRequest, actionBy);
