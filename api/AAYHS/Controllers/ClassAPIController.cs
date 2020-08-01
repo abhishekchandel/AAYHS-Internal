@@ -90,6 +90,19 @@ namespace AAYHS.API.Controllers
 
 
         /// <summary>
+        /// This api used to get exhibitor horses 
+        /// </summary>
+        /// <param name="ClassId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        //[Authorize]
+        public IActionResult GetExhibitorHorses(int ExhibitorId)
+        {
+            _mainResponse = _classService.GetExhibitorHorses(ExhibitorId);
+            _jsonString = Mapper.Convert<GetExhibitorAllHorses>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
         /// This api used for adding the class
         /// </summary>
         /// <param name="addClassRequest"></param>
