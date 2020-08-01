@@ -76,14 +76,14 @@ namespace AAYHS.Repository.Repository
         }
         public MainResponse GetClass(int ClassId)
         {
-            IEnumerable<GetClass> data;
+            IEnumerable<ClassResponse> data;
             GetClass getClass = new GetClass();
 
             data = (from classes in _ObjContext.Classes
                     join scheduleDate in _ObjContext.ScheduleDates on classes.ClassId equals scheduleDate.ClassId into scheduleDate1
                     from scheduleDate2 in scheduleDate1.DefaultIfEmpty()
                     where classes.IsActive == true && classes.IsDeleted == false && classes.ClassId == ClassId
-                    select new GetClass 
+                    select new ClassResponse
                     {
                         ClassId= classes.ClassId,
                         ClassNumber= classes.ClassNumber,
@@ -93,8 +93,34 @@ namespace AAYHS.Repository.Repository
                         ScheduleDate= scheduleDate2.Date,
                         SchedulTime= scheduleDate2.Time
                     });
-            _MainResponse.GetClass = data.FirstOrDefault();
-            return _MainResponse;           
+            if (data.Count() != 0)
+            {
+                getClass.classResponse = data.ToList();
+                _MainResponse.GetClass = getClass;
+                _MainResponse.GetClass.TotalRecords = getClass.classResponse.Count();
+            }
+            return _MainResponse;
+        }
+        public MainResponse GetExhibitorHorses(int ExhibitorId)
+        {
+            IEnumerable<GetExhibitorHorses> data;
+            GetExhibitorAllHorses getExhibitorAllHorses = new GetExhibitorAllHorses();
+
+            data = (from exhibitorHorses in _ObjContext.ExhibitorHorse
+                    join horses in _ObjContext.Horses on exhibitorHorses.HorseId equals horses.HorseId
+                    where exhibitorHorses.IsActive == true && exhibitorHorses.IsDeleted == false
+                    && horses.IsActive == true && horses.IsDeleted == false
+                    && exhibitorHorses.ExhibitorId == ExhibitorId
+                    select new GetExhibitorHorses
+                    {
+                        HorseId = exhibitorHorses.HorseId,
+                        Horse = horses.Name
+                    });
+
+            getExhibitorAllHorses.getExhibitorHorses = data.ToList();
+            _MainResponse.GetExhibitorAllHorses = getExhibitorAllHorses;
+            _MainResponse.GetExhibitorAllHorses.TotalRecords = getExhibitorAllHorses.getExhibitorHorses.Count();
+            return _MainResponse;
         }
         public MainResponse GetClassExhibitorsAndHorses(ClassExhibitorHorsesRequest classRequest)
         {

@@ -12,6 +12,7 @@ namespace AAYHS.Service.IService
         MainResponse GetAllClasses(ClassRequest classRequest);
         MainResponse GetClass(int ClassId);
         MainResponse GetClassExhibitors(int ClassId);
+        MainResponse GetExhibitorHorses(int ExhibitorId);
         MainResponse GetClassExhibitorsAndHorses(ClassExhibitorHorsesRequest request);
         Task<MainResponse> CreateUpdateClass(AddClassRequest addClassRequest, string actionBy);
         Task<MainResponse> AddExhibitorToClass(AddClassExhibitor addClassExhibitor, string actionBy);      
