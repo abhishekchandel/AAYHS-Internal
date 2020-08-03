@@ -135,39 +135,8 @@ export class SponsorComponent implements OnInit {
     this.loading=false;
   }
 
-  confirmRemoveExhibitor(index, data): void {
 
-    const message = `Are you sure you want to remove this exhibitor?`;
-    const dialogData = new ConfirmDialogModel("Confirm Action", message);
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      maxWidth: "400px",
-      data: dialogData
-    });
-
-    dialogRef.afterClosed().subscribe(dialogResult => {
-      this.result = dialogResult;
-      if(this.result)
-      {
-        if (this.result){ this.deleteSponsorExhibitor(data) }
-      }
-    });
-
-  }
-
-  confirmRemoveClass(index, data): void {
-    const message = `Are you sure you want to remove this class?`;
-    const dialogData = new ConfirmDialogModel("Confirm Action", message);
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      maxWidth: "400px",
-      data: dialogData
-    });
-
-    dialogRef.afterClosed().subscribe(dialogResult => {
-      this.result = dialogResult;
-      // this.removeCartObit(data.ObituaryId, this.result)
-    });
-
-  }
+  //confirm alert
   confirmRemoveSponsor(e, index, data): void {
     
     e.stopPropagation();
@@ -185,6 +154,45 @@ export class SponsorComponent implements OnInit {
      
     });
   }
+  confirmRemoveExhibitor(index, data): void {
+
+    const message = `Are you sure you want to remove this sponsor exhibitor?`;
+    const dialogData = new ConfirmDialogModel("Confirm Action", message);
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      this.result = dialogResult;
+      if(this.result)
+      {
+        if (this.result){ this.deleteSponsorExhibitor(data) }
+      }
+    });
+
+  }
+
+  confirmRemoveClass(index, data): void {
+    const message = `Are you sure you want to remove this sponsor class?`;
+    const dialogData = new ConfirmDialogModel("Confirm Action", message);
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      this.result = dialogResult;
+      if(this.result)
+      {
+        if (this.result){ this.deleteSponsorClass(data) }
+      }
+    });
+
+  }
+
+  
+//delete record
   deleteSponsor(id: number) {
     debugger;
     this.sponsorService.deleteSponsor(id).subscribe(response => {
@@ -217,6 +225,22 @@ export class SponsorComponent implements OnInit {
     })
   }
 
+  deleteSponsorClass(id: number) {
+    debugger;
+    this.sponsorService.deleteSponsor(id).subscribe(response => {
+      if(response.Success==true)
+      {
+        const dialog = new ConfirmDialogModel("Confirm Action", response.Message);
+        this.getAllSponsors();
+      }
+      else{
+        const dialog = new ConfirmDialogModel("Confirm Action", response.Message);
+      }
+    }, error => {
+
+    })
+  }
+
 
   resetForm() {
     this.sponsorInfo.SponsorName = null;
@@ -232,12 +256,12 @@ export class SponsorComponent implements OnInit {
     this.sponsorInfoForm.resetForm();
     this.tabGroup.selectedIndex = 0
   }
+
   getNext(event, type) {
     this.baseRequest.Page = (event.pageIndex) + 1;
     this.getAllSponsors()
   }
   
-
   highlight(row, i) {
     debugger;
     this.selectedRowIndex = i;
@@ -266,6 +290,7 @@ export class SponsorComponent implements OnInit {
 
     })
   }
+
   getAllStates() {
     debugger;
       this.loading = true;
@@ -280,7 +305,7 @@ export class SponsorComponent implements OnInit {
   getStateName(e) {
     this.sponsorInfo.StateId =Number( e.target.options[e.target.selectedIndex].value)
 }
-getCityName(e) {
+ getCityName(e) {
   this.sponsorInfo.CityId = Number(e.target.options[e.target.selectedIndex].value)
 }
 }
