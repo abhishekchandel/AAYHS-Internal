@@ -14,5 +14,6 @@ namespace AAYHS.Service.IService
         MainResponse GetAllSponsors();
         MainResponse GetSponsorById(int SponsorId);
         MainResponse DeleteSponsor(int SponsorId);
+        MainResponse SearchSponsor(SearchRequest searchRequest);
     }
 }

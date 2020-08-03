@@ -138,15 +138,18 @@ namespace AAYHS.Repository.Repository
             return _mainResponse;
         }
 
-        public List<SponsorResponse> SearchSponsor(SearchRequest searchRequest)
+        public SponsorListResponse SearchSponsor(SearchRequest searchRequest)
         {
-            var sponsorResponse = (from sponsor in _context.Sponsors
+            IEnumerable<SponsorResponse> sponsorResponses;
+            SponsorListResponse sponsorListResponse = new SponsorListResponse();
+
+            sponsorResponses = (from sponsor in _context.Sponsors
                                    join address in _context.Addresses
                                         on sponsor.AddressId equals address.AddressId
                                         into data1
                                    from data in data1.DefaultIfEmpty()
                                    where sponsor.IsActive == true && sponsor.IsDeleted == false
-                                   && ((searchRequest.SearchTerm != string.Empty ?Convert.ToString(sponsor.SponsorId).Contains(searchRequest.SearchTerm) : (1 == 1))
+                                   && ((searchRequest.SearchTerm != string.Empty ? Convert.ToString(sponsor.SponsorId).Contains(searchRequest.SearchTerm) : (1 == 1))
                                    || (searchRequest.SearchTerm != string.Empty ? sponsor.SponsorName.Contains(searchRequest.SearchTerm) : (1 == 1)))
                                    select new SponsorResponse
                                    {
@@ -161,7 +164,31 @@ namespace AAYHS.Repository.Repository
                                        CityId = data != null ? data.CityId : 0,
                                        StateId = data != null ? _context.Cities.Where(x => x.CityId == data.CityId).Select(y => y.StateId).FirstOrDefault() : 0,
                                    }).ToList();
-            return sponsorResponse;
+
+            if (sponsorResponses.Count() > 0)
+            {
+                var propertyInfo = typeof(SponsorResponse).GetProperty(searchRequest.OrderBy);
+                if (searchRequest.OrderByDescending == true)
+                {
+                    sponsorResponses = sponsorResponses.OrderByDescending(s => s.GetType().GetProperty(searchRequest.OrderBy).GetValue(s)).ToList();
+                }
+                else
+                {
+                    sponsorResponses = sponsorResponses.AsEnumerable().OrderBy(s => propertyInfo.GetValue(s, null)).ToList();
+                }
+                sponsorListResponse.TotalRecords = sponsorResponses.Count();
+                if (searchRequest.AllRecords == true)
+                {
+                    sponsorResponses = sponsorResponses.ToList();
+                }
+                else
+                {
+                    sponsorResponses = sponsorResponses.Skip((searchRequest.Page - 1) * searchRequest.Limit).Take(searchRequest.Limit).ToList();
+                }
+            }
+
+            sponsorListResponse.sponsorResponses = sponsorResponses.ToList();
+            return sponsorListResponse;
         }
 
     }

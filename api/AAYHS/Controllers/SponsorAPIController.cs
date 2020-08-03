@@ -87,6 +87,18 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
+        /// <summary>
+        /// This api used to search the sponsor
+        /// </summary>
+        /// <param name="searchRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult  SearchSponsor(SearchRequest searchRequest)
+        {
 
+            _mainResponse = _SponsorService.SearchSponsor(searchRequest);
+            _jsonString = Mapper.Convert<SponsorListResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
     }
 }

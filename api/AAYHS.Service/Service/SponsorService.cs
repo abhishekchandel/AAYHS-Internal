@@ -175,5 +175,23 @@ namespace AAYHS.Service.Service
             }
             return _mainResponse;
         }
+
+        public MainResponse SearchSponsor(SearchRequest searchRequest)
+        {
+            var search = _SponsorRepository.SearchSponsor(searchRequest);
+            if (search!=null && search.TotalRecords!=0)
+            {
+                _mainResponse.SponsorListResponse = search;
+                _mainResponse.Success = true;
+                _mainResponse.SponsorListResponse.TotalRecords = search.TotalRecords;
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+                _mainResponse.Success = false;
+            }
+
+            return _mainResponse;
+        }
     }
 }
