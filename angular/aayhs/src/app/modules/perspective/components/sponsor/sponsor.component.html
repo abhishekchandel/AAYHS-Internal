@@ -144,9 +144,10 @@
 									    <label>City <span>*</span></label>	
 										<select required class="form-control" placeholder="city" (change)="getCityName($event)" name="city" #city="ngModel" [(ngModel)]="sponsorInfo.CityId" >
 											
-											<option value="0" disabled="true" [selected]="true">
+											<!-- <option value="0" disabled="true" [selected]="true">
 												Select City
-											</option>
+											</option> -->
+											
 											<option *ngFor="let city of citiesResponse"
 														[value]="city.CityId">{{city.Name}}
 													</option>												
@@ -276,11 +277,8 @@
 													<td data-label="Age Group">{{list.AgeGroup}}</td>
 													<td data-label="Exhibitor">
 														<select class="dynDataSeclect">
-															<option>ID/Exh - ID/Horse Name</option>
-															<option>0036 Lowe Abigail/Zips Elegant Step</option>
-															<option>0029 Mathews Averie/Pretty Boy</option>
-															<option>0200 Miller Sidney/Dixie</option>
-															<option>0809 Morgan Mya/All Cashed Out</option>
+															<option disabled=true selected>Exh Name/Horse Name</option>
+															<option *ngFor="let item of list.ClassExhibitorsAndHorses">{{item}}</option>
 														</select>
 													</td>
 													<td data-label="Remove">

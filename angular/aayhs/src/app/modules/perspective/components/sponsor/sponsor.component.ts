@@ -78,6 +78,7 @@ export class SponsorComponent implements OnInit {
     this.getAllStates();
     this.GetSponsorExhibitorBySponsorId(this.selectedSponsorId);
     this.GetSponsorClasses(this.selectedSponsorId);
+  
   }
 
 
@@ -152,6 +153,8 @@ export class SponsorComponent implements OnInit {
     })
     this.loading=false;
   }
+
+ 
 
   //confirm alert
   confirmRemoveSponsor(e, index, data): void {

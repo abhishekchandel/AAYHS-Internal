@@ -8,6 +8,7 @@ namespace AAYHS.Core.Enums
     {
         Class = 1,
         Add = 2,
-        Other = 3,
+        Cooler = 3,
+        Patron = 4,
     }
 }

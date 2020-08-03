@@ -13,6 +13,7 @@ namespace AAYHS.API.Controllers
     public class ClassSponsorAPIController : ControllerBase
     {
         private readonly IClassSponsorService _ClassSponsorService;
+ 
         private MainResponse _mainResponse;
         private string _jsonString = string.Empty;
         public ClassSponsorAPIController(IClassSponsorService ClassClassSponsorService)

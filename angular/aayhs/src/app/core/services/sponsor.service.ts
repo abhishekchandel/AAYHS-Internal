@@ -48,5 +48,10 @@ export class SponsorService {
   DeleteSponsorClasse(ClassSponsorId:number){
     return this.http.delete<any>(`${this.api}ClassSponsorAPI/DeleteClassSponsor?ClassSponsorId=${ClassSponsorId}`);
   }
+ 
+  GetClassExhibitorsAndHorses(ClassId:number){
+    return this.http.get<any>(`${this.api}ClassAPI/GetClassExhibitorsAndHorses?ClassId=${ClassId}`);
+  }
+
 }
 

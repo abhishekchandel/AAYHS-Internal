@@ -28,6 +28,7 @@ namespace AAYHS.Core.DTOs.Response
         public string ExhibitorName { get; set; }
         public int HorseId { get; set; }
         public string HorseName { get; set; }
+        public List<string> ClassExhibitorsAndHorses { get; set; }
 
     }
     public class SponsorClassesListResponse

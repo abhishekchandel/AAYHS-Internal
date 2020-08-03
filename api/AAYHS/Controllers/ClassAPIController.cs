@@ -90,7 +90,7 @@ namespace AAYHS.API.Controllers
         /// </summary>
         /// <param name="classRequest"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpGet]
         //[Authorize]
         public IActionResult GetClassExhibitorsAndHorses(int ClassId)
         {

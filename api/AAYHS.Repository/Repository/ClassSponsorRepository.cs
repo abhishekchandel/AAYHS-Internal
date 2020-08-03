@@ -1,5 +1,6 @@
 ﻿using AAYHS.Core.DTOs.Request;
 using AAYHS.Core.DTOs.Response;
+using AAYHS.Core.DTOs.Response.Common;
 using AAYHS.Data.DBContext;
 using AAYHS.Data.DBEntities;
 using AAYHS.Repository.IRepository;
@@ -155,12 +156,46 @@ namespace AAYHS.Repository.Repository
                                                         where classexhibitor.ClassId == sponsorClass.ClassId
                                                          && classexhibitor.IsActive == true && classexhibitor.IsDeleted == false
                                                       select horse.Name).FirstOrDefault(),
+                                      
 
                                      }).ToList();
+            foreach(var item in sponsorClassResponses)
+            {
+                item.ClassExhibitorsAndHorses = GetClassExhibitorsAndHorses(item.ClassId);
+            }
+
             sponsorClassesListResponse.sponsorClassesListResponses = sponsorClassResponses.ToList();
             _mainResponse.SponsorClassesListResponse = sponsorClassesListResponse;
 
             return _mainResponse;
+        }
+
+        public List<string> GetClassExhibitorsAndHorses(int ClassId)
+        {
+            List<string> list = new List<string>();
+            var exhibitorClass = (from ce in _context.ExhibitorClass
+                                  where ce.ClassId == ClassId
+                                  select ce).ToList();
+
+            foreach (var data in exhibitorClass)
+            {
+                var exhibitor = (from ex in _context.Exhibitors where ex.ExhibitorId == data.ExhibitorId select ex).FirstOrDefault();
+                if (exhibitor != null)
+                {
+                    var horses = (from hr in _context.Horses select hr).ToList();
+                    if (horses != null && horses.Count > 0)
+                    {
+                        foreach (var horse in horses)
+                        {
+                            var name = exhibitor.FirstName + ' ' + exhibitor.LastName + '/' + horse.Name;
+                            if (!list.Contains(name))
+                                list.Add(name);
+                        }
+                    }
+                }
+
+            }
+            return list;
         }
     }
 }
