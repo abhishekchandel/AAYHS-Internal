@@ -33,7 +33,7 @@ namespace AAYHS.Repository.Repository
             _MainResponse = new MainResponse();
         }
 
-        public  MainResponse GetAllClasses(ClassRequest classRequest)
+        public GetAllClasses GetAllClasses(ClassRequest classRequest)
         {
             IEnumerable<ClassResponse> data;
             GetAllClasses getAllClasses = new GetAllClasses();
@@ -69,12 +69,11 @@ namespace AAYHS.Repository.Repository
                     getAllClasses.classesResponse = data.Skip((classRequest.Page - 1) * classRequest.Limit).Take(classRequest.Limit).ToList();
 
                 }
-                _MainResponse.GetAllClasses = getAllClasses;
-                
+                               
             }
-            return _MainResponse;
+            return getAllClasses;
         }
-        public MainResponse GetClass(int ClassId)
+        public GetClass GetClass(int ClassId)
         {
             IEnumerable<ClassResponse> data;
             GetClass getClass = new GetClass();
@@ -109,12 +108,11 @@ namespace AAYHS.Repository.Repository
             if (data.Count() != 0)
             {
                 getClass.classResponse = data.ToList();
-                _MainResponse.GetClass = getClass;
-                _MainResponse.GetClass.TotalRecords = getClass.classResponse.Count();
+                getClass.TotalRecords = data.Count();
             }
-            return _MainResponse;
+            return getClass;
         }
-        public MainResponse GetExhibitorHorses(int ExhibitorId)
+        public GetExhibitorAllHorses GetExhibitorHorses(int ExhibitorId)
         {
             IEnumerable<GetExhibitorHorses> data;
             GetExhibitorAllHorses getExhibitorAllHorses = new GetExhibitorAllHorses();
@@ -132,42 +130,11 @@ namespace AAYHS.Repository.Repository
                     });
 
             getExhibitorAllHorses.getExhibitorHorses = data.ToList();
-            _MainResponse.GetExhibitorAllHorses = getExhibitorAllHorses;
-            _MainResponse.GetExhibitorAllHorses.TotalRecords = getExhibitorAllHorses.getExhibitorHorses.Count();
-            return _MainResponse;
+            getExhibitorAllHorses.TotalRecords = data.Count();
+            return getExhibitorAllHorses;
         }
-        public MainResponse GetClassExhibitorsAndHorses(int ClassId)
-        {
-            ClassExhibitorHorses classExhibitorHorses = new ClassExhibitorHorses();
-            List<string> list = new List<string>();
-            var exhibitorClass = (from ce in _ObjContext.ExhibitorClass
-                                  where ce.ClassId == ClassId
-                                  select ce).ToList();
 
-            foreach (var data in exhibitorClass)
-            {
-                var exhibitor = (from ex in _ObjContext.Exhibitors where ex.ExhibitorId == data.ExhibitorId select ex).FirstOrDefault();
-                if (exhibitor != null)
-                {
-                    var horses = (from hr in _ObjContext.Horses select hr).ToList();
-                    if (horses != null && horses.Count > 0)
-                    {
-                        foreach (var horse in horses)
-                        {
-                            var name = exhibitor.FirstName + ' ' + exhibitor.LastName + '/' + horse.Name;
-                            if (!list.Contains(name))
-                                list.Add(name);
-                        }
-                    }
-                }
-
-            }
-
-            classExhibitorHorses.ClassExhibitorHorse = list;
-            _MainResponse.ClassExhibitorHorses = classExhibitorHorses;
-            return _MainResponse;
-        }
-        public MainResponse GetClassEntries(ClassRequest classRequest)
+        public GetAllClassEntries GetClassEntries(ClassRequest classRequest)
         {
             IEnumerable<GetClassEntries> data;
             GetAllClassEntries getAllClassEntries = new GetAllClassEntries(); 
@@ -213,10 +180,9 @@ namespace AAYHS.Repository.Repository
                     getAllClassEntries.getClassEntries = data.Skip((classRequest.Page - 1) * classRequest.Limit).Take(classRequest.Limit).ToList();
 
                 }
-                _MainResponse.GetAllClassEntries = getAllClassEntries;
-               
+                             
             }
-            return _MainResponse;
+            return getAllClassEntries;
         }      
         public List< GetBackNumber> GetBackNumberForAllExhibitor(int ClassId)
         {
@@ -263,7 +229,7 @@ namespace AAYHS.Repository.Repository
 
             return exhibitor;
         }
-        public MainResponse GetResultOfClass(ClassRequest classRequest)
+        public GetResult GetResultOfClass(ClassRequest classRequest)
         {
             IEnumerable<GetResultOfClass> data;
             GetResult getResult = new GetResult();
@@ -319,12 +285,11 @@ namespace AAYHS.Repository.Repository
                     getResult.getResultOfClass = data.Skip((classRequest.Page - 1) * classRequest.Limit).Take(classRequest.Limit).ToList();
 
                 }
-                
-                _MainResponse.GetResult = getResult;
+                               
             }
-            return _MainResponse;
+            return getResult;
         }
-        public MainResponse SearchClass(SearchRequest searchRequest)
+        public GetAllClasses SearchClass(SearchRequest searchRequest)
         {
             IEnumerable<ClassResponse> data;
             GetAllClasses getAllClasses = new GetAllClasses();
@@ -361,10 +326,9 @@ namespace AAYHS.Repository.Repository
                     getAllClasses.classesResponse = data.Skip((searchRequest.Page - 1) * searchRequest.Limit).Take(searchRequest.Limit).ToList();
 
                 }
-                _MainResponse.GetAllClasses = getAllClasses;
-
+       
             }
-            return _MainResponse;
+            return getAllClasses;
         }
     }
 }
