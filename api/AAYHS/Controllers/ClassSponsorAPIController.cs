@@ -90,7 +90,7 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
-        [HttpPost]
+        [HttpGet]
         public ActionResult GetSponsorClassesbySponsorId(int SponsorId)
         {
             _mainResponse = _ClassSponsorService.GetSponsorClassesbySponsorId(SponsorId);

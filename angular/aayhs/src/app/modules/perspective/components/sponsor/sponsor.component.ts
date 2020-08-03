@@ -56,12 +56,13 @@ export class SponsorComponent implements OnInit {
   }
   sponsorsList: any
   sponsorsExhibitorsList: any
+  sponsorClassesList:any
   sponsorsClassesList: any
   baseRequest: BaseRecordFilterRequest = {
     Page: 1,
     Limit: 10,
     OrderBy: 'SponsorId',
-    OrderByDescending: true,
+    OrderByDescending: false,
     AllRecords: false
   }
 
@@ -76,6 +77,7 @@ export class SponsorComponent implements OnInit {
     this.getAllSponsors();
     this.getAllStates();
     this.GetSponsorExhibitorBySponsorId(this.selectedSponsorId);
+    this.GetSponsorClasses(this.selectedSponsorId);
   }
 
 
@@ -122,9 +124,9 @@ export class SponsorComponent implements OnInit {
   GetSponsorExhibitorBySponsorId(selectedSponsorId:number){
     this.loading=true;
     this.sponsorsExhibitorsList=null;
-    debugger
+    
     this.sponsorService.GetSponsorExhibitorBySponsorId(selectedSponsorId).subscribe(response=>{ 
-      debugger;
+     
       if(response.Data!=null && response.Data.TotalRecords>0)
       {
      this.sponsorsExhibitorsList = response.Data.SponsorExhibitorResponses;
@@ -135,6 +137,21 @@ export class SponsorComponent implements OnInit {
     this.loading=false;
   }
 
+  GetSponsorClasses(SponsorId:number){
+    this.loading=true;
+    this.sponsorClassesList=null;
+    debugger
+    this.sponsorService.GetSponsorClasses(SponsorId).subscribe(response=>{ 
+      debugger;
+      if(response.Data!=null && response.Data.TotalRecords>0)
+      {
+     this.sponsorClassesList = response.Data.sponsorClassesListResponses;
+      }
+    },error=>{
+
+    })
+    this.loading=false;
+  }
 
   //confirm alert
   confirmRemoveSponsor(e, index, data): void {
@@ -173,7 +190,7 @@ export class SponsorComponent implements OnInit {
 
   }
 
-  confirmRemoveClass(index, data): void {
+  confirmRemoveSponsorClass(index, data): void {
     const message = `Are you sure you want to remove this sponsor class?`;
     const dialogData = new ConfirmDialogModel("Confirm Action", message);
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
@@ -225,13 +242,13 @@ export class SponsorComponent implements OnInit {
     })
   }
 
-  deleteSponsorClass(id: number) {
+  deleteSponsorClass(ClassSponsorId: number) {
     debugger;
-    this.sponsorService.deleteSponsor(id).subscribe(response => {
+    this.sponsorService.DeleteSponsorClasse(ClassSponsorId).subscribe(response => {
       if(response.Success==true)
       {
         const dialog = new ConfirmDialogModel("Confirm Action", response.Message);
-        this.getAllSponsors();
+        this.GetSponsorClasses(this.selectedSponsorId);
       }
       else{
         const dialog = new ConfirmDialogModel("Confirm Action", response.Message);

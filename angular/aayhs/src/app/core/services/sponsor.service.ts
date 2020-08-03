@@ -40,7 +40,13 @@ export class SponsorService {
     return this.http.get<any>(`${this.api}CommonAPI/GetStates`,{});
   }
   GetSponsorExhibitorBySponsorId(sponsorId:number){
-    return this.http.get<any>(`${this.api}SponsorExhibitorAPI/GetSponsorExhibitorBySponsorId?sponsorId=${sponsorId}`);
+    return this.http.get<any>(`${this.api}SponsorExhibitorAPI/GetSponsorExhibitorBySponsorId?SponsorId=${sponsorId}`);
   }
- 
+  GetSponsorClasses(sponsorId:number){
+    return this.http.get<any>(`${this.api}ClassSponsorAPI/GetSponsorClassesbySponsorId?SponsorId=${sponsorId}`);
+  }
+  DeleteSponsorClasse(ClassSponsorId:number){
+    return this.http.delete<any>(`${this.api}ClassSponsorAPI/DeleteClassSponsor?ClassSponsorId=${ClassSponsorId}`);
+  }
 }
+

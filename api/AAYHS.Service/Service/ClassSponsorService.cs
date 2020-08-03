@@ -126,6 +126,7 @@ namespace AAYHS.Service.Service
             if (classsponsor != null)
             {
                 classsponsor.IsDeleted = true;
+                classsponsor.IsActive = false;
                 classsponsor.DeletedDate = DateTime.Now;
                 _ClassSponsorRepository.Update(classsponsor);
                 _mainResponse.Message = Constants.RECORD_DELETE_SUCCESS;

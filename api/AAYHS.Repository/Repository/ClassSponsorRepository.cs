@@ -121,7 +121,9 @@ namespace AAYHS.Repository.Repository
             sponsorClassResponses = (from classes in _context.Classes join sponsorClass
                                      in _context.ClassSponsors on classes.ClassId equals sponsorClass.ClassId
                                      
-                                     where sponsorClass.SponsorId==SponsorId && classes.IsActive ==true
+                                     where sponsorClass.SponsorId==SponsorId
+                                     && sponsorClass.IsActive == true && sponsorClass.IsDeleted == false
+                                     && classes.IsActive ==true && classes.IsDeleted == false
                                      && classes.IsDeleted ==false
                                      select new SponsorClassResponse
                                      {
