@@ -45,10 +45,10 @@ namespace AAYHS.Service.Service
         public MainResponse GetAllClasses(ClassRequest classRequest)
         {
             var allClasses = _classRepository.GetAllClasses(classRequest);
-            if (allClasses.GetAllClasses != null && allClasses.GetAllClasses.TotalRecords != 0 )
+            if (allClasses != null && allClasses.TotalRecords != 0 )
             {
-                _mainResponse.GetAllClasses = allClasses.GetAllClasses;
-                _mainResponse.GetAllClasses.TotalRecords = allClasses.GetAllClasses.TotalRecords;
+                _mainResponse.GetAllClasses = allClasses;
+                _mainResponse.GetAllClasses.TotalRecords = allClasses.TotalRecords;
                 _mainResponse.Success = true;
             }
             else
@@ -61,10 +61,10 @@ namespace AAYHS.Service.Service
         public MainResponse GetClass(int ClassId)
         {
             var getClass = _classRepository.GetClass(ClassId);
-            if (getClass.GetClass!=null && getClass.GetClass.TotalRecords!=0)
+            if (getClass!=null && getClass.TotalRecords!=0)
             {
-                _mainResponse.GetClass = getClass.GetClass;
-                _mainResponse.GetClass.TotalRecords = getClass.GetClass.TotalRecords;
+                _mainResponse.GetClass = getClass;
+                _mainResponse.GetClass.TotalRecords = getClass.TotalRecords;
                 _mainResponse.Success = true;
             }
             else
@@ -134,10 +134,10 @@ namespace AAYHS.Service.Service
         public MainResponse GetExhibitorHorses(int ExhibitorId)
         {
             var exhibotorHorses = _classRepository.GetExhibitorHorses(ExhibitorId);
-            if (exhibotorHorses.GetExhibitorAllHorses != null && exhibotorHorses.GetExhibitorAllHorses.TotalRecords != 0)
+            if (exhibotorHorses != null && exhibotorHorses.TotalRecords != 0)
             {
-                _mainResponse.GetExhibitorAllHorses = exhibotorHorses.GetExhibitorAllHorses;
-                _mainResponse.GetExhibitorAllHorses.TotalRecords = exhibotorHorses.GetExhibitorAllHorses.TotalRecords;
+                _mainResponse.GetExhibitorAllHorses = exhibotorHorses;
+                _mainResponse.GetExhibitorAllHorses.TotalRecords = exhibotorHorses.TotalRecords;
                 _mainResponse.Success = true;
 
             }
@@ -229,10 +229,10 @@ namespace AAYHS.Service.Service
         public MainResponse GetClassEntries(ClassRequest classRequest)
         {
             var allExhibitor = _classRepository.GetClassEntries(classRequest);
-            if (allExhibitor.GetAllClassEntries!=null && allExhibitor.GetAllClassEntries.TotalRecords != 0)
+            if (allExhibitor!=null && allExhibitor.TotalRecords != 0)
             {
-                _mainResponse.GetAllClassEntries = allExhibitor.GetAllClassEntries;
-                _mainResponse.GetAllClassEntries.TotalRecords = allExhibitor.GetAllClassEntries.TotalRecords;
+                _mainResponse.GetAllClassEntries = allExhibitor;
+                _mainResponse.GetAllClassEntries.TotalRecords = allExhibitor.TotalRecords;
                 _mainResponse.Success = true;
             }
             else
@@ -364,10 +364,10 @@ namespace AAYHS.Service.Service
         public MainResponse GetResultOfClass(ClassRequest classRequest)
         {
             var getResult = _classRepository.GetResultOfClass(classRequest);
-            if (getResult.GetResult!=null && getResult.GetResult.TotalRecords!=0)
+            if (getResult!=null && getResult.TotalRecords!=0)
             {
-                _mainResponse.GetResult = getResult.GetResult;
-                _mainResponse.GetResult.TotalRecords = getResult.GetResult.TotalRecords;
+                _mainResponse.GetResult = getResult;
+                _mainResponse.GetResult.TotalRecords = getResult.TotalRecords;
                 _mainResponse.Success = true;
             }
             else
@@ -380,10 +380,10 @@ namespace AAYHS.Service.Service
         public MainResponse SearchClass(SearchRequest searchRequest)
         {
             var search = _classRepository.SearchClass(searchRequest);
-            if (search.GetAllClasses != null && search.GetAllClasses.TotalRecords != 0)
+            if (search != null && search.TotalRecords != 0)
             {
-                _mainResponse.GetAllClasses = search.GetAllClasses;
-                _mainResponse.GetAllClasses.TotalRecords = search.GetAllClasses.TotalRecords;
+                _mainResponse.GetAllClasses = search;
+                _mainResponse.GetAllClasses.TotalRecords = search.TotalRecords;
                 _mainResponse.Success = true;
             }
             else
