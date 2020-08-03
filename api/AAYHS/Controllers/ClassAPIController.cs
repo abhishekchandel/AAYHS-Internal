@@ -224,5 +224,18 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
+        /// <summary>
+        /// This api used to get result of a class
+        /// </summary>
+        /// <param name="classRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        //[Authorize]
+        public IActionResult GetResultOfClass(ClassRequest classRequest)
+        {
+            _mainResponse =  _classService.GetResultOfClass(classRequest);
+            _jsonString = Mapper.Convert<GetResult>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
     }
 }
