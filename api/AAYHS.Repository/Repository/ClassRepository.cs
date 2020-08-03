@@ -76,25 +76,64 @@ namespace AAYHS.Repository.Repository
         }
         public MainResponse GetClass(int ClassId)
         {
-            IEnumerable<GetClass> data;
+            IEnumerable<ClassResponse> data;
             GetClass getClass = new GetClass();
 
             data = (from classes in _ObjContext.Classes
                     join scheduleDate in _ObjContext.ScheduleDates on classes.ClassId equals scheduleDate.ClassId into scheduleDate1
                     from scheduleDate2 in scheduleDate1.DefaultIfEmpty()
+                    join splitClass in _ObjContext.ClassSplits on classes.ClassId equals splitClass.ClassId into splitClass1
+                    from splitClass2 in splitClass1.DefaultIfEmpty()                                    
                     where classes.IsActive == true && classes.IsDeleted == false && classes.ClassId == ClassId
-                    select new GetClass 
+                    select new ClassResponse
                     {
                         ClassId= classes.ClassId,
+                        ClassHeader=classes.ClassHeader,
                         ClassNumber= classes.ClassNumber,
                         Name= classes.Name,
                         AgeGroup= classes.AgeGroup,
                         Location= classes!=null?classes.Location:"",
                         ScheduleDate= scheduleDate2.Date,
-                        SchedulTime= scheduleDate2.Time
+                        SchedulTime= scheduleDate2.Time,
+                        SplitNumber= splitClass2.SplitNumber,
+                        ChampionShipIndicator=splitClass2.ChampionShipIndicator,
+                        getSplitClass = (from splitClass in _ObjContext.ClassSplits
+                                        join classes in _ObjContext.Classes on splitClass.ClassId equals classes.ClassId 
+                                        where classes.IsActive == true && classes.IsDeleted == false && splitClass.ClassId == ClassId
+                                        select new GetSplitClass
+                                        {                                           
+                                           Entries= splitClass.Entries       
+                                        }).ToList()
                     });
-            _MainResponse.GetClass = data.FirstOrDefault();
-            return _MainResponse;           
+
+            if (data.Count() != 0)
+            {
+                getClass.classResponse = data.ToList();
+                _MainResponse.GetClass = getClass;
+                _MainResponse.GetClass.TotalRecords = getClass.classResponse.Count();
+            }
+            return _MainResponse;
+        }
+        public MainResponse GetExhibitorHorses(int ExhibitorId)
+        {
+            IEnumerable<GetExhibitorHorses> data;
+            GetExhibitorAllHorses getExhibitorAllHorses = new GetExhibitorAllHorses();
+
+            data = (from exhibitorHorses in _ObjContext.ExhibitorHorse
+                    join horses in _ObjContext.Horses on exhibitorHorses.HorseId equals horses.HorseId
+                    where exhibitorHorses.IsActive == true && exhibitorHorses.IsDeleted == false
+                    && horses.IsActive == true && horses.IsDeleted == false
+                    && exhibitorHorses.ExhibitorId == ExhibitorId
+                    select new GetExhibitorHorses
+                    {
+                        HorseId = exhibitorHorses.HorseId,
+                        Horse = horses.Name
+                    });
+
+            getExhibitorAllHorses.getExhibitorHorses = data.ToList();
+            _MainResponse.GetExhibitorAllHorses = getExhibitorAllHorses;
+            _MainResponse.GetExhibitorAllHorses.TotalRecords = getExhibitorAllHorses.getExhibitorHorses.Count();
+            return _MainResponse;
         }
         public MainResponse GetClassExhibitorsAndHorses(int ClassId)
         {
@@ -211,6 +250,59 @@ namespace AAYHS.Repository.Repository
                              }).FirstOrDefault();
 
             return exhibitor;
+        }
+        public MainResponse GetResultOfClass(ClassRequest classRequest)
+        {
+            IEnumerable<GetResultOfClass> data;
+            GetResult getResult = new GetResult();
+
+            data = (from result in _ObjContext.Result
+                    join exhibitor in _ObjContext.Exhibitors on result.ExhibitorId equals exhibitor.ExhibitorId
+                    join addresses in _ObjContext.Addresses on exhibitor.AddressId equals addresses.AddressId
+                    join city in _ObjContext.Cities on addresses.CityId equals city.CityId
+                    join state in _ObjContext.States on city.StateId equals state.StateId
+                    join exhibitorsClass in _ObjContext.ExhibitorClass on exhibitor.ExhibitorId equals exhibitorsClass.ExhibitorId
+                    join paymentdetails in _ObjContext.ExhibitorPaymentDetails on exhibitor.ExhibitorId equals paymentdetails.ExhibitorId
+                    join f in _ObjContext.Fees on paymentdetails.FeeId equals f.FeeId
+                    where result.IsActive == true && result.IsDeleted == false && exhibitor.IsActive == true && exhibitor.IsDeleted == false
+                    && result.ClassId == classRequest.ClassId
+                    select new GetResultOfClass
+                    {
+                        ExhibitorId = exhibitor.ExhibitorId,
+                        Place = result.Placement,
+                        BackNumber=exhibitor.BackNumber,
+                        ExhibitorName=exhibitor.FirstName+" "+exhibitor.LastName,
+                        BirthYear=exhibitor.BirthYear,
+                        HorseName= _ObjContext.Horses.Where(x => x.HorseId == exhibitorsClass.HorseId).Select(x => x.Name).FirstOrDefault(),
+                        Address= city.Name + ", " + state.Code,
+                        AmountPaid = paymentdetails.Amount,
+                        AmountDue = ((int)(Convert.ToDecimal(f.FeeAmount) - paymentdetails.Amount))
+                    });
+
+            if (data.Count() != 0)
+            {
+                if (classRequest.OrderByDescending == true)
+                {
+                    data = data.OrderByDescending(x => x.GetType().GetProperty(classRequest.OrderBy).GetValue(x));
+                }
+                else
+                {
+                    data = data.OrderBy(x => x.GetType().GetProperty(classRequest.OrderBy).GetValue(x));
+                }
+
+                if (classRequest.AllRecords)
+                {
+                    getResult.getResultOfClass = data.ToList();
+                }
+                else
+                {
+                    getResult.getResultOfClass = data.Skip((classRequest.Page - 1) * classRequest.Limit).Take(classRequest.Limit).ToList();
+
+                }
+                _MainResponse.GetResult = getResult;
+                _MainResponse.GetResult.TotalRecords = getResult.getResultOfClass.Count();
+            }
+            return _MainResponse;
         }
     }
 }

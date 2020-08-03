@@ -31,19 +31,20 @@ namespace AAYHS.Repository.Repository
              _context = ObjContext;
              _Mapper = Mapper;
         }
-        public void DeleteSplitsByClassId(List<SplitRequest> splitRequest)
+        public void DeleteSplitsByClassId(SplitRequest splitRequest)
         {
-            foreach (var request in splitRequest)
+           
+            var split = _context.ClassSplits.Where(x => x.ClassId == splitRequest.ClassId).ToList();
+
+            foreach (var item in split)
             {
-                var split = _context.ClassSplits.Where(x => x.ClassId == request.ClassId).FirstOrDefault();
-                if (split != null && split.ClassSplitId > 0)
+                if (split != null && split.Count() > 0)
                 {
-                    _context.ClassSplits.Remove(split);
+                    _context.ClassSplits.Remove(item);
                     _context.SaveChanges();
                 }
-
             }
-
+                
         }
     }
 }

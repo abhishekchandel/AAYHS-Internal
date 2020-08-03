@@ -34,10 +34,10 @@ export class SponsorService {
     return this.http.delete<any>(`${this.api}SponsorExhibitorAPI/DeleteSponsorExhibitor?SponsorExhibitorId=${SponsorExhibitorId}`);
   }
   getCities(stateId:number){
-    return this.http.post<any>(`${this.api}CommonAPI/GetCities?stateId=${stateId}`,"");
+    return this.http.get<any>(`${this.api}CommonAPI/GetCities?stateId=${stateId}`);
   }
   getAllStates(){
-    return this.http.post<any>(`${this.api}CommonAPI/GetStates`,{});
+    return this.http.get<any>(`${this.api}CommonAPI/GetStates`,{});
   }
   GetSponsorExhibitorBySponsorId(sponsorId:number){
     return this.http.get<any>(`${this.api}SponsorExhibitorAPI/GetSponsorExhibitorBySponsorId?sponsorId=${sponsorId}`);

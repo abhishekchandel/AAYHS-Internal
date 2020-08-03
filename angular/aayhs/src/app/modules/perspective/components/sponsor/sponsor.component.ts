@@ -259,6 +259,7 @@ export class SponsorComponent implements OnInit {
   }
 
   getCities(id: number) {
+    debugger;
     this.sponsorService.getCities(Number(id)).subscribe(response => {
         this.citiesResponse = response.Data.City;
     }, error => {
@@ -266,6 +267,7 @@ export class SponsorComponent implements OnInit {
     })
   }
   getAllStates() {
+    debugger;
       this.loading = true;
       this.sponsorService.getAllStates().subscribe(response => {
         debugger;

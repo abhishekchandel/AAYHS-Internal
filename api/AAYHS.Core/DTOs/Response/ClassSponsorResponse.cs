@@ -21,7 +21,7 @@ namespace AAYHS.Core.DTOs.Response
         public int ClassSponsorId { get; set; }
         public int SponsorId { get; set; }
         public int ClassId { get; set; }
-        public int ClassNumber { get; set; }
+        public string ClassNumber { get; set; }
         public string Name { get; set; }
         public string AgeGroup { get; set; }
         public int ExhibitorId { get; set; }

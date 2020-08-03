@@ -119,7 +119,7 @@
 													</option>
 													<option *ngFor="let state of statesResponse"
 														[value]="state.StateId">{{state.Name}} -
-														{{state.Abbreviations}}
+														{{state.Code}}
 													</option>
 																									
                                                 </select>
@@ -143,7 +143,10 @@
 									<div class="form-group">
 									    <label>City <span>*</span></label>	
 										<select required class="form-control" placeholder="city" (change)="getCityName($event)" name="city" #city="ngModel" [(ngModel)]="sponsorInfo.CityId" >
-											<option value="0" selected>City</option>
+											
+											<option value="0" disabled="true" [selected]="true">
+												Select City
+											</option>
 											<option *ngFor="let city of citiesResponse"
 														[value]="city.CityId">{{city.Name}}
 													</option>												

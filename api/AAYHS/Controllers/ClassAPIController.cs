@@ -72,13 +72,24 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<GetClassAllExhibitors>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
-
+        /// <summary>
+        /// This api used to get exhibitor horses 
+        /// </summary>
+        /// <param name="ClassId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        //[Authorize]
+        public IActionResult GetExhibitorHorses(int ExhibitorId)
+        {
+            _mainResponse = _classService.GetExhibitorHorses(ExhibitorId);
+            _jsonString = Mapper.Convert<GetExhibitorAllHorses>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
         /// <summary>
         /// This api used to fetch class exhibitors and horse names
         /// </summary>
         /// <param name="classRequest"></param>
         /// <returns></returns>
-
         [HttpPost]
         //[Authorize]
         public IActionResult GetClassExhibitorsAndHorses(int ClassId)
@@ -87,8 +98,7 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<ClassExhibitorHorses>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
-
-
+       
         /// <summary>
         /// This api used for adding the class
         /// </summary>
@@ -165,7 +175,7 @@ namespace AAYHS.API.Controllers
         /// <returns></returns>
         [HttpPost]
         //[Authorize]
-        public async Task<IActionResult>AddUpdateSplitClass(List<SplitRequest> splitRequest)
+        public async Task<IActionResult>AddUpdateSplitClass(SplitRequest splitRequest)
         {
              string actionBy = User.Identity.Name;
             _mainResponse = await _classService.AddUpdateSplitClass(splitRequest, actionBy);
