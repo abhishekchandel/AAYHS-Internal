@@ -24,5 +24,6 @@ namespace AAYHS.Service.IService
         MainResponse GetResultExhibitorDetails(ResultExhibitorRequest resultExhibitorRequest);
         Task<MainResponse> AddClassResult(AddClassResultRequest addClassResultRequest, string actionBy);
         MainResponse GetResultOfClass(ClassRequest classRequest);
+        MainResponse SearchClass(SearchRequest searchRequest);
     }
 }

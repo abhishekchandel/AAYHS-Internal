@@ -53,5 +53,8 @@ namespace AAYHS.Core.DTOs.Request
         public int ExhibitorId { get; set; }
         public string Place { get; set; }
     }
-  
+   public class SearchRequest : BaseRecordFilterRequest
+    {
+        public string SearchTerm { get; set; }
+    }
 }
