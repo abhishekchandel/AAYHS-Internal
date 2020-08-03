@@ -14,7 +14,7 @@ namespace AAYHS.Core.DTOs.Response
         public DateTime BirthYear { get; set; }
         public int SponsorTypeId { get; set; }
         public int TypeId { get; set; }
-        public int IdNumber { get; set; }
+        public string IdNumber { get; set; }
 
     }
 }

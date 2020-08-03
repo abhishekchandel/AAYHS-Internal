@@ -53,9 +53,9 @@ namespace AAYHS.Repository.Repository
                             BirthYear = data2 != null ? data2.BirthYear:DateTime.Now,
                             SponsorTypeId = sponsorexhibitor.SponsorTypeId,
                             TypeId = sponsorexhibitor.TypeId,
-                            IdNumber = sponsorexhibitor.SponsorTypeId== (int)SponsorTypes.Class?_context.Classes.Where(x=>x.ClassId== sponsorexhibitor.TypeId).Select(x=>x.ClassNumber).FirstOrDefault()
-                                       :(sponsorexhibitor.SponsorTypeId == (int)SponsorTypes.Add? _context.Advertisements.Where(x => x.AdvertisementId == sponsorexhibitor.TypeId).Select(x => x.AdvertisementId).FirstOrDefault()
-                                       :0),
+                            IdNumber = sponsorexhibitor.SponsorTypeId == (int)SponsorTypes.Class ? Convert.ToString(_context.Classes.Where(x => x.ClassId == sponsorexhibitor.TypeId).Select(x => x.ClassNumber).FirstOrDefault())
+                                       : (sponsorexhibitor.SponsorTypeId == (int)SponsorTypes.Add ? Convert.ToString(_context.Advertisements.Where(x => x.AdvertisementId == sponsorexhibitor.TypeId).Select(x => x.AdvertisementId).FirstOrDefault())
+                                       : Convert.ToString(0)),
                         }).ToList();
 
 
