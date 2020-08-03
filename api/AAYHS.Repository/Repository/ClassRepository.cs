@@ -59,7 +59,7 @@ namespace AAYHS.Repository.Repository
                 {
                     data = data.OrderBy(x => x.GetType().GetProperty(classRequest.OrderBy).GetValue(x));
                 }
-
+                getAllClasses.TotalRecords = data.Count();
                 if (classRequest.AllRecords)
                 {
                     getAllClasses.classesResponse = data.ToList();
@@ -70,7 +70,7 @@ namespace AAYHS.Repository.Repository
 
                 }
                 _MainResponse.GetAllClasses = getAllClasses;
-                _MainResponse.GetAllClasses.TotalRecords = getAllClasses.classesResponse.Count();
+                
             }
             return _MainResponse;
         }
@@ -119,14 +119,15 @@ namespace AAYHS.Repository.Repository
             GetExhibitorAllHorses getExhibitorAllHorses = new GetExhibitorAllHorses();
 
             data = (from exhibitorHorses in _ObjContext.ExhibitorHorse
-                    join horses in _ObjContext.Horses on exhibitorHorses.HorseId equals horses.HorseId
+                    join horses in _ObjContext.Horses on exhibitorHorses.HorseId equals horses.HorseId into horses1
+                    from horses2 in horses1.DefaultIfEmpty()
                     where exhibitorHorses.IsActive == true && exhibitorHorses.IsDeleted == false
-                    && horses.IsActive == true && horses.IsDeleted == false
+                    && horses2.IsActive == true && horses2.IsDeleted == false
                     && exhibitorHorses.ExhibitorId == ExhibitorId
                     select new GetExhibitorHorses
                     {
                         HorseId = exhibitorHorses.HorseId,
-                        Horse = horses.Name
+                        Horse = horses2.Name
                     });
 
             getExhibitorAllHorses.getExhibitorHorses = data.ToList();
@@ -141,20 +142,24 @@ namespace AAYHS.Repository.Repository
             GetAllClassEntries getAllClassEntries = new GetAllClassEntries(); 
 
             data = (from exhibitorclasses in _ObjContext.ExhibitorClass
-                    join exhibitors in _ObjContext.Exhibitors on exhibitorclasses.ExhibitorId equals exhibitors.ExhibitorId
-                    join horses in _ObjContext.Horses on exhibitorclasses.HorseId equals horses.HorseId
-                    join paymentdetails in _ObjContext.ExhibitorPaymentDetails on exhibitorclasses.ExhibitorId equals paymentdetails.ExhibitorId
-                    join f in _ObjContext.Fees on paymentdetails.FeeId equals f.FeeId
-                    where exhibitorclasses.IsDeleted == false && exhibitors.IsDeleted == false && exhibitorclasses.IsActive == true && exhibitors.IsActive == true &&
+                    join exhibitors in _ObjContext.Exhibitors on exhibitorclasses.ExhibitorId equals exhibitors.ExhibitorId into exhibitors1
+                    from exhibitors2 in exhibitors1.DefaultIfEmpty()
+                    join horses in _ObjContext.Horses on exhibitorclasses.HorseId equals horses.HorseId into horses1
+                    from horses2 in horses1.DefaultIfEmpty()
+                    join paymentdetails in _ObjContext.ExhibitorPaymentDetails on exhibitorclasses.ExhibitorId equals paymentdetails.ExhibitorId into paymentdetails1
+                    from paymentdetails2 in paymentdetails1.DefaultIfEmpty()
+                    join f in _ObjContext.Fees on paymentdetails2.FeeId equals f.FeeId into f1
+                    from f2 in f1.DefaultIfEmpty()
+                    where exhibitorclasses.IsDeleted == false && exhibitors2.IsDeleted == false && exhibitorclasses.IsActive == true && exhibitors2.IsActive == true &&
                     exhibitorclasses.ClassId== classRequest.ClassId
                     select new GetClassEntries
                     {
                         ExhibitorClassId= exhibitorclasses.ExhibitorClassId,
-                        Exhibitor= exhibitors.ExhibitorId+ " " + exhibitors.FirstName + " " + exhibitors.LastName,
-                        Horse= horses.Name,
-                        BirthYear= exhibitors.BirthYear,
-                        AmountPaid= paymentdetails.Amount,
-                        AmountDue= ((int)(Convert.ToDecimal(f.FeeAmount)- paymentdetails.Amount)),
+                        Exhibitor= exhibitors2.ExhibitorId+ " " + exhibitors2.FirstName + " " + exhibitors2.LastName,
+                        Horse= horses2.Name,
+                        BirthYear= exhibitors2.BirthYear,
+                        AmountPaid= paymentdetails2.Amount,
+                        AmountDue= ((int)(Convert.ToDecimal(f2.FeeAmount)- paymentdetails2.Amount)),
                         Scratch=exhibitorclasses.IsScratch
                     });
             if (data.Count() != 0)
@@ -167,7 +172,7 @@ namespace AAYHS.Repository.Repository
                 {
                     data = data.OrderBy(x => x.GetType().GetProperty(classRequest.OrderBy).GetValue(x));
                 }
-
+                getAllClassEntries.TotalRecords= data.Count();
                 if (classRequest.AllRecords)
                 {
                     getAllClassEntries.getClassEntries = data.ToList();
@@ -178,43 +183,50 @@ namespace AAYHS.Repository.Repository
 
                 }
                 _MainResponse.GetAllClassEntries = getAllClassEntries;
-                _MainResponse.GetAllClassEntries.TotalRecords = getAllClassEntries.getClassEntries.Count();
+               
             }
             return _MainResponse;
         }      
         public List< GetBackNumber> GetBackNumberForAllExhibitor(int ClassId)
         {
             var backNumber = (from exhibitorsClass in _ObjContext.ExhibitorClass
-                              join exhibitors in _ObjContext.Exhibitors on exhibitorsClass.ExhibitorId equals exhibitors.ExhibitorId
+                              join exhibitors in _ObjContext.Exhibitors on exhibitorsClass.ExhibitorId equals exhibitors.ExhibitorId into exhibitors1
+                              from exhibitors2 in exhibitors1.DefaultIfEmpty()
                               where exhibitorsClass.IsActive == true && exhibitorsClass.IsDeleted == false
                               && exhibitorsClass.ClassId == ClassId
                               select new GetBackNumber
                               {
-                                  BackNumber = exhibitors.BackNumber
+                                  BackNumber = exhibitors2.BackNumber
                               }).ToList();
             return backNumber;
         }
         public ResultExhibitorDetails GetResultExhibitorDetails(ResultExhibitorRequest resultExhibitorRequest)
         {
             var exhibitor = (from exhibitors in _ObjContext.Exhibitors
-                             join addresses in _ObjContext.Addresses on exhibitors.AddressId equals addresses.AddressId
-                             join city in _ObjContext.Cities on addresses.CityId equals city.CityId
-                             join state in _ObjContext.States on city.StateId equals state.StateId
-                             join exhibitorsClass in _ObjContext.ExhibitorClass on exhibitors.ExhibitorId equals exhibitorsClass.ExhibitorId
-                             join paymentdetails in _ObjContext.ExhibitorPaymentDetails on exhibitorsClass.ExhibitorId equals paymentdetails.ExhibitorId
-                             join f in _ObjContext.Fees on paymentdetails.FeeId equals f.FeeId
+                             join addresses in _ObjContext.Addresses on exhibitors.AddressId equals addresses.AddressId into addresses1
+                             from addresses2 in addresses1.DefaultIfEmpty()
+                             join city in _ObjContext.Cities on addresses2.CityId equals city.CityId into city1
+                             from city2 in city1.DefaultIfEmpty()
+                             join state in _ObjContext.States on city2.StateId equals state.StateId into state1
+                             from state2 in state1.DefaultIfEmpty()
+                             join exhibitorsClass in _ObjContext.ExhibitorClass on exhibitors.ExhibitorId equals exhibitorsClass.ExhibitorId into exhibitorsClass1
+                             from exhibitorsClass2 in exhibitorsClass1.DefaultIfEmpty()
+                             join paymentdetails in _ObjContext.ExhibitorPaymentDetails on exhibitorsClass2.ExhibitorId equals paymentdetails.ExhibitorId into paymentdetails1
+                             from paymentdetails2 in paymentdetails1.DefaultIfEmpty()
+                             join f in _ObjContext.Fees on paymentdetails2.FeeId equals f.FeeId into f1
+                             from f2 in f1.DefaultIfEmpty()
                              where exhibitors.IsActive == true && exhibitors.IsDeleted == false &&
-                             exhibitors.BackNumber == resultExhibitorRequest.BackNumber && exhibitorsClass.ClassId == resultExhibitorRequest.ClassId
-                             && exhibitorsClass.IsActive == true && exhibitorsClass.IsDeleted == false
+                             exhibitors.BackNumber == resultExhibitorRequest.BackNumber && exhibitorsClass2.ClassId == resultExhibitorRequest.ClassId
+                             && exhibitorsClass2.IsActive == true && exhibitorsClass2.IsDeleted == false
                              select new ResultExhibitorDetails
                              {
                                  ExhibitorId=exhibitors.ExhibitorId,
                                  ExhibitorName = exhibitors.FirstName + " " + exhibitors.LastName,
                                  BirthYear = exhibitors.BirthYear,
-                                 HorseName = _ObjContext.Horses.Where(x => x.HorseId == exhibitorsClass.HorseId).Select(x => x.Name).FirstOrDefault(),
-                                 Address= city.Name+", "+state.Code,
-                                 AmountPaid= paymentdetails.Amount,
-                                 AmountDue= ((int)(Convert.ToDecimal(f.FeeAmount) - paymentdetails.Amount))
+                                 HorseName = _ObjContext.Horses.Where(x => x.HorseId == exhibitorsClass2.HorseId).Select(x => x.Name).FirstOrDefault(),
+                                 Address= city2.Name+", "+ state2.Code,
+                                 AmountPaid= paymentdetails2.Amount,
+                                 AmountDue= ((int)(Convert.ToDecimal(f2.FeeAmount) - paymentdetails2.Amount))
 
                              }).FirstOrDefault();
 
@@ -226,30 +238,38 @@ namespace AAYHS.Repository.Repository
             GetResult getResult = new GetResult();
 
             data = (from result in _ObjContext.Result
-                    join exhibitor in _ObjContext.Exhibitors on result.ExhibitorId equals exhibitor.ExhibitorId
-                    join addresses in _ObjContext.Addresses on exhibitor.AddressId equals addresses.AddressId
-                    join city in _ObjContext.Cities on addresses.CityId equals city.CityId
-                    join state in _ObjContext.States on city.StateId equals state.StateId
-                    join exhibitorsClass in _ObjContext.ExhibitorClass on exhibitor.ExhibitorId equals exhibitorsClass.ExhibitorId
-                    join paymentdetails in _ObjContext.ExhibitorPaymentDetails on exhibitor.ExhibitorId equals paymentdetails.ExhibitorId
-                    join f in _ObjContext.Fees on paymentdetails.FeeId equals f.FeeId
-                    where result.IsActive == true && result.IsDeleted == false && exhibitor.IsActive == true && exhibitor.IsDeleted == false
+                    join exhibitor in _ObjContext.Exhibitors on result.ExhibitorId equals exhibitor.ExhibitorId into exhibitor1
+                    from exhibitor2 in exhibitor1.DefaultIfEmpty()
+                    join addresses in _ObjContext.Addresses on exhibitor2.AddressId equals addresses.AddressId into addresses1
+                    from addresses2 in addresses1.DefaultIfEmpty()
+                    join city in _ObjContext.Cities on addresses2.CityId equals city.CityId into city1
+                    from city2 in city1.DefaultIfEmpty()
+                    join state in _ObjContext.States on city2.StateId equals state.StateId into state1
+                    from state2 in state1.DefaultIfEmpty()    
+                    join exhibitorsClass in _ObjContext.ExhibitorClass on exhibitor2.ExhibitorId equals exhibitorsClass.ExhibitorId into exhibitorsClass1
+                    from exhibitorsClass2 in exhibitorsClass1.DefaultIfEmpty()
+                    join paymentdetails in _ObjContext.ExhibitorPaymentDetails on exhibitor2.ExhibitorId equals paymentdetails.ExhibitorId into paymentdetails1
+                    from paymentdetails2 in paymentdetails1.DefaultIfEmpty()
+                    join f in _ObjContext.Fees on paymentdetails2.FeeId equals f.FeeId into f1
+                    from f2  in f1.DefaultIfEmpty()
+                    where result.IsActive == true && result.IsDeleted == false && exhibitor2.IsActive == true && exhibitor2.IsDeleted == false
                     && result.ClassId == classRequest.ClassId
                     select new GetResultOfClass
                     {
-                        ExhibitorId = exhibitor.ExhibitorId,
+                        ExhibitorId = exhibitor2.ExhibitorId,
                         Place = result.Placement,
-                        BackNumber=exhibitor.BackNumber,
-                        ExhibitorName=exhibitor.FirstName+" "+exhibitor.LastName,
-                        BirthYear=exhibitor.BirthYear,
-                        HorseName= _ObjContext.Horses.Where(x => x.HorseId == exhibitorsClass.HorseId).Select(x => x.Name).FirstOrDefault(),
-                        Address= city.Name + ", " + state.Code,
-                        AmountPaid = paymentdetails.Amount,
-                        AmountDue = ((int)(Convert.ToDecimal(f.FeeAmount) - paymentdetails.Amount))
-                    });
+                        BackNumber= exhibitor2.BackNumber,
+                        ExhibitorName= exhibitor2.FirstName+" "+ exhibitor2.LastName,
+                        BirthYear= exhibitor2.BirthYear,
+                        HorseName= _ObjContext.Horses.Where(x => x.HorseId == exhibitorsClass2.HorseId).Select(x => x.Name).FirstOrDefault(),
+                        Address= city2.Name + ", " + state2.Code,
+                        AmountPaid = paymentdetails2.Amount,
+                        AmountDue = ((int)(Convert.ToDecimal(f2.FeeAmount) - paymentdetails2.Amount))
+                    }).ToList();
 
             if (data.Count() != 0)
             {
+                               
                 if (classRequest.OrderByDescending == true)
                 {
                     data = data.OrderByDescending(x => x.GetType().GetProperty(classRequest.OrderBy).GetValue(x));
@@ -258,7 +278,7 @@ namespace AAYHS.Repository.Repository
                 {
                     data = data.OrderBy(x => x.GetType().GetProperty(classRequest.OrderBy).GetValue(x));
                 }
-
+                getResult.TotalRecords = data.Count();
                 if (classRequest.AllRecords)
                 {
                     getResult.getResultOfClass = data.ToList();
@@ -268,8 +288,50 @@ namespace AAYHS.Repository.Repository
                     getResult.getResultOfClass = data.Skip((classRequest.Page - 1) * classRequest.Limit).Take(classRequest.Limit).ToList();
 
                 }
+                
                 _MainResponse.GetResult = getResult;
-                _MainResponse.GetResult.TotalRecords = getResult.getResultOfClass.Count();
+            }
+            return _MainResponse;
+        }
+        public MainResponse SearchClass(SearchRequest searchRequest)
+        {
+            IEnumerable<ClassResponse> data;
+            GetAllClasses getAllClasses = new GetAllClasses();
+
+            data = (from classes in _ObjContext.Classes
+                    where classes.IsActive==true && classes.IsDeleted==false &&((searchRequest.SearchTerm != string.Empty ? classes.ClassNumber.Contains(searchRequest.SearchTerm) : (1 == 1))
+                    || (searchRequest.SearchTerm != string.Empty ? classes.Name.Contains(searchRequest.SearchTerm) : (1 == 1)))
+                    select new ClassResponse
+                    {
+                        ClassId = classes.ClassId,
+                        ClassNumber = classes.ClassNumber,
+                        Name = classes.Name,
+                        Entries = classes != null ? _ObjContext.ExhibitorClass.Where(x => x.ClassId == classes.ClassId).Select(x => x.ExhibitorClassId).Count() : 0,
+                        AgeGroup = classes.AgeGroup
+                    });
+
+            if (data.Count() != 0)
+            {
+                if (searchRequest.OrderByDescending == true)
+                {
+                    data = data.OrderByDescending(x => x.GetType().GetProperty(searchRequest.OrderBy).GetValue(x));
+                }
+                else
+                {
+                    data = data.OrderBy(x => x.GetType().GetProperty(searchRequest.OrderBy).GetValue(x));
+                }
+                getAllClasses.TotalRecords = data.Count();
+                if (searchRequest.AllRecords)
+                {
+                    getAllClasses.classesResponse = data.ToList();
+                }
+                else
+                {
+                    getAllClasses.classesResponse = data.Skip((searchRequest.Page - 1) * searchRequest.Limit).Take(searchRequest.Limit).ToList();
+
+                }
+                _MainResponse.GetAllClasses = getAllClasses;
+
             }
             return _MainResponse;
         }

@@ -125,5 +125,32 @@ namespace AAYHS.Repository.Repository
 
             return sponsorResponse;
         }
+
+        public List<SponsorResponse> SearchSponsor(SearchRequest searchRequest)
+        {
+            var sponsorResponse = (from sponsor in _context.Sponsors
+                                   join address in _context.Addresses
+                                        on sponsor.AddressId equals address.AddressId
+                                        into data1
+                                   from data in data1.DefaultIfEmpty()
+                                   where sponsor.IsActive == true && sponsor.IsDeleted == false
+                                   && ((searchRequest.SearchTerm != string.Empty ?Convert.ToString(sponsor.SponsorId).Contains(searchRequest.SearchTerm) : (1 == 1))
+                                   || (searchRequest.SearchTerm != string.Empty ? sponsor.SponsorName.Contains(searchRequest.SearchTerm) : (1 == 1)))
+                                   select new SponsorResponse
+                                   {
+                                       SponsorId = sponsor.SponsorId,
+                                       SponsorName = sponsor.SponsorName,
+                                       ContactName = sponsor.ContactName,
+                                       Phone = sponsor.Phone,
+                                       Email = sponsor.Email,
+                                       AmountReceived = sponsor.AmountReceived,
+                                       Address = data != null ? data.Address : "",
+                                       ZipCode = data != null ? data.ZipCode : "",
+                                       CityId = data != null ? data.CityId : 0,
+                                       StateId = data != null ? _context.Cities.Where(x => x.CityId == data.CityId).Select(y => y.StateId).FirstOrDefault() : 0,
+                                   }).ToList();
+            return sponsorResponse;
+        }
+
     }
 }

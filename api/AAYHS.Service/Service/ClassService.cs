@@ -48,7 +48,7 @@ namespace AAYHS.Service.Service
             if (allClasses.GetAllClasses != null && allClasses.GetAllClasses.TotalRecords != 0 )
             {
                 _mainResponse.GetAllClasses = allClasses.GetAllClasses;
-                _mainResponse.GetAllClasses.TotalRecords = allClasses.GetAllClasses.classesResponse.Count();
+                _mainResponse.GetAllClasses.TotalRecords = allClasses.GetAllClasses.TotalRecords;
                 _mainResponse.Success = true;
             }
             else
@@ -232,7 +232,7 @@ namespace AAYHS.Service.Service
             if (allExhibitor.GetAllClassEntries!=null && allExhibitor.GetAllClassEntries.TotalRecords != 0)
             {
                 _mainResponse.GetAllClassEntries = allExhibitor.GetAllClassEntries;
-                _mainResponse.GetAllClassEntries.TotalRecords = allExhibitor.GetAllClassEntries.getClassEntries.Count();
+                _mainResponse.GetAllClassEntries.TotalRecords = allExhibitor.GetAllClassEntries.TotalRecords;
                 _mainResponse.Success = true;
             }
             else
@@ -377,5 +377,21 @@ namespace AAYHS.Service.Service
             }
             return _mainResponse;
         }
-    }
+        public MainResponse SearchClass(SearchRequest searchRequest)
+        {
+            var search = _classRepository.SearchClass(searchRequest);
+            if (search.GetAllClasses != null && search.GetAllClasses.TotalRecords != 0)
+            {
+                _mainResponse.GetAllClasses = search.GetAllClasses;
+                _mainResponse.GetAllClasses.TotalRecords = search.GetAllClasses.TotalRecords;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+                _mainResponse.Success = false;
+            }
+            return _mainResponse;
+        }
+     }
 }
