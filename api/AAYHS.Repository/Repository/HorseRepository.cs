@@ -27,6 +27,6 @@ namespace AAYHS.Repository.Repository
             _Mapper = Mapper;
             _MainResponse = new MainResponse();
         }
-        public 
+       
     }
 }
