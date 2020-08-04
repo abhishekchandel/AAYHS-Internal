@@ -129,6 +129,7 @@ namespace AAYHS
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IClassService, ClassService>();
             services.AddTransient<IGlobalCodeService, GlobalCodeService>();
+            services.AddTransient<IHorseService, HorseService>();
 
             //Dependency injection in ASP.NET Core (Repositories)
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
@@ -146,6 +147,7 @@ namespace AAYHS
             services.AddTransient<ICityRepository, CityRepository>();
             services.AddTransient<IStateRepository, StateRepository>();
             services.AddTransient<IGlobalCodeRepository, GlobalCodeRepository>();
+            services.AddTransient<IHorseRepository, HorseRepository>();
 
             services.AddControllers();
         }

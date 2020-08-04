@@ -26,6 +26,6 @@ namespace AAYHS.Core.Shared.Static
         public const string RECORD_UPDATE_FAILED = "Record Updated Failed";
         public const string RECORD_DELETE_SUCCESS = "Record Deleted Successfully";
         public const string RECORD_DELETE_FAILED = "Record Deleted Failed";
-
+        public const string HORSE_REMOVED = "Horse removed successfully";
     }
 }
