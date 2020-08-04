@@ -19,6 +19,7 @@ namespace AAYHS.Core.DTOs.Request
         public string AgeGroup { get; set; }    
         public DateTime ScheduleDate { get; set; }
         public TimeSpan ScheduleTime { get; set; }
+        public SplitRequest splitRequest { get; set; }
     }
     public class AddClassExhibitor
     {
@@ -32,6 +33,7 @@ namespace AAYHS.Core.DTOs.Request
     {
         public int ClassId { get; set; }
         public int SplitNumber { get; set; }
+        public bool ChampionShipIndicator { get; set; }
         public List<SplitEntries> splitEntries { get; set; }
     }
     public class SplitEntries

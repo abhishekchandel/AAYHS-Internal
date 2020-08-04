@@ -18,9 +18,9 @@ namespace AAYHS.Core.DTOs.Response.Common
         public TimeSpan SchedulTime { get; set; }
         public int SplitNumber { get; set; }
         public bool ChampionShipIndicator { get; set; }
-        public List<GetSplitClass> getSplitClass { get; set; }
+        public List<GetClassSplit> getClassSplit { get; set; }
     }
-    public class GetSplitClass
+    public class GetClassSplit
     {       
         public int Entries { get; set; }
        

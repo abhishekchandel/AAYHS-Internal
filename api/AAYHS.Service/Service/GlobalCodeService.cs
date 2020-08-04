@@ -35,9 +35,9 @@ namespace AAYHS.Service.Service
             _mainResponse = new MainResponse();
         }
 
-        public async Task<MainResponse> GetHorseType()
+        public async Task<MainResponse> GetGlobalCode(string categoryName)
         {
-            var globalCodeResponse = await _globalCodeRepository.GetCodes("HorseType");
+            var globalCodeResponse = await _globalCodeRepository.GetCodes(categoryName);
             if (globalCodeResponse.totalRecords != 0)
             {
 
@@ -47,24 +47,10 @@ namespace AAYHS.Service.Service
             else
             {
                 _mainResponse.Message = Constants.NO_RECORD_FOUND;
+                _mainResponse.Success = false;
             }
             return _mainResponse;
-        }
-        public async Task<MainResponse> GetSponsorType()
-        {
-            var globalCodeResponse = await _globalCodeRepository.GetCodes("SponsorType");
-            if (globalCodeResponse.totalRecords != 0)
-            {
-
-                _mainResponse.Success = true;
-                _mainResponse.GlobalCodeMainResponse = globalCodeResponse;
-            }
-            else
-            {
-                _mainResponse.Message = Constants.NO_RECORD_FOUND;
-            }
-            return _mainResponse;
-        }
+        }       
         public MainResponse GetAllStates()
         {
             var states = _stateRepository.GetAll(x => x.IsDeleted == false && x.IsActive == true).OrderBy(x => x.Name);

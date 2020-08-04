@@ -96,10 +96,10 @@ namespace AAYHS.Repository.Repository
                         SchedulTime= scheduleDate2.Time,
                         SplitNumber= splitClass2.SplitNumber,
                         ChampionShipIndicator=splitClass2.ChampionShipIndicator,
-                        getSplitClass = (from splitClass in _ObjContext.ClassSplits
+                        getClassSplit = (from splitClass in _ObjContext.ClassSplits
                                         join classes in _ObjContext.Classes on splitClass.ClassId equals classes.ClassId 
                                         where classes.IsActive == true && classes.IsDeleted == false && splitClass.ClassId == ClassId
-                                        select new GetSplitClass
+                                        select new GetClassSplit
                                         {                                           
                                            Entries= splitClass.Entries       
                                         }).ToList()

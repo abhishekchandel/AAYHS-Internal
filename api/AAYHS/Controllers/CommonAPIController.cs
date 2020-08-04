@@ -30,7 +30,17 @@ namespace AAYHS.API.Controllers
             _mainResponse = new MainResponse();
 
         }
-
+        /// <summary>
+        /// This api used to get horse type
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> GetGlobalCode(string categoryName)
+        {
+            _mainResponse = await _globalCodeService.GetGlobalCode(categoryName);
+            _jsonString = Mapper.Convert<GlobalCodeMainResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }       
         /// <summary>
         /// This API is used for fetching all states.
         /// </summary>
