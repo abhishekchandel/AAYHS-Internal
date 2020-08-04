@@ -250,5 +250,14 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<GetAllClasses>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
+        [HttpPost]
+        //[Authorize]
+        public IActionResult UpdateClassExhibitorScratch(ClassExhibitorScratch classExhibitorScratch)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _classService.UpdateClassExhibitorScratch(classExhibitorScratch, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
     }
 }

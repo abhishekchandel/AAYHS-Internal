@@ -288,7 +288,7 @@ namespace AAYHS.Service.Service
             }
             else
             {
-                _mainResponse.Success = true;
+                _mainResponse.Success = false;
                 _mainResponse.Message = Constants.NO_RECORD_FOUND;
             }
             return _mainResponse;
@@ -422,5 +422,25 @@ namespace AAYHS.Service.Service
             }
             return _mainResponse;
         }
-     }
+        public MainResponse UpdateClassExhibitorScratch(ClassExhibitorScratch classExhibitorScratch, string actionBy)
+        {
+            var classExhibitor = _exhibitorClassRepositor.GetSingle(x => x.ExhibitorClassId == classExhibitorScratch.ExhibitorClassId);
+            if (classExhibitor!=null)
+            {
+                classExhibitor.IsScratch = classExhibitorScratch.IsScratch;
+                classExhibitor.ModifiedBy = actionBy;
+                classExhibitor.ModifiedDate = DateTime.Now;
+                _exhibitorClassRepositor.Update(classExhibitor);
+
+                _mainResponse.Success = true;
+                _mainResponse.Message = Constants.CLASS_EXHIBITOR_SCRATCH;
+            }
+            else
+            {
+                _mainResponse.Success = false;
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+            }
+            return _mainResponse;
+        }
+    }
 }

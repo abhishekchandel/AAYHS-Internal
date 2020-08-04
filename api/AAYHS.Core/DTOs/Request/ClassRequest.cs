@@ -52,7 +52,12 @@ namespace AAYHS.Core.DTOs.Request
         public string Place { get; set; }
     }    
    public class SearchRequest : BaseRecordFilterRequest
-    {
+   {
         public string SearchTerm { get; set; }
+   }
+    public class ClassExhibitorScratch
+    {
+        public int ExhibitorClassId { get; set; }
+        public bool IsScratch { get; set; }
     }
 }
