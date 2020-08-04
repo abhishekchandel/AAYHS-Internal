@@ -367,24 +367,21 @@ namespace AAYHS.Service.Service
         }
         public async Task<MainResponse> AddClassResult(AddClassResultRequest addClassResultRequest,string actionBy)
         {
-            var ageGroup = _classRepository.GetSingle(x => x.ClassId == addClassResultRequest.ClassId);
-
-            foreach (var addRequest in addClassResultRequest.addClassResults)
-            {
+               var ageGroup = _classRepository.GetSingle(x => x.ClassId == addClassResultRequest.ClassId);
+            
                 var addResult = new Result
                 {
                     ClassId = addClassResultRequest.ClassId,
                     AgeGroup = ageGroup.AgeGroup,
-                    ExhibitorId = addRequest.ExhibitorId,
-                    Placement = addRequest.Place,
+                    ExhibitorId = addClassResultRequest.ExhibitorId,
+                    Placement = addClassResultRequest.Place,
                     IsActive = true,
                     CreatedBy = actionBy,
                     CreatedDate = DateTime.Now
                 };
 
-                await _resultRepository.AddAsync(addResult);
-
-            }
+             await _resultRepository.AddAsync(addResult);
+         
             _mainResponse.Message = Constants.CLASS_RESULT_ADDED;
             _mainResponse.Success = true;
             return _mainResponse;

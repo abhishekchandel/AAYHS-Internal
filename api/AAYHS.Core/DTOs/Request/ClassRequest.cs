@@ -48,13 +48,9 @@ namespace AAYHS.Core.DTOs.Request
     public class AddClassResultRequest
     {
         public int ClassId { get; set; }
-        public List<AddClassResult> addClassResults { get; set; }
-    }
-    public class AddClassResult
-    {
         public int ExhibitorId { get; set; }
         public string Place { get; set; }
-    }
+    }    
    public class SearchRequest : BaseRecordFilterRequest
     {
         public string SearchTerm { get; set; }
