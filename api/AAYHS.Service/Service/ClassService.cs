@@ -187,21 +187,25 @@ namespace AAYHS.Service.Service
                 };
                 await _scheduleDateRepository.AddAsync(schedule);
 
-                foreach (var split in addClassRequest.splitRequest.splitEntries)
+                if (addClassRequest.splitRequest!=null)
                 {
-                    var classSplit = new ClassSplits
+                    foreach (var split in addClassRequest.splitRequest.splitEntries)
                     {
-                        ClassId = _class.ClassId,
-                        SplitNumber = addClassRequest.splitRequest.SplitNumber,
-                        ChampionShipIndicator = addClassRequest.splitRequest.ChampionShipIndicator,
-                        Entries= split.Entries,
-                        IsActive =true,
-                        CreatedBy= actionBy,
-                        CreatedDate = DateTime.Now,
-                    };
-                    await _splitClassRepository.AddAsync(classSplit);
+                        
+                        var classSplit = new ClassSplits
+                        {
+                            ClassId = _class.ClassId,
+                            SplitNumber = addClassRequest.splitRequest.SplitNumber,
+                            ChampionShipIndicator = addClassRequest.splitRequest.ChampionShipIndicator,
+                            Entries = split.Entries,
+                            IsActive = true,
+                            CreatedBy = actionBy,
+                            CreatedDate = DateTime.Now,
+                        };
+                        await _splitClassRepository.AddAsync(classSplit);
+                    }
                 }
-
+               
                 _mainResponse.Message = Constants.CLASS_CREATED;
                 _mainResponse.Success = true;
                 return _mainResponse;
@@ -284,7 +288,7 @@ namespace AAYHS.Service.Service
             }
             else
             {
-                _mainResponse.Success = true;
+                _mainResponse.Success = false;
                 _mainResponse.Message = Constants.NO_RECORD_FOUND;
             }
             return _mainResponse;
@@ -418,5 +422,25 @@ namespace AAYHS.Service.Service
             }
             return _mainResponse;
         }
-     }
+        public MainResponse UpdateClassExhibitorScratch(ClassExhibitorScratch classExhibitorScratch, string actionBy)
+        {
+            var classExhibitor = _exhibitorClassRepositor.GetSingle(x => x.ExhibitorClassId == classExhibitorScratch.ExhibitorClassId);
+            if (classExhibitor!=null)
+            {
+                classExhibitor.IsScratch = classExhibitorScratch.IsScratch;
+                classExhibitor.ModifiedBy = actionBy;
+                classExhibitor.ModifiedDate = DateTime.Now;
+                _exhibitorClassRepositor.Update(classExhibitor);
+
+                _mainResponse.Success = true;
+                _mainResponse.Message = Constants.CLASS_EXHIBITOR_SCRATCH;
+            }
+            else
+            {
+                _mainResponse.Success = false;
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+            }
+            return _mainResponse;
+        }
+    }
 }
