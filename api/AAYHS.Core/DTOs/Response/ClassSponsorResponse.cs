@@ -31,9 +31,19 @@ namespace AAYHS.Core.DTOs.Response
         public List<string> ClassExhibitorsAndHorses { get; set; }
 
     }
+    public class UnassignedSponsorClassResponse
+    {
+
+        public int ClassId { get; set; }
+        public string ClassNumber { get; set; }
+        public string Name { get; set; }
+        public string AgeGroup { get; set; }
+
+    }
     public class SponsorClassesListResponse
     {
         public int TotalRecords { get; set; }
         public List<SponsorClassResponse> sponsorClassesListResponses { get; set; }
+        public List<UnassignedSponsorClassResponse> unassignedSponsorClasses { get; set; }
     }
 }

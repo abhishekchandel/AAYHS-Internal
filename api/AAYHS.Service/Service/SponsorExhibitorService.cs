@@ -54,7 +54,6 @@ namespace AAYHS.Service.Service
                     SponsorExhibitor.SponsorId = request.SponsorId;
                     SponsorExhibitor.ExhibitorId = request.ExhibitorId;
                     SponsorExhibitor.SponsorTypeId = request.SponsorTypeId;
-                    SponsorExhibitor.TypeId = request.TypeId;
                     _SponsorExhibitorRepository.Update(SponsorExhibitor);
                     _mainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
                     _mainResponse.Success = true;
@@ -91,11 +90,14 @@ namespace AAYHS.Service.Service
         public MainResponse GetSponsorExhibitorBySponsorId(int SponsorId)
         {
             _mainResponse = _SponsorExhibitorRepository.GetSponsorExhibitorBySponsorId(SponsorId);
-            if (_mainResponse.SponsorExhibitorListResponse.SponsorExhibitorResponses != null && _mainResponse.SponsorExhibitorListResponse.SponsorExhibitorResponses.Count>0)
+            if (_mainResponse.SponsorExhibitorListResponse.SponsorExhibitorResponses != null)
             {
                 _mainResponse.SponsorExhibitorListResponse.TotalRecords = _mainResponse.SponsorExhibitorListResponse.SponsorExhibitorResponses.Count();
-                _mainResponse.Message = Constants.RECORD_FOUND;
-                _mainResponse.Success = true;
+                if (_mainResponse.SponsorExhibitorListResponse.TotalRecords > 0)
+                {
+                    _mainResponse.Message = Constants.RECORD_FOUND;
+                    _mainResponse.Success = true;
+                }
             }
             else
             {

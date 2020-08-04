@@ -1,6 +1,8 @@
 <div class="innerContent">
 					   <div class="sortData">
-						  <div class="sponBtn"><button class="btn btn-red btnCss">Add new Sponsor</button></div>
+						  <div class="sponBtn"><button 
+							class="btn btn-red btnCss"
+							(click)="resetForm()">Add new Sponsor</button></div>
 				      </div>
 					  <!---->
 					   <div class="gridTable addBlueStrip">
@@ -23,12 +25,14 @@
                               <perfect-scrollbar class="nicescrollBar-1"> 
 								<tbody>
 									
-								  <tr *ngFor="let list of sponsorsList">
+								  <tr *ngFor="let list of sponsorsList;let i = index "
+								  (click)="highlight(list.SponsorId,i)"
+								  [ngClass]="{'blueRow': selectedRowIndex == i}">
 									  <td data-label="Sponsor ID">{{list.SponsorId}}</td>
 									  <td data-label="Sponsor">{{list.SponsorName}}</td>
 									  <td data-label="Remove">
 								     <button class="icon" 
-										(click)="confirmRemoveSponsor($event, '5',list.SponsorId)">
+										(click)="confirmRemoveSponsor($event, i,list.SponsorId)">
 										<span></span> <i class="fa fa-trash-o"
 										aria-hidden="true"></i>
 									</button>
@@ -191,7 +195,6 @@
 												<th>Exhibitor ID</th> 
 												<th>Exhibitor Name</th> 
 												<th>Sponsor Type</th> 
-												<th>ID Type</th> 
 												<th>ID Number</th> 
 												<th>Birth Year</th>
 												<th>Remove</th> 
@@ -199,38 +202,31 @@
                                         </thead> 
 										<perfect-scrollbar class="nicescrollBar-2">
                                             <tbody>                                                
-                                                <tr *ngFor="let list of sponsorsExhibitorsList">
+                                                <tr *ngFor="let list of sponsorsExhibitorsList;;let i = index ">
                                                     <td data-label="Exhibitor ID">{{list.ExhibitorId}}</td>
                                                     <td data-label="Exhibitor Name">{{list.FirstName}} {{list.LastName}}</td>
                                                     <td data-label="Sponsor Type">{{list.SponsorTypeId}}</td>
-                                                    <td data-label="ID Type">{{list.TypeId}}</td>
                                                     <td data-label="ID Number">{{list.IdNumber}}</td>
                                                     <td data-label="Birth Year">{{list.BirthYear}}</td>
 													<td data-label="Remove">
 														<button class="icon" 
-														(click)="confirmRemoveExhibitor('5',list.SponsorExhibitorId)">
+														(click)="confirmRemoveExhibitor(i,list.SponsorExhibitorId)">
 														<span></span> <i class="fa fa-trash-o"
 														aria-hidden="true"></i>
 													</button></td>
 												</tr>	
-                                               
+												  
                                                 <tr>
                                                     <td data-label="Exhibitor Name" colspan="2">
                                                         <select class="dynDataSeclect">
-                                                            <option>Select Exhibitor</option>
-                                                            <option>0036 Lowe Abigail</option>
-                                                            <option>0029 Mathews Averie</option>
-                                                            <option>0200 Miller Sidney</option>
-                                                            <option>0809 Morgan Mya</option>
+                                                            <option disabled="true">Select Exhibitor</option>
+                                                            <option *ngFor="let item of UnassignedSponsorExhibitor">{{item.ExhibitorId}}  {{item.Name}}</option>
                                                         </select>
                                                     </td>
                                                     <td data-label="Sponsor Type" colspan="2">
                                                         <select class="dynDataSeclect">
-                                                            <option>Sponsor Type</option>
-                                                            <option>Ad</option>
-                                                            <option>Class</option>
-                                                            <option>Cooler</option>
-                                                            <option>Patron</option>
+                                                            <option disabled="true">Select Sponsor Type</option>
+                                                            <option *ngFor="let item of SponsorTypes">{{item.CodeName}}</option>
                                                         </select>
                                                     </td>
                                                     <td colspan="3"></td>
@@ -246,7 +242,7 @@
 								<div class="actionBtn text-right mt-3 mb-3 ">
 									<button (click)='tabGroup.selectedIndex = 0' class="btn btn-red btnCss roundBtn">Previous</button>
 									<button (click)='tabGroup.selectedIndex = 2' class="btn btn-red btnCss roundBtn">Next</button>
-									<button class="btn btn-red btnCss roundBtn">+ Exhibitor</button>
+									<button (click)="goToLink('auth/exhibitor')" class="btn btn-red btnCss roundBtn">+ Exhibitor</button>
 									<button class="btn btn-red btnCss roundBtn">Submit</button>
 								</div>
 
@@ -290,6 +286,20 @@
 												    </td>
 											
 												</tr>	
+												<tr>
+													<td data-label="Class Name" colspan="2">
+													<select class="dynDataSeclect">
+														<option disabled="true">Select Class</option>
+														<option *ngFor="let item of UnassignedSponsorClasses">
+															{{item.ClassNumber}}/
+															{{item.Name}}/
+															{{item.AgeGroup}}
+														
+														</option>
+													</select>
+													</td>
+													<td colspan="3"></td>
+												</tr>
 											</tbody>
 										</perfect-scrollbar>
 											</table> 
@@ -298,7 +308,7 @@
 									</div>
 									<div class="actionBtn mt-3 mb-3 text-right">
 										<button (click)='tabGroup.selectedIndex = 1' class="btn btn-red btnCss roundBtn">Previous</button>
-										<button class="btn btn-red btnCss roundBtn">+ Class</button>
+										<button (click)="goToLink('auth/class')"class="btn btn-red btnCss roundBtn">+ Class</button>
 										<button class="btn btn-red btnCss roundBtn">Submit</button>
 									</div>
                                 </div>
@@ -314,4 +324,4 @@
                     </div>
                     <div class="loaderWrapper" *ngIf="loading"> 
                         <div class="loader"></div>
-                     </div> 
+					 </div> 

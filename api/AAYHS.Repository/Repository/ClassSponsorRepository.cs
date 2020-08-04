@@ -165,6 +165,7 @@ namespace AAYHS.Repository.Repository
             }
 
             sponsorClassesListResponse.sponsorClassesListResponses = sponsorClassResponses.ToList();
+            sponsorClassesListResponse.unassignedSponsorClasses = GetUnassignedSponsorclasses(sponsorClassResponses.ToList());
             _mainResponse.SponsorClassesListResponse = sponsorClassesListResponse;
 
             return _mainResponse;
@@ -197,5 +198,41 @@ namespace AAYHS.Repository.Repository
             }
             return list;
         }
+
+
+        public List<UnassignedSponsorClassResponse> GetUnassignedSponsorclasses(List<SponsorClassResponse> sponsorClassResponses)
+        {
+
+            List<UnassignedSponsorClassResponse> list = new List<UnassignedSponsorClassResponse>();
+
+            var classlist = (from classes in _context.Classes
+                                 where classes.IsActive == true && classes.IsDeleted == false
+                                 select new UnassignedSponsorClassResponse
+                                 {
+                                     ClassId = classes.ClassId,
+                                     ClassNumber = classes.ClassNumber,
+                                     Name = classes.Name,
+                                     AgeGroup = classes.AgeGroup,
+                                 }).ToList();
+
+            if (sponsorClassResponses != null && sponsorClassResponses.Count() > 0)
+            {
+                foreach (var cls in classlist)
+                {
+                    var count = sponsorClassResponses.Where(x => x.ClassId == cls.ClassId).Count();
+                    if (count <= 0 && !list.Contains(cls))
+                    {
+                        list.Add(cls);
+                    }
+                }
+            }
+            else
+            {
+                list = classlist;
+            }
+
+            return list;
+        }
+
     }
 }

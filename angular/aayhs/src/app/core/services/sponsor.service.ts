@@ -16,17 +16,20 @@ export class SponsorService {
   constructor(private http: HttpClient) { }
 
   getSponsor(id:number){
-  return this.http.get<SponsorInformationViewModel>(`${this.api}SponsorAPI/GetSponsorById?sponsorId=${id}`);
+  return this.http.get<any>(`${this.api}SponsorAPI/GetSponsorById?sponsorId=${id}`);
   }
 
   addSponsor(data){
     return this.http.post<any>(this.api +'SponsorAPI/AddSponsor',data);
   }
-
+  
   getAllSponsers(data){
     return this.http.post<any>(`${this.api}SponsorAPI/GetAllSponsorsWithFilter`,data);
   }
-
+  
+  getAllSponsorTypes(type:string){
+    return this.http.get<any>(`${this.api}CommonAPI/GetGlobalCode?categoryName=${type}`);
+  }
   deleteSponsor(id:number){
     return this.http.delete<any>(`${this.api}SponsorAPI/DeleteSponsor?sponsorId=${id}`);
   }

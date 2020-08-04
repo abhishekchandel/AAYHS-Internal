@@ -137,10 +137,9 @@ highlight(id, i) {
 }
 getClassDetails = (id: number) => {
   this.loading=true;
-
   this.classService.getClassById(id).subscribe(response => {
-    this.classInfo = response.Data;
-    this.loading=false;
+  this.classInfo = response.Data;
+  this.loading=false;
 
   }, error => {
     this.loading=false;
@@ -173,6 +172,7 @@ resetForm() {
 }
 
 getClassEntries(id:number){
+  debugger;
   this.loading = true;
   this.classRequest.ClassId=id
   this.classService.getClassEnteries(this.classRequest).subscribe(response => {

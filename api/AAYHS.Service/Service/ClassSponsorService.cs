@@ -143,11 +143,13 @@ namespace AAYHS.Service.Service
         public MainResponse GetSponsorClassesbySponsorId(int SponsorId)
         {
             _mainResponse = _ClassSponsorRepository.GetSponsorClassesbySponsorId(SponsorId);
-            if (_mainResponse.SponsorClassesListResponse.sponsorClassesListResponses != null && _mainResponse.SponsorClassesListResponse.sponsorClassesListResponses.Count > 0)
+            if (_mainResponse.SponsorClassesListResponse.sponsorClassesListResponses != null)
             {
                 _mainResponse.SponsorClassesListResponse.TotalRecords = _mainResponse.SponsorClassesListResponse.sponsorClassesListResponses.Count();
-                   _mainResponse.Message = Constants.RECORD_FOUND;
-                _mainResponse.Success = true;
+                if (_mainResponse.SponsorClassesListResponse.TotalRecords > 0) {
+                    _mainResponse.Message = Constants.RECORD_FOUND;
+                    _mainResponse.Success = true;
+                }
             }
             return _mainResponse;
         }

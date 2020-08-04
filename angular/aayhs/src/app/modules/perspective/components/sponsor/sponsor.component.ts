@@ -13,7 +13,6 @@ import { BaseRecordFilterRequest } from '../../../../core/models/base-record-fil
 import { SponsorViewModel } from '../../../../core/models/sponsor-model'
 import PerfectScrollbar from 'perfect-scrollbar';
 
-
 @Component({
   selector: 'app-sponsor',
   templateUrl: './sponsor.component.html',
@@ -34,7 +33,7 @@ export class SponsorComponent implements OnInit {
   statesResponse: any;
   result: string = '';
   totalItems: number = 0;
-  selectedSponsorId:number=1;
+ 
   enablePagination: boolean = true;
   sortColumn: string = "";
   reverseSort: boolean = false
@@ -57,12 +56,16 @@ export class SponsorComponent implements OnInit {
   sponsorsList: any
   sponsorsExhibitorsList: any
   sponsorClassesList:any
-  sponsorsClassesList: any
+  UnassignedSponsorExhibitor:any
+  UnassignedSponsorClasses:any
+  SponsorTypes:any
+  selectedSponsorId:number=0;
+
   baseRequest: BaseRecordFilterRequest = {
     Page: 1,
     Limit: 10,
     OrderBy: 'SponsorId',
-    OrderByDescending: false,
+    OrderByDescending: true,
     AllRecords: false
   }
 
@@ -73,15 +76,14 @@ export class SponsorComponent implements OnInit {
     private dialog: MatDialog,
     private snackBar: MatSnackbarComponent
   ) { }
+
   ngOnInit(): void {
     this.getAllSponsors();
     this.getAllStates();
-    this.GetSponsorExhibitorBySponsorId(this.selectedSponsorId);
-    this.GetSponsorClasses(this.selectedSponsorId);
-  
+
   }
 
-
+  
   getAllSponsors() {
     this.loading = true;
     this.sponsorsList=null;
@@ -90,17 +92,36 @@ export class SponsorComponent implements OnInit {
       {
      this.sponsorsList = response.Data.sponsorResponses;
       }
-      console.log(this.sponsorsList)
+      
+    }, error => {
+    }
+    )
+    this.loading = false;
+   // this. resetForm();
+  }
+  getAllSponsorTypes() {
+    this.loading = true;
+    this.SponsorTypes=null;
+    this.sponsorService.getAllSponsorTypes('SponsorTypes').subscribe(response => {
+      if(response.Data!=null && response.Data.totalRecords>0)
+      {
+        
+     this.SponsorTypes = response.Data.globalCodeResponse;
+      }
     }, error => {
     }
     )
     this.loading = false;
   }
 
-
   getSponsorDetails = (id: number) => {
     this.sponsorService.getSponsor(id).subscribe(response => {
-      this.sponsorInfo = response
+      debugger;
+      if(response.Data!=null)
+      {
+       this.getCities(response.Data.StateId);
+      this.sponsorInfo = response.Data;
+      }
     }, error => {
     }
     )
@@ -125,13 +146,15 @@ export class SponsorComponent implements OnInit {
   GetSponsorExhibitorBySponsorId(selectedSponsorId:number){
     this.loading=true;
     this.sponsorsExhibitorsList=null;
-    
+    this.UnassignedSponsorExhibitor=null;
     this.sponsorService.GetSponsorExhibitorBySponsorId(selectedSponsorId).subscribe(response=>{ 
      
       if(response.Data!=null && response.Data.TotalRecords>0)
       {
-     this.sponsorsExhibitorsList = response.Data.SponsorExhibitorResponses;
+      this.sponsorsExhibitorsList = response.Data.SponsorExhibitorResponses;
       }
+     
+      this.UnassignedSponsorExhibitor=response.Data.UnassignedSponsorExhibitor;
     },error=>{
 
     })
@@ -141,13 +164,15 @@ export class SponsorComponent implements OnInit {
   GetSponsorClasses(SponsorId:number){
     this.loading=true;
     this.sponsorClassesList=null;
-    debugger
+    this.UnassignedSponsorClasses=null;
     this.sponsorService.GetSponsorClasses(SponsorId).subscribe(response=>{ 
-      debugger;
+   
       if(response.Data!=null && response.Data.TotalRecords>0)
       {
      this.sponsorClassesList = response.Data.sponsorClassesListResponses;
       }
+      
+      this.UnassignedSponsorClasses=response.Data.unassignedSponsorClasses;
     },error=>{
 
     })
@@ -157,7 +182,7 @@ export class SponsorComponent implements OnInit {
  
 
   //confirm alert
-  confirmRemoveSponsor(e, index, data): void {
+  confirmRemoveSponsor(e, index, Sponsorid): void {
     
     e.stopPropagation();
     const message = `Are you sure you want to remove the sponsor?`;
@@ -169,12 +194,12 @@ export class SponsorComponent implements OnInit {
     dialogRef.afterClosed().subscribe(dialogResult => {
       this.result = dialogResult;
      
-      if (this.result){ this.deleteSponsor(data) }
+      if (this.result){ this.deleteSponsor(Sponsorid) }
       // this.data=   this.data.splice(index,1);
      
     });
   }
-  confirmRemoveExhibitor(index, data): void {
+  confirmRemoveExhibitor(index, SponsorExhibitorId): void {
 
     const message = `Are you sure you want to remove this sponsor exhibitor?`;
     const dialogData = new ConfirmDialogModel("Confirm Action", message);
@@ -187,13 +212,13 @@ export class SponsorComponent implements OnInit {
       this.result = dialogResult;
       if(this.result)
       {
-        if (this.result){ this.deleteSponsorExhibitor(data) }
+        if (this.result){ this.deleteSponsorExhibitor(SponsorExhibitorId) }
       }
     });
 
   }
 
-  confirmRemoveSponsorClass(index, data): void {
+  confirmRemoveSponsorClass(index, ClassSponsorId): void {
     const message = `Are you sure you want to remove this sponsor class?`;
     const dialogData = new ConfirmDialogModel("Confirm Action", message);
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
@@ -205,7 +230,7 @@ export class SponsorComponent implements OnInit {
       this.result = dialogResult;
       if(this.result)
       {
-        if (this.result){ this.deleteSponsorClass(data) }
+        if (this.result){ this.deleteSponsorClass(ClassSponsorId) }
       }
     });
 
@@ -213,13 +238,22 @@ export class SponsorComponent implements OnInit {
 
   
 //delete record
-  deleteSponsor(id: number) {
-    debugger;
-    this.sponsorService.deleteSponsor(id).subscribe(response => {
+  deleteSponsor(Sponsorid: number) {
+   
+    this.sponsorService.deleteSponsor(Sponsorid).subscribe(response => {
+      
       if(response.Success==true)
       {
         const dialog = new ConfirmDialogModel("Confirm Action", response.Message);
         this.getAllSponsors();
+        if(this.selectedSponsorId==Sponsorid){
+          this.selectedSponsorId=0;
+          this.sponsorsExhibitorsList= null;
+          this.sponsorClassesList=null;
+          this.UnassignedSponsorExhibitor=null;
+          this.UnassignedSponsorClasses=null;
+          this.SponsorTypes=null;
+        }
       }
       else{
         const dialog = new ConfirmDialogModel("Confirm Action", response.Message);
@@ -246,7 +280,7 @@ export class SponsorComponent implements OnInit {
   }
 
   deleteSponsorClass(ClassSponsorId: number) {
-    debugger;
+    
     this.sponsorService.DeleteSponsorClasse(ClassSponsorId).subscribe(response => {
       if(response.Success==true)
       {
@@ -275,6 +309,14 @@ export class SponsorComponent implements OnInit {
     this.sponsorInfo.SponsorId = 0;
     this.sponsorInfoForm.resetForm();
     this.tabGroup.selectedIndex = 0
+
+    this.selectedSponsorId=0;
+    this.sponsorsExhibitorsList= null;
+    this.sponsorClassesList=null;
+    this.UnassignedSponsorExhibitor=null;
+    this.UnassignedSponsorClasses=null;
+    this.SponsorTypes=null;
+    this.selectedRowIndex =-1;
   }
 
   getNext(event, type) {
@@ -282,11 +324,14 @@ export class SponsorComponent implements OnInit {
     this.getAllSponsors()
   }
   
-  highlight(row, i) {
-    debugger;
+  highlight(selectedSponsorId, i) {
+    
     this.selectedRowIndex = i;
-    // this.getSponsorDetails(row.SponsorId);
-
+    this.selectedSponsorId=selectedSponsorId;
+      this.getSponsorDetails(selectedSponsorId);
+    this.GetSponsorExhibitorBySponsorId(selectedSponsorId);
+    this.GetSponsorClasses(selectedSponsorId);
+    this.getAllSponsorTypes();
   }
 
   sortData(column) {
@@ -303,7 +348,7 @@ export class SponsorComponent implements OnInit {
   }
 
   getCities(id: number) {
-    debugger;
+   
     this.sponsorService.getCities(Number(id)).subscribe(response => {
         this.citiesResponse = response.Data.City;
     }, error => {
@@ -312,10 +357,10 @@ export class SponsorComponent implements OnInit {
   }
 
   getAllStates() {
-    debugger;
+    
       this.loading = true;
       this.sponsorService.getAllStates().subscribe(response => {
-        debugger;
+      
           this.statesResponse = response.Data.State;
       }, error => {
       })
@@ -327,6 +372,10 @@ export class SponsorComponent implements OnInit {
 }
  getCityName(e) {
   this.sponsorInfo.CityId = Number(e.target.options[e.target.selectedIndex].value)
+}
+goToLink(url: string){
+  debugger;
+  window.open(url, "_blank");
 }
 }
 

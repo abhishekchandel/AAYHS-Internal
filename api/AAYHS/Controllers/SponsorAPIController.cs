@@ -53,7 +53,7 @@ namespace AAYHS.API.Controllers
         /// </summary>
         /// <param name="Sponsor id parameter is required"></param>
         /// <returns> Single Sponsor record</returns>
-        [HttpPost]
+        [HttpGet]
         public ActionResult GetSponsorById(int SponsorId)
         {
                 _mainResponse = _SponsorService.GetSponsorById(SponsorId);
