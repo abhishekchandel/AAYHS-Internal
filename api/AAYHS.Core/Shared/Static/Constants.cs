@@ -29,6 +29,7 @@ namespace AAYHS.Core.Shared.Static
         public const string NO_RECORD_EXIST_WITH_ID = "No Record Exist With Given Id";
         public const string RECORD_AlREADY_EXIST = "Record Already Exist";
         public const string NAME_ALREADY_EXIST = "Name Already Exist";
+        public const string HORSE_REMOVED = "Horse removed successfully";
 
 
     }
