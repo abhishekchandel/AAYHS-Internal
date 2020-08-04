@@ -175,6 +175,22 @@ namespace AAYHS.Service.Service
                     CreatedDate = DateTime.Now,
                 };
                 await _scheduleDateRepository.AddAsync(schedule);
+
+                foreach (var split in addClassRequest.splitRequest.splitEntries)
+                {
+                    var classSplit = new ClassSplits
+                    {
+                        ClassId = _class.ClassId,
+                        SplitNumber = addClassRequest.splitRequest.SplitNumber,
+                        ChampionShipIndicator = addClassRequest.splitRequest.ChampionShipIndicator,
+                        Entries= split.Entries,
+                        IsActive =true,
+                        CreatedBy= actionBy,
+                        CreatedDate = DateTime.Now,
+                    };
+                    await _splitClassRepository.AddAsync(classSplit);
+                }
+
                 _mainResponse.Message = Constants.CLASS_CREATED;
                 _mainResponse.Success = true;
                 return _mainResponse;
@@ -289,16 +305,17 @@ namespace AAYHS.Service.Service
 
                 foreach(var split in splitRequest.splitEntries)
                 {
-                    var splitClass = new ClassSplits
+                    var classSplit = new ClassSplits
                     {
                         ClassId = splitRequest.ClassId,
                         SplitNumber = splitRequest.SplitNumber,
+                        ChampionShipIndicator=splitRequest.ChampionShipIndicator,
                         Entries = split.Entries,
                         IsActive = true,
                         CreatedBy = actionBy,
                         CreatedDate = DateTime.Now
                     };
-                   await _splitClassRepository.AddAsync(splitClass);
+                   await _splitClassRepository.AddAsync(classSplit);
                 };
                                  
             _mainResponse.Message = Constants.SPLIT_CREATED;

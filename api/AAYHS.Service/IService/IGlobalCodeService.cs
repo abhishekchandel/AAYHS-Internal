@@ -8,8 +8,7 @@ namespace AAYHS.Service.IService
 {
     public interface IGlobalCodeService
     {
-        Task<MainResponse> GetHorseType();
-        Task<MainResponse> GetSponsorType();
+        Task<MainResponse> GetGlobalCode(string globalCodeType);
         MainResponse GetAllStates();
         MainResponse GetAllCities(int StateId);
     }
