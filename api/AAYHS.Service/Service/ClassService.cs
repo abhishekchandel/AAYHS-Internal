@@ -176,21 +176,25 @@ namespace AAYHS.Service.Service
                 };
                 await _scheduleDateRepository.AddAsync(schedule);
 
-                foreach (var split in addClassRequest.splitRequest.splitEntries)
+                if (addClassRequest.splitRequest!=null)
                 {
-                    var classSplit = new ClassSplits
+                    foreach (var split in addClassRequest.splitRequest.splitEntries)
                     {
-                        ClassId = _class.ClassId,
-                        SplitNumber = addClassRequest.splitRequest.SplitNumber,
-                        ChampionShipIndicator = addClassRequest.splitRequest.ChampionShipIndicator,
-                        Entries= split.Entries,
-                        IsActive =true,
-                        CreatedBy= actionBy,
-                        CreatedDate = DateTime.Now,
-                    };
-                    await _splitClassRepository.AddAsync(classSplit);
+                        
+                        var classSplit = new ClassSplits
+                        {
+                            ClassId = _class.ClassId,
+                            SplitNumber = addClassRequest.splitRequest.SplitNumber,
+                            ChampionShipIndicator = addClassRequest.splitRequest.ChampionShipIndicator,
+                            Entries = split.Entries,
+                            IsActive = true,
+                            CreatedBy = actionBy,
+                            CreatedDate = DateTime.Now,
+                        };
+                        await _splitClassRepository.AddAsync(classSplit);
+                    }
                 }
-
+               
                 _mainResponse.Message = Constants.CLASS_CREATED;
                 _mainResponse.Success = true;
                 return _mainResponse;
