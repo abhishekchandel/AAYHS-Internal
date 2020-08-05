@@ -30,7 +30,7 @@ namespace AAYHS.Core.AutoMapper
             CreateMap<Exhibitors, ExhibitorResponse>();
             CreateMap<ClassSponsors, ClassSponsorResponse>();
             CreateMap<Classes, GetAllClasses>();
-            
+            CreateMap<User, UserResponse>();
 
         }
     }
