@@ -1,0 +1,191 @@
+﻿using AAYHS.Core.DTOs.Request;
+using AAYHS.Core.DTOs.Response;
+using AAYHS.Core.DTOs.Response.Common;
+using AAYHS.Core.Shared.Helper;
+using AAYHS.Core.Shared.Static;
+using AAYHS.Data.DBEntities;
+using AAYHS.Repository.IRepository;
+using AAYHS.Service.IService;
+using AutoMapper;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
+
+namespace AAYHS.Service.Service
+{
+    public class UserService:IUserService
+    {
+        
+
+        #region readonly        
+        private readonly IUserRepository _userRepository;
+        private readonly IEmailSenderRepository _emailRepository;
+        private readonly IApplicationSettingRepository _applicationRepository;
+        private readonly IMapper _mapper;
+        #endregion
+
+        #region Private
+        private MainResponse _mainResponse;
+        #endregion
+
+        public UserService(IUserRepository userRepository,IEmailSenderRepository emailRepository,
+                          IApplicationSettingRepository applicationRepository, IMapper Mapper)
+        {
+           
+            _userRepository = userRepository;
+            _emailRepository = emailRepository;
+            _applicationRepository = applicationRepository;
+            _mapper = Mapper;
+            _mainResponse = new MainResponse();
+        }
+
+        public MainResponse LoginUser(UserLoginRequest userLoginRequest)
+        {
+            string encodePassword = EncryptDecryptHelper.GetMd5Hash(userLoginRequest.Password);
+            var userDetails = _userRepository.GetSingle(x => x.UserName == userLoginRequest.UserName && x.Password == encodePassword && x.IsActive ==true && x.IsDeleted == false);
+            if (userDetails != null)
+            {
+                if (userDetails.IsApproved==true)
+                {
+                    var userResponse = _mapper.Map<UserResponse>(userDetails);
+                    _mainResponse.UserResponse = userResponse;
+                    _mainResponse.Message = Constants.LOG_IN;
+                    _mainResponse.Success = true;
+                }
+                else
+                {
+                    _mainResponse.Message = Constants.ADMIN_APPROVAL;
+                    _mainResponse.Success = false;
+                }
+                
+            }
+            else
+            {
+                _mainResponse.Message = Constants.USERNAME_PASSWORD_INCORRECT;
+                _mainResponse.Success = false;
+            }
+            return _mainResponse;
+        }
+        public MainResponse CreateNewAccount(CreateNewAccountRequest userRequest)
+        {
+            string encodedPassword = !string.IsNullOrWhiteSpace(userRequest.Password) ? EncryptDecryptHelper.GetMd5Hash(userRequest.Password) : null;
+
+            var userDetails = _userRepository.GetSingle(x => x.UserName == userRequest.UserName);
+            if (userDetails != null)
+            {
+                _mainResponse.Success = false;
+                _mainResponse.Message = Constants.USERNAME_ALREADY;
+
+            }
+            else
+            {
+                var users = new User
+                {
+                    UserName = userRequest.UserName.ToLower(),
+                    FirstName = userRequest.FirstName,
+                    LastName = userRequest.LastName,
+                    Email = userRequest.Email.ToLower(),
+                    Password = encodedPassword,
+                    CreatedBy = userRequest.UserName,
+                    CreatedDate = DateTime.Now
+
+                };
+                    
+                _userRepository.Add(users);
+
+                _mainResponse.Success = true;
+                _mainResponse.Message = Constants.ACCOUNT_CREATED;
+            }
+          
+            return _mainResponse;
+        }
+        public MainResponse ForgetPassword(ForgotPasswordRequest forgotPasswordRequest)
+        {
+            var user = _userRepository.GetSingle(x => x.UserName == forgotPasswordRequest.Username && x.IsActive == true && x.IsDeleted == false);
+            if (user!=null)
+            {
+                string guid = Guid.NewGuid().ToString();
+                user.ResetToken = guid;
+                user.ResetTokenExpired = DateTime.UtcNow.AddMinutes(60);
+                var data =  _userRepository.UpdateAsync(user);
+
+                //get email settings
+                var settings = _applicationRepository.GetAll().FirstOrDefault();
+
+                // Send Fortget Password Email
+                EmailRequest email = new EmailRequest();
+                email.To = user.Email;
+                email.SenderEmail = settings.CompanyEmail;
+                email.CompanyEmail = settings.CompanyEmail;
+                email.CompanyPassword = settings.CompanyPassword;
+                email.Url = forgotPasswordRequest.Url;
+                email.guid = guid;
+                email.TemplateType = "Forget Password";
+                
+                _emailRepository.SendEmail(email);
+
+                var userResponse = _mapper.Map<UserResponse>(data);
+                _mainResponse.UserResponse = userResponse;
+                _mainResponse.Success = true;
+                _mainResponse.Message = Constants.FORGET_PASSWORD_EMAIL;
+            }
+            else
+            {
+                _mainResponse.Success = true;
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+            }
+            return _mainResponse;
+        }
+        public MainResponse ValidateResetPasswordToken(ValidateResetPasswordRequest validateResetPasswordRequest)
+        {
+           
+                var users = _userRepository.GetSingle(x => x.UserName == validateResetPasswordRequest.Username && x.IsActive == true);
+                if (users != null)
+                {
+                    if (users.ResetTokenExpired > DateTime.UtcNow)
+                    {
+                        _mainResponse.Success = true;
+                        _mainResponse.Message = Constants.RESET_PASSWORD_VALID_LINK;
+                        var userResponse = _mapper.Map<UserResponse>(users);
+                        _mainResponse.UserResponse = userResponse;
+
+                    }
+                    else
+                    {
+                        _mainResponse.Success = false;
+                        _mainResponse.Message = Constants.RESET_PASSWORD_EXPIRED_LINK;
+                    }
+                }
+                      
+            return _mainResponse;
+        }
+        public MainResponse ChangePassword(ChangePasswordRequest changePasswordRequest)
+        {
+           
+                var user = _userRepository.GetSingle(x => x.Email == changePasswordRequest.Username && x.IsDeleted == false);
+
+                if (user != null)
+                {
+                    user.Password = EncryptDecryptHelper.GetMd5Hash(changePasswordRequest.NewPassword);
+                    user.ModifiedDate = DateTime.Now;
+                    var data =  _userRepository.UpdateAsync(user);
+                
+                    var userResponse = _mapper.Map<UserResponse>(data);
+                    _mainResponse.UserResponse = userResponse;
+                    _mainResponse.Success = true;
+                    _mainResponse.Message = Constants.PASSWORD_CHANGED;
+                   
+                }
+                else
+                {
+                _mainResponse.Success = false;
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+                }
+
+                    
+            return _mainResponse;
+        }
+    }
+}
