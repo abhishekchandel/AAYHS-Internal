@@ -187,16 +187,16 @@ namespace AAYHS.Service.Service
                 };
                 await _scheduleDateRepository.AddAsync(schedule);
 
-                if (addClassRequest.splitRequest!=null)
+                if (addClassRequest.getClassSplit != null)
                 {
-                    foreach (var split in addClassRequest.splitRequest.splitEntries)
+                    foreach (var split in addClassRequest.getClassSplit)
                     {
                         
                         var classSplit = new ClassSplits
                         {
                             ClassId = _class.ClassId,
-                            SplitNumber = addClassRequest.splitRequest.SplitNumber,
-                            ChampionShipIndicator = addClassRequest.splitRequest.ChampionShipIndicator,
+                            SplitNumber = addClassRequest.SplitNumber,
+                            ChampionShipIndicator = addClassRequest.ChampionShipIndicator,
                             Entries = split.Entries,
                             IsActive = true,
                             CreatedBy = actionBy,
@@ -233,6 +233,26 @@ namespace AAYHS.Service.Service
                     updateClassSchedule.ModifiedDate = DateTime.Now;
                     await _scheduleDateRepository.UpdateAsync(updateClassSchedule);
                 }
+
+                if (addClassRequest.getClassSplit != null)
+                {
+                    _splitClassRepository.DeleteSplitsByClassId(addClassRequest);
+
+                    foreach (var split in addClassRequest.getClassSplit)
+                    {
+                        var classSplit = new ClassSplits
+                        {
+                            ClassId = addClassRequest.ClassId,
+                            SplitNumber = addClassRequest.SplitNumber,
+                            ChampionShipIndicator = addClassRequest.ChampionShipIndicator,
+                            Entries = split.Entries,
+                            IsActive = true,
+                            CreatedBy = actionBy,
+                            CreatedDate = DateTime.Now
+                        };
+                        await _splitClassRepository.AddAsync(classSplit);
+                    };
+                }                    
                 _mainResponse.Message = Constants.CLASS_UPDATED;
                 _mainResponse.Success = true;
                 return _mainResponse;
@@ -313,30 +333,7 @@ namespace AAYHS.Service.Service
             }
 
             return _mainResponse;
-        }
-        public async Task<MainResponse> AddUpdateSplitClass(SplitRequest splitRequest,string actionBy)
-        {
-            _splitClassRepository.DeleteSplitsByClassId(splitRequest);
-
-                foreach(var split in splitRequest.splitEntries)
-                {
-                    var classSplit = new ClassSplits
-                    {
-                        ClassId = splitRequest.ClassId,
-                        SplitNumber = splitRequest.SplitNumber,
-                        ChampionShipIndicator=splitRequest.ChampionShipIndicator,
-                        Entries = split.Entries,
-                        IsActive = true,
-                        CreatedBy = actionBy,
-                        CreatedDate = DateTime.Now
-                    };
-                   await _splitClassRepository.AddAsync(classSplit);
-                };
-                                 
-            _mainResponse.Message = Constants.SPLIT_CREATED;
-            _mainResponse.Success = true;           
-            return _mainResponse;
-        }
+        }        
         public MainResponse GetBackNumberForAllExhibitor(int ClassId)
         {
             GetAllBackNumber allBackNumber = new GetAllBackNumber();

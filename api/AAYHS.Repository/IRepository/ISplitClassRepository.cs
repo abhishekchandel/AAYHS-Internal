@@ -8,6 +8,6 @@ namespace AAYHS.Repository.IRepository
 {
     public interface ISplitClassRepository:IGenericRepository<ClassSplits>
     {
-        void DeleteSplitsByClassId(SplitRequest splitRequest);
+        void DeleteSplitsByClassId(AddClassRequest addClassRequest);
     }
 }

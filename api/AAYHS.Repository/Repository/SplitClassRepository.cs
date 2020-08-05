@@ -31,10 +31,10 @@ namespace AAYHS.Repository.Repository
              _context = ObjContext;
              _Mapper = Mapper;
         }
-        public void DeleteSplitsByClassId(SplitRequest splitRequest)
+        public void DeleteSplitsByClassId(AddClassRequest addClassRequest)
         {
            
-            var split = _context.ClassSplits.Where(x => x.ClassId == splitRequest.ClassId).ToList();
+            var split = _context.ClassSplits.Where(x => x.ClassId == addClassRequest.ClassId).ToList();
 
             foreach (var item in split)
             {
