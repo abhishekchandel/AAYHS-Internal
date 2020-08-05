@@ -166,7 +166,7 @@ namespace AAYHS.Service.Service
                 var classes = new Classes
                 {
                     ClassNumber = addClassRequest.ClassNumber,
-                    ClassHeader=addClassRequest.ClassHeader,
+                    ClassHeaderId=addClassRequest.ClassHeaderId,
                     Name = addClassRequest.Name,
                     Location = addClassRequest.Location,
                     AgeGroup = addClassRequest.AgeGroup,
@@ -216,7 +216,7 @@ namespace AAYHS.Service.Service
                 if (updateClass!=null)
                 {
                     updateClass.ClassNumber = addClassRequest.ClassNumber;
-                    updateClass.ClassHeader = addClassRequest.ClassHeader;
+                    updateClass.ClassHeaderId = addClassRequest.ClassHeaderId;
                     updateClass.Name = addClassRequest.Name;
                     updateClass.Location = addClassRequest.Location;
                     updateClass.AgeGroup = addClassRequest.AgeGroup;

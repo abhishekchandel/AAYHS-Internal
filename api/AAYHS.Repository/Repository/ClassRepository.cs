@@ -87,7 +87,7 @@ namespace AAYHS.Repository.Repository
                     select new ClassResponse
                     {
                         ClassId= classes.ClassId,
-                        ClassHeader=classes.ClassHeader,
+                        ClassHeaderId=classes.ClassHeaderId,
                         ClassNumber= classes.ClassNumber,
                         Name= classes.Name,
                         AgeGroup= classes.AgeGroup,
