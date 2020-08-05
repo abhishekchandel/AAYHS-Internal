@@ -87,7 +87,7 @@ namespace AAYHS.Repository.Repository
                     select new ClassResponse
                     {
                         ClassId= classes.ClassId,
-                        ClassHeader=classes.ClassHeader,
+                        ClassHeaderId=classes.ClassHeaderId,
                         ClassNumber= classes.ClassNumber,
                         Name= classes.Name,
                         AgeGroup= classes.AgeGroup,
@@ -237,14 +237,14 @@ namespace AAYHS.Repository.Repository
             data = (from result in _ObjContext.Result
                     join exhibitor in _ObjContext.Exhibitors on result.ExhibitorId equals exhibitor.ExhibitorId into exhibitor1
                     from exhibitor2 in exhibitor1.DefaultIfEmpty()
+                    join exhibitorsClass in _ObjContext.ExhibitorClass on exhibitor2.ExhibitorId equals exhibitorsClass.ExhibitorId into exhibitorsClass1
+                    from exhibitorsClass2 in exhibitorsClass1.DefaultIfEmpty()
                     join addresses in _ObjContext.Addresses on exhibitor2.AddressId equals addresses.AddressId into addresses1
                     from addresses2 in addresses1.DefaultIfEmpty()
                     join city in _ObjContext.Cities on addresses2.CityId equals city.CityId into city1
                     from city2 in city1.DefaultIfEmpty()
                     join state in _ObjContext.States on city2.StateId equals state.StateId into state1
-                    from state2 in state1.DefaultIfEmpty()    
-                    join exhibitorsClass in _ObjContext.ExhibitorClass on exhibitor2.ExhibitorId equals exhibitorsClass.ExhibitorId into exhibitorsClass1
-                    from exhibitorsClass2 in exhibitorsClass1.DefaultIfEmpty()
+                    from state2 in state1.DefaultIfEmpty()                       
                     join paymentdetails in _ObjContext.ExhibitorPaymentDetails on exhibitor2.ExhibitorId equals paymentdetails.ExhibitorId into paymentdetails1
                     from paymentdetails2 in paymentdetails1.DefaultIfEmpty()
                     join f in _ObjContext.Fees on paymentdetails2.FeeId equals f.FeeId into f1
@@ -262,7 +262,7 @@ namespace AAYHS.Repository.Repository
                         Address= city2.Name + ", " + state2.Code,
                         AmountPaid = paymentdetails2.Amount,
                         AmountDue = ((int)(Convert.ToDecimal(f2.FeeAmount) - paymentdetails2.Amount))
-                    }).ToList();
+                    }).Distinct().ToList();
 
             if (data.Count() != 0)
             {

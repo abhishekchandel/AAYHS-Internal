@@ -153,21 +153,7 @@ namespace AAYHS.API.Controllers
             _mainResponse =await _classService.RemoveClass(ClassId, actionBy);
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
-        }
-        /// <summary>
-        /// This api used for split the class
-        /// </summary>
-        /// <param name="splitRequest"></param>
-        /// <returns></returns>
-        [HttpPost]
-        //[Authorize]
-        public async Task<IActionResult>AddUpdateSplitClass(SplitRequest splitRequest)
-        {
-             string actionBy = User.Identity.Name;
-            _mainResponse = await _classService.AddUpdateSplitClass(splitRequest, actionBy);
-            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
-            return new OkObjectResult(_jsonString);
-        }
+        }     
         /// <summary>
         /// This api used to get back number of a class exhibitors
         /// </summary>
