@@ -95,7 +95,7 @@ namespace AAYHS.Core.DTOs.Response.Common
     }
     public class GetResultOfClass
     {
-        public string Place { get; set; }
+        public int Place { get; set; }
         public int BackNumber { get; set; }
         public int ExhibitorId { get; set; }
         public string ExhibitorName { get; set; }

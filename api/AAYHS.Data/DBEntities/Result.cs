@@ -16,6 +16,6 @@ namespace AAYHS.Data.DBEntities
         public string AgeGroup { get; set; }
         public int ExhibitorId { get; set; }
         [Column(TypeName = "varchar(50)")]
-        public string Placement { get; set; }       
+        public int Placement { get; set; }       
     }
 }

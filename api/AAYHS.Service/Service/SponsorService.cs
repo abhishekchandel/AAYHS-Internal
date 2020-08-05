@@ -37,9 +37,10 @@ namespace AAYHS.Service.Service
 
         public MainResponse AddUpdateSponsor(SponsorRequest request)
         {
-            if (request.SponsorId <= 0)
+            if (request.SponsorId==null || request.SponsorId <= 0)
             {
-                var checkexist = _SponsorRepository.GetSingle(x => x.SponsorName == request.SponsorName);
+                var checkexist = _SponsorRepository.GetSingle(x => x.SponsorName == request.SponsorName
+                && x.IsActive==true && x.IsDeleted==false);
                 if (checkexist != null && checkexist.SponsorId > 0)
                 {
                     _mainResponse.Message = Constants.NAME_ALREADY_EXIST;

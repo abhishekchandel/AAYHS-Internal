@@ -25,13 +25,14 @@
                               <perfect-scrollbar class="nicescrollBar-1"> 
 								<tbody>
 									
-								  <tr *ngFor="let list of sponsorsList;let i = index "
+								  <tr *ngFor="let list of sponsorsList;let i = index"
 								  (click)="highlight(list.SponsorId,i)"
 								  [ngClass]="{'blueRow': selectedRowIndex == i}">
 									  <td data-label="Sponsor ID">{{list.SponsorId}}</td>
 									  <td data-label="Sponsor">{{list.SponsorName}}</td>
 									  <td data-label="Remove">
-								     <button class="icon" 
+									 <button type="button"
+									     class="icon" 
 										(click)="confirmRemoveSponsor($event, i,list.SponsorId)">
 										<span></span> <i class="fa fa-trash-o"
 										aria-hidden="true"></i>
@@ -78,7 +79,7 @@
 						  <div class="tab-pane  active" id="home">
                             <mat-tab-group #tabGroup>
                                 <mat-tab  class="nav-link active nav nav-tabs" label="Sponsor Info">
-                                    <form #sponsorInfoForm="ngForm" name="sponsorInfoForm" (ngSubmit)="sponsorInfoForm.valid && addSponsor(sponsorInfoForm)" novalidate >
+                                    <form #sponsorInfoForm="ngForm" name="sponsorInfoForm" (ngSubmit)="sponsorInfoForm.valid && addUpdateSponsor(sponsorInfoForm)" novalidate >
 							 <div class="card">
 							   <div class="card-body">
 								  <div class="row">
@@ -174,7 +175,7 @@
 									 <div class="col-sm-12">
 									   <div class="buttons text-right">
 										 <button (click)='tabGroup.selectedIndex = 1' class="btn btn-red btnCss roundBtn">Next</button>  
-										 <button class="btn btn-red btnCss roundBtn">Submit</button> 
+										 <button type="submit" class="btn btn-red btnCss roundBtn">Submit</button> 
 									   </div> 
 									 </div>
 								  </div>
@@ -186,8 +187,10 @@
 
 						  <mat-tab  class="nav-link active nav nav-tabs" label="Exhibitor">
 							 <div class="card dataEntriesTable">
+								<form #sponsorExhibitorForm="ngForm" name="sponsorExhibitorForm"
+								(ngSubmit)="sponsorExhibitorForm.valid && AddUpdateSponsorExhibitor()">
+
 							   <div class="card-body">  
-                                
 							   		<div class="table-responsive tableTab" id="contentscroll2">
 										<table class="table table-bordered tableBodyScroll">
 										<thead>
@@ -202,7 +205,7 @@
                                         </thead> 
 										<perfect-scrollbar class="nicescrollBar-2">
                                             <tbody>                                                
-                                                <tr *ngFor="let list of sponsorsExhibitorsList;;let i = index ">
+                                                <tr *ngFor="let list of sponsorsExhibitorsList;;let i = index">
                                                     <td data-label="Exhibitor ID">{{list.ExhibitorId}}</td>
                                                     <td data-label="Exhibitor Name">{{list.FirstName}} {{list.LastName}}</td>
                                                     <td data-label="Sponsor Type">{{list.SponsorTypeId}}</td>
@@ -217,18 +220,40 @@
 												</tr>	
 												  
                                                 <tr>
-                                                    <td data-label="Exhibitor Name" colspan="2">
-                                                        <select class="dynDataSeclect">
-                                                            <option disabled="true">Select Exhibitor</option>
-                                                            <option *ngFor="let item of UnassignedSponsorExhibitor">{{item.ExhibitorId}}  {{item.Name}}</option>
-                                                        </select>
-                                                    </td>
-                                                    <td data-label="Sponsor Type" colspan="2">
-                                                        <select class="dynDataSeclect">
-                                                            <option disabled="true">Select Sponsor Type</option>
-                                                            <option *ngFor="let item of SponsorTypes">{{item.CodeName}}</option>
-                                                        </select>
-                                                    </td>
+                                                    
+													<td data-label="Sponsor Exhibitor" colspan="2">
+															<select class="dynDataSeclect" name="exhibitor" required [(ngModel)]="exhibitorId"
+															#sponsorExhibitorControl="ngModel" (change)="setSponsorExhibitor($event.target.value)" >
+																<option disabled="true" [ngValue]="null" class="selectDropdown">Select Exhibitor</option>
+																<option  class="selectDropdown"
+																[value]="item.ExhibitorId"
+																 *ngFor="let item of UnassignedSponsorExhibitor">
+																 {{item.ExhibitorId}}  {{item.Name}}</option>
+															</select>
+															
+														
+														<span class="help-block"
+															*ngIf="(sponsorExhibitorForm.submitted || sponsorExhibitorControl.touched) && sponsorExhibitorControl.invalid">Please
+															select exhibitor
+														</span>
+													</td>
+
+													<td data-label="Sponsor Type" colspan="2">
+														<select class="dynDataSeclect" name="sponsortype" required [(ngModel)]="sponsortypeId"
+														#sponsorTypeControl="ngModel" (change)="setSponsorType($event.target.value)" >
+															<option disabled="true" [ngValue]="null" class="selectDropdown">Select Sponsor Type</option>
+															<option  class="selectDropdown"
+															[value]="item.GlobalCodeId"
+															 *ngFor="let item of SponsorTypes">
+															 {{item.CodeName}}</option>
+														</select>
+												  	<span class="help-block"
+														*ngIf="(sponsorExhibitorForm.submitted || sponsorTypeControl.touched) && sponsorTypeControl.invalid">Please
+														select sponsor type
+													</span>
+												</td>
+
+                                                   
                                                     <td colspan="3"></td>
                                                 </tr>
                                             </tbody>
@@ -239,13 +264,15 @@
                                     </div>
                                 
 								</div>
+								
 								<div class="actionBtn text-right mt-3 mb-3 ">
 									<button (click)='tabGroup.selectedIndex = 0' class="btn btn-red btnCss roundBtn">Previous</button>
 									<button (click)='tabGroup.selectedIndex = 2' class="btn btn-red btnCss roundBtn">Next</button>
 									<button (click)="goToLink('auth/exhibitor')" class="btn btn-red btnCss roundBtn">+ Exhibitor</button>
-									<button class="btn btn-red btnCss roundBtn">Submit</button>
+									<button type="submit" class="btn btn-red btnCss roundBtn">Submit</button>
 								</div>
 
+							</form>
 
 							</div>
                             </mat-tab>
@@ -253,6 +280,8 @@
 
 						  <mat-tab  class="nav-link active nav nav-tabs" label="Classes">
 								<div class="card">
+									<form #sponsorClassForm="ngForm" name="sponsorClassForm" 
+									(ngSubmit)="sponsorClassForm.valid && AddUpdateSponsorClass()">
 									<div class="card-body">    
 										<div class="table-responsive tableTab">
 											<table class="table table-bordered tableBodyScroll">
@@ -267,7 +296,7 @@
 											</thead> 
 											<perfect-scrollbar class="nicescrollBar-2">
 											<tbody>
-												<tr  *ngFor="let list of sponsorClassesList">
+												<tr  *ngFor="let list of sponsorClassesList; let i=index">
 													<td data-label="Class Number">{{list.ClassNumber}}</td>
 													<td data-label="Class Name">{{list.Name}}</td>
 													<td data-label="Age Group">{{list.AgeGroup}}</td>
@@ -278,8 +307,9 @@
 														</select>
 													</td>
 													<td data-label="Remove">
-														<button class="icon" 
-														(click)="confirmRemoveSponsorClass('5',list.ClassSponsorId)">
+														<button type="button"
+														class="icon" 
+														(click)="confirmRemoveSponsorClass(i,list.ClassSponsorId)">
 														<span></span> <i class="fa fa-trash-o"
 														aria-hidden="true"></i>
 													</button>
@@ -287,18 +317,26 @@
 											
 												</tr>	
 												<tr>
+
 													<td data-label="Class Name" colspan="2">
-													<select class="dynDataSeclect">
-														<option disabled="true">Select Class</option>
-														<option *ngFor="let item of UnassignedSponsorClasses">
-															{{item.ClassNumber}}/
-															{{item.Name}}/
-															{{item.AgeGroup}}
-														
-														</option>
-													</select>
-													</td>
-													<td colspan="3"></td>
+														<select class="dynDataSeclect" name="sponsorclass" required [(ngModel)]="sponsorClassId"
+														#sponsorClassControl="ngModel" (change)="setSponsorClass($event.target.value)" >
+															<option disabled="true" [ngValue]="null" class="selectDropdown">Select Class</option>
+															<option  class="selectDropdown"
+															[value]="item.ClassId"
+															*ngFor="let item of UnassignedSponsorClasses">
+															 {{item.ClassNumber}}/
+															 {{item.Name}}/
+															 {{item.AgeGroup}}
+														 </option>
+														</select>
+												  	<span class="help-block"
+														*ngIf="(sponsorClassForm.submitted || sponsorClassControl.touched) && sponsorClassControl.invalid">Please
+														select class
+													</span>
+												</td>
+
+									      <td colspan="3"></td>
 												</tr>
 											</tbody>
 										</perfect-scrollbar>
@@ -306,11 +344,13 @@
 										</div>
 										
 									</div>
+								
 									<div class="actionBtn mt-3 mb-3 text-right">
 										<button (click)='tabGroup.selectedIndex = 1' class="btn btn-red btnCss roundBtn">Previous</button>
 										<button (click)="goToLink('auth/class')"class="btn btn-red btnCss roundBtn">+ Class</button>
-										<button class="btn btn-red btnCss roundBtn">Submit</button>
+										<button type="submit" class="btn btn-red btnCss roundBtn">Submit</button>
 									</div>
+								</form>
                                 </div>
                                 </mat-tab>
                             </mat-tab-group>

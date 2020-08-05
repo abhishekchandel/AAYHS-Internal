@@ -34,7 +34,8 @@ namespace AAYHS.Service.Service
         {
             if (request.SponsorExhibitorId <= 0)
             {
-                var checkexist = _SponsorExhibitorRepository.GetSingle(x => x.SponsorId == request.SponsorId && x.ExhibitorId == request.ExhibitorId);
+                var checkexist = _SponsorExhibitorRepository.GetSingle(x => x.SponsorId == request.SponsorId && x.ExhibitorId == request.ExhibitorId
+                && x.IsActive==true && x.IsDeleted==false);
                 if (checkexist != null && checkexist.SponsorExhibitorId > 0)
                 {
                     _mainResponse.Message = Constants.RECORD_AlREADY_EXIST;

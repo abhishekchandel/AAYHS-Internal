@@ -49,7 +49,7 @@ namespace AAYHS.Core.DTOs.Request
     {
         public int ClassId { get; set; }
         public int ExhibitorId { get; set; }
-        public string Place { get; set; }
+        public int Place { get; set; }
     }    
    public class SearchRequest : BaseRecordFilterRequest
    {

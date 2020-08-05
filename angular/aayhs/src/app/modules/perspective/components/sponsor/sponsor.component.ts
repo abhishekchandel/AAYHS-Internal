@@ -61,6 +61,24 @@ export class SponsorComponent implements OnInit {
   SponsorTypes:any
   selectedSponsorId:number=0;
 
+
+  exhibitorId: number = null;
+  sponsortypeId:number=null;
+  sponsorClassId:number=null;
+
+  
+  sponsorExhibitorRequest: any={
+    SponsorExhibitorId: null,
+    SponsorId:null,
+    ExhibitorId:null,
+    SponsorTypeId:null,
+  }
+  sponsorClassRequest: any={
+    ClassSponsorId:null,
+    SponsorId:null,
+    ClassId:null,
+  }
+
   baseRequest: BaseRecordFilterRequest = {
     Page: 1,
     Limit: 10,
@@ -99,6 +117,7 @@ export class SponsorComponent implements OnInit {
     this.loading = false;
    // this. resetForm();
   }
+
   getAllSponsorTypes() {
     this.loading = true;
     this.SponsorTypes=null;
@@ -116,7 +135,6 @@ export class SponsorComponent implements OnInit {
 
   getSponsorDetails = (id: number) => {
     this.sponsorService.getSponsor(id).subscribe(response => {
-      debugger;
       if(response.Data!=null)
       {
        this.getCities(response.Data.StateId);
@@ -125,22 +143,6 @@ export class SponsorComponent implements OnInit {
     }, error => {
     }
     )
-  }
-
-  addSponsor = (sponsor) => {
-    this.loading = true;
-    this.sponsorInfo.AmountReceived=Number(this.sponsorInfo.AmountReceived)
-    this.sponsorInfo.SponsorId=this.sponsorInfo.SponsorId !=null ? this.sponsorInfo.SponsorId : 0
-
-    this.sponsorService.addSponsor(this.sponsorInfo).subscribe(response => {
-      this.snackBar.openSnackBar(response.message, 'Close', 'green-snackbar');
-      this.loading = false;
-     this. resetForm()
-    }, error => {
-      this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
-      this.loading = false;
-
-    })
   }
 
   GetSponsorExhibitorBySponsorId(selectedSponsorId:number){
@@ -179,9 +181,75 @@ export class SponsorComponent implements OnInit {
     this.loading=false;
   }
 
+
+
+
+  addUpdateSponsor=(sponsor)=>{
+    debugger;
+    this.loading=true;
+    this.sponsorService.addUpdateSponsor(this.sponsorInfo).subscribe(response=>{
+     this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
+     this.getAllSponsors();
+    }, error=>{
+       this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
+    })
+    this.loading = false;
+    }
+
+  AddUpdateSponsorExhibitor(){
+    debugger;
+    this.loading=true;
+    this.sponsorExhibitorRequest.SponsorExhibitorId=0;
+    this.sponsorExhibitorRequest.SponsorId=this.selectedSponsorId;
+    this.sponsorExhibitorRequest.ExhibitorId=this.exhibitorId;
+    this.sponsorExhibitorRequest.SponsorTypeId=this.sponsortypeId;
+    this.sponsorService.AddUpdateSponsorExhibitor(this.sponsorExhibitorRequest).subscribe(response=>{
+      this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
+      this.GetSponsorExhibitorBySponsorId(this.selectedSponsorId);
+      this.exhibitorId = null;
+      this.sponsortypeId=null;
+     }, error=>{
+        this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
+     })
+     this.loading = false;
+     }
+
+  AddUpdateSponsorClass(){
+    this.loading=true;
+    this.sponsorClassRequest.ClassSponsorId=0;
+    this.sponsorClassRequest.SponsorId=this.selectedSponsorId;
+    this.sponsorClassRequest.ClassId=this.sponsorClassId;
+    debugger;
+    this.sponsorService.AddUpdateSponsorClass(this.sponsorClassRequest).subscribe(response=>{
+      debugger;
+      this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
+      this.GetSponsorClasses(this.selectedSponsorId);
+      this.sponsorClassId=null;
+     }, error=>{
+      debugger;
+        this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
+     })
+     this.loading = false;
+     }
+
+
+
+  setSponsorExhibitor(id){
+    this.exhibitorId=Number(id);
+  }
+  setSponsorType(id){
+    
+    this.sponsortypeId=Number(id);
+  }
+  setSponsorClass(id){
+    this.sponsorClassId=Number(id);
+  }
+
+  
+
  
 
-  //confirm alert
+  //confirm delete 
   confirmRemoveSponsor(e, index, Sponsorid): void {
     
     e.stopPropagation();
@@ -253,6 +321,7 @@ export class SponsorComponent implements OnInit {
           this.UnassignedSponsorExhibitor=null;
           this.UnassignedSponsorClasses=null;
           this.SponsorTypes=null;
+          this.resetForm();
         }
       }
       else{
@@ -317,6 +386,10 @@ export class SponsorComponent implements OnInit {
     this.UnassignedSponsorClasses=null;
     this.SponsorTypes=null;
     this.selectedRowIndex =-1;
+
+    this.exhibitorId = null;
+    this.sponsortypeId=null;
+    this.sponsorClassId=null;
   }
 
   getNext(event, type) {
@@ -332,6 +405,10 @@ export class SponsorComponent implements OnInit {
     this.GetSponsorExhibitorBySponsorId(selectedSponsorId);
     this.GetSponsorClasses(selectedSponsorId);
     this.getAllSponsorTypes();
+    this.exhibitorId = null;
+    this.sponsortypeId=null;
+    this.sponsorClassId=null;
+
   }
 
   sortData(column) {
@@ -369,13 +446,15 @@ export class SponsorComponent implements OnInit {
 
   getStateName(e) {
     this.sponsorInfo.StateId =Number( e.target.options[e.target.selectedIndex].value)
-}
- getCityName(e) {
+  }
+  getCityName(e) {
   this.sponsorInfo.CityId = Number(e.target.options[e.target.selectedIndex].value)
-}
-goToLink(url: string){
+  }
+  goToLink(url: string){
   debugger;
   window.open(url, "_blank");
 }
+
+
 }
 

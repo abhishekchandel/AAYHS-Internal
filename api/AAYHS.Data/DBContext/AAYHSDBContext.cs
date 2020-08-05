@@ -49,6 +49,7 @@ namespace AAYHS.Data.DBContext
         public virtual DbSet<States> States { get; set; }
         public virtual DbSet<TackStall> TackStall { get; set; }
         public virtual DbSet<TackStallAssignment> TackStallAssignment { get; set; }
+        public virtual DbSet<User> User { get; set; }
         public virtual DbSet<YearlyMaintainence> YearlyMaintainence { get; set; }
         public virtual DbSet<YearlyMaintainenceFee> YearlyMaintainenceFee { get; set; }
 

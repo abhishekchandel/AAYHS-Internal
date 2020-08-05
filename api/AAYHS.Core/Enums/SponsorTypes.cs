@@ -9,6 +9,6 @@ namespace AAYHS.Core.Enums
         Class = 1,
         Add = 2,
         Cooler = 3,
-        Patron = 4,
+        Patron = 4
     }
 }

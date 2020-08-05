@@ -6,7 +6,7 @@ namespace AAYHS.Core.DTOs.Request
 {
     public class SponsorRequest
     {
-        public int SponsorId { get; set; }
+        public int? SponsorId { get; set; }
         public string SponsorName { get; set; }
         public string ContactName { get; set; }
         public string Phone { get; set; }

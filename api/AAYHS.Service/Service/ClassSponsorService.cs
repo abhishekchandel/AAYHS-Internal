@@ -40,7 +40,8 @@ namespace AAYHS.Service.Service
         {
             if (request.ClassSponsorId <= 0)
             {
-                var checkexist = _ClassSponsorRepository.GetSingle(x => x.ClassId == request.ClassId && x.SponsorId==request.SponsorId);
+                var checkexist = _ClassSponsorRepository.GetSingle(x => x.ClassId == request.ClassId && x.SponsorId==request.SponsorId
+                && x.IsActive==true && x.IsDeleted==false);
                 if (checkexist != null && checkexist.ClassSponsorId > 0)
                 {
                     _mainResponse.Message = Constants.RECORD_AlREADY_EXIST;

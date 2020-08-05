@@ -19,8 +19,8 @@ export class SponsorService {
   return this.http.get<any>(`${this.api}SponsorAPI/GetSponsorById?sponsorId=${id}`);
   }
 
-  addSponsor(data){
-    return this.http.post<any>(this.api +'SponsorAPI/AddSponsor',data);
+  addUpdateSponsor(data){
+    return this.http.post<any>(this.api +'SponsorAPI/AddUpdateSponsor',data);
   }
   
   getAllSponsers(data){
@@ -56,5 +56,13 @@ export class SponsorService {
     return this.http.get<any>(`${this.api}ClassAPI/GetClassExhibitorsAndHorses?ClassId=${ClassId}`);
   }
 
+  AddUpdateSponsorExhibitor(data){
+    
+    return this.http.post<any>(this.api +'SponsorExhibitorAPI/AddUpdateSponsorExhibitor',data);
+  }
+  AddUpdateSponsorClass(data){
+    
+    return this.http.post<any>(this.api +'ClassSponsorAPI/AddUpdateClassSponsor',data);
+  }
 }
 
