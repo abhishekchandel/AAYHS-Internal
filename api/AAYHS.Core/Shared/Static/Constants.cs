@@ -30,7 +30,15 @@ namespace AAYHS.Core.Shared.Static
         public const string RECORD_AlREADY_EXIST = "Record Already Exist";
         public const string NAME_ALREADY_EXIST = "Name Already Exist";
         public const string HORSE_REMOVED = "Horse removed successfully";
-
+        public const string LOG_IN = "Login successfully";
+        public const string USERNAME_PASSWORD_INCORRECT = "Username and Passwod incorrect.";
+        public const string USERNAME_ALREADY = "Username already exist";
+        public const string ACCOUNT_CREATED = "User account created successfully";
+        public const string FORGET_PASSWORD_EMAIL = "Your password reset email has been sent.";
+        public static readonly string RESET_PASSWORD_VALID_LINK = "Reset password link is valid.";
+        public static readonly string RESET_PASSWORD_EXPIRED_LINK = "Reset password link is expired";
+        public const string PASSWORD_CHANGED = "Password changed successfully.";
+        public const string ADMIN_APPROVAL = "You need the admin approval before login";
 
     }
 }

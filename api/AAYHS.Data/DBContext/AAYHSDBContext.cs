@@ -52,7 +52,6 @@ namespace AAYHS.Data.DBContext
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<YearlyMaintainence> YearlyMaintainence { get; set; }
         public virtual DbSet<YearlyMaintainenceFee> YearlyMaintainenceFee { get; set; }
-        public virtual DbSet<User> User { get; set; }
         public virtual DbSet<ApplicationSettings> ApplicationSettings { get; set; }
 
     }
