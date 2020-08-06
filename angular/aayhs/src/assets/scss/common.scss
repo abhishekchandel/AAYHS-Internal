@@ -1126,5 +1126,208 @@ display:inline-block;
     background-color: #b5cbf7;
 }
 
+
+
+.headerBlueStrip {
+    background-color: #273992;
+    width: 100%;
+    height: 100px;
+    display: block;
+}
+.loginWrapper{
+    background-image: url(../images/login-bg.jpg);
+    background-size: cover;
+    background-position: center top;
+    position: absolute;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: calc(100vh - 100px);  
+    @media(max-width:1024px){
+        height:100%;
+        position: relative;   
+    }
+    .commonCol {
+        background-color: #fff;
+        padding: 0 15px 25px;
+        border-radius: 0 0 50px 50px;
+        box-shadow: 6px 6px 6px rgba(0,0,0,0.8);
+        max-width: 900px;
+        margin: 0 auto;
+        .logoSection {
+            position: relative;
+            margin-bottom: 20px;
+            display: block;
+            img {
+                max-width: 200px;                
+                margin-top: -77px;                
+            }
+        }
+        .loginField {
+            max-width: 500px;
+            margin: 0 auto;
+        
+            .form-group{
+                position: relative;
+                margin-bottom: 25px;
+                &.emailIcon{
+                    input{
+                        background-image: url(/assets/images/icon-3.png); 
+                        background-repeat: no-repeat;
+                        background-position: center left;
+                    }
+                    &:before {
+                        position: absolute;
+                        content: "";
+                        width: 1px;
+                        height: 30px;
+                        left: 58px;
+                        z-index: 9;
+                        background-color: #fff;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        -webkit-transform: translateY(-50%);
+                        -moz-transform: translateY(-50%);
+                        -ms-transform: translateY(-50%);
+                    }
+                }
+
+                &.userIcon{
+                    input{
+                        background-image: url(../images/icon-1.png); 
+                        background-repeat: no-repeat;
+                        background-position: center left;
+                    }
+                    &:before {
+                        position: absolute;
+                        content: "";
+                        width: 1px;
+                        height: 30px;
+                        left: 58px;
+                        z-index: 9;
+                        background-color: #fff;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        -webkit-transform: translateY(-50%);
+                        -moz-transform: translateY(-50%);
+                        -ms-transform: translateY(-50%);
+                    }
+                }
+                &.passIcon{
+                    input{
+                        background-image: url(/assets/images/icon-2.png); 
+                        background-repeat: no-repeat;
+                        background-position: center left;
+                    }
+                    &:before {
+                        position: absolute;
+                        content: "";
+                        width: 1px;
+                        height: 30px;
+                        left: 58px;
+                        z-index: 9;
+                        background-color: #fff;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        -webkit-transform: translateY(-50%);
+                        -moz-transform: translateY(-50%);
+                        -ms-transform: translateY(-50%);
+                    }
+                }
+                input {
+                    background-color: #273992;
+                    border: none;
+                    padding: 12px 15px 12px 70px;
+                    color: #fff;
+                    border-radius: 50px;
+                    max-width: 500px;
+                    width: 100%;
+                    
+                    &::placeholder{
+                        color:#fff;
+                    }
+                    &::-webkit-placeholder{
+                        color:#fff;
+                    }
+                    &:focus{
+                        outline:none;
+                        box-shadow: none;
+                    }
+                }
+                button {
+                    background-color: #7b1124;
+                    border: none;
+                    color: #fff;
+                    width: 100%;
+                    border-radius: 50px;
+                    padding: 12px 15px;
+                }
+                a {
+                    padding-right: 40px;
+                    position: relative;
+                    padding: 10px 40px 0 20px;
+                    display: inline-flex;
+                    align-items: center;
+                    color: #273992;
+                    font-style:italic;
+                    &:before{
+                        position: absolute;
+                        content: "";
+                        width: 1px;
+                        background-color: #273992;
+                        height: 100%;
+                        left: 0;
+                    }
+                    i {
+                        color: #7b1124;
+                        font-size: 25px;
+                        margin-left: 10px;
+                        
+                    }
+                    &:hover{
+                        text-decoration: none;
+                        color: #7b1124;
+                        i{
+                            text-decoration: none;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    footer{
+        padding: 30px 0 0px;
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        @media(max-width:1024px){
+            position: relative; 
+        }
+    
+        .commonCol{
+            background-color: #273992;
+            padding:15px 20px 15px 0;
+            box-shadow: 6px 6px 6px rgba(0,0,0,0.8);
+            max-width: 900px;
+            margin: 0 auto;
+            border-radius: 20px 20px 0 0;
+            .footerLink {
+                li {
+                    display: inline-block;
+                    margin: 0 20px;
+                    color: #fff;
+                    a{
+                        color: #fff;
+                        span {
+                            color: #ed1c24;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
  
 

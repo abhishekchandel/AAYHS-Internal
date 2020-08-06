@@ -173,7 +173,7 @@
 						<div class="card dataEntriesTable">
 							<form #entriesForm="ngForm" (ngSubmit)="entriesForm.valid && addExhibitorToClass()">
 								<div class="card-body">
-									<div class="table-responsive" id="contentscroll2">
+									<div id="print-entries"class="table-responsive" >
 										<table class="table table-bordered tableBodyScroll">
 											<thead>
 												<tr>
@@ -197,9 +197,9 @@
 														<td data-label="Birth Year">{{entry.BirthYear}}</td>
 														<td data-label="Amount Paid">{{entry.AmountPaid}}</td>
 														<td data-label="Amount Due">{{entry.AmountDue}}</td>
-														<td [ngClass]= "{'scratch' : entry.Scratch}" data-label="Scratch">
-															<div class="sizzerIcon" (click)="confirmScratch(i,!entry.Scratch,entry.ExhibitorClassId)">
-																<img src="assets/images/sizzer-icon.png" alt="image" />
+														<td data-label="Scratch">
+															<div [ngClass]= "{'scratch' : entry.Scratch===true}" (click)="confirmScratch(i,!entry.Scratch,entry.ExhibitorClassId)">
+																<img src=' assets/images/sizzer-icon.png' alt="image" />
 															</div>
 														</td>
 													
@@ -259,7 +259,7 @@
 									<button type="submit" class="btn btn-red btnCss">Submit</button>
 									<button typee="button" (click)='tabGroup.selectedIndex = 2'
 										class="btn btn-red btnCss">Next</button>
-									<button type="button" class="btn btn-red btnCss">Display/Print</button>
+									<button (click)="print()" id="inputprintbutton" type="button" class="btn btn-red btnCss">Display/Print</button>
 								</div>
 							</form>
 						</div>
@@ -270,8 +270,8 @@
 						<div class="card dataEntriesTable">
 							<form #resultForm="ngForm" name="resultForm" (ngSubmit)="resultForm.valid && addResult()">
 							<div class="card-body">
-								<div class="table-responsive tableTab">
-									<table class="table table-bordered tableBodyScroll">
+								<div id="print-section" #content class="table-responsive tableTab">
+									<table id="results" class="table table-bordered tableBodyScroll">
 										<thead>
 											<tr>
 												<th>Result</th>
@@ -287,7 +287,7 @@
 										<perfect-scrollbar class="nicescrollBar-2">
 											<tbody>
 												<tr *ngFor="let result of resultResponse;let i=index">
-													<td data-label="Result">{{result.Place}}</td>
+													<td data-label="Result">{{result.Place +ordinal_suffix_of(result.Place)}}</td>
 													<td data-label="Back No">{{result.BackNumber}}</td>
 													<td data-label="Exhibitor Name">{{result.ExhibitorName}}</td>
 													<td data-label="Birth Year">{{result.BirthYear}}</td>
@@ -299,7 +299,7 @@
 												
 												<tr>
 													<td *ngIf="showPosition">
-													{{initialPostion}}
+													{{initialPostion +ordinal_suffix_of(initialPostion)}}
 													</td>
 													<td *ngIf="!showPosition"></td>
 													<td data-label="Back No">
@@ -336,8 +336,8 @@
 							<div class="actionBtn text-right mt-3 mb-3">
 								<button type="button" (click)='tabGroup.selectedIndex = 1'
 									class="btn btn-red btnCss">Previous</button>
-								<button type="button" class="btn btn-red btnCss addDataType1">Print</button>
-								<button type="button" class="btn btn-red btnCss addDataType1">Download</button>
+								<button printSectionId="print-section"  ngxPrint type="button" class="btn btn-red btnCss addDataType1">Print</button>
+								<button  (click)="SavePDF()" type="button" class="btn btn-red btnCss addDataType1">Download</button>
 								<button type="submit" class="btn btn-red btnCss">Submit</button>
 							</div>
 							</form>

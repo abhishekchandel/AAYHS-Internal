@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild,ElementRef } from '@angular/core';
 import {  ClassInfoModel } from '../../../../core/models/class-model'
 import { ConfirmDialogComponent, ConfirmDialogModel } from '../../../../shared/ui/modals/confirmation-modal/confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -12,8 +12,8 @@ import { MatTabChangeEvent } from '@angular/material/tabs'
 import { ClassService } from '../../../../core/services/class.service';
 import { MatSort } from '@angular/material/sort';
 import * as moment from 'moment';
-
-
+import { ExportAsService, ExportAsConfig ,SupportedExtensions } from 'ngx-export-as';
+import * as jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-class',
@@ -27,6 +27,14 @@ export class ClassComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('resultForm') resultForm: NgForm;
   @ViewChild('entriesForm') entriesForm: NgForm;
+  @ViewChild('content') content: ElementRef;
+
+
+  config: ExportAsConfig = {
+    type: 'pdf',
+    elementIdOrContent: 'results',
+    
+  };
 
 
   result: string = '';
@@ -42,7 +50,7 @@ export class ClassComponent implements OnInit {
   totalItems: number = 0;
   sortColumn: string = "";
   reverseSort: boolean = false
-  entriesSortColumn:string="Exhibitor"
+  entriesSortColumn:string=""
   entriesReverseSort:boolean=false
   classesList: any
   loading = false;
@@ -53,7 +61,7 @@ export class ClassComponent implements OnInit {
   exhibitorId: number = null;
   horseId: number = null;
   backNumber:number=null;
-  initialPostion:string='1st';
+  initialPostion:number=1;
   resultResponse: any
   showPosition:boolean=false;
   backNumbersResponse:any;
@@ -88,7 +96,8 @@ export class ClassComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private classService: ClassService,
-    private snackBar: MatSnackbarComponent
+    private snackBar: MatSnackbarComponent,
+    private exportAsService: ExportAsService
   ) { }
 
   ngOnInit(): void {
@@ -156,7 +165,8 @@ export class ClassComponent implements OnInit {
     this.loading = true;
     this.classService.updateScratch(exhibitorScratch).subscribe(response => {
       this.loading = false;
-      this.classEntries[index].Scratch=isScratch
+      // this.classEntries[index].Scratch=isScratch
+      this.getClassEntries(this.classInfo.ClassId)
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
     }, error => {
       this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
@@ -274,7 +284,7 @@ debugger;
     this.entriesForm.resetForm({ exhibitorId:null,horseId:null})
     this.resultForm.resetForm({ backNumber:null});
     this.resetExhibitorInfo()
-    this.initialPostion='1st';
+    this.initialPostion=1;
     this.selectedRowIndex = null
   }
 
@@ -388,10 +398,11 @@ debugger;
     this.loading = true;
     this.classRequest.ClassId = id
     this.classRequest.AllRecords = true
-    this.classRequest.OrderBy = 'ExhibitorId'
+    this.classRequest.OrderBy = 'Place'
+    this.classRequest.OrderByDescending = false
     this.classService.getClassResult(this.classRequest).subscribe(response => {
       this.resultResponse = response.Data.getResultOfClass;
-      this.initialPostion=this.ordinal_suffix_of(Number(response.Data.TotalRecords) +1)
+      this.initialPostion=(Number(response.Data.TotalRecords) +1)
       this.loading = false;
     }, error => {
       this.loading = false;
@@ -429,14 +440,14 @@ debugger;
     var addClassResult = {
       ClassId:this.classInfo.ClassId,
       ExhibitorId:this.exhibitorInfo.ExhibitorId,
-      Place:(this.initialPostion).toString()
+      Place:this.initialPostion
     }
     this.classService.addResult(addClassResult).subscribe(response => {
       this.loading = false;
       this.getClassResult(this.classInfo.ClassId);
       this.resultForm.resetForm({ backNumber:null});
       this.resetExhibitorInfo();
-      this.initialPostion='1st';
+      this.initialPostion=1;
       this.showPosition=false
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
 
@@ -471,15 +482,15 @@ debugger;
     var j = i % 10,
         k = i % 100;
     if (j == 1 && k != 11) {
-        return i + "st";
+        return  "st";
     }
     if (j == 2 && k != 12) {
-        return i + "nd";
+        return  "nd";
     }
     if (j == 3 && k != 13) {
-        return i + "rd";
+        return  "rd";
     }
-    return i + "th";
+    return  "th";
 }
 setClassHeader(value){
   this.classInfo.ClassHeaderId=Number(value)
@@ -499,4 +510,93 @@ getEntriesSort(column) {
   }
 }
 
+exportAs(type: SupportedExtensions, opt?: string) {
+  debugger;
+  this.config.type = type;
+  // if (opt) {
+  //   this.config.options.jsPDF.orientation = opt;
+  // }
+  // this.exportAsService.save(this.config, 'myFile').subscribe(() => {
+  // });
+
+   this.exportAsService.get(this.config).subscribe(content => {
+      const link = document.createElement('a');
+      const fileName = 'export.pdf';
+
+      link.href = content;
+      link.download = fileName;
+      link.click();
+      console.log(content);
+    });
+  
+}
+
+pdfCallbackFn (pdf: any) {
+  // example to add page number as footer to every page of pdf
+  const noOfPages = pdf.internal.getNumberOfPages();
+  for (let i = 1; i <= noOfPages; i++) {
+    pdf.setPage(i);
+    pdf.text('Page ' + i + ' of ' + noOfPages, pdf.internal.pageSize.getWidth() - 100, pdf.internal.pageSize.getHeight() - 30);
+  }
+}
+
+public SavePDF(): void {
+  debugger;
+  let content=this.content.nativeElement;
+  let doc = new jsPDF();
+  let _elementHandlers =
+  {
+    '#editor':function(element,renderer){
+      return true;
+    }
+  };
+  doc.fromHTML(content.innerHTML,15,15,{
+
+    'width':10,
+    'elementHandlers':_elementHandlers
+  });
+
+  doc.save('test.pdf');
+}
+print() {
+  debugger
+  let printContents, popupWin, machineAlarmPage, machineAlarmPrint,printbutton;
+  // machineAlarmPage=document.getElementById('machineAlarmPage').style.display = "none";
+  // machineAlarmPrint=document.getElementById('machineAlarmPrint').style.display = "block";
+  printbutton = document.getElementById('inputprintbutton').style.display = "none";
+  printContents = document.getElementById('print-entries').innerHTML;
+  popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
+  popupWin.document.open();
+  popupWin.document.write(`
+    <html>
+      <head>
+    
+        <title>Print tab</title>
+        <style media="print">
+  
+        * {
+          -webkit-print-color-adjust: exact; /*Chrome, Safari */
+          color-adjust: exact;  /*Firefox*/
+          box-sizing: border-box;
+          font-family: Roboto, "Helvetica Neue", sans-serif;
+          }
+
+          // .pagebreak {page-break-before: always;page-break-inside: avoid;}
+          .fa:before { color:red; }
+    
+        </style>
+      </head>
+  <body onload="window.print();window.close()">${printContents}</body>
+    </html>`
+  );
+  printbutton = document.getElementById('inputprintbutton').style.display = "inline-block";
+  // machineAlarmPage=document.getElementById('machineAlarmPage').style.display = "block";
+  // machineAlarmPrint=document.getElementById('machineAlarmPrint').style.display = "none";
+  // this.loadComponent = false;
+  popupWin.document.close();
+  
+
+
+
+}
 }
