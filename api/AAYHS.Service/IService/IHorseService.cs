@@ -12,5 +12,6 @@ namespace AAYHS.Service.IService
     {
         MainResponse GetAllHorses(HorseRequest horseRequest);
         MainResponse RemoveHorse(int HorseId, string actionBy);
+        MainResponse AddHorse(HorseAddRequest horseAddRequest, string actionBy);
     }
 }

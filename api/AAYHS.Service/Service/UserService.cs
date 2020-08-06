@@ -44,7 +44,7 @@ namespace AAYHS.Service.Service
         public MainResponse LoginUser(UserLoginRequest userLoginRequest)
         {
             string encodePassword = EncryptDecryptHelper.GetMd5Hash(userLoginRequest.Password);
-            var userDetails = _userRepository.GetSingle(x => x.UserName == userLoginRequest.UserName && x.Password == encodePassword && x.IsActive ==true && x.IsDeleted == false);
+            var userDetails = _userRepository.GetSingle(x => x.UserName == userLoginRequest.UserName.ToLower() && x.Password == encodePassword && x.IsActive ==true && x.IsDeleted == false);
             if (userDetails != null)
             {
                 if (userDetails.IsApproved==true)
@@ -109,7 +109,7 @@ namespace AAYHS.Service.Service
                 string guid = Guid.NewGuid().ToString();
                 user.ResetToken = guid;
                 user.ResetTokenExpired = DateTime.UtcNow.AddMinutes(60);
-                var data =  _userRepository.UpdateAsync(user);
+                 _userRepository.Update(user);
 
                 //get email settings
                 var settings = _applicationRepository.GetAll().FirstOrDefault();
@@ -121,12 +121,13 @@ namespace AAYHS.Service.Service
                 email.CompanyEmail = settings.CompanyEmail;
                 email.CompanyPassword = settings.CompanyPassword;
                 email.Url = forgotPasswordRequest.Url;
+                email.Username = forgotPasswordRequest.Username;
                 email.guid = guid;
                 email.TemplateType = "Forget Password";
                 
                 _emailRepository.SendEmail(email);
 
-                var userResponse = _mapper.Map<UserResponse>(data);
+                var userResponse = _mapper.Map<UserResponse>(user);
                 _mainResponse.UserResponse = userResponse;
                 _mainResponse.Success = true;
                 _mainResponse.Message = Constants.FORGET_PASSWORD_EMAIL;
@@ -164,7 +165,7 @@ namespace AAYHS.Service.Service
         public MainResponse ChangePassword(ChangePasswordRequest changePasswordRequest)
         {
            
-                var user = _userRepository.GetSingle(x => x.Email == changePasswordRequest.Username && x.IsDeleted == false);
+                var user = _userRepository.GetSingle(x => x.UserName == changePasswordRequest.Username && x.IsDeleted == false);
 
                 if (user != null)
                 {
@@ -172,7 +173,7 @@ namespace AAYHS.Service.Service
                     user.ModifiedDate = DateTime.Now;
                     var data =  _userRepository.UpdateAsync(user);
                 
-                    var userResponse = _mapper.Map<UserResponse>(data);
+                    var userResponse = _mapper.Map<UserResponse>(user);
                     _mainResponse.UserResponse = userResponse;
                     _mainResponse.Success = true;
                     _mainResponse.Message = Constants.PASSWORD_CHANGED;
