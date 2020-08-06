@@ -150,6 +150,8 @@ namespace AAYHS
             services.AddTransient<IGlobalCodeRepository, GlobalCodeRepository>();
             services.AddTransient<IHorseRepository, HorseRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IEmailSenderRepository, EmailSenderRepository>();
+            services.AddTransient<IApplicationSettingRepository, ApplicationSettingRepository>();
 
             services.AddControllers();
         }
