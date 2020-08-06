@@ -39,6 +39,6 @@ namespace AAYHS.Core.Shared.Static
         public static readonly string RESET_PASSWORD_EXPIRED_LINK = "Reset password link is expired";
         public const string PASSWORD_CHANGED = "Password changed successfully.";
         public const string ADMIN_APPROVAL = "You need the admin approval before login";
-
+        public const string HORSE_ADDED = "Horse added successfully";
     }
 }
