@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { SponsorComponent } from './components/sponsor/sponsor.component';
 import { HorseComponent } from './components/horse/horse/horse.component';
 import { ExhibitorComponent } from './components/exhibitor/exhibitor/exhibitor.component';
-import { ClassComponent } from './components/class/class/class.component';
+import { ClassComponent } from './components/class/class.component';
 import { GroupComponent } from './components/group/group/group.component';
 import { LayoutComponent } from './components/layout/layout/layout.component';
 

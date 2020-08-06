@@ -1,1 +1,422 @@
-<p>group works!</p>
+<div class="innerContent">
+	<div class="sortData">
+	   <div class="sponBtn"><button class="btn btn-red btnCss">Add new Exhibitor</button></div>						   
+   </div>
+   <!---->
+	<div class="gridTable addBlueStrip">
+	   <div class="table-responsive">
+		 <table class="table table-bordered tableBodyScroll">
+		   <thead>
+			  <tr>
+				<th >Group Id
+					<span >										  
+					</span>
+				</th> 
+				 <th >Group Name
+					<span ></span>
+				 </th> 
+				 <th>Remove</th> 
+			  </tr>	
+		   </thead> 
+		   <perfect-scrollbar class="nicescrollBar-1"> 
+			   <tbody>
+                <tr>
+                    <td data-label="Group ID">209</td>
+                    <td data-label="Group Name">Blue Ribbon Farms</td>
+                    <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+                </tr>	
+                <tr>
+                    <td data-label="Group ID">210</td>
+                    <td data-label="Group Name">Fancy Club Firl Riders</td>
+                     <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+                </tr>	  
+                 <tr>
+                    <td data-label="Group ID">98</td>
+                    <td data-label="Group Name">US Hunter Jumpers</td>
+                    <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+                </tr>
+                <tr>
+                    <td data-label="Group ID">115</td>
+                    <td data-label="Group Name">Welsh Pony Cob</td>
+                     <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+                </tr>
+                <tr >
+                    <td data-label="Group ID">2536</td>
+                    <td data-label="Group Name">US Hunter Jumpers</td>
+                    <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+                </tr>	
+                <tr>
+                    <td data-label="Group ID">307</td>
+                    <td data-label="Group Name">Blue Ribbon Farms</td>
+                     <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+                </tr>	  
+                 <tr>
+                    <td data-label="Group ID">101</td>
+                    <td data-label="Group Name">Fancy Club Firl Riders</td>
+                    <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+                </tr>
+                <tr>
+                    <td data-label="Group ID">307</td>
+                    <td data-label="Group Name">Welsh Pony Cob</td>
+                     <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+                </tr>
+			   </tbody>
+			 </perfect-scrollbar> 
+		 </table> 
+		 <div class="paginationWrapper mt-4 text-center">
+			 <ul class="pagination">
+				 <li class="page-item"><a class="page-link" href="#"><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>
+				 <li class="page-item"><a class="page-link" href="#">1</a></li>
+				 <li class="page-item"><a class="page-link" href="#">2</a></li>
+				 <li class="page-item"><a class="page-link" href="#">3</a></li>
+				 <li class="page-item"><a class="page-link" href="#">4</a></li>
+				 <li class="page-item"><a class="page-link" href="#">5</a></li>
+				 <li class="page-item"><a class="page-link" href="#"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+			 </ul>
+		 </div>
+	   </div>
+	</div>
+	<!---->	
+	 <div class="dataDesc gridTable">
+		 <table class="table table-bordered tableBodyScroll">
+			 <tbody>
+				 <tr>
+					 <td><span class="blueBox"></span><b>Exhibitor:</b> 3341  </td>
+                     <td><span class="blueBox"></span><b>Exhibitor Name:</b> Grace Hopper</td>
+                     <td><span class="blueBox"></span><b>Group Name:</b></td>
+				 </tr>
+			 </tbody>
+		 </table>
+	 </div>
+	<!---->
+	 <div class="sponTabbing">
+		
+
+	 <!-- Tab panes -->
+	 <div class="tab-content">
+	   <div class="tab-pane  active" id="home">
+		<mat-tab-group #tabGroup>
+			<mat-tab  class="nav-link active nav nav-tabs" label="Group Info">
+                <div class="card">
+                    <div class="card-body"> 
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Group name <span>*</span></label>	
+                                    <input type="text" class="form-control" placeholder="Group name"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>Contact name <span>*</span></label>	
+                                    <input type="text" class="form-control" placeholder="Contact name"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>Address <span>*</span></label>	
+                                    <input type="text" class="form-control" placeholder="384 Cowpath Rd"/>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-7">
+                                        <div class="form-group">
+                                            <label>State <span>*</span></label>	
+                                            <select required class="form-control" placeholder="State" name="state">
+                                                <option value="null"></option>                                                                                               
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label>Zip Code <span>*</span></label>	
+                                            <input type="text" class="form-control" maxlength="5"  placeholder="Zip Code"name="zipcode"/>
+                                        </div> 
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>City <span>*</span></label>	
+                                    <select required class="form-control" placeholder="city"  name="city">
+                                        <option value="0" selected>City</option>
+                                        <option >City</option>												
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Group ID <span>*</span></label>	
+                                    <input type="text" class="form-control" placeholder="Auto Generated"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Amount Received <span>*</span></label>	
+                                    <input type="text" class="form-control" placeholder="Calculated Display"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone <span>*</span></label>	
+                                    <input type="text" class="form-control" placeholder="Phone Number"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>Email <span>*</span></label>	
+                                    <input type="text" class="form-control" placeholder="Email Address"/>
+                                </div>  
+                                <div class="quantityWrapper">
+                                    <div class="form-group">
+                                        <label>Horse Stall Quantity</label>  
+                                        <div class="uantityField">	
+                                            <input type="text" class="form-control" placeholder="3"/>
+                                            <button class="btn btn-red btnCss roundBtn whitebg">Stall</button>
+                                        </div>
+                                    </div>
+                                    <div class="divideLine"></div>
+                                    <div class="form-group mb-0">
+                                        <label>Track Stall Quantity</label>	
+                                        <div class="uantityField">	
+                                            <input type="text" class="form-control" placeholder="2"/>
+                                            <button class="btn btn-red btnCss roundBtn whitebg">Stall</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="buttons text-right">
+                                  <button class="btn btn-red btnCss roundBtn">Next</button>  
+                                  <button class="btn btn-red btnCss roundBtn">Submit</button> 
+                                </div> 
+                              </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-tab>
+
+            <mat-tab  class="nav-link nav nav-tabs" label="Exhibitor">
+                <div class="card dataEntriesTable">
+                    <div class="card-body"> 
+                        <div class="table-responsive tableTab" id="contentscroll2">
+                            <table class="table table-bordered tableBodyScroll">
+                                <thead>
+                                <tr>
+                                        <th>Exhibitor Id </th> 
+                                        <th>Exhibitor Name</th> 
+                                        <th>Horse Name</th>
+                                        <th>Birth Year</th>
+                                        <th>Remove</th> 
+                                </tr>	
+                                </thead> 
+                                <perfect-scrollbar class="nicescrollBar-2"> 
+                                    <tbody>
+                                        <tr >
+                                            <td data-label="Exhibitor Id">2039</td>
+                                            <td data-label="Exhibitor Name">Vivan Hewitt</td>
+                                            <td data-label="Horse Name">Savannah Crazy Quilt</td>
+                                            <td data-label="Birth Year">2007</td>
+                                            <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+                                        </tr>	
+                                        <tr >
+                                            <td data-label="Exhibitor Id">2278</td>
+                                            <td data-label="Exhibitor Name">Alana Bacher</td>
+                                            <td data-label="Horse Name">Chocolate In Private</td>
+                                            <td data-label="Birth Year">2011</td>
+                                            <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+                                        </tr>
+                                        <tr >
+                                            <td data-label="Exhibitor Id">2278</td>
+                                            <td data-label="Exhibitor Name">Alana Bacher </td>
+                                            <td data-label="Horse Name">Chocolate In Private</td>
+                                            <td data-label="Birth Year">2011</td>
+                                            <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+                                        </tr>
+                                        <tr >
+                                            <td data-label="Exhibitor Id">2039</td>
+                                            <td data-label="Exhibitor Name">Vivan Hewitt</td>
+                                            <td data-label="Horse Name">Savannah Crazy Quilt</td>
+                                            <td data-label="Birth Year">2007</td>
+                                            <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+                                        </tr>	
+                                        <tr >
+                                            <td data-label="Exhibitor Id">2278</td>
+                                            <td data-label="Exhibitor Name">Alana Bacher</td>
+                                            <td data-label="Horse Name">Chocolate In Private</td>
+                                            <td data-label="Birth Year">2011</td>
+                                            <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+                                        </tr>
+                                        <tr >
+                                            <td data-label="Exhibitor Id">2278</td>
+                                            <td data-label="Exhibitor Name">Alana Bacher </td>
+                                            <td data-label="Horse Name">Chocolate In Private</td>
+                                            <td data-label="Birth Year">2011</td>
+                                            <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+                                        </tr>
+                                        <tr >
+                                            <td data-label="Exhibitor Id">2039</td>
+                                            <td data-label="Exhibitor Name">Vivan Hewitt</td>
+                                            <td data-label="Horse Name">Savannah Crazy Quilt</td>
+                                            <td data-label="Birth Year">2007</td>
+                                            <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+                                        </tr>	
+                                        <tr >
+                                            <td data-label="Exhibitor Id">2278</td>
+                                            <td data-label="Exhibitor Name">Alana Bacher</td>
+                                            <td data-label="Horse Name">Chocolate In Private</td>
+                                            <td data-label="Birth Year">2011</td>
+                                            <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+                                        </tr>
+                                        <tr >
+                                            <td data-label="Exhibitor Id">2278</td>
+                                            <td data-label="Exhibitor Name">Alana Bacher </td>
+                                            <td data-label="Horse Name">Chocolate In Private</td>
+                                            <td data-label="Birth Year">2011</td>
+                                            <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+                                        </tr>
+                                    
+                                    </tbody>
+                                </perfect-scrollbar> 
+                            </table> 
+                        </div>                        
+                    </div>
+                    <div class="actionBtn text-right mb-3 ">
+                        <button (click)='tabGroup.selectedIndex = 0' class="btn btn-red btnCss roundBtn">Previous</button>
+                        <button (click)='tabGroup.selectedIndex = 2' class="btn btn-red btnCss roundBtn">Next</button>
+                        <button class="btn btn-red btnCss roundBtn">Submit</button>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab  class="nav-link nav nav-tabs" label="Financials">
+                <div class="card dataEntriesTable">
+                    <div class="card-body"> 
+                        <div class="table-responsive tableTab" id="contentscroll2">
+                            <table class="table table-bordered tableBodyScroll">
+                                <thead>
+                                <tr>
+                                        <th>Date </th> 
+                                        <th>Type of free</th> 
+                                        <th>Pre/Post</th>
+                                        <th>Total</th>
+                                </tr>	
+                                </thead> 
+                                <perfect-scrollbar class="nicescrollBar-2"> 
+                                    <tbody>
+                                        <tr >
+                                            <td data-label="Date"></td>
+                                            <td data-label="Type of free">Track Stall</td>
+                                            <td data-label="Pre/Post">
+                                                <div class="prePostField">
+                                                    <label class="radioBtn">One
+                                                        <input type="radio" checked="checked" name="radio">
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                    <label class="radioBtn">Two
+                                                        <input type="radio" name="radio">
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td data-label="Total"></td>                                            
+                                        </tr>	
+                                        <tr >
+                                            <td data-label="Date"></td>
+                                            <td data-label="Type of free">Horse Stall</td>
+                                            <td data-label="Pre/Post">
+                                                <div class="prePostField">
+                                                    <label class="radioBtn">One
+                                                        <input type="radio" checked="checked" name="radio">
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                    <label class="radioBtn">Two
+                                                        <input type="radio" name="radio">
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td data-label="Total"></td>                                            
+                                        </tr>
+                                        <tr >
+                                            <td data-label="Date"></td>
+                                            <td data-label="Type of free">Track Stall</td>
+                                            <td data-label="Pre/Post">
+                                                <div class="prePostField">
+                                                    <label class="radioBtn">One
+                                                        <input type="radio" checked="checked" name="radio">
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                    <label class="radioBtn">Two
+                                                        <input type="radio" name="radio">
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td data-label="Total"></td>                                            
+                                        </tr>	
+                                        <tr >
+                                            <td data-label="Date"></td>
+                                            <td data-label="Type of free">Horse Stall</td>
+                                            <td data-label="Pre/Post">
+                                                <div class="prePostField">
+                                                    <label class="radioBtn">One
+                                                        <input type="radio" checked="checked" name="radio">
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                    <label class="radioBtn">Two
+                                                        <input type="radio" name="radio">
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td data-label="Total"></td>                                            
+                                        </tr>
+                                        <tr >
+                                            <td data-label="Date"></td>
+                                            <td data-label="Type of free">Track Stall</td>
+                                            <td data-label="Pre/Post">
+                                                <div class="prePostField">
+                                                    <label class="radioBtn">One
+                                                        <input type="radio" checked="checked" name="radio">
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                    <label class="radioBtn">Two
+                                                        <input type="radio" name="radio">
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td data-label="Total"></td>                                            
+                                        </tr>	
+                                        <tr >
+                                            <td data-label="Date"></td>
+                                            <td data-label="Type of free">Horse Stall</td>
+                                            <td data-label="Pre/Post">
+                                                <div class="prePostField">
+                                                    <label class="radioBtn">One
+                                                        <input type="radio" checked="checked" name="radio">
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                    <label class="radioBtn">Two
+                                                        <input type="radio" name="radio">
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td data-label="Total"></td>                                            
+                                        </tr>
+                                       
+                                    
+                                    </tbody>
+                                </perfect-scrollbar> 
+                            </table> 
+                        </div> 
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab  class="nav-link nav nav-tabs" label="Statements">
+                <div class="card dataEntriesTable">
+                    <div class="card-body"> 
+                    </div>
+                </div>
+            </mat-tab>
+		</mat-tab-group>
+	  </div>
+			
+	
+			 
+	 </div>
+	 
+	 </div>
+	 
+	 
+
+	 </div>
+   <!---->

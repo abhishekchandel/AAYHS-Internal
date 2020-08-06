@@ -6,7 +6,6 @@ import { HeaderComponent } from '../shared/layout/header/header/header.component
 import { SidebarComponent } from '../shared/layout/sidebar/sidebar/sidebar.component';
 import { FooterComponent } from '../shared/layout/footer/footer/footer.component';
 import { RouterModule } from '@angular/router';
-
 //All material imports here//
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -36,6 +35,9 @@ import { AddSplitClassModalComponent } from './ui/modals/add-split-class-modal/a
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+import { ExportConfirmationModalComponent } from './ui/modals/export-confirmation-modal/export-confirmation-modal.component';
+import { OrderModule } from 'ngx-order-pipe';
+import { ExportAsModule } from 'ngx-export-as';
 
 export var options: Partial<IConfig> | (() => Partial<IConfig>);
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -43,7 +45,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 };
 
 @NgModule({
-  declarations: [HeaderComponent, FooterComponent,SidebarComponent, MatSnackbarComponent, ConfirmDialogComponent, AddSplitClassModalComponent],
+  declarations: [HeaderComponent, FooterComponent,SidebarComponent, MatSnackbarComponent, ConfirmDialogComponent, AddSplitClassModalComponent, ExportConfirmationModalComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -69,7 +71,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     // All third party imports here //
     NgxMaskModule.forRoot(options),
     MatSelectModule,
-    PerfectScrollbarModule
+    PerfectScrollbarModule,
+    OrderModule,
+    ExportAsModule
   ],
   exports: [
     HeaderComponent,
@@ -99,7 +103,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     // All third party exports here //
     NgxMaskModule,
     MatSelectModule,
-    PerfectScrollbarModule
+    PerfectScrollbarModule,
+    OrderModule,
+    ExportAsModule
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

@@ -156,6 +156,8 @@
 	-moz-transition: 0.5s;
 	-ms-transition: 0.5s;
 	cursor: pointer;
+	position: relative;
+    z-index: 9;
 	@media(max-width:767px) {
 	margin: 0 1% 5px;
 	width: 48%;
@@ -169,6 +171,9 @@
 	}
 	&.active{
 	border-color: #7b1124;
+	cursor: pointer;
+    position: relative;
+    z-index: 9;
 	span{
 	color:#0000ff;
 	}
@@ -178,6 +183,9 @@
 	}
 	&:hover{
 	border-color: #7b1124;
+	cursor: pointer;
+    position: relative;
+    z-index: 9;
 	span{
 	color:#0000ff;
 	text-decoration:none;
@@ -239,7 +247,7 @@
 	}
 	.sortData {
 	display: flex;
-	margin: 0 0 15px 0;
+	margin: 0 0 20px 0;
 	@media(max-width:767px) {
 	flex-direction: column;
 	}
@@ -414,4 +422,13 @@
 		}
 	}
 	}
+	.help-block,.error  {
+		color: #f00;
+		font-size: 11px;
+		letter-spacing: 0.5px;
+		float: left;
+	}
+	option:hover {
+		background-color: #488f8f; 
+	  }
 	

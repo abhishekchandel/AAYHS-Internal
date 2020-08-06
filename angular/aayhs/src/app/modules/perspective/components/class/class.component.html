@@ -1,0 +1,357 @@
+<div class="innerContent">
+	<div class="sortData">
+		<div class="sponBtn"><button class="btn btn-red btnCss" (click)="resetForm()">Add new Classes</button></div>
+	</div>
+	<!---->
+	<div class="gridTable addBlueStrip">
+		<div class="table-responsive">
+			<table class="table table-bordered tableBodyScroll">
+				<thead>
+					<tr>
+						<th (click)="sortData('ClassNumber')">Class No.
+							<span [ngClass]="getSort('ClassNumber')">
+							</span>
+						</th>
+						<th (click)="sortData('Name')"> Class Name
+							<span [ngClass]="getSort('Name')">
+							</span>
+						</th>
+						<th (click)="sortData('AgeGroup')">Age Group
+							<span [ngClass]="getSort('AgeGroup')">
+							</span>
+						</th>
+						<th (click)="sortData('Entries')">Entries
+							<span [ngClass]="getSort('Entries')">
+							</span>
+						</th>
+						<th>Remove</th>
+					</tr>
+				</thead>
+				<perfect-scrollbar class="nicescrollBar-1">
+					<tbody>
+						<tr *ngFor="let class of classesList;let i = index " (click)="highlight(class.ClassId,i)"
+							[ngClass]="{'blueRow': selectedRowIndex == i}">
+							<td data-label="Class No.">{{class.ClassNumber}}</td>
+							<td data-label="Class Name">{{class.Name}}</td>
+							<td data-label="Age Group">{{class.AgeGroup}}</td>
+							<td data-label="Enteries">{{class.Entries}}</td>
+							<td data-label="Remove">
+								<button class="icon" (click)="confirmRemoveClass($event, i,class.ClassId)"><span></span>
+									<i class="fa fa-trash-o" aria-hidden="true"></i></button>
+							</td>
+						</tr>
+
+					</tbody>
+				</perfect-scrollbar>
+			</table>
+			<div [hidden]="totalItems == 0">
+			<mat-paginator #paginator [length]="totalItems"   (page)="getNext($event)" [pageSizeOptions]="[5]">
+			</mat-paginator>
+		</div>
+
+		</div>
+	</div>
+	<!---->
+	<div class="dataDesc gridTable">
+		<table class="table table-bordered tableBodyScroll">
+			<tbody>
+				<tr>
+					<td><span class="blueBox"></span><b>Class Number:</b> {{classInfo.ClassNumber}} </td>
+					<td><span class="blueBox"></span><b>Class Name:</b> {{classInfo.Name}}</td>
+					<td><span class="blueBox"></span><b>Class Age Group:</b> {{classInfo.AgeGroup}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<!---->
+	<div class="sponTabbing">
+
+
+		<!-- Tab panes -->
+		<div class="tab-content">
+			<div class="tab-pane  active" id="home">
+				<mat-tab-group #tabGroup (selectedTabChange)="onChange($event)">
+					<mat-tab class="nav-link active nav nav-tabs" label="Class Info">
+						<form #classInfoForm="ngForm" name="classInfoForm"
+							(ngSubmit)="classInfoForm.valid && addClass()" novalidate>
+							<div class="card">
+								<div class="card-body">
+									<div class="row">
+										<div class="col-sm-6">
+											
+											<div class="form-group">
+												<label>Class Category <span>*</span></label>
+												<select class=" form-control dynDataSeclect" name="exhibitor" required
+							                    [(ngModel)]="classInfo.ClassHeaderId" #classHeader="ngModel" (change)="setClassHeader($event.target.value)">
+												<option [ngValue]="null">
+												Select Class Header
+												</option>
+												<option *ngFor="let header of classHeaders"
+												[value]="header.GlobalCodeId">
+												{{header.CodeName}}
+												</option>
+												</select>
+												<span class="help-block"
+													*ngIf="classHeader.errors?.required && (classHeader.touched || classInfoForm.submitted)">Class
+													Header is
+													required</span>
+											</div>
+
+											<div class="form-group">
+												<label>Class Number <span>*</span></label>
+												<input type="text" class="form-control" #classNumber="ngModel" required
+													name="classNumber" [(ngModel)]="classInfo.ClassNumber"
+													placeholder="Class Number" />
+												<span class="help-block"
+													*ngIf="classNumber.errors?.required && (classNumber.touched || classInfoForm.submitted)">Class
+													Number is
+													required</span>
+											</div>
+											<div class="form-group">
+												<label>Class Name <span>*</span></label>
+												<input type="text" class="form-control" #className="ngModel" required
+													name="Name" [(ngModel)]="classInfo.Name" placeholder="Class Name" />
+												<span class="help-block"
+													*ngIf="className.errors?.required && (className.touched || classInfoForm.submitted)">Class
+													Name is
+													required </span>
+											</div>
+											<div class="form-group">
+												<label>Age Group <span>*</span></label>
+												<input type="text" class="form-control" #ageGroup="ngModel" required
+													name="ageGroup" [(ngModel)]="classInfo.AgeGroup"
+													placeholder="Age Group" />
+												<span class="help-block"
+													*ngIf="ageGroup.errors?.required && (ageGroup.touched || classInfoForm.submitted)">Age
+													group is
+													required</span>
+											</div>
+
+										</div>
+
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label>Class Schedule Date <span class="redString">*</span></label>
+												<mat-form-field>
+													<input matInput [matDatepicker]="scheduleDatePicker"
+														placeholder="Billing Date" class="form-control"
+														name="scheduleDate" #scheduleDate="ngModel" (dateChange)="handleScheduleDateSelection()"
+														[(ngModel)]="classInfo.ScheduleDate" required>
+													<mat-datepicker-toggle matSuffix [for]="scheduleDatePicker">
+													</mat-datepicker-toggle>
+													<mat-datepicker #scheduleDatePicker></mat-datepicker>	
+													<span class="help-block"
+                                                            *ngIf="scheduleDate.errors?.required && (scheduleDate.touched || classInfoForm.submitted)">Schedule Date  is
+                                                            required</span>												
+												</mat-form-field>
+												
+											</div>
+										</div>
+
+
+										<!--  class split screen  -->
+
+										<div class="col-sm-12 mt-4">
+											<div class="buttons text-right">
+												<button (click)='tabGroup.selectedIndex = 1'
+													class="btn btn-red btnCss roundBtn">Next</button>
+												<button type="button" class="btn-red btnCss roundBtn" 
+													(click)="showSplitClass()" >Class
+													Split</button>
+												<button class="btn btn-red btnCss roundBtn">Submit</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>
+
+					</mat-tab>
+
+					<mat-tab class="nav-link active nav nav-tabs" label="Entries">
+
+						<div class="card dataEntriesTable">
+							<form #entriesForm="ngForm" (ngSubmit)="entriesForm.valid && addExhibitorToClass()">
+								<div class="card-body">
+									<div class="table-responsive" id="contentscroll2">
+										<table class="table table-bordered tableBodyScroll">
+											<thead>
+												<tr>
+													<th (click)="sortEntriesData('Exhibitor')">Exhibitor no/Name <span [ngClass]="getEntriesSort('Exhibitor')"></span></th>
+													<th (click)="sortEntriesData('Horse')">Horse <span [ngClass]="getEntriesSort('Horse')"></span></th>
+													<th (click)="sortEntriesData('BirthYear')">Birth Year <span [ngClass]="getEntriesSort('BirthYear')"></span></th>
+													<th>Amount Paid</th>
+													<th>Amount Due</th>
+													<th (click)="sortEntriesData('Scratch')">Scratch <span [ngClass]="getEntriesSort('Scratch')"></span></th>
+													<th>Remove</th>
+												</tr>
+											</thead>
+											<perfect-scrollbar class="nicescrollBar-2">
+												<tbody>
+													<tr *ngFor="let entry of classEntries | orderBy:  entriesSortColumn:  entriesReverseSort;let i=index ">
+														<td data-label="Exhibitor no/Name">{{entry.Exhibitor}}</td>
+														<td title={{entry.Exhibitor}} data-label="Horse">
+															{{entry.Horse}}
+														
+														</td>
+														<td data-label="Birth Year">{{entry.BirthYear}}</td>
+														<td data-label="Amount Paid">{{entry.AmountPaid}}</td>
+														<td data-label="Amount Due">{{entry.AmountDue}}</td>
+														<td [ngClass]= "{'scratch' : entry.Scratch}" data-label="Scratch">
+															<div class="sizzerIcon" (click)="confirmScratch(i,!entry.Scratch,entry.ExhibitorClassId)">
+																<img src="assets/images/sizzer-icon.png" alt="image" />
+															</div>
+														</td>
+													
+														<td data-label="Remove">
+															<button class="icon" (click)="confirmRemoveExhibitor(i,entry.ExhibitorClassId)"><span></span>
+																<i class="fa fa-trash-o" aria-hidden="true"></i></button>
+														</td>
+
+													</tr>
+
+
+
+													<tr>
+														<td colspan="2">
+															<select class="dynDataSeclect" name="exhibitor" required
+																[(ngModel)]="exhibitorId" #exhibitorControl="ngModel" (change)="getExhibitorHorses($event.target.value)">
+																<option [ngValue]="null" class="selectDropdown">
+																	Select Exhibitor
+																</option>
+																<option  class="selectDropdown" *ngFor="let exhibitor of exhibitorsResponse"
+																	[value]="exhibitor.ExhibitorId">
+																	{{exhibitor.Exhibitor}}
+																</option>
+															</select>
+															<span class="help-block"
+																*ngIf="(entriesForm.submitted || exhibitorControl.touched) && exhibitorControl.invalid">Please
+																select exhibitor</span>
+
+														</td>
+														<td colspan="2">
+															<select class="dynDataSeclect" name="horse" required
+																[(ngModel)]="horseId" #horseControl="ngModel">
+																<option [ngValue]="null">
+																	Select Horse
+																</option>
+																<option *ngFor="let horse of exhibitorsHorsesResponse"
+																	[value]="horse.HorseId">{{horse.HorseId}} -
+																	{{horse.Horse}}
+																</option>
+															</select>
+															<span class="help-block"
+																*ngIf="(entriesForm.submitted || horseControl.touched) && horseControl.invalid">Please
+																select horse</span>
+														</td>
+														<td colspan="3"></td>
+													</tr>
+
+												</tbody>
+											</perfect-scrollbar>
+										</table>
+									</div>
+								</div>
+								<div class="actionBtn text-right mt-3 mb-3">
+									<button type="button" (click)='tabGroup.selectedIndex = 0'
+										class="btn btn-red btnCss">Previous</button>
+									<a [routerLink]="['/auth/exhibitor']" target="_blank"><button type="button" class="btn btn-red btnCss">+ Exhibitor</button></a>
+									<button type="submit" class="btn btn-red btnCss">Submit</button>
+									<button typee="button" (click)='tabGroup.selectedIndex = 2'
+										class="btn btn-red btnCss">Next</button>
+									<button type="button" class="btn btn-red btnCss">Display/Print</button>
+								</div>
+							</form>
+						</div>
+
+					</mat-tab>
+					<mat-tab class="nav-link active nav nav-tabs" label="Results">
+
+						<div class="card dataEntriesTable">
+							<form #resultForm="ngForm" name="resultForm" (ngSubmit)="resultForm.valid && addResult()">
+							<div class="card-body">
+								<div class="table-responsive tableTab">
+									<table class="table table-bordered tableBodyScroll">
+										<thead>
+											<tr>
+												<th>Result</th>
+												<th>Back No</th>
+												<th>Exhibitor Name</th>
+												<th>Birth Year</th>
+												<th>Horse Name</th>
+												<th>City, St. Zip</th>
+												<th>Amount paid</th>
+												<th>Amount Due</th>
+											</tr>
+										</thead>
+										<perfect-scrollbar class="nicescrollBar-2">
+											<tbody>
+												<tr *ngFor="let result of resultResponse;let i=index">
+													<td data-label="Result">{{result.Place}}</td>
+													<td data-label="Back No">{{result.BackNumber}}</td>
+													<td data-label="Exhibitor Name">{{result.ExhibitorName}}</td>
+													<td data-label="Birth Year">{{result.BirthYear}}</td>
+													<td data-label="Horse Name">{{result.HorseName}}</td>
+													<td data-label="City, St. Zip">{{result.Address}}</td>
+													<td data-label="Amount paid">{{result.AmountPaid}}</td>
+													<td data-label="Amount Due">{{result.AmountDue}}</td>
+												</tr>
+												
+												<tr>
+													<td *ngIf="showPosition">
+													{{initialPostion}}
+													</td>
+													<td *ngIf="!showPosition"></td>
+													<td data-label="Back No">
+														
+
+														<select class="dynDataSeclect" name="backNumber" required
+																[(ngModel)]="backNumber" #backNumberControl="ngModel" (change)="getExhibitorDetail($event.target.value)">
+																<option [ngValue]="null">
+																	Select Back Number
+																</option>
+																<option *ngFor="let backNumber of backNumbersResponse"
+																	[value]="backNumber.BackNumber">
+																	{{backNumber.BackNumber}}
+																</option>
+															</select>
+															<span class="error"
+																*ngIf="(resultForm.submitted || backNumberControl.touched) && backNumberControl.invalid">Please
+																select back number</span>
+
+													</td>
+													<td>{{exhibitorInfo.ExhibitorName}}</td>
+													<td>{{exhibitorInfo.BirthYear}}</td>
+													<td>{{exhibitorInfo.HorseName}}</td>
+													<td>{{exhibitorInfo.Address}}</td>
+													<td>{{exhibitorInfo.AmountPaid}}</td>
+													<td>{{exhibitorInfo.AmountDue}}</td>
+												</tr>
+
+											</tbody>
+										</perfect-scrollbar>
+									</table>
+								</div>
+							</div>
+							<div class="actionBtn text-right mt-3 mb-3">
+								<button type="button" (click)='tabGroup.selectedIndex = 1'
+									class="btn btn-red btnCss">Previous</button>
+								<button type="button" class="btn btn-red btnCss addDataType1">Print</button>
+								<button type="button" class="btn btn-red btnCss addDataType1">Download</button>
+								<button type="submit" class="btn btn-red btnCss">Submit</button>
+							</div>
+							</form>
+						</div>
+					</mat-tab>
+				</mat-tab-group>
+			</div>
+		</div>
+
+
+
+	</div>
+	<!---->
+</div>
+<div class="loaderWrapper" *ngIf="loading">
+	<div class="loader"></div>
+</div>

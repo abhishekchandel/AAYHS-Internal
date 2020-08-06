@@ -13,7 +13,6 @@ export class ClassService {
 
 
   getAllClasses(data){
-    debugger;
     return this.http.post<any>(`${this.api}ClassAPI/GetAllClasses`,data);
   }
 
@@ -36,13 +35,17 @@ export class ClassService {
   getClassEnteries(data){
     return this.http.post<any>(`${this.api}ClassAPI/GetClassEntries`,data);
   }
+  
+  getClassResult(data){
+    return this.http.post<any>(`${this.api}ClassAPI/GetResultOfClass`,data);
+  }
 
   deleteClassExhibitor(id:number){
     return this.http.delete<any>(`${this.api}ClassAPI/DeleteClassExhibitor?exhibitorClassId=${id}`);
   }
 
   deleteClass(id:number){
-    return this.http.delete<any>(`${this.api}ClassAPI/RemoveClassExhibitor?classId=${id}`);
+    return this.http.delete<any>(`${this.api}ClassAPI/RemoveClass?classId=${id}`);
   }
 
   createUpdateSplitClass(data){
@@ -63,6 +66,30 @@ export class ClassService {
 
   getExhibitorHorses(id:number){
     return this.http.get<any>(`${this.api}ClassAPI/GetExhibitorHorses?exhibitorId=${id}`);
+  }
+
+  addExhibitorToClass(data){
+    return this.http.post<any>(`${this.api}ClassAPI/AddExhibitorToClass`,data);
+  }
+
+  getAllBackNumbers(id){
+    return this.http.get<any>(`${this.api}ClassAPI/GetBackNumberForAllExhibitor?classId=${id}`);
+  }
+
+  getExhibitorDetails(data){
+    return this.http.post<any>(`${this.api}ClassAPI/GetResultExhibitorDetails`,data);
+  }
+
+  addResult(data){
+    return this.http.post<any>(`${this.api}ClassAPI/AddClassResult`,data);
+  }
+
+  updateScratch(data){
+    return this.http.post<any>(`${this.api}ClassAPI/UpdateClassExhibitorScratch`,data);
+  }
+
+  getClassHeaders(){
+    return this.http.get<any>(`${this.api}CommonAPI/GetGlobalCode?categoryName=ClassHeaderType`);
   }
 
 }

@@ -921,7 +921,7 @@ vertical-align: middle;
 }
 /* blue row */
 .blueRow {
-background-color: #a0b8f9 !important ;
+background-color: #b5cbf7 !important ;
 }
 /* trash icon */
 .fa-trash-o {
@@ -1075,3 +1075,56 @@ display:inline-block;
         background-color: #b5cbf7 !important;
     }
 }
+// datepicker
+.mat-form-field {
+    width: 100%;
+    border: 1px solid #a0b8f9;
+    font-size: 0.75rem;
+    padding: 0;
+    line-height: 14px;
+    height: auto;
+    background-color: #b5cbf7;    
+    box-shadow: none;
+    border-radius: 3px;
+    .mat-form-field-wrapper{
+        padding:0;    
+        .mat-form-field-infix {
+            padding: 0;
+            margin: 0;
+            border-top: 0;
+            input{
+                font-size: 0.75rem;
+                padding: 8px 15px;
+                line-height: 14px;
+                height: auto;
+                color: #000;
+                border: none;
+            }
+            
+        }
+    }
+
+}
+.mat-form-field-underline{
+    display: none;
+}
+.mat-form-field-appearance-legacy {
+    .mat-form-field-suffix {
+        .mat-datepicker-toggle-default-icon {
+            width: 1em;
+            height: auto;
+            position: relative;
+            top: -4px;
+            color: #7b1124;
+        }
+    }
+
+  
+}
+
+.scratch{
+    background-color: #b5cbf7;
+}
+
+ 
+

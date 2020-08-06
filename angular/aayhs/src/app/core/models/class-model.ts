@@ -1,11 +1,18 @@
 export interface ClassInfoModel
 {
-    ClassHeader:string;
-    ClassNumber:string;
-    ClassName:string;
-    Email:string;
+    ClassId:number;
+    ClassHeaderId:number;
+    ClassNumber:number;
+    Name:string;
     AgeGroup:string;
-    ScheduleDate:Date
+    ScheduleDate:string;
+    SplitNumber:number;
+    ChampionShipIndicator:boolean
+    getClassSplit: SplitClass[];
+}
+
+export interface SplitClass{
+    Entries: number;
 }
 
 export interface ClassEnteries{
