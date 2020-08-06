@@ -2,7 +2,9 @@
 using AAYHS.Core.DTOs.Response;
 using AAYHS.Core.DTOs.Response.Common;
 using AAYHS.Core.Shared.Static;
+using AAYHS.Data.DBEntities;
 using AAYHS.Repository.IRepository;
+using AAYHS.Repository.Repository;
 using AAYHS.Service.IService;
 using AutoMapper;
 using System;
@@ -17,15 +19,20 @@ namespace AAYHS.Service.Service
         #region readonly     
         private IMapper _mapper;
         private readonly IHorseRepository _horseRepository;
+        private readonly IStallAssignmentRepository _stallAssignmentRepository;
+        private readonly ITackStallAssignmentRepository _tackStallAssignmentRepository;
         #endregion
 
         #region private
         private MainResponse _mainResponse;
         #endregion
 
-        public HorseService(IHorseRepository horseRepository, IMapper Mapper)
+        public HorseService(IHorseRepository horseRepository,IStallAssignmentRepository stallAssignmentRepository,
+                           ITackStallAssignmentRepository tackStallAssignmentRepository, IMapper Mapper)
         {
             _horseRepository = horseRepository;
+            _stallAssignmentRepository = stallAssignmentRepository;
+            _tackStallAssignmentRepository = tackStallAssignmentRepository;
             _mapper = Mapper;
             _mainResponse = new MainResponse();
         }
@@ -68,6 +75,56 @@ namespace AAYHS.Service.Service
             }
             return _mainResponse;
         }
-        
+        public MainResponse AddHorse(HorseAddRequest horseAddRequest,string actionBy)
+        {
+            if (horseAddRequest.HorseId!=0)
+            {
+                var horse = new Horses
+                {
+                    Name = horseAddRequest.Name,
+                    HorseTypeId =horseAddRequest.HorseTypeId,
+                    JumpHeight=horseAddRequest.JumpHeight,
+                    GroupId=horseAddRequest.GroupId,
+                    NSBAIndicator=horseAddRequest.NSBAIndicator,
+                    IsActive=true,
+                    CreatedBy= actionBy,
+                    CreatedDate=DateTime.Now
+                };
+               var _horse= _horseRepository.Add(horse);
+
+                var stall = new StallAssignment
+                { 
+                  StallId= horseAddRequest.StallId,
+                  GroupId= horseAddRequest.GroupId,
+                  HorseId= _horse.HorseId,
+                  IsActive = true,
+                  CreatedBy = actionBy,
+                  CreatedDate = DateTime.Now
+                };
+
+                _stallAssignmentRepository.Add(stall);
+
+                var tackStall = new TackStallAssignment
+                {
+                   TackStallId= horseAddRequest.TackStallId,
+                   GroupId=horseAddRequest.GroupId,
+                   HorseId= _horse.HorseId,
+                   IsActive = true,
+                   CreatedBy = actionBy,
+                   CreatedDate = DateTime.Now
+                };
+
+                _tackStallAssignmentRepository.Add(tackStall);
+
+                _mainResponse.Message = Constants.HORSE_ADDED;
+                _mainResponse.Success = true;
+                
+            }
+            else
+            {
+
+            }
+            return _mainResponse;
+        }
     }
 }

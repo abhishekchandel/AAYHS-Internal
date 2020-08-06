@@ -82,27 +82,17 @@ namespace AAYHS.Service.Service
             if (allExhibitor!=null)
             {
                 var exhibitorClasses = _exhibitorClassRepositor.GetAll(x => x.ClassId == ClassId && x.IsActive == true && x.IsDeleted == false);
-                if (exhibitorClasses!=null)
+                var exhibitor = allExhibitor.Where(x => exhibitorClasses.All(y => y.ExhibitorId != x.ExhibitorId)).ToList(); 
+                if (exhibitor.Count()!=0)
                 {
-                    for (int i = 0; i < allExhibitor.Count(); i++)
+                    for (int i = 0; i < exhibitor.Count(); i++)
                     {
-                        GetClassExhibitors getClassExhibitors = new GetClassExhibitors();
-                        if (i<=exhibitorClasses.Count()-1)
-                        {
-                            if (allExhibitor[i].ExhibitorId != exhibitorClasses[i].ExhibitorId)
-                            {
-                                getClassExhibitors.ExhibitorId = allExhibitor[i].ExhibitorId;
-                                getClassExhibitors.Exhibitor = allExhibitor[i].ExhibitorId + " " + allExhibitor[i].FirstName + " " + allExhibitor[i].LastName;
-                                getClassListExhibitors.Add(getClassExhibitors);
-                            }
-                        }
-                        else
-                        {
-                            getClassExhibitors.ExhibitorId = allExhibitor[i].ExhibitorId;
-                            getClassExhibitors.Exhibitor = allExhibitor[i].ExhibitorId + " " + allExhibitor[i].FirstName + " " + allExhibitor[i].LastName;
-                            getClassListExhibitors.Add(getClassExhibitors);
-                        }
-                        
+                      GetClassExhibitors getClassExhibitors = new GetClassExhibitors();
+                                                                       
+                      getClassExhibitors.ExhibitorId = exhibitor[i].ExhibitorId;
+                      getClassExhibitors.Exhibitor = exhibitor[i].ExhibitorId + " " + exhibitor[i].FirstName + " " + exhibitor[i].LastName;
+                      getClassListExhibitors.Add(getClassExhibitors);
+                                                                    
                     }
                     getClassAllExhibitors.getClassExhibitors = getClassListExhibitors;
                     _mainResponse.GetClassAllExhibitors = getClassAllExhibitors;
@@ -110,19 +100,10 @@ namespace AAYHS.Service.Service
                 }
                 else
                 {
-                    for (int i = 0; i < allExhibitor.Count(); i++)
-                    {
-                        GetClassExhibitors getClassExhibitors = new GetClassExhibitors();
-
-                        getClassExhibitors.ExhibitorId = allExhibitor[i].ExhibitorId;
-                        getClassExhibitors.Exhibitor = allExhibitor[i].ExhibitorId + " " + allExhibitor[i].FirstName + " " + allExhibitor[i].LastName;
-                        getClassListExhibitors.Add(getClassExhibitors);
-                    }
-                    getClassAllExhibitors.getClassExhibitors = getClassListExhibitors;
-                    _mainResponse.GetClassAllExhibitors = getClassAllExhibitors;
-                    _mainResponse.Success = true;
+                    _mainResponse.Message = Constants.NO_RECORD_FOUND;
+                    _mainResponse.Success = false;
                 }
-                
+                               
             }
             else
             {

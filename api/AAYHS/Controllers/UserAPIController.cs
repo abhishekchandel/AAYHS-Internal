@@ -24,7 +24,6 @@ namespace AAYHS.API.Controllers
     public class UserAPIController : ControllerBase
     {
         #region readonly
-        private IOptions<AppSettings> _settings;
         private readonly IUserService _userService;
         private MainResponse _mainResponse;
         #endregion
