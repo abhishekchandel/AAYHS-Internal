@@ -123,7 +123,7 @@ namespace AAYHS.Repository.Repository
                 {
                     sponsorResponses = sponsorResponses.AsEnumerable().OrderBy(s => propertyInfo.GetValue(s, null)).ToList();
                 }
-
+                sponsorListResponse.TotalRecords = sponsorResponses.Count();
                 if (request.AllRecords == true)
                 {
                     sponsorResponses = sponsorResponses.ToList();

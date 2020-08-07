@@ -57,10 +57,9 @@ export class ClassComponent implements OnInit {
     AllRecords: false
    };
    classInfo: ClassInfoModel = {
-    ClassHeader:null,
+    ClassHeaderId:null,
     ClassNumber:null,
-    ClassName:null,
-    Email:null,
+    Name:null,
     AgeGroup:null,
     ScheduleDate:null
 
@@ -162,8 +161,8 @@ addClass = (sponsor) => {
 }
 
 resetForm() {
-  this.classInfo.ClassHeader = null;
-  this.classInfo.ClassName = null;
+  this.classInfo.ClassHeaderId = null;
+  this.classInfo.Name = null;
   this.classInfo.ClassNumber = null;
   this.classInfo.AgeGroup = null;
  

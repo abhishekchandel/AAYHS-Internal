@@ -135,6 +135,7 @@ namespace AAYHS
             //Dependency injection in ASP.NET Core (Repositories)
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddTransient<IAPIErrorLogRepository, APIErrorLogRepository>();
+            services.AddTransient<IApplicationSettingRepository, ApplicationSettingRepository>();
             services.AddTransient<IAddressRepository, AddressRepository>();
             services.AddTransient<IClassSponsorRepository, ClassSponsorRepository>();
             services.AddTransient<IExhibitorRepository, ExhibitorRepository>();
@@ -149,11 +150,12 @@ namespace AAYHS
             services.AddTransient<IStateRepository, StateRepository>();
             services.AddTransient<IGlobalCodeRepository, GlobalCodeRepository>();
             services.AddTransient<IHorseRepository, HorseRepository>();
+            services.AddTransient<IEmailSenderRepository, EmailSenderRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
 
             services.AddControllers();
         }
-
+        
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
