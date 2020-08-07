@@ -36,7 +36,7 @@ namespace AAYHS.Core.Shared.Static
         public const string ACCOUNT_CREATED = "User account created successfully";
         public const string FORGET_PASSWORD_EMAIL = "Your password reset email has been sent.";
         public static readonly string RESET_PASSWORD_VALID_LINK = "Reset password link is valid.";
-        public static readonly string RESET_PASSWORD_EXPIRED_LINK = "Reset password link is expired";
+        public const string RESET_LINK_EXPIRED = "The reset password link has been expired.";
         public const string PASSWORD_CHANGED = "Password changed successfully.";
         public const string ADMIN_APPROVAL = "You need the admin approval before login";
         public const string HORSE_ADDED = "Horse added successfully";

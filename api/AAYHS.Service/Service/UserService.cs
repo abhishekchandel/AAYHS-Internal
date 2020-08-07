@@ -139,23 +139,18 @@ namespace AAYHS.Service.Service
         public MainResponse ValidateResetPasswordToken(ValidateResetPasswordRequest validateResetPasswordRequest)
         {
            
-                var users = _userRepository.GetSingle(x => x.UserName == validateResetPasswordRequest.Username && x.IsActive == true);
-                if (users != null)
-                {
-                    if (users.ResetTokenExpired > DateTime.UtcNow)
-                    {
-                        _mainResponse.Success = true;
-                        _mainResponse.Message = Constants.RESET_PASSWORD_VALID_LINK;
-
-                    }
-                    else
-                    {
-                        _mainResponse.Success = false;
-                        _mainResponse.Message = Constants.RESET_PASSWORD_EXPIRED_LINK;
-                    }
-                }
-                      
+                var userDetails = _userRepository.GetSingle(x => x.Email == validateResetPasswordRequest.Email.ToLower() && x.ResetToken == validateResetPasswordRequest.Token && x.ResetTokenExpired > DateTime.UtcNow);
+            if (userDetails == null)
+            {
+                _mainResponse.Message = Constants.RESET_LINK_EXPIRED;
+                _mainResponse.Success = false;
+            }
+            else
+            {
+                _mainResponse.Success = true;
+            }
             return _mainResponse;
+          
         }
         public MainResponse ChangePassword(ChangePasswordRequest changePasswordRequest)
         {
