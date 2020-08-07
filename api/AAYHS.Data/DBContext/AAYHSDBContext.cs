@@ -38,7 +38,6 @@ namespace AAYHS.Data.DBContext
         public virtual DbSet<ClassSponsors> ClassSponsor { get; set; }
         public virtual DbSet<ExhibitorHorse> ExhibitorHorse { get; set; }
         public virtual DbSet<ExhibitorPaymentDetail> ExhibitorPaymentDetail { get; set; }
-        public virtual DbSet<ExhibitorSponsor> ExhibitorSponser { get; set; }
         public virtual DbSet<SponsorExhibitor> SponsorExhibitor { get; set; }
         public virtual DbSet<Groups> Groups { get; set; }
         public virtual DbSet<RefundDetail> RefundDetail { get; set; }

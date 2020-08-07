@@ -60,7 +60,7 @@ namespace AAYHS.Core.DTOs.Response.Common
         public int ExhibitorClassId { get; set; }
         public string Exhibitor { get; set; }
         public string Horse { get; set; }
-        public DateTime BirthYear { get; set; }
+        public int BirthYear { get; set; }
         public decimal AmountPaid { get; set; }
         public int AmountDue { get; set; }
         public bool Scratch { get; set; }
@@ -77,7 +77,7 @@ namespace AAYHS.Core.DTOs.Response.Common
     {
         public int ExhibitorId { get; set; }
         public string ExhibitorName { get; set; }
-        public DateTime BirthYear { get; set; }
+        public int BirthYear { get; set; }
         public string HorseName { get; set; }
         public string Address { get; set; }
         public decimal AmountPaid { get; set; }
@@ -99,7 +99,7 @@ namespace AAYHS.Core.DTOs.Response.Common
         public int BackNumber { get; set; }
         public int ExhibitorId { get; set; }
         public string ExhibitorName { get; set; }
-        public DateTime BirthYear { get; set; }
+        public int BirthYear { get; set; }
         public string HorseName { get; set; }
         public string Address { get; set; }
         public decimal AmountPaid { get; set; }

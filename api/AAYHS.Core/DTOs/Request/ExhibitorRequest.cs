@@ -12,7 +12,7 @@ namespace AAYHS.Core.DTOs.Request
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public int BackNumber { get; set; }
-        public DateTime BirthYear { get; set; }
+        public int BirthYear { get; set; }
         public bool IsNSBAMember { get; set; }
         public bool IsDoctorNote { get; set; }
         public string QTYProgram { get; set; }

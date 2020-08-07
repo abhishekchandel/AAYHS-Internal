@@ -51,7 +51,7 @@ namespace AAYHS.Repository.Repository
                             ExhibitorId = data2!=null? data2.ExhibitorId:0,
                             FirstName = data2 != null ? data2.FirstName:"",
                             LastName = data2 != null ? data2.LastName:"",
-                            BirthYear = data2 != null ? Convert.ToString(data2.BirthYear.Year):"",
+                            BirthYear = data2 != null ? data2.BirthYear:0,
                             SponsorTypeId = sponsorexhibitor.SponsorTypeId,
                             IdNumber =sponsorexhibitor.SponsorTypeId== (int)SponsorTypes.Class?Convert.ToString(_context.Classes.Where(x=>x.ClassId== sponsorexhibitor.TypeId).Select(x=>x.ClassNumber).FirstOrDefault())
                                        :(sponsorexhibitor.SponsorTypeId == (int)SponsorTypes.Add? Convert.ToString(_context.Advertisements.Where(x => x.AdvertisementId == sponsorexhibitor.TypeId).Select(x => x.AdvertisementId).FirstOrDefault())
