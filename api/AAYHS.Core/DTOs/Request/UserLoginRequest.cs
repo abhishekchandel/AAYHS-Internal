@@ -30,9 +30,9 @@ namespace AAYHS.Core.DTOs.Request
         public string Email { get; set; }
     }
     public class ValidateResetPasswordRequest
-    {  
+    {
         [Required]
-        public string Username { get; set; }        
+        public string Email { get; set; }
         [Required]
         public string Token { get; set; }
     }
