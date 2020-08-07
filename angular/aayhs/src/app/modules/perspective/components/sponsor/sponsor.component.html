@@ -221,7 +221,10 @@
                                                 <tr *ngFor="let list of sponsorsExhibitorsList;;let i = index">
                                                     <td data-label="Exhibitor ID">{{list.ExhibitorId}}</td>
                                                     <td data-label="Exhibitor Name">{{list.FirstName}} {{list.LastName}}</td>
-                                                    <td data-label="Sponsor Type">{{list.SponsorTypeId}}</td>
+                                                    <td data-label="Sponsor Type" *ngIf="list.SponsorTypeId==1">Ad</td>
+                                                    <td data-label="Sponsor Type" *ngIf="list.SponsorTypeId==2">Class</td>
+                                                    <td data-label="Sponsor Type" *ngIf="list.SponsorTypeId==3">Cooler</td>
+                                                    <td data-label="Sponsor Type" *ngIf="list.SponsorTypeId==4">Patron</td>
                                                     <td data-label="ID Number">{{list.IdNumber}}</td>
                                                     <td data-label="Birth Year">{{list.BirthYear}}</td>
 													<td data-label="Remove">
