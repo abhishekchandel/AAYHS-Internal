@@ -25,6 +25,6 @@ namespace AAYHS.Data.DBEntities
         public bool IsApproved { get; set; }
         [Column(TypeName = "varchar(100)")]
         public string ResetToken { get; set; }
-        public DateTime ResetTokenExpired { get; set; }
+        public DateTime? ResetTokenExpired { get; set; }
     }
 }

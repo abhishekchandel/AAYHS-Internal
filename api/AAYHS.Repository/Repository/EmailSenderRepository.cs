@@ -25,7 +25,7 @@ namespace AAYHS.Repository.Repository
             mail.To.Add(request.To);
 
             mail.From = new MailAddress(request.CompanyEmail);
-            mail.Subject = "Contact us";
+            mail.Subject = "Reset Password";
             mail.Body = String.Format(Templates(request), request.To);
             mail.IsBodyHtml = true;
             SmtpClient smtp = new SmtpClient();
@@ -40,22 +40,14 @@ namespace AAYHS.Repository.Repository
         public string Templates(EmailRequest request)
         {
             string Body = "";
-            if (request.TemplateType == "Forget Password")
+            if (request.TemplateType == "Forgot Password")
             {
-                StringBuilder emailMessage = new StringBuilder();
-
-                emailMessage.Append("<p>Hello,</p>");
-                emailMessage.Append("<p style='margin-left:10%;margin-top:5%'>You have requested a password reset for the AAYHS website.</p>");
-                emailMessage.Append(string.Format("<p style='margin-left:10%;'><a href='{0}?email={1}&token={2}'>Please click here to change your password</a></p>", request.Url, request.To, request.guid));
-                emailMessage.Append("<p style='margin-left:10%;margin-bottom:5%'>If you did not request a password reset, please just ignore this email.");
-                emailMessage.Append("<p>Thank you.</p>");
-
                 Body = "<html>" +
                     "<body>" +
-                    "<b>Sender Name : </b>" + request.Name + "<br/>" +
-                    "<b>Sender Email : </b>" + request.SenderEmail + "<br/>" +
-                    " <b>Message : </b>" + emailMessage + "<br/>" +
-                    "<p>AAYHS  </br></p>" +
+                    " <p> You have requested a password reset for the EveryObit website.</p> " + "" +
+                    string.Format("<p><a href='{0}?email={1}&token={2}'> Please click here to reset your password</a></p>", request.Url, request.To, request.Token) + "" +
+                    "<p> If you did not request a password reset, please just ignore this email." + "" +
+                    "<p>Thank you for using Everyobit  </br></p>" +
                     "</body>" +
                     "</html>";
             }

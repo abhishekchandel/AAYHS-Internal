@@ -37,7 +37,7 @@ export class SponsorComponent implements OnInit {
   enablePagination: boolean = true;
   sortColumn: string = "";
   reverseSort: boolean = false
-  loading = false;
+  loading = true;
   sponsorInfo: SponsorInformationViewModel = {
     SponsorName: null,
     ContactName: null,

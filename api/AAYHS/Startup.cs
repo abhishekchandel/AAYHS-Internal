@@ -152,6 +152,10 @@ namespace AAYHS
             services.AddTransient<IHorseRepository, HorseRepository>();
             services.AddTransient<IEmailSenderRepository, EmailSenderRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IEmailSenderRepository, EmailSenderRepository>();
+            services.AddTransient<IApplicationSettingRepository, ApplicationSettingRepository>();
+            services.AddTransient<IStallAssignmentRepository, StallAssignmentRepository>();
+            services.AddTransient<ITackStallAssignmentRepository, TackStallAssignmentRepository>();
 
             services.AddControllers();
         }

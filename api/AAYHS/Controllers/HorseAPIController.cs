@@ -55,7 +55,21 @@ namespace AAYHS.API.Controllers
         {
             string actionBy = User.Identity.Name;
             _mainResponse = _horseService.RemoveHorse(horseId, actionBy);
-            _jsonString = Mapper.Convert<GetAllHorses>(_mainResponse);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to add horse
+        /// </summary>
+        /// <param name="horseId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        //[Authorize]
+        public IActionResult AddHorse(HorseAddRequest horseAddRequest)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _horseService.AddHorse(horseAddRequest, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
     }  

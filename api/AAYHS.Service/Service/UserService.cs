@@ -44,7 +44,7 @@ namespace AAYHS.Service.Service
         public MainResponse LoginUser(UserLoginRequest userLoginRequest)
         {
             string encodePassword = EncryptDecryptHelper.GetMd5Hash(userLoginRequest.Password);
-            var userDetails = _userRepository.GetSingle(x => x.UserName == userLoginRequest.UserName && x.Password == encodePassword && x.IsActive ==true && x.IsDeleted == false);
+            var userDetails = _userRepository.GetSingle(x => x.UserName == userLoginRequest.UserName.ToLower() && x.Password == encodePassword && x.IsActive ==true && x.IsDeleted == false);
             if (userDetails != null)
             {
                 if (userDetails.IsApproved==true)
@@ -101,33 +101,31 @@ namespace AAYHS.Service.Service
           
             return _mainResponse;
         }
-        public MainResponse ForgetPassword(ForgotPasswordRequest forgotPasswordRequest)
+        public MainResponse ForgotPassword(ForgotPasswordRequest forgotPasswordRequest)
         {
-            var user = _userRepository.GetSingle(x => x.UserName == forgotPasswordRequest.Username && x.IsActive == true && x.IsDeleted == false);
+            var user = _userRepository.GetSingle(x => x.Email == forgotPasswordRequest.Email.ToLower() );
             if (user!=null)
             {
                 string guid = Guid.NewGuid().ToString();
                 user.ResetToken = guid;
                 user.ResetTokenExpired = DateTime.UtcNow.AddMinutes(60);
-                var data =  _userRepository.UpdateAsync(user);
+                 _userRepository.Update(user);
 
                 //get email settings
                 var settings = _applicationRepository.GetAll().FirstOrDefault();
 
                 // Send Fortget Password Email
                 EmailRequest email = new EmailRequest();
-                email.To = user.Email;
+                email.To = forgotPasswordRequest.Email;
                 email.SenderEmail = settings.CompanyEmail;
                 email.CompanyEmail = settings.CompanyEmail;
                 email.CompanyPassword = settings.CompanyPassword;
-                email.Url = forgotPasswordRequest.Url;
-                email.guid = guid;
-                email.TemplateType = "Forget Password";
+                email.Url = settings.ResetPasswordUrl;
+                email.Token = guid;
+                email.TemplateType = "Forgot Password";
                 
                 _emailRepository.SendEmail(email);
-
-                var userResponse = _mapper.Map<UserResponse>(data);
-                _mainResponse.UserResponse = userResponse;
+ 
                 _mainResponse.Success = true;
                 _mainResponse.Message = Constants.FORGET_PASSWORD_EMAIL;
             }
@@ -141,39 +139,34 @@ namespace AAYHS.Service.Service
         public MainResponse ValidateResetPasswordToken(ValidateResetPasswordRequest validateResetPasswordRequest)
         {
            
-                var users = _userRepository.GetSingle(x => x.UserName == validateResetPasswordRequest.Username && x.IsActive == true);
-                if (users != null)
-                {
-                    if (users.ResetTokenExpired > DateTime.UtcNow)
-                    {
-                        _mainResponse.Success = true;
-                        _mainResponse.Message = Constants.RESET_PASSWORD_VALID_LINK;
-                        var userResponse = _mapper.Map<UserResponse>(users);
-                        _mainResponse.UserResponse = userResponse;
-
-                    }
-                    else
-                    {
-                        _mainResponse.Success = false;
-                        _mainResponse.Message = Constants.RESET_PASSWORD_EXPIRED_LINK;
-                    }
-                }
-                      
+                var userDetails = _userRepository.GetSingle(x => x.Email == validateResetPasswordRequest.Email.ToLower() && x.ResetToken == validateResetPasswordRequest.Token && x.ResetTokenExpired > DateTime.UtcNow);
+            if (userDetails == null)
+            {
+                _mainResponse.Message = Constants.RESET_LINK_EXPIRED;
+                _mainResponse.Success = false;
+            }
+            else
+            {
+                _mainResponse.Success = true;
+            }
             return _mainResponse;
+          
         }
         public MainResponse ChangePassword(ChangePasswordRequest changePasswordRequest)
         {
            
-                var user = _userRepository.GetSingle(x => x.Email == changePasswordRequest.Username && x.IsDeleted == false);
+                var user = _userRepository.GetSingle(x => x.Email == changePasswordRequest.Email.ToLower() && x.ResetToken == changePasswordRequest.Token);
 
                 if (user != null)
                 {
-                    user.Password = EncryptDecryptHelper.GetMd5Hash(changePasswordRequest.NewPassword);
-                    user.ModifiedDate = DateTime.Now;
-                    var data =  _userRepository.UpdateAsync(user);
-                
-                    var userResponse = _mapper.Map<UserResponse>(data);
-                    _mainResponse.UserResponse = userResponse;
+                     user.Password = EncryptDecryptHelper.GetMd5Hash(changePasswordRequest.NewPassword);
+                     user.ResetToken = null;
+                     user.ResetTokenExpired = null;
+                     user.ModifiedDate = DateTime.Now;
+                     user.ModifiedBy = changePasswordRequest.Email;
+
+                     _userRepository.Update(user);
+                                  
                     _mainResponse.Success = true;
                     _mainResponse.Message = Constants.PASSWORD_CHANGED;
                    

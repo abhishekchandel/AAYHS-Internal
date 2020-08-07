@@ -38,6 +38,7 @@ import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { ExportConfirmationModalComponent } from './ui/modals/export-confirmation-modal/export-confirmation-modal.component';
 import { OrderModule } from 'ngx-order-pipe';
 import { ExportAsModule } from 'ngx-export-as';
+import {NgxPrintModule} from 'ngx-print';
 
 export var options: Partial<IConfig> | (() => Partial<IConfig>);
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -73,7 +74,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     MatSelectModule,
     PerfectScrollbarModule,
     OrderModule,
-    ExportAsModule
+    ExportAsModule,
+    NgxPrintModule
   ],
   exports: [
     HeaderComponent,
@@ -105,7 +107,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     MatSelectModule,
     PerfectScrollbarModule,
     OrderModule,
-    ExportAsModule
+    ExportAsModule,
+    NgxPrintModule
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
