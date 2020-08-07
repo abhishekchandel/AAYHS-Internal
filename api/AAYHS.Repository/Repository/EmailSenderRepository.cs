@@ -44,10 +44,10 @@ namespace AAYHS.Repository.Repository
             {
                 Body = "<html>" +
                     "<body>" +
-                    " <p> You have requested a password reset for the EveryObit website.</p> " + "" +
+                    " <p> You have requested a password reset for the AAYHS website.</p> " + "" +
                     string.Format("<p><a href='{0}?email={1}&token={2}'> Please click here to reset your password</a></p>", request.Url, request.To, request.Token) + "" +
                     "<p> If you did not request a password reset, please just ignore this email." + "" +
-                    "<p>Thank you for using Everyobit  </br></p>" +
+                    "<p>Thank you </br></p>" +
                     "</body>" +
                     "</html>";
             }
