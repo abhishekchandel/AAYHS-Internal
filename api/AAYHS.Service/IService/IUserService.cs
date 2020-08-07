@@ -11,7 +11,7 @@ namespace AAYHS.Service.IService
     {
         MainResponse LoginUser(UserLoginRequest userLoginRequest);
         MainResponse CreateNewAccount(CreateNewAccountRequest userRequest);
-        MainResponse ForgetPassword(ForgotPasswordRequest forgotPasswordRequest);
+        MainResponse ForgotPassword(ForgotPasswordRequest forgotPasswordRequest);
         MainResponse ValidateResetPasswordToken(ValidateResetPasswordRequest validateResetPasswordRequest);
         MainResponse ChangePassword(ChangePasswordRequest changePasswordRequest);
     }

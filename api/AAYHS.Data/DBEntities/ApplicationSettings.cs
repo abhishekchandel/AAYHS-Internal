@@ -11,9 +11,11 @@ namespace AAYHS.Data.DBEntities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public int ApplicationSettingsId { get; set; }
-        [Column(TypeName = "varchar(50)")]
+        [Column(TypeName = "varchar(100)")]
         public string CompanyEmail { get; set; }
-        [Column(TypeName = "varchar(50)")]
+        [Column(TypeName = "varchar(100)")]
         public string CompanyPassword { get; set; }
+        [Column(TypeName = "varchar(500)")]
+        public string ResetPasswordUrl { get; set; }
     }
 }

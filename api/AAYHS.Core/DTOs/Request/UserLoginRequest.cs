@@ -25,11 +25,9 @@ namespace AAYHS.Core.DTOs.Request
         public string Email { get; set; }
     }
     public class ForgotPasswordRequest
-    {   
+    {
         [Required]
-        public string Username { get; set; }       
-        [Required]
-        public string Url { get; set; }
+        public string Email { get; set; }
     }
     public class ValidateResetPasswordRequest
     {  
@@ -40,12 +38,12 @@ namespace AAYHS.Core.DTOs.Request
     }
     public class ChangePasswordRequest 
     {
-       
-        [Required]
-        public string Username { get; set; }
-        
-        [Required]        
+        [MinLength(8)]
         public string NewPassword { get; set; }
+        [Required]
+        public string Email { get; set; }
+        [Required]
+        public string Token { get; set; }
 
     }
 }

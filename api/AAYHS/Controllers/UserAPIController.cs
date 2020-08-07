@@ -93,14 +93,10 @@ namespace AAYHS.API.Controllers
         /// <param name="forgotPasswordRequest"></param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult ForgetPassword(ForgotPasswordRequest forgotPasswordRequest)
+        public IActionResult ForgotPassword(ForgotPasswordRequest forgotPasswordRequest)
         {
-            _mainResponse = _userService.ForgetPassword(forgotPasswordRequest);
-            if (_mainResponse.Success == true)
-            {
-                _mainResponse.UserResponse.Token = GenerateJSONWebToken(_mainResponse.UserResponse.UserId, _mainResponse.UserResponse.UserName);
-            }
-            _jsonString = Mapper.Convert<UserResponse>(_mainResponse);
+            _mainResponse = _userService.ForgotPassword(forgotPasswordRequest);           
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
         /// <summary>
@@ -111,12 +107,8 @@ namespace AAYHS.API.Controllers
         [HttpPost]
         public IActionResult ValidateResetPasswordToken(ValidateResetPasswordRequest validateResetPasswordRequest)
         {
-            _mainResponse = _userService.ValidateResetPasswordToken(validateResetPasswordRequest);
-            if (_mainResponse.Success == true)
-            {
-                _mainResponse.UserResponse.Token = GenerateJSONWebToken(_mainResponse.UserResponse.UserId, _mainResponse.UserResponse.UserName);
-            }
-            _jsonString = Mapper.Convert<UserResponse>(_mainResponse);
+            _mainResponse = _userService.ValidateResetPasswordToken(validateResetPasswordRequest);           
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
         /// <summary>
@@ -128,7 +120,7 @@ namespace AAYHS.API.Controllers
         public IActionResult ChangePassword(ChangePasswordRequest changePasswordRequest)
         {
             _mainResponse = _userService.ChangePassword(changePasswordRequest);
-            _jsonString = Mapper.Convert<UserResponse>(_mainResponse);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
     }
