@@ -101,9 +101,9 @@ namespace AAYHS.Service.Service
           
             return _mainResponse;
         }
-        public MainResponse ForgetPassword(ForgotPasswordRequest forgotPasswordRequest)
+        public MainResponse ForgotPassword(ForgotPasswordRequest forgotPasswordRequest)
         {
-            var user = _userRepository.GetSingle(x => x.UserName == forgotPasswordRequest.Username && x.IsActive == true && x.IsDeleted == false);
+            var user = _userRepository.GetSingle(x => x.Email == forgotPasswordRequest.Email.ToLower() );
             if (user!=null)
             {
                 string guid = Guid.NewGuid().ToString();
@@ -116,19 +116,16 @@ namespace AAYHS.Service.Service
 
                 // Send Fortget Password Email
                 EmailRequest email = new EmailRequest();
-                email.To = user.Email;
+                email.To = forgotPasswordRequest.Email;
                 email.SenderEmail = settings.CompanyEmail;
                 email.CompanyEmail = settings.CompanyEmail;
                 email.CompanyPassword = settings.CompanyPassword;
-                email.Url = forgotPasswordRequest.Url;
-                email.Username = forgotPasswordRequest.Username;
-                email.guid = guid;
-                email.TemplateType = "Forget Password";
+                email.Url = settings.ResetPasswordUrl;
+                email.Token = guid;
+                email.TemplateType = "Forgot Password";
                 
                 _emailRepository.SendEmail(email);
-
-                var userResponse = _mapper.Map<UserResponse>(user);
-                _mainResponse.UserResponse = userResponse;
+ 
                 _mainResponse.Success = true;
                 _mainResponse.Message = Constants.FORGET_PASSWORD_EMAIL;
             }
@@ -149,8 +146,6 @@ namespace AAYHS.Service.Service
                     {
                         _mainResponse.Success = true;
                         _mainResponse.Message = Constants.RESET_PASSWORD_VALID_LINK;
-                        var userResponse = _mapper.Map<UserResponse>(users);
-                        _mainResponse.UserResponse = userResponse;
 
                     }
                     else
@@ -165,16 +160,18 @@ namespace AAYHS.Service.Service
         public MainResponse ChangePassword(ChangePasswordRequest changePasswordRequest)
         {
            
-                var user = _userRepository.GetSingle(x => x.UserName == changePasswordRequest.Username && x.IsDeleted == false);
+                var user = _userRepository.GetSingle(x => x.Email == changePasswordRequest.Email.ToLower() && x.ResetToken == changePasswordRequest.Token);
 
                 if (user != null)
                 {
-                    user.Password = EncryptDecryptHelper.GetMd5Hash(changePasswordRequest.NewPassword);
-                    user.ModifiedDate = DateTime.Now;
-                    var data =  _userRepository.UpdateAsync(user);
-                
-                    var userResponse = _mapper.Map<UserResponse>(user);
-                    _mainResponse.UserResponse = userResponse;
+                     user.Password = EncryptDecryptHelper.GetMd5Hash(changePasswordRequest.NewPassword);
+                     user.ResetToken = null;
+                     user.ResetTokenExpired = null;
+                     user.ModifiedDate = DateTime.Now;
+                     user.ModifiedBy = changePasswordRequest.Email;
+
+                     _userRepository.Update(user);
+                                  
                     _mainResponse.Success = true;
                     _mainResponse.Message = Constants.PASSWORD_CHANGED;
                    
