@@ -71,6 +71,6 @@ export class LocalStorageService {
     localStorage.removeItem(this.LOCALSTORAGE_TOKEN_KEY);
     localStorage.removeItem(this.LOCALSTORAGE_USER_DETAIL_KEY);
     localStorage.removeItem(this.LOCALSTORAGE_USER_CREDENTIALS_KEY);
-    this.router.navigateByUrl("/dashboard");
+    this.router.navigateByUrl("/login");
   }
 }

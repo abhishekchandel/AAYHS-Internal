@@ -10,6 +10,9 @@ export class ExportConfirmationModalComponent implements OnInit {
   title: string;
   message: string;
   name: string;
+  formatToDownlaod:any={
+    format:null
+  }
 
   constructor(public dialogRef: MatDialogRef<ExportConfirmationModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ConfirmDialogModel) {
@@ -19,8 +22,14 @@ export class ExportConfirmationModalComponent implements OnInit {
   ngOnInit(): void {
   }
   onConfirm(): void {
+    debugger;
     // Close the dialog, return true
-    this.dialogRef.close(true);
+    this.dialogRef.close({
+      submitted: true,
+      data: {
+        format: this.formatToDownlaod.format,
+      }
+    });
   }
 
   onDismiss(): void {

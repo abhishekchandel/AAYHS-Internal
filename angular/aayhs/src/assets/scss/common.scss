@@ -921,7 +921,7 @@ vertical-align: middle;
 }
 /* blue row */
 .blueRow {
-background-color: #b5cbf7 !important ;
+background-color: #f1efef  !important ;
 }
 /* trash icon */
 .fa-trash-o {
@@ -1125,27 +1125,54 @@ display:inline-block;
 .scratch{
     background-color: #b5cbf7;
 }
-
-
-
+app-forgot-password{
+    background-image: url(/assets/images/login-bg.jpg);
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+    display: block; 
+}
+app-reset-password{
+    background-image: url(/assets/images/login-bg.jpg);
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+app-register{
+    background-image: url(/assets/images/login-bg.jpg);
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+    display: block;
+    .loginWrapper{ 
+        height: calc(90vh );
+    }  
+}
+app-login {
+    background-image: url(/assets/images/login-bg.jpg);
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
 .headerBlueStrip {
     background-color: #273992;
     width: 100%;
     height: 100px;
     display: block;
 }
-.loginWrapper{
-    background-image: url(../images/login-bg.jpg);
-    background-size: cover;
-    background-position: center top;
-    position: absolute;
-    background-repeat: no-repeat;
-    width: 100%;
-    height: calc(100vh - 100px);  
-    @media(max-width:1024px){
-        height:100%;
-        position: relative;   
-    }
+.loginWrapper{ 
+    height: calc(100vh - 205px);
+
     .commonCol {
         background-color: #fff;
         padding: 0 15px 25px;
@@ -1171,9 +1198,17 @@ display:inline-block;
                 margin-bottom: 25px;
                 &.emailIcon{
                     input{
-                        background-image: url(/assets/images/icon-3.png); 
-                        background-repeat: no-repeat;
-                        background-position: center left;
+                        &:-webkit-autofill {
+                            transition: background-color 5500s ease-in-out 0s;
+                            -webkit-text-fill-color: white !important;
+                        }
+                    }
+                    .faIcon {
+                        position: absolute;
+                        left: 20px;
+                        font-size: 25px;
+                        color: #fff;
+                        top: 5px;
                     }
                     &:before {
                         position: absolute;
@@ -1193,9 +1228,17 @@ display:inline-block;
 
                 &.userIcon{
                     input{
-                        background-image: url(../images/icon-1.png); 
-                        background-repeat: no-repeat;
-                        background-position: center left;
+                        &:-webkit-autofill {
+                            transition: background-color 5500s ease-in-out 0s;
+                            -webkit-text-fill-color: white !important;
+                        }
+                    }
+                    .faIcon {
+                        position: absolute;
+                        left: 20px;
+                        font-size: 32px;
+                        color: #fff;
+                        top: 0;
                     }
                     &:before {
                         position: absolute;
@@ -1214,9 +1257,17 @@ display:inline-block;
                 }
                 &.passIcon{
                     input{
-                        background-image: url(/assets/images/icon-2.png); 
-                        background-repeat: no-repeat;
-                        background-position: center left;
+                        &:-webkit-autofill {
+                            transition: background-color 5500s ease-in-out 0s;
+                            -webkit-text-fill-color: white !important; 
+                        }
+                    }
+                    .faIcon {
+                        position: absolute;
+                        left: 20px;
+                        font-size: 32px;
+                        color: #fff;
+                        top: 0;
                     }
                     &:before {
                         position: absolute;
@@ -1241,12 +1292,22 @@ display:inline-block;
                     border-radius: 50px;
                     max-width: 500px;
                     width: 100%;
-                    
+                    min-height: 48px;
+                    font-size: 15px ;
+                    font-family: 'Roboto-Regular',sans-serif !important;
                     &::placeholder{
-                        color:#fff;
+                        color:#fff !important;
+                        opacity: 1;
+                        font-family: 'Roboto-Regular',sans-serif ;
+                        font-style: normal;
+                        font-size: 15px ;
                     }
                     &::-webkit-placeholder{
-                        color:#fff;
+                        color:#fff !important;
+                        opacity: 1;
+                        font-family: 'Roboto-Regular',sans-serif ;
+                        font-style: normal;
+                        font-size: 15px ;
                     }
                     &:focus{
                         outline:none;
@@ -1295,15 +1356,18 @@ display:inline-block;
         }
     }
 
-    footer{
-        padding: 30px 0 0px;
-        position: absolute;
-        width: 100%;
-        bottom: 0;
+    
+}
+footer{
+    &.loginFooter{
+        padding: 50px 0 0px;
+    position: relative;
+    width: 100%;
+    bottom: 0;
         @media(max-width:1024px){
             position: relative; 
         }
-    
+
         .commonCol{
             background-color: #273992;
             padding:15px 20px 15px 0;
@@ -1329,5 +1393,94 @@ display:inline-block;
 }
 
 
- 
+ // download popup
+#downLoadDoc{
+	.modal-body {
+		padding: 30px 15px 10px;
+	}
+}
+.dwnFile {
+	display: block;
+	position: relative;
+	margin-bottom: 12px;
+	cursor: pointer;
+	font-size: 22px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	max-width: 250px;
+    margin: 0 auto 20px;
+	input {
+		opacity: 0;
+		cursor: pointer;
+		height: 46px;
+		width: 100%;
+		z-index: 9;
+		position: absolute;
+		left: 0;
+		
+		&:checked {
+			~ {
+				.checkmark {					
+					&:after {
+						display: block;
+					  }
+				}
+			}
+		}
+	}
+	.checkmark {
+		position: relative;
+		top: 0;
+		left: 0;
+		height: auto;
+		width: 100%;
+		background-color:  #b5cbf7;
+		display: block;
+		border-radius: 50px;
+    	padding: 7px 0;
+		&:after {
+			content: "";
+			position: absolute;
+			display: none;
+			left: 20px;
+			top: 14px;
+			width: 8px;
+			height: 16px;
+			border: solid white;
+			border-width: 0 3px 3px 0;
+			-webkit-transform: rotate(45deg);
+			-ms-transform: rotate(45deg);
+			transform: rotate(45deg);
+		}
+		&:before {
+			position: absolute;
+			content: "";
+			background-color: #273992;
+			width: 40px;
+			height: 40px;
+			left: 4px;
+			top: 3px;
+			border-radius: 50px;
+			border: 2px solid #fff;
+		}
+	}
+}
 
+.actionButton {
+    cursor: pointer;
+}
+.actionButton {
+    width: 20px;
+}
+
+.scratchimage{
+    img{
+        width: 16px;
+    }
+}
+.disable{
+    opacity: 0.7 !important;
+    cursor:none !important;
+}

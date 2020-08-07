@@ -14,6 +14,8 @@ import { MatSort } from '@angular/material/sort';
 import * as moment from 'moment';
 import { ExportAsService, ExportAsConfig ,SupportedExtensions } from 'ngx-export-as';
 import * as jsPDF from 'jspdf';
+import {  ExportConfirmationModalComponent } from '../../../../shared/ui/modals/export-confirmation-modal/export-confirmation-modal.component'
+
 
 @Component({
   selector: 'app-class',
@@ -367,10 +369,9 @@ debugger;
   deleteExhibitor(id: number,index) {
     this.loading = true;
     this.classService.deleteClassExhibitor(id).subscribe(response => {
-      this.classEntries.splice(index, 1);
-
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
       this.loading = false;
+      this.getClassEntries(this.classInfo.ClassId)
     }, error => {
       this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
       this.loading = false;
@@ -511,7 +512,6 @@ getEntriesSort(column) {
 }
 
 exportAs(type: SupportedExtensions, opt?: string) {
-  debugger;
   this.config.type = type;
   // if (opt) {
   //   this.config.options.jsPDF.orientation = opt;
@@ -521,7 +521,7 @@ exportAs(type: SupportedExtensions, opt?: string) {
 
    this.exportAsService.get(this.config).subscribe(content => {
       const link = document.createElement('a');
-      const fileName = 'export.pdf';
+      const fileName = 'export.xlsx';
 
       link.href = content;
       link.download = fileName;
@@ -540,7 +540,7 @@ pdfCallbackFn (pdf: any) {
   }
 }
 
-public SavePDF(): void {
+ savePDF(): void {
   debugger;
   let content=this.content.nativeElement;
   let doc = new jsPDF();
@@ -558,11 +558,29 @@ public SavePDF(): void {
 
   doc.save('test.pdf');
 }
+
+
+confirmDownload(): void {
+  const message = `Are you sure you want to remove the class?`;
+  const dialogData = new ConfirmDialogModel("Confirm Action", message);
+  const dialogRef = this.dialog.open(ExportConfirmationModalComponent, {
+    maxWidth: "400px",
+    data: dialogData
+  });
+  dialogRef.afterClosed().subscribe(dialogResult => {
+    debugger;
+    const result: any = dialogResult;
+    if (  result.data.format !=null) {
+      result.data.format =="pdf" ? this.savePDF() : this.exportAs('xlsx')
+    }
+  });
+
+}
+
+
 print() {
-  debugger
-  let printContents, popupWin, machineAlarmPage, machineAlarmPrint,printbutton;
-  // machineAlarmPage=document.getElementById('machineAlarmPage').style.display = "none";
-  // machineAlarmPrint=document.getElementById('machineAlarmPrint').style.display = "block";
+  let printContents, popupWin, gridTableDesc,printbutton;
+  gridTableDesc=document.getElementById('gridTableDescPrint').style.display = "block";
   printbutton = document.getElementById('inputprintbutton').style.display = "none";
   printContents = document.getElementById('print-entries').innerHTML;
   popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
@@ -580,23 +598,246 @@ print() {
           box-sizing: border-box;
           font-family: Roboto, "Helvetica Neue", sans-serif;
           }
+          table {
+            border-collapse: collapse;
+            border-spacing: 2px;
+            margin-bottom:0 !important; 
+            padding-bottom:0 !important;   
+        }
+          table thead tr th {
+            background-color: #a0b8f9;
+            font-family: "Roboto-Medium" ,sans-serif;
+            font-size: 13px;
+            text-transform: uppercase;
+            border: 1px solid #a0b8f9;
+            text-align: center;
+            padding: 6px;
+            vertical-align: middle;
+            line-height: 16px;
+            cursor: pointer;
+            letter-spacing: 1px;
+        }
+        .mat-tab-group {
+          font-family: "Roboto-Regular", sans-serif;
+      }
+        table tbody tr td {
+          border: 1px solid #a0b8f9;
+          text-align: center;
+          color: #000;
+          font-weight: 500;
+          font-size: 13px;
+          line-height: 24px;
+          vertical-align: middle;
+          padding: 6px 10px;
+          font-family: "Roboto-Medium" ,sans-serif;
+      }
+      .dynDataSeclect {
+        width: 100%;
+        padding: 2px 15px 2px 5px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        min-height: 30px;
+    }
+    select {
+      -webkit-appearance: none;
+      background-image: url(select-arrow.png);
+      background-repeat: no-repeat;
+      background-position: center right;
+      margin: 0;
+      font-family: inherit;
+      font-size: inherit;
+      line-height: inherit;
+  }
+  select {
+    -webkit-writing-mode: horizontal-tb !important;
+    text-rendering: auto;
+    color: -internal-light-dark(black, white);
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-transform: none;
+    text-indent: 0px;
+    text-shadow: none;
+    display: inline-block;
+    text-align: start;
+    appearance: menulist;
+    box-sizing: border-box;
+    align-items: center;
+    white-space: pre;
+    -webkit-rtl-ordering: logical;
+    background-color: -internal-light-dark(rgb(255, 255, 255), rgb(59, 59, 59));
+    cursor: default;
+    margin: 0em;
+    font: 400 13.3333px Arial;
+    border-radius: 0px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: -internal-light-dark(rgb(118, 118, 118), rgb(195, 195, 195));
+    border-image: initial;
+}
+.table-responsive {
+  display: block;
+  width: 100%;
+}
+.pdfdataTable {
+  position: absolute;
+  top: 50px;
+  width: 98%;
+  left:0;
+  margin: 0 1%;
+}
 
-          // .pagebreak {page-break-before: always;page-break-inside: avoid;}
-          .fa:before { color:red; }
+table.pdfTable,table.pdfTable tbody,table.pdfTable tr {
+  width:100%;
+  display:table;
+}
+table.pdfTable tbody tr td{
+    background-color: #a0b8f9;
+    margin: 30px 0;
+    padding: 0px 15px;
+    position: relative; 
+    width:33.333%;
+    display:table-cell;
     
+}
+ 
         </style>
       </head>
   <body onload="window.print();window.close()">${printContents}</body>
     </html>`
   );
+  gridTableDesc=document.getElementById('gridTableDescPrint').style.display = "none";
   printbutton = document.getElementById('inputprintbutton').style.display = "inline-block";
-  // machineAlarmPage=document.getElementById('machineAlarmPage').style.display = "block";
-  // machineAlarmPrint=document.getElementById('machineAlarmPrint').style.display = "none";
-  // this.loadComponent = false;
   popupWin.document.close();
+}
+printResult() {
+  let printContents, popupWin, gridTableSection,printbutton;
+  gridTableSection=document.getElementById('gridTableSectionPrint').style.display = "block";
+  printbutton = document.getElementById('inputprintbutton2').style.display = "none";
+  printContents = document.getElementById('print-section').innerHTML;
+  popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
+  popupWin.document.open();
+  popupWin.document.write(`
+    <html>
+      <head>
+    
+        <title>Print tab</title>
+        <style media="print">
   
+        * {
+          -webkit-print-color-adjust: exact; /*Chrome, Safari */
+          color-adjust: exact;  /*Firefox*/
+          box-sizing: border-box;
+          font-family: Roboto, "Helvetica Neue", sans-serif;
+          }
+          table {
+            border-collapse: collapse;
+            border-spacing: 2px;
+            margin-bottom:0 !important; 
+            padding-bottom:0 !important;   
+        }
+          table thead tr th {
+            background-color: #a0b8f9;
+            font-family: "Roboto-Medium" ,sans-serif;
+            font-size: 13px;
+            text-transform: uppercase;
+            border: 1px solid #a0b8f9;
+            text-align: center;
+            padding: 6px;
+            vertical-align: middle;
+            line-height: 16px;
+            cursor: pointer;
+            letter-spacing: 1px;
+        }
+        .mat-tab-group {
+          font-family: "Roboto-Regular", sans-serif;
+      }
+        table tbody tr td {
+          border: 1px solid #a0b8f9;
+          text-align: center;
+          color: #000;
+          font-weight: 500;
+          font-size: 13px;
+          line-height: 24px;
+          vertical-align: middle;
+          padding: 6px 10px;
+          font-family: "Roboto-Medium" ,sans-serif;
+      }
+      .dynDataSeclect {
+        width: 100%;
+        padding: 2px 15px 2px 5px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        min-height: 30px;
+    }
+    select {
+      -webkit-appearance: none;
+      background-image: url(select-arrow.png);
+      background-repeat: no-repeat;
+      background-position: center right;
+      margin: 0;
+      font-family: inherit;
+      font-size: inherit;
+      line-height: inherit;
+  }
+  select {
+    -webkit-writing-mode: horizontal-tb !important;
+    text-rendering: auto;
+    color: -internal-light-dark(black, white);
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-transform: none;
+    text-indent: 0px;
+    text-shadow: none;
+    display: inline-block;
+    text-align: start;
+    appearance: menulist;
+    box-sizing: border-box;
+    align-items: center;
+    white-space: pre;
+    -webkit-rtl-ordering: logical;
+    background-color: -internal-light-dark(rgb(255, 255, 255), rgb(59, 59, 59));
+    cursor: default;
+    margin: 0em;
+    font: 400 13.3333px Arial;
+    border-radius: 0px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: -internal-light-dark(rgb(118, 118, 118), rgb(195, 195, 195));
+    border-image: initial;
+}
+.table-responsive {
+  display: block;
+  width: 100%;
+}
+.pdfdataTable {
+  position: absolute;
+  top: 50px;
+  width: 98%;
+  left:0;
+  margin: 0 1%;
+}
 
-
-
+table.pdfTable,table.pdfTable tbody,table.pdfTable tr {
+  width:100%;
+  display:table;
+}
+table.pdfTable tbody tr td{
+    background-color: #a0b8f9;
+    margin: 30px 0;
+    padding: 0px 15px;
+    position: relative; 
+    width:33.333%;
+    display:table-cell;
+    
+}
+ 
+        </style>
+      </head>
+  <body onload="window.print();window.close()">${printContents}</body>
+    </html>`
+  );
+  gridTableSection=document.getElementById('gridTableSectionPrint').style.display = "none";
+  printbutton = document.getElementById('inputprintbutton2').style.display = "inline-block";
+  popupWin.document.close();
 }
 }

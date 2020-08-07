@@ -9,9 +9,9 @@ const routes: Routes = [
       loadChildren: () => import(`./modules/auth/auth.module`).then(m => m.AuthModule)
   },
   {
-    path: "auth",
+    path: "perspective",
     loadChildren: () => import(`./modules/perspective/perspective.module`).then(m => m.PerspectiveModule),
-    // canActivate:[AuthGuard]
+     canActivate:[AuthGuard]
 },
 ];
 @NgModule({
