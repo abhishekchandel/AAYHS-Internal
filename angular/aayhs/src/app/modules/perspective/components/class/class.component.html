@@ -223,17 +223,16 @@
 														<td data-label="Scratch">
 															<div class="scratchimage"
 																(click)="confirmScratch(i,!entry.Scratch,entry.ExhibitorClassId)">
-																<img
-																	[src]="entry.Scratch===true ? '../assets/images/sizzer-icon.png' : '../assets/images/sizzer-icon-1.png'">
+																<img class="non-print-element" [src]="entry.Scratch===true ? 'assets/images/sizzer-icon.png' : 'assets/images/sizzer-icon-1.png'">
+																<img class="print-element" [src]="entry.Scratch===true ? '../assets/images/sizzer-icon.png' : '../assets/images/sizzer-icon-1.png'">
 															</div>
 														</td>
 
 														<td data-label="Remove">
 															<div [ngClass]="icon"
 																(click)="confirmRemoveExhibitor(i,entry.ExhibitorClassId)">
-																<img class="actionButton"
-																	src=' ../assets/images/delete-icon.png'
-																	alt="image" />
+																<img class="actionButton non-print-element" src='assets/images/delete-icon.png' alt="image" />
+																<img class="actionButton print-element" src='../assets/images/delete-icon.png' alt="image" />
 															</div>
 															<!-- <button class="icon" (click)="confirmRemoveExhibitor(i,entry.ExhibitorClassId)"><span></span>
 																<i class="fa fa-trash-o" aria-hidden="true"></i></button> -->

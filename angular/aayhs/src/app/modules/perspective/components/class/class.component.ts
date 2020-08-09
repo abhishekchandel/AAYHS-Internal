@@ -359,6 +359,7 @@ debugger;
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
       this.loading = false;
       this.getClassEntries(this.classInfo.ClassId);
+      this.getClassExhibitors(this.classInfo.ClassId);
       this.entriesForm.resetForm({ exhibitorId:null,horseId:null});
     }, error => {
       this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
@@ -371,7 +372,8 @@ debugger;
     this.classService.deleteClassExhibitor(id).subscribe(response => {
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
       this.loading = false;
-      this.getClassEntries(this.classInfo.ClassId)
+      this.getClassEntries(this.classInfo.ClassId);
+      this.getClassExhibitors(this.classInfo.ClassId);
     }, error => {
       this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
       this.loading = false;
@@ -699,6 +701,8 @@ table.pdfTable tbody tr td{
     display:table-cell;
     
 }
+.print-element { display: block !important;}
+.non-print-element {display: none !important;}
  
         </style>
       </head>
