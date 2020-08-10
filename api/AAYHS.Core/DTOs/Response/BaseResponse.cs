@@ -48,8 +48,8 @@ namespace AAYHS.Core.DTOs.Response
         public GroupResponse GroupResponse  { get; set; }
         public GroupListResponse GroupListResponse  { get; set; }
         public GetAllLinkedExhibitors GetAllLinkedExhibitors { get; set; }
-        public GetGroup GetGroup { get; set; }
-        public GetHorse GetHorse { get; set; }
+        public GetAllGroups GetAllGroups { get; set; }
+        public GetHorseById GetHorseById { get; set; }
 
     }
    

@@ -73,52 +73,7 @@ namespace AAYHS.Repository.Repository
 
             }
             return getAllHorses;
-        }
-        public GetHorse GetHorse(HorseRequest horseRequest)
-        {
-            IEnumerable<GetHorseById> data;
-            GetHorse getHorse = new GetHorse();
-
-            data = (from horse in _ObjContext.Horses
-                    join stall in _ObjContext.StallAssignment on horse.HorseId equals stall.HorseId into stall1
-                    from stall2 in stall1.DefaultIfEmpty()
-                    join tack in _ObjContext.TackStallAssignment on horse.HorseId equals tack.HorseId into tack1
-                    from tack2 in tack1.DefaultIfEmpty()
-                    where horse.IsActive == true && horse.IsDeleted == false &&
-                    horse.HorseId==horseRequest.HorseId
-                    select new GetHorseById
-                    {
-                        HorseId = horse.HorseId,
-                        Name = horse.Name,
-                        HorseTypeId =horse.HorseTypeId,
-                        JumpHeightId=horse.JumpHeightId,
-                        GroupId=horse.GroupId
-                    });
-
-            if (data.Count() != 0)
-            {
-                if (horseRequest.OrderByDescending == true)
-                {
-                    data = data.OrderByDescending(x => x.GetType().GetProperty(horseRequest.OrderBy).GetValue(x));
-                }
-                else
-                {
-                    data = data.OrderBy(x => x.GetType().GetProperty(horseRequest.OrderBy).GetValue(x));
-                }
-                getHorse.TotalRecords = data.Count();
-                if (horseRequest.AllRecords)
-                {
-                    getHorse.horseResponse = data.ToList();
-                }
-                else
-                {
-                    getHorse.horseResponse = data.Skip((horseRequest.Page - 1) * horseRequest.Limit).Take(horseRequest.Limit).ToList();
-
-                }
-
-            }
-            return getHorse;
-        }
+        }       
         public GetAllHorses SearchHorse(SearchRequest searchRequest)
         {
             IEnumerable<HorseResponse> data;

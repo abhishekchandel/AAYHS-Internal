@@ -31,12 +31,7 @@ namespace AAYHS.Core.DTOs.Response.Common
         public int GroupId { get; set; }
         public int JumpHeightId { get; set; }
         public bool NSBAIndicator { get; set; }        
-    }
-    public class GetHorse
-    {
-        public List<GetHorseById> horseResponse { get; set; }
-        public int TotalRecords { get; set; }
-    }
+    }   
     public class GetLinkedExhibitors
     {
         public int ExhibitorId { get; set; }
@@ -48,9 +43,13 @@ namespace AAYHS.Core.DTOs.Response.Common
         public List<GetLinkedExhibitors> getLinkedExhibitors { get; set; }
         public int TotalRecords { get; set; }
     }
+    public class GetAllGroups
+    {
+       public List<GetGroup> getGroups { get; set; }      
+    }
     public class GetGroup
     {
         public int GroupId { get; set; }
-        public int GroupName { get; set; }
+        public string GroupName { get; set; }
     }
 }

@@ -49,12 +49,12 @@ namespace AAYHS.API.Controllers
         /// </summary>
         /// <param name="horseRequest"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpGet]
         //[Authorize]
-        public IActionResult GetHorse(HorseRequest horseRequest)
+        public IActionResult GetHorse(int HorseId)
         {
-            _mainResponse = _horseService.GetHorse(horseRequest);
-            _jsonString = Mapper.Convert<GetHorse>(_mainResponse);
+            _mainResponse = _horseService.GetHorse(HorseId);
+            _jsonString = Mapper.Convert<GetHorseById>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
         /// <summary>
@@ -120,7 +120,7 @@ namespace AAYHS.API.Controllers
         public IActionResult GetGroup()
         {
             _mainResponse = _horseService.GetGroup();
-            _jsonString = Mapper.Convert<GetGroup>(_mainResponse);
+            _jsonString = Mapper.Convert<GetAllGroups>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
     }  

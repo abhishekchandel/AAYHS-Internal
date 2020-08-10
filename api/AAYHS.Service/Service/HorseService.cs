@@ -57,13 +57,13 @@ namespace AAYHS.Service.Service
                        
             return _mainResponse;
         }
-        public MainResponse GetHorse(HorseRequest horseRequest)
+        public MainResponse GetHorse(int HorseId)
         {
-            var horse = _horseRepository.GetHorse(horseRequest);
-            if (horse.horseResponse != null && horse.TotalRecords != 0)
+
+            var horse = _horseRepository.GetSingle(x => x.HorseId == HorseId && x.IsActive == true && x.IsDeleted == false);
+            if (horse != null)
             {
-                _mainResponse.GetHorse = horse;
-                _mainResponse.GetHorse.TotalRecords = horse.TotalRecords;
+                _mainResponse.GetHorseById = _mapper.Map<GetHorseById>(horse);               
                 _mainResponse.Success = true;
             }
             else
@@ -181,9 +181,12 @@ namespace AAYHS.Service.Service
         {
             var groups = _groupRepository.GetAll(x => x.IsActive == true && x.IsDeleted == false);
 
-            if (groups!=null)
+            if (groups.Count!=0)
             {
-                _mainResponse.GetGroup =_mapper.Map<GetGroup>(groups);
+                var allGroups= _mapper.Map<List<GetGroup>>(groups);
+                GetAllGroups getAllGroups = new GetAllGroups();
+                getAllGroups.getGroups = allGroups;
+                _mainResponse.GetAllGroups = getAllGroups;
                 _mainResponse.Success = true;
             }
             else
