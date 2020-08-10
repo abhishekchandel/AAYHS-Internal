@@ -72,7 +72,7 @@ namespace AAYHS.Service.Service
         {
             string encodedPassword = !string.IsNullOrWhiteSpace(userRequest.Password) ? EncryptDecryptHelper.GetMd5Hash(userRequest.Password) : null;
 
-            var userDetails = _userRepository.GetSingle(x => x.UserName == userRequest.UserName.ToLower());
+            var userDetails = _userRepository.GetSingle(x => x.UserName == userRequest.UserName.ToLower() && x.Email==userRequest.Email.ToLower());
             if (userDetails != null)
             {
                 _mainResponse.Success = false;
