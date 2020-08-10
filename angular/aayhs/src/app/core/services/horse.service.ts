@@ -1,9 +1,29 @@
 import { Injectable } from '@angular/core';
+import { BaseUrl } from '../../config/url-config';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HorseService {
 
-  constructor() { }
+  api = BaseUrl.baseApiUrl;
+
+  constructor(private http: HttpClient) { }
+
+  getAllHorses(data){
+    return this.http.post<any>(`${this.api}HorseAPI/GetAllHorses`,data);
+  }
+
+  deleteHorse(id:number){
+    return this.http.delete<any>(`${this.api}HorseAPI/RemoveHorse?horseId=${id}`);
+  }
+
+  createUpdateHorse(data){
+    return this.http.post<any>(`${this.api}HorseAPI/AddClass`,data);
+  }
+
+  getLinkedExhibitors(data){
+    return this.http.post<any>(`${this.api}HorseAPI/GetLinkedExhibitors`,data);
+  }
 }

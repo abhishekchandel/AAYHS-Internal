@@ -18,102 +18,31 @@
 				 <th (click)="sortData('horseId')">Horse ID
 					<span [ngClass]="getSort('horseId')"></span>
 				 </th>
-				 <th>Stall
-					
+				 <th (click)="sortData('stall')">Stall
+					<span [ngClass]="getSort('stall')"></span>
 				 </th>
-				 <th>Track Stall
-					
+				 <th (click)="sortData('tackStall')">Tack Stall
+					<span [ngClass]="getSort('tackStall')"></span>
 				 </th>
 				 <th>Remove</th> 
 			  </tr>	
 		   </thead> 
 		   <perfect-scrollbar class="nicescrollBar-1"> 
 			   <tbody>
-				 <tr>
-					 <td data-label="Horse Name">Zips Elegant Step</td>
-					 <td data-label="Horse Type">Horse</td>
-					 <td data-label="Horse ID">2246</td>
-					 <td data-label="Stall">267</td>
-					 <td data-label="Track Stall">200</td>
-					 <td data-label="Remove"><div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+				 <tr *ngFor="let horse of horsesList;let i = index " (click)="highlight(class.ClassId,i)">
+					 <td data-label="Horse Name">{{horse.Name}}</td>
+					 <td data-label="Horse Type">{{horse.HorseType}}</td>
+					 <td data-label="Horse ID">{{horse.HorseId}}</td>
+					 <td data-label="Stall">{{horse.StallNumber}}</td>
+					 <td data-label="Track Stall">{{horse.TackStallNumber}}</td>
+					 <td data-label="Remove"><div (click)="confirmRemoveHorse($event, i,horse.HorseId)" class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
 				 </tr>
-				 <tr>
-					 <td data-label="Horse Name">Pretty Boy</td>
-					 <td data-label="Horse Type">Pony</td>
-					 <td data-label="Horse ID">2250</td>
-					 <td data-label="Stall">45</td>
-					 <td data-label="Track Stall">100</td>
-					 <td data-label="Remove"><div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-				 </tr>
-				 <tr>
-					 <td data-label="Horse Name">Dixie</td>
-					 <td data-label="Horse Type">Mini</td>
-					 <td data-label="Horse ID">2254</td>
-					 <td data-label="Stall">17</td>
-					 <td data-label="Track Stall">50</td>
-					 <td data-label="Remove"><div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-				 </tr>
-				 <tr>
-					 <td data-label="Horse Name">All Cashed Out</td>
-					 <td data-label="Horse Type">Horse</td>
-					 <td data-label="Horse ID">2256</td>
-					 <td data-label="Stall">154</td>
-					 <td data-label="Track Stall">100</td>
-					 <td data-label="Remove"><div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-				 </tr>
-				 <tr>
-					 <td data-label="Horse Name">Dixie</td>
-					 <td data-label="Horse Type">Mini</td>
-					 <td data-label="Horse ID">2254</td>
-					 <td data-label="Stall">17</td>
-					 <td data-label="Track Stall">50</td>
-					 <td data-label="Remove"><div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-				 </tr>
-				 <tr>
-					 <td data-label="Horse Name">All Cashed Out</td>
-					 <td data-label="Horse Type">Horse</td>
-					 <td data-label="Horse ID">2256</td>
-					 <td data-label="Stall">154</td>
-					 <td data-label="Track Stall">100</td>
-					 <td data-label="Remove"><div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-				 </tr>
-				 <tr>
-					 <td data-label="Horse Name">Dixie</td>
-					 <td data-label="Horse Type">Mini</td>
-					 <td data-label="Horse ID">2254</td>
-					 <td data-label="Stall">17</td>
-					 <td data-label="Track Stall">50</td>
-					 <td data-label="Remove"><div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-				 </tr>
-				 <tr>
-					 <td data-label="Horse Name">All Cashed Out</td>
-					 <td data-label="Horse Type">Horse</td>
-					 <td data-label="Horse ID">2256</td>
-					 <td data-label="Stall">154</td>
-					 <td data-label="Track Stall">100</td>
-					 <td data-label="Remove"><div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-				 </tr>
-				 <tr>
-					 <td data-label="Horse Name">Dixie</td>
-					 <td data-label="Horse Type">Mini</td>
-					 <td data-label="Horse ID">2254</td>
-					 <td data-label="Stall">17</td>
-					 <td data-label="Track Stall">50</td>
-					 <td data-label="Remove"><div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-				 </tr>
-			   </tbody>
+				
 			 </perfect-scrollbar> 
 		 </table> 
-		 <div class="paginationWrapper mt-4 text-center">
-			 <ul class="pagination">
-				 <li class="page-item"><a class="page-link" href="#"><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>
-				 <li class="page-item"><a class="page-link" href="#">1</a></li>
-				 <li class="page-item"><a class="page-link" href="#">2</a></li>
-				 <li class="page-item"><a class="page-link" href="#">3</a></li>
-				 <li class="page-item"><a class="page-link" href="#">4</a></li>
-				 <li class="page-item"><a class="page-link" href="#">5</a></li>
-				 <li class="page-item"><a class="page-link" href="#"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
-			 </ul>
+		 <div [hidden]="totalItems == 0">
+			<mat-paginator #paginator [length]="totalItems" (page)="getNext($event)" [pageSizeOptions]="[5]">
+			</mat-paginator>
 		 </div>
 	   </div>
 	</div>
@@ -137,29 +66,32 @@
 	   <div class="tab-pane  active" id="home">
 		<mat-tab-group #tabGroup>
 			<mat-tab  class="nav-link active nav nav-tabs" label="Horse Info">
+				<form #horseInfoForm="ngForm" name="horseInfoForm" (ngSubmit)="horseInfoForm.valid && addHorse()" novalidate>
 		 <div class="card">
 			<div class="card-body">
 			   <div class="row">
 				 <div class="col-sm-6">
 				 <div class="form-group">
 						 <label>Horse ID <span>*</span></label>	
-						 <input type="text" class="form-control" placeholder="Horse ID"/>
+						 <input #horseId="ngModel" name="horseId" [(ngModel)]="horseInfo.HorseId"  type="text" class="form-control" placeholder="Horse ID"/>
 					 </div>
 					 <div class="form-group">
 						 <label>Horse Name <span>*</span></label>	
-						 <input type="text" class="form-control" placeholder="Horse Name"/>
-					 </div>
+						 <input #horseName="ngModel" name="horseName" [(ngModel)]="horseInfo.HorseName" required type="text" class="form-control" placeholder="Horse Name"/>
+						 <span class="help-block" *ngIf="horseName.errors?.required && (horseName.touched || horseInfoForm.submitted)">Horse Name is required</span>
+						</div>
 					 <div class="form-group">
 						 <label>Horse Type <span>*</span></label>	
-						 <select class="form-control">
+						 <select #horseType="ngModel" name="horseType" required [(ngModel)]="horseInfo.HorseType" class="form-control">
 							 <option>Pony</option>
 							 <option>Horse</option>
 							 <option>Mini</option>
 						 </select>
+						 <span class="help-block" *ngIf="horseType.errors?.required && (horseType.touched || horseInfoForm.submitted)">Horse Type is required</span>
 					 </div>  
 					 <div class="form-group">
 						 <label>Jump Height <span>*</span></label>	
-						 <select class="form-control">
+						 <select #jumpHeight="ngModel" name="jumpHeight" [(ngModel)]="horseInfo.JumpHeight" class="form-control">
 							 <option>Horse 2 ft.</option>
 							 <option>Horse 2 ft. 3 in</option>
 							 <option>Horse 2 ft. 6 in</option>
@@ -171,19 +103,19 @@
 				 <div class="col-sm-6">
 					 <div class="form-group">
 						 <label>Stall</label>
-						 <input type="text" class="form-control" placeholder="Stall"/>
+						 <input #stall="ngModel" name="stall" [(ngModel)]="horseInfo.Stall" type="text" class="form-control" placeholder="Stall"/>
 					 </div>
 					 <div class="form-group">
 						 <label>Track Stall</label>
-						 <input type="text" class="form-control" placeholder="Track Stall"/>
+						 <input #tackStall="ngModel" name="tackStall" [(ngModel)]="horseInfo.TackStall" type="text" class="form-control" placeholder="Track Stall"/>
 					 </div>
 					 <div class="form-group">
 						 <label>Group</label>
-						 <input type="text" class="form-control" placeholder="Group"/>
+						 <input #group="ngModel" name="group" [(ngModel)]="horseInfo.Group" type="text" class="form-control" placeholder="Group"/>
 					 </div>
 					 <div class="form-group text-left">
 						 <div class="checkbox">
-							 <label><input type="checkbox" value="" class="ciCheckbox">NSBA Indicator</label>
+							 <label><input type="checkbox" value="" #nsbaIndicator="ngModel" name="nsbaIndicator" [(ngModel)]="horseInfo.NSBAIndicator"  class="ciCheckbox">NSBA Indicator</label>
 						 </div>
 					 </div>
 				 </div>
@@ -192,20 +124,20 @@
 			   </div>
 			   <div class="col-sm-12 mb-3">
 					<div class="buttons text-right">
-							<button class="btn btn-red btnCss roundBtn">Next</button>
-						 <button class="btn btn-red btnCss roundBtn">+ Horse</button> 
-						 <button class="btn-red btnCss roundBtn">Stall</button> 
-						 <button class="btn btn-red btnCss roundBtn">Submit</button> 
+						 <button type ="button"  (click)='tabGroup.selectedIndex = 1' class="btn btn-red btnCss roundBtn">Next</button>
+						 <button type ="button" class="btn btn-red btnCss roundBtn">+ Horse</button> 
+						 <button type ="button" class="btn-red btnCss roundBtn">Stall</button> 
+						 <button type="submit" class="btn btn-red btnCss roundBtn">Submit</button> 
 						 
 					</div> 
 				 </div>
 				   
-			  </div> 
-				  
+			  </div> 				  
 		  </div>
+		</form>
 		</mat-tab>
 
-		<mat-tab  class="nav-link active nav nav-tabs" label="Horse Info">
+		<mat-tab  class="nav-link active nav nav-tabs" label="Exhibitors Linked">
 			<div class="card dataEntriesTable">
 			  <div class="card-body">  
 					  <div class="table-responsive">
@@ -254,7 +186,7 @@
 				   </div>
 			   </div>
 			   <div class="actionBtn text-right mt-3 mb-3">
-				   <button class="btn btn-red btnCss">Previous</button>
+				   <button (click)='tabGroup.selectedIndex = 0' class="btn btn-red btnCss">Previous</button>
 			   </div>
   
   
