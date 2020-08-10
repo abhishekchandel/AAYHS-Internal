@@ -45,6 +45,9 @@ namespace AAYHS.Core.DTOs.Response
         public GetAllHorses GetAllHorses { get; set; }
         public UserResponse UserResponse { get; set; }
 
+        public GroupResponse GroupResponse  { get; set; }
+        public GroupListResponse GroupListResponse  { get; set; }
+
     }
    
     public class Response<T> : BaseResponse

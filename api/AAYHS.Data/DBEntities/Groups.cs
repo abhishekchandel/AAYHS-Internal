@@ -12,13 +12,11 @@ namespace AAYHS.Data.DBEntities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public int GroupId { get; set; }
-        [Column(TypeName = "varchar(255)")]
         public string GroupName { get; set; }
-        [Column(TypeName = "varchar(255)")]
         public string ContactName { get; set; }
-        [Column(TypeName = "varchar(15)")]
-        public string ContactPhone { get; set; }
-        [Column(TypeName = "varchar(255)")]
-        public string ContactEmail { get; set; }
+        public string Phone { get; set; }
+        public string Email { get; set; }
+        public float AmountReceived { get; set; }
+        public int AddressId { get; set; }
     }
 }
