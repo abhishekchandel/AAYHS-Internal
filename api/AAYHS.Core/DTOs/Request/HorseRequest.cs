@@ -16,7 +16,7 @@ namespace AAYHS.Core.DTOs.Request
         public int GroupId { get; set; }
         public string Name { get; set; }
         public int Number { get; set; }
-        public string JumpHeight { get; set; }
+        public int JumpHeightId { get; set; }
         public bool NSBAIndicator { get; set; }
         public int StallId { get; set; }
         public int TackStallId { get; set; }

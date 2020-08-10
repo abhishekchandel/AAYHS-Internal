@@ -83,7 +83,7 @@ namespace AAYHS.Service.Service
                 {
                     Name = horseAddRequest.Name,
                     HorseTypeId =horseAddRequest.HorseTypeId,
-                    JumpHeight=horseAddRequest.JumpHeight,
+                    JumpHeightId=horseAddRequest.JumpHeightId,
                     GroupId=horseAddRequest.GroupId,
                     NSBAIndicator=horseAddRequest.NSBAIndicator,
                     IsActive=true,
