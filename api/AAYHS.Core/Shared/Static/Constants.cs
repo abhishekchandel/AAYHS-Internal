@@ -37,6 +37,7 @@ namespace AAYHS.Core.Shared.Static
         public const string PASSWORD_CHANGED = "Password changed successfully.";
         public const string ADMIN_APPROVAL = "You need the admin approval before login";
         public const string HORSE_ADDED = "Horse added successfully";
+        public const string HORSE_UPDATED = "Horse updated successfully";
 
     }
 }

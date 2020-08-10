@@ -50,7 +50,7 @@ namespace AAYHS.Repository.Repository
                             ExhibitorId = data2!=null? data2.ExhibitorId:0,
                             FirstName = data2 != null ? data2.FirstName:"",
                             LastName = data2 != null ? data2.LastName:"",
-                            BirthYear = data2 != null ? data2.BirthYear:DateTime.Now,
+                            BirthYear = data2 != null ? data2.BirthYear:0,
                             SponsorTypeId = sponsorexhibitor.SponsorTypeId,
                             TypeId = sponsorexhibitor.TypeId,
                             IdNumber = sponsorexhibitor.SponsorTypeId == (int)SponsorTypes.Class ? Convert.ToString(_context.Classes.Where(x => x.ClassId == sponsorexhibitor.TypeId).Select(x => x.ClassNumber).FirstOrDefault())

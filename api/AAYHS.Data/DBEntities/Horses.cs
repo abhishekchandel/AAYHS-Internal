@@ -12,12 +12,11 @@ namespace AAYHS.Data.DBEntities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public int HorseId { get; set; }
-        public int HorseTypeId { get; set; }
-        public int BackNumber { get; set; }
+        public int HorseTypeId { get; set; }     
         public int GroupId { get; set; }
         public string Name { get; set; }
         public int Number { get; set; }
-        public string JumpHeight { get; set; }
+        public int JumpHeightId { get; set; }
         public bool NSBAIndicator { get; set; }
     }
 }

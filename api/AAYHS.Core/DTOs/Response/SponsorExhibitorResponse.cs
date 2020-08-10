@@ -11,7 +11,7 @@ namespace AAYHS.Core.DTOs.Response
         public int ExhibitorId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public DateTime BirthYear { get; set; }
+        public int BirthYear { get; set; }
         public int SponsorTypeId { get; set; }
         public int TypeId { get; set; }
         public string IdNumber { get; set; }

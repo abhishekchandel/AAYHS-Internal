@@ -17,8 +17,8 @@ namespace AAYHS.Data.DBEntities
         [Column(TypeName = "varchar(255)")]
         public string ContactName { get; set; }
         [Column(TypeName = "varchar(15)")]
-        public string ContactPhone { get; set; }
+        public string Phone { get; set; }
         [Column(TypeName = "varchar(255)")]
-        public string ContactEmail { get; set; }
+        public string Email { get; set; }
     }
 }

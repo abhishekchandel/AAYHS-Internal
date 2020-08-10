@@ -11,7 +11,11 @@ namespace AAYHS.Service.IService
     public interface IHorseService
     {
         MainResponse GetAllHorses(HorseRequest horseRequest);
+        MainResponse GetHorse(HorseRequest horseRequest);
         MainResponse RemoveHorse(int HorseId, string actionBy);
-        MainResponse AddHorse(HorseAddRequest horseAddRequest, string actionBy);
+        MainResponse AddUpdateHorse(HorseAddRequest horseAddRequest, string actionBy);
+        MainResponse SearchHorse(SearchRequest searchRequest);
+        MainResponse LinkedExhibitors(HorseExhibitorRequest horseExhibitorRequest);
+        MainResponse GetGroup();
     }
 }
