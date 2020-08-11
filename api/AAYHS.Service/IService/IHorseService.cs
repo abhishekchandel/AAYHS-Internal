@@ -16,6 +16,6 @@ namespace AAYHS.Service.IService
         MainResponse AddUpdateHorse(HorseAddRequest horseAddRequest, string actionBy);
         MainResponse SearchHorse(SearchRequest searchRequest);
         MainResponse LinkedExhibitors(HorseExhibitorRequest horseExhibitorRequest);
-        MainResponse GetGroup();
+        MainResponse GetGroups();
     }
 }

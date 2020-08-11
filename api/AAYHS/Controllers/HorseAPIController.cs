@@ -117,9 +117,9 @@ namespace AAYHS.API.Controllers
         /// <returns></returns>
         [HttpGet]
         //[Authorize]
-        public IActionResult GetGroup()
+        public IActionResult GetGroups()
         {
-            _mainResponse = _horseService.GetGroup();
+            _mainResponse = _horseService.GetGroups();
             _jsonString = Mapper.Convert<GetAllGroups>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }

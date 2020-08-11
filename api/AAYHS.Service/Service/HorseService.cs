@@ -177,7 +177,7 @@ namespace AAYHS.Service.Service
             }
             return _mainResponse;
         }
-        public MainResponse GetGroup()
+        public MainResponse GetGroups()
         {
             var groups = _groupRepository.GetAll(x => x.IsActive == true && x.IsDeleted == false);
 
