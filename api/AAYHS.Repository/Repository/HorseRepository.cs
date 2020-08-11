@@ -84,9 +84,7 @@ namespace AAYHS.Repository.Repository
                     {
                         HorseId=horse.HorseId,
                         Name=horse.Name,
-                        HorseType=_ObjContext.GlobalCodes.Where(x=>x.GlobalCodeId==horse.HorseTypeId).Select(x=>x.CodeName).FirstOrDefault(),
-                        StallNumber=_ObjContext.Stall.Where(x=>x.StallId==stall2.StallId).Select(x=>x.StallNumber).FirstOrDefault(),
-                        TackStallNumber=_ObjContext.TackStall.Where(x=>x.TackStallId==tack2.TackStallId).Select(x=>x.TackStallNumber).FirstOrDefault()
+                        HorseType=_ObjContext.GlobalCodes.Where(x=>x.GlobalCodeId==horse.HorseTypeId).Select(x=>x.CodeName).FirstOrDefault()                      
                     });
 
             if (data.Count() != 0)
