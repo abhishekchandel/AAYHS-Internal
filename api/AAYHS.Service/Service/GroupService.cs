@@ -22,12 +22,15 @@ namespace AAYHS.Service.Service
         private MainResponse _mainResponse;
         private IGroupRepository _GroupRepository;
         private IAddressRepository _AddressRepository;
+        private readonly IGroupExhibitorRepository _groupExhibitorRepository;
         #endregion
 
-        public GroupService(IGroupRepository GroupRepository, IAddressRepository AddressRepository, IMapper Mapper)
+        public GroupService(IGroupRepository GroupRepository, IAddressRepository AddressRepository,IGroupExhibitorRepository groupExhibitorRepository
+                          , IMapper Mapper)
         {
             _GroupRepository = GroupRepository;
             _AddressRepository = AddressRepository;
+            _groupExhibitorRepository = groupExhibitorRepository;
             _Mapper = Mapper;
             _mainResponse = new MainResponse();
         }
@@ -154,6 +157,7 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
+        
         public MainResponse SearchGroup(SearchRequest searchRequest)
         {
             var search = _GroupRepository.SearchGroup(searchRequest);
@@ -171,5 +175,47 @@ namespace AAYHS.Service.Service
 
             return _mainResponse;
         }
+
+        public MainResponse GetGroupExhibitors(GroupExhibitorsRequest groupExhibitorsRequest)
+        {
+            var groupExhibitors = _GroupRepository.GetGroupExhibitors(groupExhibitorsRequest);
+
+            if (groupExhibitors.getGroupExhibitors!=null && groupExhibitors.TotalRecords!=0)
+            {
+                _mainResponse.GetAllGroupExhibitors = groupExhibitors;
+                _mainResponse.GetAllGroupExhibitors.TotalRecords = groupExhibitors.TotalRecords;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+                _mainResponse.Success = false;
+            }
+            return _mainResponse;
+        }
+
+        public MainResponse DeleteGroupExhibitor(int groupExhibitorId,string actionBy)
+        {
+            var groupExhibitor = _groupExhibitorRepository.GetSingle(x =>x.GroupExhibitorId==groupExhibitorId && x.IsActive == true && x.IsDeleted == false);
+
+            if (groupExhibitor!=null)
+            {
+                groupExhibitor.IsDeleted = true;
+                groupExhibitor.ModifiedBy = actionBy;
+                groupExhibitor.ModifiedDate = DateTime.Now;
+
+                _groupExhibitorRepository.Update(groupExhibitor);
+
+                _mainResponse.Success = true;
+                _mainResponse.Message = Constants.GROUP_EXHIBITOR_DELETED;
+            }
+            else
+            {
+                _mainResponse.Success = false;
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+            }
+            return _mainResponse;
+        }
+        
     }
 }

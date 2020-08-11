@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
+using System.Text.RegularExpressions;
 
 namespace AAYHS.Repository.Repository
 {
@@ -160,6 +162,59 @@ namespace AAYHS.Repository.Repository
 
             GroupListResponse.groupResponses = GroupResponses.ToList();
             return GroupListResponse;
+        }
+
+        public GetAllGroupExhibitors GetGroupExhibitors(GroupExhibitorsRequest groupExhibitorsRequest)
+        {
+            IEnumerable<GetGroupExhibitors> data;
+            GetAllGroupExhibitors getAllGroupExhibitors = new GetAllGroupExhibitors();
+
+            data = (from groupExhibitors in _context.GroupExhibitors
+                    join exhibitors in _context.Exhibitors on groupExhibitors.ExhibitorId equals exhibitors.ExhibitorId into exhibitors1
+                    from exhibitors2 in exhibitors1.DefaultIfEmpty()                    
+                    where groupExhibitors.GroupId == groupExhibitorsRequest.GroupId && groupExhibitors.IsActive == true &&
+                    groupExhibitors.IsDeleted == false && exhibitors2.IsActive==true && exhibitors2.IsDeleted==false
+                    select new GetGroupExhibitors 
+                    { 
+                       GroupExhibitorId=groupExhibitors.GroupExhibitorId,
+                       ExhibitorId=groupExhibitors.ExhibitorId,
+                       ExhibitorName=exhibitors2.FirstName+" "+exhibitors2.LastName,                      
+                       BirthYear=exhibitors2.BirthYear,
+                       getGroupExhibitorHorses=(from exhibitorHorse in _context.ExhibitorHorse
+                                  join horse in _context.Horses on exhibitorHorse.HorseId equals horse.HorseId into horse1
+                                  from horse2 in horse1.DefaultIfEmpty()
+                                  where groupExhibitors.ExhibitorId==exhibitorHorse.ExhibitorId && exhibitorHorse.IsActive==true 
+                                  && exhibitorHorse.IsDeleted==false && horse2.IsActive==true && horse2.IsDeleted==false
+                                  select new GroupExhibitorHorses 
+                                  { 
+                                     HorseName=horse2.Name
+
+                                  }).ToList()
+                    });;
+
+            if (data.Count() != 0)
+            {
+                if (groupExhibitorsRequest.OrderByDescending == true)
+                {
+                    data = data.OrderByDescending(x => x.GetType().GetProperty(groupExhibitorsRequest.OrderBy).GetValue(x));
+                }
+                else
+                {
+                    data = data.OrderBy(x => x.GetType().GetProperty(groupExhibitorsRequest.OrderBy).GetValue(x));
+                }
+                getAllGroupExhibitors.TotalRecords = data.Count();
+                if (groupExhibitorsRequest.AllRecords)
+                {
+                    getAllGroupExhibitors.getGroupExhibitors = data.ToList();
+                }
+                else
+                {
+                    getAllGroupExhibitors.getGroupExhibitors = data.Skip((groupExhibitorsRequest.Page - 1) * groupExhibitorsRequest.Limit).Take(groupExhibitorsRequest.Limit).ToList();
+
+                }
+
+            }
+            return getAllGroupExhibitors;
         }
     }
 }

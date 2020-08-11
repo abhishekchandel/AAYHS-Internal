@@ -45,6 +45,19 @@ namespace AAYHS.API.Controllers
             return new OkObjectResult(_jsonString);
         }
         /// <summary>
+        /// This api used to get horse 
+        /// </summary>
+        /// <param name="horseRequest"></param>
+        /// <returns></returns>
+        [HttpGet]
+        //[Authorize]
+        public IActionResult GetHorse(int HorseId)
+        {
+            _mainResponse = _horseService.GetHorse(HorseId);
+            _jsonString = Mapper.Convert<GetHorseById>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
         /// This api used to remove the horse
         /// </summary>
         /// <param name="horseId"></param>
@@ -65,11 +78,49 @@ namespace AAYHS.API.Controllers
         /// <returns></returns>
         [HttpPost]
         //[Authorize]
-        public IActionResult AddHorse(HorseAddRequest horseAddRequest)
+        public IActionResult AddUpdateHorse(HorseAddRequest horseAddRequest)
         {
             string actionBy = User.Identity.Name;
-            _mainResponse = _horseService.AddHorse(horseAddRequest, actionBy);
+            _mainResponse = _horseService.AddUpdateHorse(horseAddRequest, actionBy);
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to search the horse
+        /// </summary>
+        /// <param name="horseAddRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        //[Authorize]
+        public IActionResult SearchHorse(SearchRequest searchRequest)
+        {           
+            _mainResponse = _horseService.SearchHorse(searchRequest);
+            _jsonString = Mapper.Convert<GetAllHorses>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to get exhibitor linked with horse
+        /// </summary>
+        /// <param name="searchRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        //[Authorize]
+        public IActionResult LinkedExhibitors(HorseExhibitorRequest horseExhibitorRequest)
+        {
+            _mainResponse = _horseService.LinkedExhibitors(horseExhibitorRequest);
+            _jsonString = Mapper.Convert<GetAllLinkedExhibitors>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to get group id and name
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        //[Authorize]
+        public IActionResult GetGroups()
+        {
+            _mainResponse = _horseService.GetGroups();
+            _jsonString = Mapper.Convert<GetAllGroups>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
     }  

@@ -6,6 +6,7 @@ using AAYHS.Core.DTOs.Request;
 using AAYHS.Core.DTOs.Response;
 using AAYHS.Core.Shared.Static;
 using AAYHS.Service.IService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -98,6 +99,33 @@ namespace AAYHS.API.Controllers
 
             _mainResponse = _GroupService.SearchGroup(searchRequest);
             _jsonString = Mapper.Convert<GroupListResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to get group exhibitors
+        /// </summary>
+        /// <param name="groupExhibitorsRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        //[Authorize]
+        public IActionResult GetGroupExhibitors(GroupExhibitorsRequest groupExhibitorsRequest)
+        {
+            _mainResponse = _GroupService.GetGroupExhibitors(groupExhibitorsRequest);
+            _jsonString = Mapper.Convert<GetAllGroupExhibitors>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to delete the group exhibitor
+        /// </summary>
+        /// <param name="groupExhibitorId"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        //[Authorize]
+        public IActionResult DeleteGroupExhibitor(int groupExhibitorId)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _GroupService.DeleteGroupExhibitor(groupExhibitorId, actionBy);
+            _jsonString = Mapper.Convert<GetAllGroupExhibitors>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
     }

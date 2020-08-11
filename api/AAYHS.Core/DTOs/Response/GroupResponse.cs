@@ -22,4 +22,21 @@ namespace AAYHS.Core.DTOs.Response
         public int TotalRecords { get; set; }
         public List<GroupResponse> groupResponses { get; set; }
     }
+    public class GetGroupExhibitors
+    {
+        public int GroupExhibitorId { get; set; }
+        public int ExhibitorId { get; set; }
+        public string ExhibitorName { get; set; }       
+        public int BirthYear { get; set; }
+        public List<GroupExhibitorHorses> getGroupExhibitorHorses { get; set; }
+    }
+    public class GetAllGroupExhibitors
+    {
+        public List<GetGroupExhibitors> getGroupExhibitors { get; set; }
+        public int TotalRecords { get; set; }
+    }
+    public class GroupExhibitorHorses
+    {  
+        public string HorseName { get; set; }
+    }
 }

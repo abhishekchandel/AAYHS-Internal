@@ -12,5 +12,6 @@ namespace AAYHS.Repository.IRepository
         MainResponse GetGroupById(int GroupId);
         MainResponse GetAllGroups(BaseRecordFilterRequest request);
         GroupListResponse SearchGroup(SearchRequest searchRequest);
+        GetAllGroupExhibitors GetGroupExhibitors(GroupExhibitorsRequest groupExhibitorsRequest);
     }
 }

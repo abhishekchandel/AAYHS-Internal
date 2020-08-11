@@ -1410,3 +1410,53 @@ footer{
     opacity: 0.7 !important;
     cursor:none !important;
 }
+.quantityWrapper {
+    max-width: 200px;
+    float: right;
+    background-color: #b5cbf7;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    .uantityField{
+        &.stallQuantity {
+            display: flex;
+            .form-control {
+                background-color: #fff;
+                text-align: center;
+            }
+            button {
+                margin-left: 10px;
+                min-width: 75px;
+                border: 2px solid #7b1124;
+                background-color: #fff;
+                color: #000;
+            }
+        }
+    }
+}
+
+.prePostField{
+    .radioBtn {
+        margin-right: 10px;
+        input[type=radio]{
+            top: 2px;
+            position: relative;
+            margin-left: 2px;
+        }
+    }
+}
+// exibhitor search 
+.form-inline {
+    .searchFormWrapper {
+        max-width: 350px;
+        width: 100%;
+        background-color: #b5cbf7;
+        border-radius: 50px;
+        overflow: hidden;
+    
+        .form-control {
+            max-width: 300px ;
+            width: 100% !important ;
+        }
+    }
+}

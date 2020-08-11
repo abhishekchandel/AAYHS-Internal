@@ -125,8 +125,8 @@
 			   <div class="col-sm-12 mb-3">
 					<div class="buttons text-right">
 						 <button type ="button"  (click)='tabGroup.selectedIndex = 1' class="btn btn-red btnCss roundBtn">Next</button>
-						 <button type ="button" class="btn btn-red btnCss roundBtn">+ Horse</button> 
-						 <button type ="button" class="btn-red btnCss roundBtn">Stall</button> 
+						 <!--button type ="button" class="btn btn-red btnCss roundBtn">+ Horse</button> 
+						 <button type ="button" class="btn-red btnCss roundBtn">Stall</button--> 
 						 <button type="submit" class="btn btn-red btnCss roundBtn">Submit</button> 
 						 
 					</div> 
@@ -139,7 +139,14 @@
 
 		<mat-tab  class="nav-link active nav nav-tabs" label="Exhibitors Linked">
 			<div class="card dataEntriesTable">
-			  <div class="card-body">  
+			  <div class="card-body"> 
+					<form class="form-inline mb-3">	
+						<div class="searchFormWrapper">
+							<input class="form-control form-control-sm mr-3 w-75" type="text" placeholder="Search"
+							aria-label="Search">
+							<i class="fa fa-search" aria-hidden="true"></i>
+						</div>
+					</form>
 					  <div class="table-responsive">
 					   <table class="table table-bordered tableBodyScroll">
 					   <thead>
@@ -185,7 +192,7 @@
 					   </table> 
 				   </div>
 			   </div>
-			   <div class="actionBtn text-right mt-3 mb-3">
+			   <div class="actionBtn text-right mt-2 mb-3">
 				   <button (click)='tabGroup.selectedIndex = 0' class="btn btn-red btnCss">Previous</button>
 			   </div>
   
