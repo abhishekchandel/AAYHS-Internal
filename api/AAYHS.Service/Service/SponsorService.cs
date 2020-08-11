@@ -117,8 +117,6 @@ namespace AAYHS.Service.Service
                 _mainResponse.Message = Constants.NO_RECORD_FOUND;
                 _mainResponse.Success = false;
             }
-              
-           
             return _mainResponse;
         }
 

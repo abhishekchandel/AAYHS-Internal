@@ -16,5 +16,6 @@ namespace AAYHS.Data.DBEntities
         public int MaxNumberOfHorseAssignment { get; set; }
         [Column(TypeName = "varchar(5000)")]
         public int Comments { get; set; }
+        public string Location { get; set; }
     }
 }

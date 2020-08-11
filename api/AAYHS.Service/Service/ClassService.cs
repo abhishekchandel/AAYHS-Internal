@@ -79,7 +79,7 @@ namespace AAYHS.Service.Service
             GetClassAllExhibitors getClassAllExhibitors = new GetClassAllExhibitors();
             List < GetClassExhibitors> getClassListExhibitors = new List<GetClassExhibitors>();
             var allExhibitor = _exhibitorRepository.GetAll(x=>x.IsActive==true && x.IsDeleted==false);
-            if (allExhibitor!=null)
+            if (allExhibitor.Count!=0)
             {
                 var exhibitorClasses = _exhibitorClassRepositor.GetAll(x => x.ClassId == ClassId && x.IsActive == true && x.IsDeleted == false);
                 var exhibitor = allExhibitor.Where(x => exhibitorClasses.All(y => y.ExhibitorId != x.ExhibitorId)).ToList(); 

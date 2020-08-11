@@ -31,6 +31,8 @@ namespace AAYHS.Core.AutoMapper
             CreateMap<ClassSponsors, ClassSponsorResponse>();
             CreateMap<Classes, GetAllClasses>();
             CreateMap<User, UserResponse>();
+            CreateMap<Horses, GetHorseById>();
+            CreateMap<Groups, GetGroup>();
 
         }
     }
