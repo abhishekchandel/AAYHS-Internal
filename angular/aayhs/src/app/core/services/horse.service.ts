@@ -20,10 +20,26 @@ export class HorseService {
   }
 
   createUpdateHorse(data){
-    return this.http.post<any>(`${this.api}HorseAPI/AddClass`,data);
+    return this.http.post<any>(`${this.api}HorseAPI/AddUpdateHorse`,data);
   }
 
   getLinkedExhibitors(data){
-    return this.http.post<any>(`${this.api}HorseAPI/GetLinkedExhibitors`,data);
+    return this.http.post<any>(`${this.api}HorseAPI/LinkedExhibitors`,data);
+  }
+
+  getHorseDetails(id:number){
+    return this.http.get<any>(`${this.api}HorseAPI/GetHorse?horseId=${id}`);
+  }
+
+  getGroups(){
+    return this.http.get<any>(`${this.api}HorseAPI/GetGroups`);
+  }
+
+  getHorseType(data){
+    return this.http.get<any>(`${this.api}CommonAPI/GetGlobalCode?categoryName=${data}`);
+  }
+
+  getJumpHeight(data){
+    return this.http.get<any>(`${this.api}CommonAPI/GetGlobalCode?categoryName=${data}`);
   }
 }
