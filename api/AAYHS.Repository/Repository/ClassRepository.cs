@@ -45,7 +45,7 @@ namespace AAYHS.Repository.Repository
                       ClassId= classes.ClassId,
                       ClassNumber= classes.ClassNumber,
                       Name= classes.Name,
-                      Entries= classes != null ? _ObjContext.ExhibitorClass.Where(x=>x.ClassId== classes.ClassId).Select(x=>x.ExhibitorClassId).Count():0,
+                      Entries= classes != null ? _ObjContext.ExhibitorClass.Where(x=>x.ClassId== classes.ClassId && x.IsActive==true && x.IsDeleted==false).Select(x=>x.ExhibitorClassId).Count():0,
                       AgeGroup= classes.AgeGroup,
                                                   
                   });
@@ -83,7 +83,8 @@ namespace AAYHS.Repository.Repository
                     from scheduleDate2 in scheduleDate1.DefaultIfEmpty()
                     join splitClass in _ObjContext.ClassSplits on classes.ClassId equals splitClass.ClassId into splitClass1
                     from splitClass2 in splitClass1.DefaultIfEmpty()                                    
-                    where classes.IsActive == true && classes.IsDeleted == false && classes.ClassId == ClassId
+                    where classes.IsActive == true && classes.IsDeleted == false && splitClass2.IsActive==true && splitClass2.IsDeleted==false 
+                    && classes.ClassId == ClassId
                     select new ClassResponse
                     {
                         ClassId= classes.ClassId,
@@ -98,7 +99,8 @@ namespace AAYHS.Repository.Repository
                         ChampionShipIndicator=splitClass2.ChampionShipIndicator,
                         getClassSplit = (from splitClass in _ObjContext.ClassSplits
                                         join classes in _ObjContext.Classes on splitClass.ClassId equals classes.ClassId 
-                                        where classes.IsActive == true && classes.IsDeleted == false && splitClass.ClassId == ClassId
+                                        where classes.IsActive == true && classes.IsDeleted == false && splitClass.IsActive==true && splitClass.IsDeleted==false
+                                        && splitClass.ClassId == ClassId
                                         select new GetClassSplit
                                         {                                           
                                            Entries= splitClass.Entries       
@@ -143,10 +145,10 @@ namespace AAYHS.Repository.Repository
 
             foreach (var data in exhibitorClass)
             {
-                var exhibitor = (from ex in _ObjContext.Exhibitors where ex.ExhibitorId == data.ExhibitorId select ex).FirstOrDefault();
+                var exhibitor = (from ex in _ObjContext.Exhibitors where ex.ExhibitorId == data.ExhibitorId && ex.IsDeleted==false select ex).FirstOrDefault();
                 if (exhibitor != null)
                 {
-                    var horses = (from hr in _ObjContext.Horses select hr).ToList();
+                    var horses = (from hr in _ObjContext.Horses where  hr.IsDeleted == false select hr).ToList();
                     if (horses != null && horses.Count > 0)
                     {
                         foreach (var horse in horses)
@@ -179,6 +181,7 @@ namespace AAYHS.Repository.Repository
                     join f in _ObjContext.Fees on paymentdetails2.FeeId equals f.FeeId into f1
                     from f2 in f1.DefaultIfEmpty()
                     where exhibitorclasses.IsDeleted == false && exhibitors2.IsDeleted == false && exhibitorclasses.IsActive == true && exhibitors2.IsActive == true &&
+                    horses2.IsDeleted==false && horses2.IsActive==true && paymentdetails2.IsDeleted==false && f2.IsDeleted==false &&
                     exhibitorclasses.ClassId== classRequest.ClassId
                     select new GetClassEntries
                     {
@@ -220,6 +223,7 @@ namespace AAYHS.Repository.Repository
                               join exhibitors in _ObjContext.Exhibitors on exhibitorsClass.ExhibitorId equals exhibitors.ExhibitorId into exhibitors1
                               from exhibitors2 in exhibitors1.DefaultIfEmpty()
                               where exhibitorsClass.IsActive == true && exhibitorsClass.IsDeleted == false
+                              && exhibitors2.IsActive==true && exhibitors2.IsDeleted==false
                               && exhibitorsClass.ClassId == ClassId
                               select new GetBackNumber
                               {
@@ -245,12 +249,13 @@ namespace AAYHS.Repository.Repository
                              where exhibitors.IsActive == true && exhibitors.IsDeleted == false &&
                              exhibitors.BackNumber == resultExhibitorRequest.BackNumber && exhibitorsClass2.ClassId == resultExhibitorRequest.ClassId
                              && exhibitorsClass2.IsActive == true && exhibitorsClass2.IsDeleted == false
+                             && addresses2.IsDeleted==false && city2.IsDeleted==false && state2.IsDeleted==false && paymentdetails2.IsDeleted==false && f2.IsDeleted==false
                              select new ResultExhibitorDetails
                              {
                                  ExhibitorId=exhibitors.ExhibitorId,
                                  ExhibitorName = exhibitors.FirstName + " " + exhibitors.LastName,
                                  BirthYear = exhibitors.BirthYear,
-                                 HorseName = _ObjContext.Horses.Where(x => x.HorseId == exhibitorsClass2.HorseId).Select(x => x.Name).FirstOrDefault(),
+                                 HorseName = _ObjContext.Horses.Where(x => x.HorseId == exhibitorsClass2.HorseId && x.IsActive==true && x.IsDeleted==false).Select(x => x.Name).FirstOrDefault(),
                                  Address= city2.Name+", "+ state2.Code,
                                  AmountPaid= paymentdetails2.Amount,
                                  AmountDue= ((int)(Convert.ToDecimal(f2.FeeAmount) - paymentdetails2.Amount))
@@ -280,6 +285,8 @@ namespace AAYHS.Repository.Repository
                     join f in _ObjContext.Fees on paymentdetails2.FeeId equals f.FeeId into f1
                     from f2  in f1.DefaultIfEmpty()
                     where result.IsActive == true && result.IsDeleted == false && exhibitor2.IsActive == true && exhibitor2.IsDeleted == false
+                    && exhibitorsClass2.IsDeleted==false && addresses2.IsDeleted == false && city2.IsDeleted == false && state2.IsDeleted == false
+                    && paymentdetails2.IsDeleted == false && f2.IsDeleted == false
                     && result.ClassId == classRequest.ClassId
                     select new GetResultOfClass
                     {
@@ -288,7 +295,7 @@ namespace AAYHS.Repository.Repository
                         BackNumber= exhibitor2.BackNumber,
                         ExhibitorName= exhibitor2.FirstName+" "+ exhibitor2.LastName,
                         BirthYear= exhibitor2.BirthYear,
-                        HorseName= _ObjContext.Horses.Where(x => x.HorseId == exhibitorsClass2.HorseId).Select(x => x.Name).FirstOrDefault(),
+                        HorseName= _ObjContext.Horses.Where(x => x.HorseId == exhibitorsClass2.HorseId && x.IsDeleted==false).Select(x => x.Name).FirstOrDefault(),
                         Address= city2.Name + ", " + state2.Code,
                         AmountPaid = paymentdetails2.Amount,
                         AmountDue = ((int)(Convert.ToDecimal(f2.FeeAmount) - paymentdetails2.Amount))
@@ -332,7 +339,7 @@ namespace AAYHS.Repository.Repository
                         ClassId = classes.ClassId,
                         ClassNumber = classes.ClassNumber,
                         Name = classes.Name,
-                        Entries = classes != null ? _ObjContext.ExhibitorClass.Where(x => x.ClassId == classes.ClassId).Select(x => x.ExhibitorClassId).Count() : 0,
+                        Entries = classes != null ? _ObjContext.ExhibitorClass.Where(x => x.ClassId == classes.ClassId && x.IsDeleted==false).Select(x => x.ExhibitorClassId).Count() : 0,
                         AgeGroup = classes.AgeGroup
                     });
 

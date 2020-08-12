@@ -159,6 +159,7 @@ namespace AAYHS
             services.AddTransient<ITackStallAssignmentRepository, TackStallAssignmentRepository>();
             services.AddTransient<IGroupRepository, GroupRepository>();
             services.AddTransient<IGroupExhibitorRepository, GroupExhibitorRepository>();
+            services.AddTransient<IGroupFinancialRepository, GroupFinancialRepository>();
 
             services.AddControllers();
         }

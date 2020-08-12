@@ -42,5 +42,8 @@ namespace AAYHS.Core.Shared.Static
         public const string HORSE_ADDED = "Horse added successfully";
         public const string HORSE_UPDATED = "Horse updated successfully";
         public const string GROUP_EXHIBITOR_DELETED = "Group exhibitor deleted successfully";
+        public const string GROUP_FINANCIAL_ADDED = "Group financial added successfully";
+        public const string GROUP_FINANCIAL_UPDATED = "Group financial updated successfully";
+        public const string GROUP_FINANCIAL_DELETED = "Group financial deleted successfully";
     }
 }

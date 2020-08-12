@@ -13,8 +13,7 @@ namespace AAYHS.Core.DTOs.Response
     public class BaseResponse
     {
         public string Message { get; set; }     
-        public bool Success { get; set; } = true;
-       
+        public bool Success { get; set; } = true;        
     }
 
     public class MainResponse : BaseResponse
@@ -51,6 +50,7 @@ namespace AAYHS.Core.DTOs.Response
         public GetAllGroups GetAllGroups { get; set; }
         public GetHorseById GetHorseById { get; set; }
         public GetAllGroupExhibitors GetAllGroupExhibitors { get; set; }
+        public GetAllGroupFinacials GetAllGroupFinacials { get; set; }
 
     }
    

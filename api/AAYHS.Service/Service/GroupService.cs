@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace AAYHS.Service.Service
 {
@@ -23,14 +24,16 @@ namespace AAYHS.Service.Service
         private IGroupRepository _GroupRepository;
         private IAddressRepository _AddressRepository;
         private readonly IGroupExhibitorRepository _groupExhibitorRepository;
+        private readonly IGroupFinancialRepository _groupFinancialRepository;
         #endregion
 
         public GroupService(IGroupRepository GroupRepository, IAddressRepository AddressRepository,IGroupExhibitorRepository groupExhibitorRepository
-                          , IMapper Mapper)
+                          ,IGroupFinancialRepository groupFinancialRepository, IMapper Mapper)
         {
             _GroupRepository = GroupRepository;
             _AddressRepository = AddressRepository;
             _groupExhibitorRepository = groupExhibitorRepository;
+            _groupFinancialRepository = groupFinancialRepository;
             _Mapper = Mapper;
             _mainResponse = new MainResponse();
         }
@@ -217,5 +220,100 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
         
-    }
+        public MainResponse AddUpdateGroupFinancials(AddGroupFinancialRequest addGroupFinancialRequest,string actionBy)
+        {
+            if (addGroupFinancialRequest.GroupFinancialId==0)
+            {
+                var groupFinancial = new GroupFinancials
+                {
+                    GroupId = addGroupFinancialRequest.GroupId,
+                    Date = DateTime.Now,
+                    FeeTypeId = addGroupFinancialRequest.FeeTypeId,
+                    TimeFrameId = addGroupFinancialRequest.TimeFrameId,
+                    Amount = addGroupFinancialRequest.Amount,
+                    CreatedBy = actionBy,
+                    CreatedDate = DateTime.Now
+                };
+
+                _groupFinancialRepository.Add(groupFinancial);
+
+                _mainResponse.Success = true;
+                _mainResponse.Message = Constants.GROUP_FINANCIAL_ADDED;
+            }
+            else
+            {
+                var groupFinancial = _groupFinancialRepository.GetSingle(x => x.GroupFinancialId == addGroupFinancialRequest.GroupFinancialId
+                                     && x.IsActive == true && x.IsDeleted == false);
+
+                if (groupFinancial!=null)
+                {
+                    groupFinancial.GroupId = addGroupFinancialRequest.GroupId;
+                    groupFinancial.FeeTypeId = addGroupFinancialRequest.FeeTypeId;
+                    groupFinancial.TimeFrameId = addGroupFinancialRequest.TimeFrameId;
+                    groupFinancial.Amount = addGroupFinancialRequest.Amount;
+                    groupFinancial.ModifiedBy = actionBy;
+                    groupFinancial.ModifiedDate = DateTime.Now;
+
+                    _groupFinancialRepository.Update(groupFinancial);
+
+                    _mainResponse.Success = true;
+                    _mainResponse.Message = Constants.GROUP_FINANCIAL_UPDATED;
+
+                }
+                else
+                {
+                    _mainResponse.Success = false;
+                    _mainResponse.Message = Constants.NO_RECORD_FOUND;
+                }
+            }
+            return _mainResponse;
+        }
+
+        public MainResponse DeleteGroupFinancials(int groupFinancialId,string actionBy)
+        {
+            var deleteFinancial = _groupFinancialRepository.GetSingle(x => x.GroupFinancialId == groupFinancialId && x.IsActive == true && x.IsDeleted == false);
+
+            if (deleteFinancial!=null)
+            {
+                deleteFinancial.IsDeleted = true;
+                deleteFinancial.DeletedBy = actionBy;
+                deleteFinancial.DeletedDate = DateTime.Now;
+
+                _groupFinancialRepository.Update(deleteFinancial);
+
+                _mainResponse.Success = true;
+                _mainResponse.Message = Constants.GROUP_FINANCIAL_DELETED;
+            }
+            else
+            {
+                _mainResponse.Success = false;
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+            }
+            return _mainResponse; 
+        }
+
+        public MainResponse GetAllGroupFinancials(GroupFinancialRequest groupFinancialRequest)
+        {
+            var financials = _groupFinancialRepository.GetRecordsWithFilters(groupFinancialRequest.Page, groupFinancialRequest.Limit, groupFinancialRequest.OrderBy, 
+                             groupFinancialRequest.OrderByDescending, groupFinancialRequest.AllRecords, x =>x.GroupId== groupFinancialRequest.GroupId && x.IsActive == true && x.IsDeleted == false);
+            if (financials!=null)
+            {
+                var groupFinancials = _Mapper.Map<List<GetGroupFinacials>>(financials);
+
+                GetAllGroupFinacials getAllGroupFinacials = new GetAllGroupFinacials();
+                getAllGroupFinacials.getGroupFinacials = groupFinancials;
+                _mainResponse.GetAllGroupFinacials = getAllGroupFinacials;
+                _mainResponse.GetAllGroupFinacials.TotalRecords = groupFinancials.Count();
+
+                _mainResponse.Success = true;
+               
+            }
+            else
+            {
+                _mainResponse.Success = false;
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+            }
+            return _mainResponse;
+        }
+   }
 }

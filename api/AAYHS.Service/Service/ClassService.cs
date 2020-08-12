@@ -402,7 +402,7 @@ namespace AAYHS.Service.Service
         }
         public MainResponse UpdateClassExhibitorScratch(ClassExhibitorScratch classExhibitorScratch, string actionBy)
         {
-            var classExhibitor = _exhibitorClassRepositor.GetSingle(x => x.ExhibitorClassId == classExhibitorScratch.ExhibitorClassId);
+            var classExhibitor = _exhibitorClassRepositor.GetSingle(x => x.ExhibitorClassId == classExhibitorScratch.ExhibitorClassId && x.IsDeleted==false);
             if (classExhibitor!=null)
             {
                 classExhibitor.IsScratch = classExhibitorScratch.IsScratch;
