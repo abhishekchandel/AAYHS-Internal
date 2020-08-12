@@ -1,11 +1,9 @@
 export interface HorseInfoModel
 {
-    HorseName:string;
-    HorseType:number;
+    Name:string;
+    HorseTypeId:number;
     HorseId:number;
-    Stall:string;
-    TackStall:string;
     NSBAIndicator:boolean;
-    Group:number,
-    JumpHeight:string
+    GroupId:number,
+    JumpHeightId:number
 }

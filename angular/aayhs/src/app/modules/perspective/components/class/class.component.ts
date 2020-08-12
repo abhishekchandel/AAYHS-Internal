@@ -126,7 +126,6 @@ export class ClassComponent implements OnInit {
   }
 
   confirmRemoveExhibitor(index, data): void {
-    debugger;
     const message = `Are you sure you want to remove the exhibitor?`;
     const dialogData = new ConfirmDialogModel("Confirm Action", message);
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
@@ -143,7 +142,6 @@ export class ClassComponent implements OnInit {
   }
 
   confirmScratch(index,isScratch, id): void {
-    debugger
     const message = `Are you sure you want to make the changes?`;
     const dialogData = new ConfirmDialogModel("Confirm Action", message);
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
@@ -167,7 +165,6 @@ export class ClassComponent implements OnInit {
     this.loading = true;
     this.classService.updateScratch(exhibitorScratch).subscribe(response => {
       this.loading = false;
-      // this.classEntries[index].Scratch=isScratch
       this.getClassEntries(this.classInfo.ClassId)
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
     }, error => {
@@ -192,7 +189,6 @@ export class ClassComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(dialogResult => {
       const result: any = dialogResult;
-debugger;
       if (result && result.submitted == true) {
         this.classInfo.SplitNumber=result.data.splitNumber;
         this.classInfo.getClassSplit=result.data.entries;
@@ -251,7 +247,6 @@ debugger;
 
   addClass = () => {
     this.loading = true;
-    debugger;
     this.classInfo.ClassHeaderId=Number(this.classInfo.ClassHeaderId)
     this.classService.createUpdateClass(this.classInfo).subscribe(response => {
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
@@ -500,7 +495,6 @@ setClassHeader(value){
 }
 
 sortEntriesData(column) {
-  debugger;
   this.entriesReverseSort = (this.entriesSortColumn === column) ? !this.entriesReverseSort : false
   this.entriesSortColumn = column
 
@@ -543,7 +537,6 @@ pdfCallbackFn (pdf: any) {
 }
 
  savePDF(): void {
-  debugger;
   let content=this.content.nativeElement;
   let doc = new jsPDF();
   let _elementHandlers =

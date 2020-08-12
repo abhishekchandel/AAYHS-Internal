@@ -6,8 +6,8 @@ import { HeaderComponent } from '../shared/layout/header/header/header.component
 import { SidebarComponent } from '../shared/layout/sidebar/sidebar/sidebar.component';
 import { FooterComponent } from '../shared/layout/footer/footer/footer.component';
 import { RouterModule } from '@angular/router';
-import { ConfirmEqualValidatorDirective } from '../shared/filters/confirm-equal-validator.directive';
-
+import { ConfirmEqualValidatorDirective } from './directives/confirm-equal-validator.directive';
+import {SearchPipe} from '../shared/filters/search.pipe'
 
 
 //All material imports here//
@@ -50,7 +50,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 };
 
 @NgModule({
-  declarations: [HeaderComponent, FooterComponent,SidebarComponent, MatSnackbarComponent, ConfirmDialogComponent, AddSplitClassModalComponent, ExportConfirmationModalComponent, ConfirmEqualValidatorDirective],
+  declarations: [HeaderComponent, FooterComponent,SidebarComponent, MatSnackbarComponent, ConfirmDialogComponent, AddSplitClassModalComponent, ExportConfirmationModalComponent, ConfirmEqualValidatorDirective, SearchPipe],
   imports: [
     CommonModule,
     RouterModule,
@@ -113,7 +113,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     OrderModule,
     ExportAsModule,
     NgxPrintModule,
-    ConfirmEqualValidatorDirective
+    ConfirmEqualValidatorDirective,
+    SearchPipe
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

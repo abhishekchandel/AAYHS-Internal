@@ -17,26 +17,28 @@ import { MatDialog } from '@angular/material/dialog';
 export class HorseComponent implements OnInit {
   
   @ViewChild('tabGroup') tabGroup: MatTabGroup;
-  @ViewChild('classInfoForm') classInfoForm: NgForm;
+  @ViewChild('horseInfoForm') horseInfoForm: NgForm;
 
   sortColumn:string="";
-  reverseSort : boolean = false
+  reverseSort : boolean = false;
   loading = false;
   totalItems: number = 0;
-  horsesList: any
+  horsesList: any;
   linkedExhibitors: any;
   selectedRowIndex: any;
   result: string = '';
+  groups:any;
+  horseType:any;
+  jumpHeight:any;
+  searchTerm:any;
 
   horseInfo:HorseInfoModel={
-    HorseName:null,
-    HorseType:null,
+    Name:null,
+    HorseTypeId:null,
     HorseId:null,
-    Stall:null,
-    TackStall:null,
     NSBAIndicator:false,
-    Group:0,
-    JumpHeight:null
+    GroupId:null,
+    JumpHeightId:null
   }
   exhibitorRequest = {
     HorseId: 0,
@@ -60,12 +62,18 @@ export class HorseComponent implements OnInit {
               public dialog: MatDialog,) { }
 
   ngOnInit(): void {
-    this.getAllHorses()
+    this.getAllHorses();
+    this.getAllGroups();
+    this.getHorseType();
+    this.getJumpHeight();
   }
 
   sortData(column){
     this.reverseSort=(this.sortColumn===column)?!this.reverseSort:false
     this.sortColumn=column
+    this.baseRequest.OrderBy = column;
+    this.baseRequest.OrderByDescending = this.reverseSort;
+    this.getAllHorses()
   }
   
   getSort(column){
@@ -78,7 +86,12 @@ export class HorseComponent implements OnInit {
 
   addHorse= () => {
     this.loading = true;
-    this.horseInfo.HorseType=Number(this.horseInfo.HorseType)
+    this.horseInfo.HorseId=this.horseInfo.HorseId !=null ? Number(this.horseInfo.HorseId) :0
+    this.horseInfo.HorseTypeId=this.horseInfo.HorseTypeId !=null ? Number(this.horseInfo.HorseTypeId) :0
+    this.horseInfo.GroupId=this.horseInfo.GroupId !=null ? Number(this.horseInfo.GroupId) :0
+    this.horseInfo.JumpHeightId=this.horseInfo.JumpHeightId !=null ? Number(this.horseInfo.JumpHeightId) :0
+    this.horseInfo.NSBAIndicator=this.horseInfo.NSBAIndicator !=null ? this.horseInfo.NSBAIndicator :false
+
     this.horseService.createUpdateHorse(this.horseInfo).subscribe(response => {
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
       this.loading = false;
@@ -112,7 +125,7 @@ export class HorseComponent implements OnInit {
     this.loading = true;
     this.exhibitorRequest.HorseId = id;
     this.horseService.getLinkedExhibitors(this.exhibitorRequest).subscribe(response => {
-      this.linkedExhibitors = response.Data.getClassEntries;
+      this.linkedExhibitors = response.Data.getLinkedExhibitors;
       this.loading = false;
     }, error => {
       this.loading = false;
@@ -121,23 +134,24 @@ export class HorseComponent implements OnInit {
   }
 
   resetForm() {
-    this.horseInfo.HorseName = null;
-    this.horseInfo.Stall = null;
-    this.horseInfo.TackStall = null;
-    this.horseInfo.HorseId = 0;
-    this.horseInfo.HorseType = 0;
-    this.horseInfo.Group = 0;
-    this.horseInfo.JumpHeight = null;
+    this.horseInfo.Name = null;
+    this.horseInfo.HorseId = null;
+    this.horseInfo.HorseTypeId = null;
+    this.horseInfo.GroupId = null;
+    this.horseInfo.JumpHeightId= null;
+    this.horseInfo.NSBAIndicator=false;
     this.linkedExhibitors = null;
-    this.classInfoForm.resetForm();
-    this.tabGroup.selectedIndex = 0
-    this.selectedRowIndex = null
+    this.horseInfoForm.resetForm();
+    this.tabGroup.selectedIndex = 0;
+    this.selectedRowIndex = null;
+    this.linkedExhibitors = null
   }
 
   highlight(id, i) {
     this.resetForm()
     this.selectedRowIndex = i;
-    
+    this.getHorseDetails(id);
+    this.getLinkedExhibitors(id);  
   }
 
   confirmRemoveHorse(e, index, data): void {
@@ -170,4 +184,51 @@ export class HorseComponent implements OnInit {
 
     })
   }
+
+  getAllGroups(){
+    this.loading = true;
+    this.horseService.getGroups().subscribe(response => {
+      this.groups = response.Data.getGroups;
+      this.loading = false;
+    }, error => {
+      this.loading = false;
+      this.groups =null;
+    })
+  }
+
+getHorseDetails(id:number){
+  this.loading = true;
+  this.horseService.getHorseDetails(id).subscribe(response => {
+    this.horseInfo = response.Data;
+    this.horseInfo.GroupId=this.horseInfo.GroupId >0 ? Number(this.horseInfo.GroupId) :null
+    this.horseInfo.JumpHeightId=this.horseInfo.JumpHeightId >0 ? Number(this.horseInfo.JumpHeightId) :null
+    this.loading = false;
+  }, error => {
+    this.loading = false;
+    this.horseInfo = null;
+  }
+  )
+}
+
+getHorseType(){
+  this.loading = true;
+  this.horseService.getHorseType("HorseType").subscribe(response => {
+    this.horseType = response.Data.globalCodeResponse;
+    this.loading = false;
+  }, error => {
+    this.loading = false;
+    this.groups =null;
+  })
+}
+
+getJumpHeight(){
+  this.loading = true;
+  this.horseService.getJumpHeight("JumpHeightType").subscribe(response => {
+    this.jumpHeight = response.Data.globalCodeResponse;
+    this.loading = false;
+  }, error => {
+    this.loading = false;
+    this.groups =null;
+  })
+}
 }

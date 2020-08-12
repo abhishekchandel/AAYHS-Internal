@@ -13,7 +13,6 @@ export class ConfirmEqualValidatorDirective implements Validator {
 
   @Input() appConfirmEqualValidator: string;
     validate(control: AbstractControl): { [key: string]: any } | null {
-      debugger;
         const controlToCompare = control.parent.get(this.appConfirmEqualValidator);
         if (controlToCompare && controlToCompare.value !== control.value) {
             return { 'notEqual': true };
