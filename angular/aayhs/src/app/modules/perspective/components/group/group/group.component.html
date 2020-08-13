@@ -283,11 +283,10 @@
                                 <perfect-scrollbar class="nicescrollBar-2"> 
                                     <tbody>
                                         <tr *ngFor="let list of groupsExhibitorList; let i=index">
-                                            <td data-label="Exhibitor Id">{{list.groupsExhibitorList}}</td>
+                                            <td data-label="Exhibitor Id">{{list.ExhibitorId}}</td>
                                             <td data-label="Exhibitor Name">{{list.ExhibitorName}}</td>
 											<td data-label="Group Exhibitor">
                                                         <select class="dynDataSeclect">
-                                                            <option disabled="true" class="selectDropdown">Exhibitor Horses</option>
                                                             <option  class="selectDropdown"
                                                              *ngFor="let item of list.getGroupExhibitorHorses">
                                                              {{item.HorseName}}</option>

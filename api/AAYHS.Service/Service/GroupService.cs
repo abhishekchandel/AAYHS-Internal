@@ -191,7 +191,7 @@ namespace AAYHS.Service.Service
         {
             var groupExhibitors = _GroupRepository.GetGroupExhibitors(GroupId);
 
-            if (groupExhibitors.getGroupExhibitors!=null && groupExhibitors.TotalRecords!=0)
+            if (groupExhibitors.getGroupExhibitors!=null && groupExhibitors.TotalRecords!= 0)
             {
                 _mainResponse.GetAllGroupExhibitors = groupExhibitors;
                 _mainResponse.GetAllGroupExhibitors.TotalRecords = groupExhibitors.TotalRecords;
@@ -212,6 +212,7 @@ namespace AAYHS.Service.Service
             if (groupExhibitor!=null)
             {
                 groupExhibitor.IsDeleted = true;
+                groupExhibitor.IsActive = false;
                 groupExhibitor.ModifiedBy = actionBy;
                 groupExhibitor.ModifiedDate = DateTime.Now;
 

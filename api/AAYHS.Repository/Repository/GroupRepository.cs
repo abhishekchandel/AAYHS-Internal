@@ -203,6 +203,7 @@ namespace AAYHS.Repository.Repository
                     });
            
             getAllGroupExhibitors.getGroupExhibitors = data.ToList();
+            getAllGroupExhibitors.TotalRecords = data.Count();
             return getAllGroupExhibitors;
         }
 
