@@ -39,4 +39,17 @@ namespace AAYHS.Core.DTOs.Response
     {  
         public string HorseName { get; set; }
     }
+    public class GetAllGroupFinacials
+    {
+        public List<GetGroupFinacials> getGroupFinacials {get;set;}
+        public int TotalRecords { get; set; }
+    }
+    public class GetGroupFinacials
+    {
+        public int GroupFinancialId { get; set; }
+        public DateTime Date { get; set; }
+        public int FeeTypeId { get; set; }
+        public int TimeFrameId { get; set; }
+        public double Amount { get; set; }
+    }
 }

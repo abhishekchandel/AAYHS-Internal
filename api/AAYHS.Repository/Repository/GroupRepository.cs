@@ -200,7 +200,7 @@ namespace AAYHS.Repository.Repository
                                      HorseName=horse2.Name
 
                                   }).ToList()
-                    });;
+                    });
 
             if (data.Count() != 0)
             {
@@ -226,5 +226,7 @@ namespace AAYHS.Repository.Repository
             }
             return getAllGroupExhibitors;
         }
-    }
+
+        
+   }
 }

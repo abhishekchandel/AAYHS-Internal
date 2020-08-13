@@ -33,6 +33,7 @@ namespace AAYHS.Core.AutoMapper
             CreateMap<User, UserResponse>();
             CreateMap<Horses, GetHorseById>();
             CreateMap<Groups, GetGroup>();
+            CreateMap<GroupFinancials, GetGroupFinacials>();
 
         }
     }

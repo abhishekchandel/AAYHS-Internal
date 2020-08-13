@@ -73,11 +73,7 @@ namespace AAYHS.Repository.Repository
             IEnumerable<HorseResponse> data;
             GetAllHorses getAllHorses = new GetAllHorses();
 
-            data = (from horse in _ObjContext.Horses
-                    join stall in _ObjContext.StallAssignment on horse.HorseId equals stall.HorseId into stall1
-                    from stall2 in stall1.DefaultIfEmpty()
-                    join tack in _ObjContext.TackStallAssignment on horse.HorseId equals tack.HorseId into tack1
-                    from tack2 in tack1.DefaultIfEmpty()
+            data = (from horse in _ObjContext.Horses                   
                     where horse.IsActive == true && horse.IsDeleted == false && ((searchRequest.SearchTerm != string.Empty ? Convert.ToString(horse.HorseId).Contains(searchRequest.SearchTerm) : (1 == 1))
                     || (searchRequest.SearchTerm != string.Empty ? horse.Name.Contains(searchRequest.SearchTerm) : (1 == 1)))
                     select new HorseResponse
@@ -120,6 +116,7 @@ namespace AAYHS.Repository.Repository
                     join exhibitor in _ObjContext.Exhibitors on exhibitorHorse.ExhibitorId equals exhibitor.ExhibitorId into exhibitor1
                     from exhibitor2 in exhibitor1.DefaultIfEmpty()
                     where exhibitorHorse.HorseId == horseExhibitorRequest.HorseId && exhibitorHorse.IsActive == true && exhibitorHorse.IsDeleted == false
+                    && exhibitor2.IsActive==true & exhibitor2.IsDeleted==false
                     select new GetLinkedExhibitors 
                     { 
                        ExhibitorId= exhibitorHorse.ExhibitorId,

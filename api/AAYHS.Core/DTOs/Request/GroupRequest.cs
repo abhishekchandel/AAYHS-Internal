@@ -22,4 +22,20 @@ namespace AAYHS.Core.DTOs.Request
     {
         public int GroupId { get; set; }
     }
+
+    public class AddGroupFinancialRequest
+    {
+        public int GroupFinancialId { get; set; }
+        public int GroupId { get; set; }
+        public int FeeTypeId { get; set; }
+        public int TimeFrameId { get; set; }
+        public double Amount { get; set; }
+    }
+    public class GroupFinancialRequest : BaseRecordFilterRequest
+    {
+        public int GroupFinancialId { get; set; }
+        public int GroupId { get; set; }
+    }
+
+
 }

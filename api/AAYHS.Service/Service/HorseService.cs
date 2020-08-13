@@ -75,7 +75,7 @@ namespace AAYHS.Service.Service
         }
         public MainResponse RemoveHorse(int HorseId,string actionBy)
         {
-            var horse = _horseRepository.GetSingle(x => x.HorseId == HorseId);
+            var horse = _horseRepository.GetSingle(x => x.HorseId == HorseId && x.IsDeleted==false);
 
             if (horse!=null)
             {

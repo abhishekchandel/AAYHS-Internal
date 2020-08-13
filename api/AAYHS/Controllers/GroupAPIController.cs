@@ -128,5 +128,46 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<GetAllGroupExhibitors>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
+        /// <summary>
+        /// This api used to add or update group financial
+        /// </summary>
+        /// <param name="addGroupFinancialRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        //[Authorize]
+        public IActionResult AddUpdateGroupFinancials(AddGroupFinancialRequest addGroupFinancialRequest)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _GroupService.AddUpdateGroupFinancials(addGroupFinancialRequest, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to delete group financial
+        /// </summary>
+        /// <param name="groupFinancialId"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        //[Authorize]
+        public IActionResult DeleteGroupFinancials(int groupFinancialId)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _GroupService.DeleteGroupFinancials(groupFinancialId, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to get all group financials
+        /// </summary>
+        /// <param name="groupFinancialRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        //[Authorize]   
+        public IActionResult GetAllGroupFinancials(GroupFinancialRequest groupFinancialRequest)
+        {
+            _mainResponse = _GroupService.GetAllGroupFinancials(groupFinancialRequest);
+            _jsonString = Mapper.Convert<GetAllGroupFinacials>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
     }
 }
