@@ -19,10 +19,7 @@ import PerfectScrollbar from 'perfect-scrollbar';
   styleUrls: ['./sponsor.component.scss']
 })
 export class SponsorComponent implements OnInit {
-  sponsersDisplayedColumns: string[] = ['SponsorId', 'Sponsor', 'Remove'];
-  sponsersExhibitorsDisplayedColumns: string[] = ['ExhibitorId', 'ExhibitorName', 'SponsorType', 'IdNumber', 'BirthYear', 'Remove'];
-  sponsersClassesDisplayedColumns: string[] = ['ClassNumber', 'ClassName', 'AgeGroup', 'Exhibitor', 'HorseName', 'Remove'];
-  sponsersAddExhibitorsDisplayedColumns: string[] = ['value', 'value1'];
+
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('sponsorInfoForm') sponsorInfoForm: NgForm;
@@ -113,7 +110,7 @@ export class SponsorComponent implements OnInit {
       {
      this.sponsorsList = response.Data.sponsorResponses;
      this.totalItems = response.Data.TotalRecords;
-     this.resetForm();
+    // this.resetForm();
       }
       this.loading = false;
     }, error => {
@@ -431,8 +428,29 @@ export class SponsorComponent implements OnInit {
 
   getNext(event) {
     this.baseRequest.Page = (event.pageIndex) + 1;
-    this.getAllSponsors()
+    this.getAllSponsorsForPagination()
   }
+
+    
+  getAllSponsorsForPagination() {
+    return new Promise((resolve, reject) => {
+    this.loading = true;
+    this.sponsorsList=null;
+    this.sponsorService.getAllSponsers(this.baseRequest).subscribe(response => {
+      if(response.Data!=null && response.Data.TotalRecords>0)
+      {
+     this.sponsorsList = response.Data.sponsorResponses;
+     this.totalItems = response.Data.TotalRecords;
+     this.resetForm();
+      }
+      this.loading = false;
+    }, error => {
+      this.loading = false;
+    })
+    resolve();
+  });
+  }
+
   
   highlight(selectedSponsorId, i) {
     this.selectedRowIndex = i;
@@ -451,7 +469,7 @@ export class SponsorComponent implements OnInit {
     this.sortColumn = column
     this.baseRequest.OrderBy = column;
     this.baseRequest.OrderByDescending = this.reverseSort;
-    this.getAllSponsors()
+    this.getAllSponsorsForPagination()
   }
 
   getSort(column) {

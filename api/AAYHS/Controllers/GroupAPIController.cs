@@ -106,11 +106,11 @@ namespace AAYHS.API.Controllers
         /// </summary>
         /// <param name="groupExhibitorsRequest"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpGet]
         //[Authorize]
-        public IActionResult GetGroupExhibitors(GroupExhibitorsRequest groupExhibitorsRequest)
+        public IActionResult GetGroupExhibitors(int GroupId)
         {
-            _mainResponse = _GroupService.GetGroupExhibitors(groupExhibitorsRequest);
+            _mainResponse = _GroupService.GetGroupExhibitors(GroupId);
             _jsonString = Mapper.Convert<GetAllGroupExhibitors>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }

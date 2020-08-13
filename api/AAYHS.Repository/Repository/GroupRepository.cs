@@ -174,7 +174,7 @@ namespace AAYHS.Repository.Repository
             return GroupListResponse;
         }
 
-        public GetAllGroupExhibitors GetGroupExhibitors(GroupExhibitorsRequest groupExhibitorsRequest)
+        public GetAllGroupExhibitors GetGroupExhibitors(int GroupId)
         {
             IEnumerable<GetGroupExhibitors> data;
             GetAllGroupExhibitors getAllGroupExhibitors = new GetAllGroupExhibitors();
@@ -182,7 +182,7 @@ namespace AAYHS.Repository.Repository
             data = (from groupExhibitors in _context.GroupExhibitors
                     join exhibitors in _context.Exhibitors on groupExhibitors.ExhibitorId equals exhibitors.ExhibitorId into exhibitors1
                     from exhibitors2 in exhibitors1.DefaultIfEmpty()                    
-                    where groupExhibitors.GroupId == groupExhibitorsRequest.GroupId && groupExhibitors.IsActive == true &&
+                    where groupExhibitors.GroupId == GroupId && groupExhibitors.IsActive == true &&
                     groupExhibitors.IsDeleted == false && exhibitors2.IsActive==true && exhibitors2.IsDeleted==false
                     select new GetGroupExhibitors 
                     { 
@@ -201,29 +201,8 @@ namespace AAYHS.Repository.Repository
 
                                   }).ToList()
                     });
-
-            if (data.Count() != 0)
-            {
-                if (groupExhibitorsRequest.OrderByDescending == true)
-                {
-                    data = data.OrderByDescending(x => x.GetType().GetProperty(groupExhibitorsRequest.OrderBy).GetValue(x));
-                }
-                else
-                {
-                    data = data.OrderBy(x => x.GetType().GetProperty(groupExhibitorsRequest.OrderBy).GetValue(x));
-                }
-                getAllGroupExhibitors.TotalRecords = data.Count();
-                if (groupExhibitorsRequest.AllRecords)
-                {
-                    getAllGroupExhibitors.getGroupExhibitors = data.ToList();
-                }
-                else
-                {
-                    getAllGroupExhibitors.getGroupExhibitors = data.Skip((groupExhibitorsRequest.Page - 1) * groupExhibitorsRequest.Limit).Take(groupExhibitorsRequest.Limit).ToList();
-
-                }
-
-            }
+           
+            getAllGroupExhibitors.getGroupExhibitors = data.ToList();
             return getAllGroupExhibitors;
         }
 

@@ -18,10 +18,7 @@ namespace AAYHS.Core.DTOs.Request
         public int StateId { get; set; }
 
     }
-    public class GroupExhibitorsRequest:BaseRecordFilterRequest
-    {
-        public int GroupId { get; set; }
-    }
+   
 
     public class AddGroupFinancialRequest
     {

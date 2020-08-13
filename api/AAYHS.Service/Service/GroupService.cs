@@ -187,9 +187,9 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
-        public MainResponse GetGroupExhibitors(GroupExhibitorsRequest groupExhibitorsRequest)
+        public MainResponse GetGroupExhibitors(int GroupId)
         {
-            var groupExhibitors = _GroupRepository.GetGroupExhibitors(groupExhibitorsRequest);
+            var groupExhibitors = _GroupRepository.GetGroupExhibitors(GroupId);
 
             if (groupExhibitors.getGroupExhibitors!=null && groupExhibitors.TotalRecords!=0)
             {

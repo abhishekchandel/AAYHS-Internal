@@ -31,4 +31,11 @@ getCities(stateId:number){
 getAllStates(){
     return this.http.get<any>(`${this.api}CommonAPI/GetStates`,{});
   }
+getGroupExhibitors(id:number){
+    return this.http.get<any>(`${this.api}GroupAPI/GetGroupExhibitors?GroupId=${id}`);
+    }
+deleteGroupExhibitors(id:number){
+      return this.http.delete<any>(`${this.api}GroupAPI/DeleteGroupExhibitor?groupExhibitorId=${id}`);
+    }
+  
 }

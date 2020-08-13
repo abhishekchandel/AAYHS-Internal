@@ -39,6 +39,7 @@ export class GroupComponent implements OnInit {
     AllRecords: false
   }
   groupsList: any;
+  groupsExhibitorList: any;
   enablePagination: boolean = true;
   sortColumn: string = "";
   reverseSort: boolean = false;
@@ -82,7 +83,7 @@ export class GroupComponent implements OnInit {
       {
      this.groupsList = response.Data.groupResponses;
      this.totalItems = response.Data.TotalRecords;
-     this.resetForm();
+     //this.resetForm();
       }
       this.loading = false;
     }, error => {
@@ -92,6 +93,7 @@ export class GroupComponent implements OnInit {
     resolve();
   });
   }
+
 
 
   getGroupDetails = (id: number, selectedRowIndex) => {
@@ -109,6 +111,24 @@ export class GroupComponent implements OnInit {
       }
       this.loading = false;
     }, error => {
+      this.loading = false;
+    })
+  }
+
+  GetGroupExhibitors(GroupId: number) {
+   debugger
+    this.loading = true;
+    this.groupsExhibitorList=null;
+    this.groupService.getGroupExhibitors(GroupId).subscribe(response => {
+      if(response.Data!=null && response.Data.TotalRecords>0)
+      {
+     this.groupsExhibitorList = response.Data.getGroupExhibitors;
+     this.totalItems = response.Data.TotalRecords;
+     //this.resetForm();
+      }
+      this.loading = false;
+    }, error => {
+     
       this.loading = false;
     })
   }
@@ -174,7 +194,7 @@ export class GroupComponent implements OnInit {
       })
      
   }
-   
+  
 
   //confirm delete 
   confirmRemoveGroup(e, index, Groupid): void {
@@ -188,6 +208,20 @@ export class GroupComponent implements OnInit {
     dialogRef.afterClosed().subscribe(dialogResult => {
       this.result = dialogResult;
       if (this.result){ this.deleteGroup(Groupid,index) }
+    });
+  }
+
+  confirmRemoveGroupExhibitor(e, index, GroupExhibitorid): void {
+    e.stopPropagation();
+    const message = `Are you sure you want to remove the group Exhibitor?`;
+    const dialogData = new ConfirmDialogModel("Confirm Action", message);
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      this.result = dialogResult;
+      if (this.result){ this.deleteGroupExhibitor(GroupExhibitorid,index) }
     });
   }
 
@@ -221,6 +255,28 @@ export class GroupComponent implements OnInit {
    
   }
 
+   //delete record
+   deleteGroupExhibitor(GroupExhibitorid,index) {
+    debugger
+    this.loading = true;
+    this.groupService.deleteGroupExhibitors(GroupExhibitorid).subscribe(response => {
+      
+      if(response.Success==true)
+      {
+       this.GetGroupExhibitors(this.selectedGroupId)
+        this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
+      }
+      else{
+        this.loading = false;
+        this.snackBar.openSnackBar(response.Message, 'Close', 'red-snackbar');
+       
+      }
+    }, error => {
+      this.loading = false;
+    })
+   
+  }
+
   resetForm() {
     debugger;
     this.groupInfo.GroupName = null;
@@ -241,7 +297,27 @@ export class GroupComponent implements OnInit {
 
   getNext(event) {
     this.baseRequest.Page = (event.pageIndex) + 1;
-    this.getAllGroups()
+    this.getAllGroupsForPagination()
+  }
+
+  getAllGroupsForPagination() {
+    return new Promise((resolve, reject) => {
+    this.loading = true;
+    this.groupsList=null;
+    this.groupService.getAllGroups(this.baseRequest).subscribe(response => {
+      if(response.Data!=null && response.Data.TotalRecords>0)
+      {
+     this.groupsList = response.Data.groupResponses;
+     this.totalItems = response.Data.TotalRecords;
+     this.resetForm();
+      }
+      this.loading = false;
+    }, error => {
+     
+      this.loading = false;
+    })
+    resolve();
+  });
   }
   
   
@@ -249,7 +325,8 @@ export class GroupComponent implements OnInit {
     
     this.selectedRowIndex = i;
     this.selectedGroupId=selectedGroupId;
-    this.getGroupDetails(selectedGroupId,this.selectedRowIndex);
+    this.getGroupDetails(selectedGroupId,i);
+    this.GetGroupExhibitors(selectedGroupId);
   }
 
 
@@ -258,7 +335,7 @@ export class GroupComponent implements OnInit {
     this.sortColumn = column
     this.baseRequest.OrderBy = column;
     this.baseRequest.OrderByDescending = this.reverseSort;
-    this.getAllGroups()
+    this.getAllGroupsForPagination()
   }
 
   getSort(column) {

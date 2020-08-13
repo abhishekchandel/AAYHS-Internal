@@ -13,7 +13,7 @@ namespace AAYHS.Service.IService
         MainResponse GetGroupById(int SponsorId);
         MainResponse DeleteGroup(int SponsorId);
         MainResponse SearchGroup(SearchRequest searchRequest);
-        MainResponse GetGroupExhibitors(GroupExhibitorsRequest groupExhibitorsRequest);
+        MainResponse GetGroupExhibitors(int GroupId);
         MainResponse DeleteGroupExhibitor(int groupExhibitorId, string actionBy);
         MainResponse AddUpdateGroupFinancials(AddGroupFinancialRequest addGroupFinancialRequest, string actionBy);
         MainResponse DeleteGroupFinancials(int groupFinancialId, string actionBy);

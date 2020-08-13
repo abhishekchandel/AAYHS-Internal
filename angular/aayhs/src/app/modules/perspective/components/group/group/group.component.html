@@ -282,69 +282,27 @@
                                 </thead> 
                                 <perfect-scrollbar class="nicescrollBar-2"> 
                                     <tbody>
-                                        <tr >
-                                            <td data-label="Exhibitor Id">2039</td>
-                                            <td data-label="Exhibitor Name">Vivan Hewitt</td>
-                                            <td data-label="Horse Name">Savannah Crazy Quilt</td>
-                                            <td data-label="Birth Year">2007</td>
-                                            <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+                                        <tr *ngFor="let list of groupsExhibitorList; let i=index">
+                                            <td data-label="Exhibitor Id">{{list.groupsExhibitorList}}</td>
+                                            <td data-label="Exhibitor Name">{{list.ExhibitorName}}</td>
+											<td data-label="Group Exhibitor">
+                                                        <select class="dynDataSeclect">
+                                                            <option disabled="true" class="selectDropdown">Exhibitor Horses</option>
+                                                            <option  class="selectDropdown"
+                                                             *ngFor="let item of list.getGroupExhibitorHorses">
+                                                             {{item.HorseName}}</option>
+                                                        </select>
+                                            </td>
+                                            <td data-label="Birth Year">{{list.BirthYear}}</td>
+                                            <td data-label="Remove">
+                                            <button class="icon" 
+                                                (click)="confirmRemoveGroupExhibitor($event,i,list.GroupExhibitorId)">
+                                                <span></span> <i class="fa fa-trash-o"
+                                                aria-hidden="true"></i>
+                                            </button>
+                                            </td>
                                         </tr>	
-                                        <tr >
-                                            <td data-label="Exhibitor Id">2278</td>
-                                            <td data-label="Exhibitor Name">Alana Bacher</td>
-                                            <td data-label="Horse Name">Chocolate In Private</td>
-                                            <td data-label="Birth Year">2011</td>
-                                            <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                        </tr>
-                                        <tr >
-                                            <td data-label="Exhibitor Id">2278</td>
-                                            <td data-label="Exhibitor Name">Alana Bacher </td>
-                                            <td data-label="Horse Name">Chocolate In Private</td>
-                                            <td data-label="Birth Year">2011</td>
-                                            <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                        </tr>
-                                        <tr >
-                                            <td data-label="Exhibitor Id">2039</td>
-                                            <td data-label="Exhibitor Name">Vivan Hewitt</td>
-                                            <td data-label="Horse Name">Savannah Crazy Quilt</td>
-                                            <td data-label="Birth Year">2007</td>
-                                            <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                        </tr>	
-                                        <tr >
-                                            <td data-label="Exhibitor Id">2278</td>
-                                            <td data-label="Exhibitor Name">Alana Bacher</td>
-                                            <td data-label="Horse Name">Chocolate In Private</td>
-                                            <td data-label="Birth Year">2011</td>
-                                            <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                        </tr>
-                                        <tr >
-                                            <td data-label="Exhibitor Id">2278</td>
-                                            <td data-label="Exhibitor Name">Alana Bacher </td>
-                                            <td data-label="Horse Name">Chocolate In Private</td>
-                                            <td data-label="Birth Year">2011</td>
-                                            <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                        </tr>
-                                        <tr >
-                                            <td data-label="Exhibitor Id">2039</td>
-                                            <td data-label="Exhibitor Name">Vivan Hewitt</td>
-                                            <td data-label="Horse Name">Savannah Crazy Quilt</td>
-                                            <td data-label="Birth Year">2007</td>
-                                            <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                        </tr>	
-                                        <tr >
-                                            <td data-label="Exhibitor Id">2278</td>
-                                            <td data-label="Exhibitor Name">Alana Bacher</td>
-                                            <td data-label="Horse Name">Chocolate In Private</td>
-                                            <td data-label="Birth Year">2011</td>
-                                            <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                        </tr>
-                                        <tr >
-                                            <td data-label="Exhibitor Id">2278</td>
-                                            <td data-label="Exhibitor Name">Alana Bacher </td>
-                                            <td data-label="Horse Name">Chocolate In Private</td>
-                                            <td data-label="Birth Year">2011</td>
-                                            <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                        </tr>
+                                       
                                     
                                     </tbody>
                                 </perfect-scrollbar> 
