@@ -218,7 +218,7 @@
                                         </thead> 
 										<perfect-scrollbar class="nicescrollBar-2">
                                             <tbody>                                                
-                                                <tr *ngFor="let list of sponsorsExhibitorsList;;let i = index">
+                                                <tr *ngFor="let list of sponsorsExhibitorsList;let i = index">
                                                     <td data-label="Exhibitor ID">{{list.ExhibitorId}}</td>
                                                     <td data-label="Exhibitor Name">{{list.FirstName}} {{list.LastName}}</td>
                                                     <td data-label="Sponsor Type" *ngIf="list.SponsorTypeId==1">Ad</td>

@@ -24,7 +24,7 @@ export class SponsorService {
   }
   
   getAllSponsers(data){
-    return this.http.post<any>(`${this.api}SponsorAPI/GetAllSponsorsWithFilter`,data);
+    return this.http.post<any>(`${this.api}SponsorAPI/GetAllSponsors`,data);
   }
   
   getAllSponsorTypes(type:string){

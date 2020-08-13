@@ -40,6 +40,10 @@ namespace AAYHS.Repository.Repository
                                         into data1
                                    from data in data1.DefaultIfEmpty()
                                    where sponsor.SponsorId == SponsorId 
+                                   && sponsor.IsActive == true
+                                   && sponsor.IsDeleted == false
+                                   && data.IsActive==true && 
+                                   data.IsDeleted==false
                                    select new SponsorResponse
                                    {
                                        SponsorId = sponsor.SponsorId,
@@ -57,37 +61,8 @@ namespace AAYHS.Repository.Repository
             return _mainResponse;
         }
 
-        public MainResponse GetAllSponsor()
-        {
-            IEnumerable<SponsorResponse> sponsorResponses;
-            SponsorListResponse sponsorListResponse = new SponsorListResponse();
 
-            sponsorResponses = (from sponsor in _context.Sponsors
-                                   join address in _context.Addresses
-                                        on sponsor.AddressId equals address.AddressId
-                                        into data1
-                                   from data in data1.DefaultIfEmpty()
-                                   where sponsor.IsActive == true && sponsor.IsDeleted == false
-                                   select new SponsorResponse
-                                   {
-                                       SponsorId = sponsor.SponsorId,
-                                       SponsorName = sponsor.SponsorName,
-                                       ContactName = sponsor.ContactName,
-                                       Phone = sponsor.Phone,
-                                       Email = sponsor.Email,
-                                       AmountReceived = sponsor.AmountReceived,
-                                       Address = data != null ? data.Address : "",
-                                       ZipCode = data != null ? data.ZipCode : "",
-                                       CityId = data != null ? data.CityId : 0,
-                                       StateId = data != null ? _context.Cities.Where(x => x.CityId == data.CityId).Select(y => y.StateId).FirstOrDefault() : 0,
-                                   }).ToList();
-
-            sponsorListResponse.sponsorResponses = sponsorResponses.ToList();
-            _mainResponse.SponsorListResponse = sponsorListResponse;
-            return _mainResponse;
-        }
-
-        public MainResponse GetAllSponsorsWithFilter(BaseRecordFilterRequest request)
+        public MainResponse GetAllSponsors(BaseRecordFilterRequest request)
         {
 
             IEnumerable<SponsorResponse> sponsorResponses;
@@ -97,8 +72,11 @@ namespace AAYHS.Repository.Repository
                                         on sponsor.AddressId equals address.AddressId
                                         into data1
                                    from data in data1.DefaultIfEmpty()
-                                   where sponsor.IsActive == true && sponsor.IsDeleted == false
-                                   select new SponsorResponse
+                                   where sponsor.IsActive == true 
+                                   && sponsor.IsDeleted == false
+                                   && data.IsActive == true &&
+                                   data.IsDeleted == false
+                                select new SponsorResponse
                                    {
                                        SponsorId = sponsor.SponsorId,
                                        SponsorName = sponsor.SponsorName,
@@ -148,7 +126,10 @@ namespace AAYHS.Repository.Repository
                                         on sponsor.AddressId equals address.AddressId
                                         into data1
                                    from data in data1.DefaultIfEmpty()
-                                   where sponsor.IsActive == true && sponsor.IsDeleted == false
+                                   where sponsor.IsActive == true 
+                                   && sponsor.IsDeleted == false
+                                   && data.IsActive == true &&
+                                   data.IsDeleted == false
                                    && ((searchRequest.SearchTerm != string.Empty ? Convert.ToString(sponsor.SponsorId).Contains(searchRequest.SearchTerm) : (1 == 1))
                                    || (searchRequest.SearchTerm != string.Empty ? sponsor.SponsorName.Contains(searchRequest.SearchTerm) : (1 == 1)))
                                    select new SponsorResponse

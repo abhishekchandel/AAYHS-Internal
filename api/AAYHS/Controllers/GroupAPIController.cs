@@ -30,7 +30,7 @@ namespace AAYHS.API.Controllers
         /// </summary>
         /// <param name="filter parameter is required"></param>
         /// <returns>Filtered Groups list</returns>
-        [HttpGet]
+        [HttpPost]
         public ActionResult GetAllGroups(BaseRecordFilterRequest request)
         {
 

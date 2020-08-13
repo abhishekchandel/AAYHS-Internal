@@ -1,54 +1,59 @@
 <div class="innerContent">
 	<div class="sortData">
-	   <div class="sponBtn"><button class="btn btn-red btnCss">Add new Exhibitor</button></div>						   
-   </div>
+        <div class="sponBtn"><button 
+          class="btn btn-red btnCss"
+          (click)="resetForm()">Add new Group</button></div>
+    </div>
    <!---->
 	<div class="gridTable addBlueStrip">
 	   <div class="table-responsive">
 		 <table class="table table-bordered tableBodyScroll">
 		   <thead>
 			  <tr>
-				<th >Group Id
-					<span >										  
-					</span>
+				<th (click)="sortData('GroupId')">Group Id
+					<span [ngClass]="getSort('GroupId')"></span>
 				</th> 
-				 <th >Group Name
-					<span ></span>
+                
+                <th (click)="sortData('GroupName')">Group Name
+					<span [ngClass]="getSort('GroupName')"></span>
 				 </th> 
 				 <th>Remove</th> 
 			  </tr>	
 		   </thead> 
 		   <perfect-scrollbar class="nicescrollBar-1"> 
 			   <tbody>
-                <tr>
-                    <td data-label="Group ID">209</td>
-                    <td data-label="Group Name">Blue Ribbon Farms</td>
-                    <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+                <tr *ngFor="let list of groupsList;let i = index"
+                (click)="highlight(list.GroupId,i)"
+                 [ngClass]="{'blueRow': selectedRowIndex == i}">
+                    <td data-label="Group ID">{{list.GroupId}}</td>
+                    <td data-label="Group Name">{{list.GroupName}}</td>
+                    
+                    <td data-label="Remove">
+                        <button class="icon" 
+                        (click)="confirmRemoveGroup($event,i,list.GroupId)">
+                        <span></span> <i class="fa fa-trash-o"
+                        aria-hidden="true"></i>
+                    </button>
+                </td>
+
                 </tr>	
 			   </tbody>
 			 </perfect-scrollbar> 
 		 </table> 
-		 <div class="paginationWrapper mt-4 text-center">
-			 <ul class="pagination">
-				 <li class="page-item"><a class="page-link" href="#"><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>
-				 <li class="page-item"><a class="page-link" href="#">1</a></li>
-				 <li class="page-item"><a class="page-link" href="#">2</a></li>
-				 <li class="page-item"><a class="page-link" href="#">3</a></li>
-				 <li class="page-item"><a class="page-link" href="#">4</a></li>
-				 <li class="page-item"><a class="page-link" href="#">5</a></li>
-				 <li class="page-item"><a class="page-link" href="#"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
-			 </ul>
-		 </div>
+         <div [hidden]="totalItems == 0">
+            <mat-paginator #paginator [length]="totalItems"   (page)="getNext($event)" [pageSizeOptions]="[5]">
+            </mat-paginator>
+        </div>
 	   </div>
 	</div>
 	<!---->	
 	 <div class="dataDesc gridTable">
 		 <table class="table table-bordered tableBodyScroll">
 			 <tbody>
-				 <tr>
-					 <td><span class="blueBox"></span><b>Exhibitor:</b> 3341  </td>
-                     <td><span class="blueBox"></span><b>Exhibitor Name:</b> Grace Hopper</td>
-                     <td><span class="blueBox"></span><b>Group Name:</b></td>
+				 <tr >
+					 <td><span class="blueBox"></span><b>Group Id:</b> {{groupInfo.GroupId}}  </td>
+                     <td><span class="blueBox"></span><b>Group Name:</b> {{groupInfo.GroupName}}</td>
+                    
 				 </tr>
 			 </tbody>
 		 </table>
@@ -62,63 +67,174 @@
 	   <div class="tab-pane  active" id="home">
 		<mat-tab-group #tabGroup>
 			<mat-tab  class="nav-link active nav nav-tabs" label="Group Info">
+
+                <form #groupInfoForm="ngForm" name="groupInfoForm" 
+                (ngSubmit)="groupInfoForm.valid && AddUpdateGroup(groupInfoForm)" novalidate >
                 <div class="card">
                     <div class="card-body"> 
                         <div class="row">
                             <div class="col-sm-6">
+                               
                                 <div class="form-group">
                                     <label>Group name <span>*</span></label>	
-                                    <input type="text" class="form-control" placeholder="Group name"/>
+                                    <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    placeholder="Group name"
+                                    #groupName="ngModel" 
+                                    name="groupName" 
+                                    [(ngModel)]="groupInfo.GroupName" 
+                                    required/>
+                                    <span class="help-block" 
+                                    *ngIf="groupName.errors?.required &&
+                                     (groupName.touched || groupInfoForm.submitted)">
+                                     Group Name is required</span>
                                 </div>
+
+
                                 <div class="form-group">
-                                    <label>Contact name <span>*</span></label>	
-                                    <input type="text" class="form-control" placeholder="Contact name"/>
-                                </div>
-                                <div class="form-group">
+                                    <label>Phone</label>	
+                                    <input 
+                                    mask="(000) 000-0000" 
+                                    #phone="ngModel" name="phone" 
+                                    [(ngModel)]="groupInfo.Phone" 
+                                    type="text" 
+                                    class="form-control" 
+                                    placeholder="Phone"/>
+                                  </div> 
+    
+
+                                  <div class="form-group">
+                                    <label>Email</label>	
+                                    <input type="email" class="form-control" placeholder="Email" #email="ngModel" name="email" [(ngModel)]="groupInfo.Email" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" />
+                                    <span class="help-block" *ngIf="email.errors?.required && (email.touched || groupInfoForm.submitted)">Email is
+                                        required</span>
+                                     <span class="help-block" *ngIf="!email.errors?.required && email.errors?.pattern">Email is
+                                        invalid</span>
+                                  </div> 
+
+
+                                  <div class="form-group">
                                     <label>Address <span>*</span></label>	
-                                    <input type="text" class="form-control" placeholder="384 Cowpath Rd"/>
-                                </div>
+                                    <input type="text" class="form-control" placeholder="Address" #address="ngModel" name="address" [(ngModel)]="groupInfo.Address" required />
+                                    <span class="help-block" *ngIf="address.errors?.required && (address.touched || groupInfoForm.submitted)">Address is
+                                        required</span>
+                                  </div> 
+
+
+                                  
                                 <div class="row">
                                     <div class="col-md-7">
                                         <div class="form-group">
                                             <label>State <span>*</span></label>	
-                                            <select required class="form-control" placeholder="State" name="state">
-                                                <option value="null"></option>                                                                                               
+                                            <select required class="form-control" placeholder="State" name="state" #state="ngModel" [(ngModel)]="groupInfo.StateId" (change)="getCities($event.target.value);getStateName($event)">
+                                                
+                                                <option value="null" disabled="true" [selected]="true">
+                                                    Select State
+                                                </option>
+                                                <option *ngFor="let state of statesResponse"
+                                                    [value]="state.StateId">{{state.Name}} -
+                                                    {{state.Code}}
+                                                </option>
+                                                                                                
                                             </select>
+                                            <span class="help-block" *ngIf="state.errors?.required && (state.touched || groupInfoForm.submitted)" >State is
+                                                required</span>
                                         </div>
                                     </div>
+
+
+
                                     <div class="col-md-5">
-                                        <div class="form-group">
-                                            <label>Zip Code <span>*</span></label>	
-                                            <input type="text" class="form-control" maxlength="5"  placeholder="Zip Code"name="zipcode"/>
-                                        </div> 
+											<div class="form-group">
+												<label>Zip Code <span>*</span></label>	
+                                                <input type="text" class="form-control" maxlength="5" pattern="^[0-9]{5}(?:-[0-9]{4})?$" placeholder="Zip Code" #zipcode="ngModel" name="zipcode" [(ngModel)]="groupInfo.ZipCode" required />
+                                        <span class="help-block"
+                                        *ngIf="zipcode.errors?.required && (zipcode.touched || groupInfoForm.submitted)">Zip
+                                        is
+										required</span>
+										
+                                    <span class="help-block"
+                                        *ngIf="!zipcode.errors?.required && zipcode.errors?.pattern">Zip is invalid</span>
+											</div> 
                                     </div>
+                                        
+
                                 </div>
+
+
                                 <div class="form-group">
                                     <label>City <span>*</span></label>	
-                                    <select required class="form-control" placeholder="city"  name="city">
-                                        <option value="0" selected>City</option>
-                                        <option >City</option>												
+                                    <select required class="form-control" placeholder="city" (change)="getCityName($event)" name="city" #city="ngModel" [(ngModel)]="groupInfo.CityId" >
+                                        
+                                        
+                                        <option value="null" disabled="true" [selected]="true">
+                                            Select City
+                                        </option>
+                                                
+                                        <option *ngFor="let city of citiesResponse"
+                                        [value]="city.CityId">{{city.Name}}
+                                                </option>												
                                     </select>
+                                    <span class="help-block" *ngIf="city.errors?.required && (city.touched || groupInfoForm.submitted)">City  is
+                                        required</span>
+                           
                                 </div>
-                                <div class="form-group">
-                                    <label>Group ID <span>*</span></label>	
-                                    <input type="text" class="form-control" placeholder="Auto Generated"/>
-                                </div>
+
+                      
+
+
+
+                           
+								
+                                      
+
+
+
+
+
+
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label>Amount Received <span>*</span></label>	
-                                    <input type="text" class="form-control" placeholder="Calculated Display"/>
-                                </div>
+                                    <label>Contact Name</label>	
+                                    <input type="text"
+                                     #contactName="ngModel"
+                                     name="contactName" 
+                                     [(ngModel)]="groupInfo.ContactName"
+                                      class="form-control" 
+                                      placeholder="Contact Name"/>
+                          </div> 
+
+
                                 <div class="form-group">
-                                    <label>Phone <span>*</span></label>	
-                                    <input type="text" class="form-control" placeholder="Phone Number"/>
-                                </div>
-                                <div class="form-group">
-                                    <label>Email <span>*</span></label>	
-                                    <input type="text" class="form-control" placeholder="Email Address"/>
-                                </div>  
+                                <label>Amount Received</label>	
+                                <input type="number" class="form-control"
+                                 #amountReceieved="ngModel"
+                                 name="amountReceieved" 
+                                 [(ngModel)]="groupInfo.AmountReceived" 
+                                 placeholder="Amount Received"/>
+                              </div> 
+
+
+                              
+                              <div class="form-group">
+                                <label>Group ID <span>*</span></label>	
+                                <input type="text" 
+                                 readonly="true" 
+                                 class="form-control" 
+                                 name="groupId" 
+                                 #groupId="ngModel" 
+                                 [(ngModel)]="groupInfo.GroupId" 
+                                 placeholder="Group ID"/>
+                            </div>
+                           
+
+                                
+									 
+                                      
+                                      
+
                                 <div class="quantityWrapper">
                                     <div class="form-group">
                                         <label>Horse Stall Quantity</label>  
@@ -139,13 +255,15 @@
                             </div>
                             <div class="col-sm-12">
                                 <div class="buttons text-right">
-                                  <button class="btn btn-red btnCss roundBtn">Next</button>  
-                                  <button class="btn btn-red btnCss roundBtn">Submit</button> 
-                                </div> 
+                                    <button (click)='tabGroup.selectedIndex = 1' class="btn btn-red btnCss roundBtn">Next</button>  
+                                    <button type="submit" class="btn btn-red btnCss roundBtn">Submit</button> 
+                                  </div> 
                               </div>
                         </div>
                     </div>
                 </div>
+</form>
+
             </mat-tab>
 
             <mat-tab  class="nav-link nav nav-tabs" label="Exhibitor">
@@ -248,7 +366,7 @@
                                 <thead>
                                 <tr>
                                         <th>Date </th> 
-                                        <th>Type of free</th> 
+                                        <th>Type of fee</th> 
                                         <th>Pre/Post</th>
                                         <th>Total</th>
                                 </tr>	
@@ -260,11 +378,11 @@
                                             <td data-label="Type of free">Track Stall</td>
                                             <td data-label="Pre/Post">
                                                 <div class="prePostField">
-                                                    <label class="radioBtn">One
+                                                    <label class="radioBtn">Pre
                                                         <input type="radio" checked="checked" name="radio">
                                                         <span class="checkmark"></span>
                                                     </label>
-                                                    <label class="radioBtn">Two
+                                                    <label class="radioBtn">Post
                                                         <input type="radio" name="radio">
                                                         <span class="checkmark"></span>
                                                     </label>
@@ -277,11 +395,11 @@
                                             <td data-label="Type of free">Horse Stall</td>
                                             <td data-label="Pre/Post">
                                                 <div class="prePostField">
-                                                    <label class="radioBtn">One
+                                                    <label class="radioBtn">Pre
                                                         <input type="radio" checked="checked" name="radio">
                                                         <span class="checkmark"></span>
                                                     </label>
-                                                    <label class="radioBtn">Two
+                                                    <label class="radioBtn">Post
                                                         <input type="radio" name="radio">
                                                         <span class="checkmark"></span>
                                                     </label>
@@ -289,74 +407,7 @@
                                             </td>
                                             <td data-label="Total"></td>                                            
                                         </tr>
-                                        <tr >
-                                            <td data-label="Date"></td>
-                                            <td data-label="Type of free">Track Stall</td>
-                                            <td data-label="Pre/Post">
-                                                <div class="prePostField">
-                                                    <label class="radioBtn">One
-                                                        <input type="radio" checked="checked" name="radio">
-                                                        <span class="checkmark"></span>
-                                                    </label>
-                                                    <label class="radioBtn">Two
-                                                        <input type="radio" name="radio">
-                                                        <span class="checkmark"></span>
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td data-label="Total"></td>                                            
-                                        </tr>	
-                                        <tr >
-                                            <td data-label="Date"></td>
-                                            <td data-label="Type of free">Horse Stall</td>
-                                            <td data-label="Pre/Post">
-                                                <div class="prePostField">
-                                                    <label class="radioBtn">One
-                                                        <input type="radio" checked="checked" name="radio">
-                                                        <span class="checkmark"></span>
-                                                    </label>
-                                                    <label class="radioBtn">Two
-                                                        <input type="radio" name="radio">
-                                                        <span class="checkmark"></span>
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td data-label="Total"></td>                                            
-                                        </tr>
-                                        <tr >
-                                            <td data-label="Date"></td>
-                                            <td data-label="Type of free">Track Stall</td>
-                                            <td data-label="Pre/Post">
-                                                <div class="prePostField">
-                                                    <label class="radioBtn">One
-                                                        <input type="radio" checked="checked" name="radio">
-                                                        <span class="checkmark"></span>
-                                                    </label>
-                                                    <label class="radioBtn">Two
-                                                        <input type="radio" name="radio">
-                                                        <span class="checkmark"></span>
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td data-label="Total"></td>                                            
-                                        </tr>	
-                                        <tr >
-                                            <td data-label="Date"></td>
-                                            <td data-label="Type of free">Horse Stall</td>
-                                            <td data-label="Pre/Post">
-                                                <div class="prePostField">
-                                                    <label class="radioBtn">One
-                                                        <input type="radio" checked="checked" name="radio">
-                                                        <span class="checkmark"></span>
-                                                    </label>
-                                                    <label class="radioBtn">Two
-                                                        <input type="radio" name="radio">
-                                                        <span class="checkmark"></span>
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td data-label="Total"></td>                                            
-                                        </tr>
+                                       
                                        
                                     
                                     </tbody>
@@ -374,14 +425,9 @@
             </mat-tab>
 		</mat-tab-group>
 	  </div>
-			
-	
-			 
 	 </div>
-	 
 	 </div>
-	 
-	 
-
 	 </div>
-   <!---->
+     <div class="loaderWrapper" *ngIf="loading"> 
+        <div class="loader"></div>
+     </div> 

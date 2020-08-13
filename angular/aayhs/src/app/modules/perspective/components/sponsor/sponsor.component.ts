@@ -105,6 +105,7 @@ export class SponsorComponent implements OnInit {
 
   
   getAllSponsors() {
+    return new Promise((resolve, reject) => {
     this.loading = true;
     this.sponsorsList=null;
     this.sponsorService.getAllSponsers(this.baseRequest).subscribe(response => {
@@ -118,7 +119,8 @@ export class SponsorComponent implements OnInit {
     }, error => {
       this.loading = false;
     })
-    
+    resolve();
+  });
   }
 
   getAllSponsorTypes() {
@@ -135,16 +137,17 @@ export class SponsorComponent implements OnInit {
     })
   }
 
-  getSponsorDetails = (id: number) => {
+  getSponsorDetails = (id: number,selectedRowIndex) => {
     this.loading = true;
     this.sponsorService.getSponsor(id).subscribe(response => {
       if(response.Data!=null)
       {
         debugger;
-      this.getCities(response.Data.StateId).then(res => 
+      this.getCities(response.Data.StateId).then(res => {
        
-         this.sponsorInfo = response.Data
-          );;
+         this.sponsorInfo = response.Data;
+         this.selectedRowIndex=selectedRowIndex;
+      });
       debugger;
       }
       this.loading = false;
@@ -190,12 +193,31 @@ export class SponsorComponent implements OnInit {
 
 
   AddUpdateSponsor=(sponsor)=>{
-    debugger
     this.loading=true;
     this.sponsorInfo.AmountReceived=this.sponsorInfo.AmountReceived==null ?0:this.sponsorInfo.AmountReceived;
     this.sponsorService.addUpdateSponsor(this.sponsorInfo).subscribe(response=>{
      this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
-     this.getAllSponsors();
+    
+      // this.baseRequest.Page= 1,
+      // this.baseRequest.Limit= 5,
+      // this.baseRequest.OrderBy= 'SponsorId',
+      // this.baseRequest.OrderByDescending= true,
+      // this.baseRequest.AllRecords= false
+    
+     this.getAllSponsors().then(res =>{ 
+      if(response.Data.NewId !=null && response.Data.NewId>0)
+      {
+        if(this.sponsorInfo.SponsorId>0)
+        {
+          this.highlight(response.Data.NewId,this.selectedRowIndex);
+        }
+        else{
+          this.highlight(response.Data.NewId,0);
+        }
+      
+      }
+    });
+     
     }, error=>{
        this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
        this.loading = false;
@@ -306,6 +328,7 @@ export class SponsorComponent implements OnInit {
   }
 
   
+
 //delete record
   deleteSponsor(Sponsorid,index) {
     debugger
@@ -315,7 +338,7 @@ export class SponsorComponent implements OnInit {
       if(response.Success==true)
       {
      
-       // this.getAllSponsors();
+     
         this.sponsorsList.splice(index, 1);
         this.totalItems=this.totalItems-1;
 
@@ -411,12 +434,10 @@ export class SponsorComponent implements OnInit {
     this.getAllSponsors()
   }
   
-  
   highlight(selectedSponsorId, i) {
-    
     this.selectedRowIndex = i;
     this.selectedSponsorId=selectedSponsorId;
-    this.getSponsorDetails(selectedSponsorId);
+    this.getSponsorDetails(selectedSponsorId,this.selectedRowIndex);
     this.GetSponsorExhibitorBySponsorId(selectedSponsorId);
     this.getAllSponsorTypes();
     this.exhibitorId = null;
@@ -424,7 +445,6 @@ export class SponsorComponent implements OnInit {
     this.sponsorClassId=null;
     this.GetSponsorClasses(selectedSponsorId);
   }
-
 
   sortData(column) {
     this.reverseSort = (this.sortColumn === column) ? !this.reverseSort : false
@@ -442,17 +462,6 @@ export class SponsorComponent implements OnInit {
     }
   }
 
-  // getCities(id: number) {
-  //   this.loading = true;
-  //   this.sponsorService.getCities(Number(id)).subscribe(response => {
-  //       this.citiesResponse = response.Data.City;
-  //       this.loading = false;
-  //   }, error => {
-  //     this.loading = false;
-  //   })
-    
-  // }
- 
 
   getCities(id: number) {
     return new Promise((resolve, reject) => {

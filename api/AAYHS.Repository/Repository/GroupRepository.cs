@@ -43,6 +43,10 @@ namespace AAYHS.Repository.Repository
                                   into data1
                              from data in data1.DefaultIfEmpty()
                              where groups.GroupId == GroupId
+                              && groups.IsActive == true
+                                   && groups.IsDeleted == false
+                                   && data.IsActive == true &&
+                                   data.IsDeleted == false
                              select new GroupResponse
                              {
                                  GroupId = groups.GroupId,
@@ -69,8 +73,11 @@ namespace AAYHS.Repository.Repository
                                      on Group.AddressId equals address.AddressId
                                      into data1
                                 from data in data1.DefaultIfEmpty()
-                                where Group.IsActive == true && Group.IsDeleted == false
-                                select new GroupResponse
+                                where Group.IsActive == true
+                                && Group.IsDeleted == false
+                                && data.IsActive == true
+                                && data.IsDeleted == false
+                              select new GroupResponse
                                 {
                                     GroupId = Group.GroupId,
                                     GroupName = Group.GroupName,
@@ -121,7 +128,10 @@ namespace AAYHS.Repository.Repository
                                      on Group.AddressId equals address.AddressId
                                      into data1
                                 from data in data1.DefaultIfEmpty()
-                                where Group.IsActive == true && Group.IsDeleted == false
+                                where Group.IsActive == true
+                                && Group.IsDeleted == false
+                                && data.IsActive == true
+                                && data.IsDeleted == false
                                 && ((searchRequest.SearchTerm != string.Empty ? Convert.ToString(Group.GroupId).Contains(searchRequest.SearchTerm) : (1 == 1))
                                 || (searchRequest.SearchTerm != string.Empty ? Group.GroupName.Contains(searchRequest.SearchTerm) : (1 == 1)))
                                 select new GroupResponse

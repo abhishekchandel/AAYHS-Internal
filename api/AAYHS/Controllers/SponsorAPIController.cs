@@ -19,20 +19,6 @@ namespace AAYHS.API.Controllers
             _mainResponse = new MainResponse();
         }
 
-        /// <summary>
-        /// This API is used to get all Sponsors.
-        /// </summary>
-        /// <param name="No parameter is required"></param>
-        /// <returns>All Sponsors list</returns>
-        [HttpGet]
-        public ActionResult GetAllSponsors()
-        {
-            
-                _mainResponse = _SponsorService.GetAllSponsors();
-            _jsonString = Mapper.Convert<SponsorListResponse>(_mainResponse);
-            return new OkObjectResult(_jsonString);
-        }
-
 
         /// <summary>
         /// This API is used to get all Sponsors with filters.
@@ -40,10 +26,10 @@ namespace AAYHS.API.Controllers
         /// <param name="filter parameters is required"></param>
         /// <returns>All Sponsors list with filter</returns>
         [HttpPost]
-        public ActionResult GetAllSponsorsWithFilter(BaseRecordFilterRequest request)
+        public ActionResult GetAllSponsors(BaseRecordFilterRequest request)
         {
          
-                _mainResponse = _SponsorService.GetAllSponsorsWithFilter(request);
+                _mainResponse = _SponsorService.GetAllSponsors(request);
             _jsonString = Mapper.Convert<SponsorListResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }

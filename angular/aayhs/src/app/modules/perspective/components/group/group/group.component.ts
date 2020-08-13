@@ -34,7 +34,7 @@ export class GroupComponent implements OnInit {
   baseRequest: BaseRecordFilterRequest = {
     Page: 1,
     Limit: 5,
-    OrderBy: 'SponsorId',
+    OrderBy: 'GroupId',
     OrderByDescending: true,
     AllRecords: false
   }
@@ -70,9 +70,11 @@ export class GroupComponent implements OnInit {
   ) { }
   ngOnInit(): void {
     this.getAllGroups();
+    this.getAllStates();
   }
 
   getAllGroups() {
+    return new Promise((resolve, reject) => {
     this.loading = true;
     this.groupsList=null;
     this.groupService.getAllGroups(this.baseRequest).subscribe(response => {
@@ -84,23 +86,26 @@ export class GroupComponent implements OnInit {
       }
       this.loading = false;
     }, error => {
+     
       this.loading = false;
     })
-    
+    resolve();
+  });
   }
 
 
-  getSponsorDetails = (id: number) => {
+  getGroupDetails = (id: number, selectedRowIndex) => {
     this.loading = true;
     this.groupService.getGroup(id).subscribe(response => {
       if(response.Data!=null)
       {
         debugger;
-      this.getCities(response.Data.StateId).then(res => 
+      this.getCities(response.Data.StateId).then(res => {
        
-         this.groupInfo = response.Data
-          );
-      debugger;
+         this.groupInfo = response.Data;
+         this.selectedRowIndex= selectedRowIndex;
+       });
+      
       }
       this.loading = false;
     }, error => {
@@ -109,7 +114,40 @@ export class GroupComponent implements OnInit {
   }
 
 
+  AddUpdateGroup=(group)=>{
+    
+    this.loading=true;
+    this.groupInfo.AmountReceived=this.groupInfo.AmountReceived==null ?0:this.groupInfo.AmountReceived;
+    this.groupService.addUpdateGroup(this.groupInfo).subscribe(response=>{
+     this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
+    debugger
+        // this.baseRequest.Page= 1;
+        // this.baseRequest.Limit= 5;
+        // this.baseRequest.OrderBy= 'GroupId';
+        // this.baseRequest.OrderByDescending= true;
+        // this.baseRequest.AllRecords= false;
 
+       this.getAllGroups().then(res =>{ 
+        if(response.Data.NewId !=null && response.Data.NewId>0)
+        {
+          if(this.groupInfo.GroupId>0)
+        {
+          this.highlight(response.Data.NewId,this.selectedRowIndex);
+        }
+        else{
+          this.highlight(response.Data.NewId,0);
+        }
+        }
+      });
+    
+    }, error=>{
+       this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
+       this.loading = false;
+    })
+    
+    }
+
+   
     
   getCities(id: number) {
     return new Promise((resolve, reject) => {
@@ -184,6 +222,7 @@ export class GroupComponent implements OnInit {
   }
 
   resetForm() {
+    debugger;
     this.groupInfo.GroupName = null;
     this.groupInfo.ContactName = null;
     this.groupInfo.Phone = null;
@@ -194,8 +233,8 @@ export class GroupComponent implements OnInit {
     this.groupInfo.ZipCode = null;
     this.groupInfo.AmountReceived = 0;
     this.groupInfo.GroupId = 0;
-    this.groupInfoForm.resetForm();
     this.tabGroup.selectedIndex = 0
+    this.groupInfoForm.resetForm();
     this.selectedGroupId=0;
     this.selectedRowIndex =-1;
   }
@@ -206,11 +245,11 @@ export class GroupComponent implements OnInit {
   }
   
   
-  highlight(selectedGroupIdId, i) {
+  highlight(selectedGroupId, i) {
     
     this.selectedRowIndex = i;
-    this.selectedGroupId=selectedGroupIdId;
-    this.getSponsorDetails(selectedGroupIdId);
+    this.selectedGroupId=selectedGroupId;
+    this.getGroupDetails(selectedGroupId,this.selectedRowIndex);
   }
 
 
@@ -228,6 +267,14 @@ export class GroupComponent implements OnInit {
       return this.reverseSort ? 'arrow-down'
         : 'arrow-up';
     }
+  }
+
+  getStateName(e) {
+    this.groupInfo.StateId =Number( e.target.options[e.target.selectedIndex].value)
+  }
+
+  getCityName(e) {
+  this.groupInfo.CityId = Number(e.target.options[e.target.selectedIndex].value)
   }
 }
 

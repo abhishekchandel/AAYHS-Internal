@@ -20,6 +20,7 @@ namespace AAYHS.Service.Service
 
         #region private
         private MainResponse _mainResponse;
+        private BaseResponse newIdResponse;
         private IGroupRepository _GroupRepository;
         private IAddressRepository _AddressRepository;
         private readonly IGroupExhibitorRepository _groupExhibitorRepository;
@@ -33,6 +34,7 @@ namespace AAYHS.Service.Service
             _groupExhibitorRepository = groupExhibitorRepository;
             _Mapper = Mapper;
             _mainResponse = new MainResponse();
+            newIdResponse = new BaseResponse();
         }
 
         public MainResponse AddUpdateGroup(GroupRequest request)
@@ -66,13 +68,16 @@ namespace AAYHS.Service.Service
                     AddressId = address != null ? address.AddressId : 0,
                     CreatedDate = DateTime.Now
                 };
-                _GroupRepository.Add(Group);
+              var Data= _GroupRepository.Add(Group);
                 _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
                 _mainResponse.Success = true;
+                _mainResponse.NewId = Data.GroupId;
+                newIdResponse.NewId = Data.GroupId;
+                _mainResponse.BaseResponse = newIdResponse;
             }
             else
             {
-                var Group = _GroupRepository.GetSingle(x => x.GroupId == request.GroupId);
+                var Group = _GroupRepository.GetSingle(x => x.GroupId == request.GroupId && x.IsActive == true && x.IsDeleted == false);
                 if (Group != null && Group.GroupId > 0)
                 {
                     Group.GroupName = request.GroupName;
@@ -83,7 +88,7 @@ namespace AAYHS.Service.Service
                     Group.ModifiedDate = DateTime.Now;
                     _GroupRepository.Update(Group);
 
-                    var address = _AddressRepository.GetSingle(x => x.AddressId == Group.AddressId);
+                    var address = _AddressRepository.GetSingle(x => x.AddressId == Group.AddressId && x.IsActive==true && x.IsDeleted==false);
                     if (address != null && address.AddressId > 0)
                     {
                         address.Address = request.Address;
@@ -94,6 +99,9 @@ namespace AAYHS.Service.Service
                     }
                     _mainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
                     _mainResponse.Success = true;
+                    _mainResponse.NewId = Convert.ToInt32(request.GroupId);
+                    newIdResponse.NewId = Convert.ToInt32(request.GroupId);
+                    _mainResponse.BaseResponse = newIdResponse;
                 }
                 else
                 {
@@ -106,7 +114,7 @@ namespace AAYHS.Service.Service
 
         public MainResponse DeleteGroup(int GroupId)
         {
-            var Group = _GroupRepository.GetSingle(x => x.GroupId == GroupId);
+            var Group = _GroupRepository.GetSingle(x => x.GroupId == GroupId && x.IsActive == true && x.IsDeleted == false);
             if (Group != null && Group.GroupId > 0)
             {
                 Group.IsDeleted = true;

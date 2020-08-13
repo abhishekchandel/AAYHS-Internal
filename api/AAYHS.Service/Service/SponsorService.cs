@@ -23,6 +23,7 @@ namespace AAYHS.Service.Service
 
         #region private
         private MainResponse _mainResponse;
+        private BaseResponse newIdResponse;
         private ISponsorRepository _SponsorRepository;
         private IAddressRepository _AddressRepository;
         #endregion
@@ -33,6 +34,7 @@ namespace AAYHS.Service.Service
             _AddressRepository = AddressRepository;
             _Mapper = Mapper;
             _mainResponse = new MainResponse();
+            newIdResponse = new BaseResponse();
         }
 
         public MainResponse AddUpdateSponsor(SponsorRequest request)
@@ -66,13 +68,16 @@ namespace AAYHS.Service.Service
                     AddressId = address!=null? address.AddressId:0,
                     CreatedDate = DateTime.Now
                 };
-                _SponsorRepository.Add(sponsor);
+              var Data=  _SponsorRepository.Add(sponsor);
                 _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
                 _mainResponse.Success = true;
+                _mainResponse.NewId = Data.SponsorId;
+                newIdResponse.NewId = Data.SponsorId;
+                _mainResponse.BaseResponse = newIdResponse;
             }
             else
             {
-                var sponsor = _SponsorRepository.GetSingle(x => x.SponsorId == request.SponsorId);
+                var sponsor = _SponsorRepository.GetSingle(x => x.SponsorId == request.SponsorId && x.IsActive==true && x.IsDeleted==false);
                 if (sponsor != null && sponsor.SponsorId>0)
                 {
                     sponsor.SponsorName = request.SponsorName;
@@ -81,9 +86,9 @@ namespace AAYHS.Service.Service
                     sponsor.Email = request.Email;
                     sponsor.AmountReceived = request.AmountReceived;
                     sponsor.ModifiedDate = DateTime.Now;
-                    _SponsorRepository.Update(sponsor);
+                   _SponsorRepository.Update(sponsor);
 
-                    var address = _AddressRepository.GetSingle(x => x.AddressId == sponsor.AddressId);
+                    var address = _AddressRepository.GetSingle(x => x.AddressId == sponsor.AddressId && x.IsActive == true && x.IsDeleted == false);
                     if (address != null && address.AddressId > 0)
                     {
                         address.Address = request.Address;
@@ -94,6 +99,9 @@ namespace AAYHS.Service.Service
                     }
                     _mainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
                     _mainResponse.Success = true;
+                    _mainResponse.NewId =Convert.ToInt32(request.SponsorId);
+                    newIdResponse.NewId= Convert.ToInt32(request.SponsorId);
+                    _mainResponse.BaseResponse = newIdResponse;
                 }
                 else
                 {
@@ -104,9 +112,9 @@ namespace AAYHS.Service.Service
                 return _mainResponse;
         }
 
-        public MainResponse GetAllSponsorsWithFilter(BaseRecordFilterRequest request)
+        public MainResponse GetAllSponsors(BaseRecordFilterRequest request)
         {
-            _mainResponse = _SponsorRepository.GetAllSponsorsWithFilter(request);
+            _mainResponse = _SponsorRepository.GetAllSponsors(request);
             if (_mainResponse.SponsorListResponse.sponsorResponses != null && _mainResponse.SponsorListResponse.sponsorResponses.Count() > 0)
             {
                 _mainResponse.Message = Constants.RECORD_FOUND;
@@ -120,22 +128,7 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
-        public MainResponse GetAllSponsors()
-        {
-            _mainResponse = _SponsorRepository.GetAllSponsor();
-            if (_mainResponse.SponsorListResponse.sponsorResponses != null && _mainResponse.SponsorListResponse.sponsorResponses.Count() > 0)
-            {
-                _mainResponse.Message = Constants.RECORD_FOUND;
-                _mainResponse.Success = true;
-                _mainResponse.SponsorListResponse.TotalRecords = _mainResponse.SponsorListResponse.sponsorResponses.Count();
-            }
-            else
-            {
-                _mainResponse.Message = Constants.NO_RECORD_FOUND;
-                _mainResponse.Success = false;
-            }
-            return _mainResponse;
-        }
+    
 
         public MainResponse GetSponsorById(int SponsorId)
         {
@@ -156,7 +149,7 @@ namespace AAYHS.Service.Service
       
         public MainResponse DeleteSponsor(int SponsorId)
         {
-            var sponsor = _SponsorRepository.GetSingle(x => x.SponsorId == SponsorId);
+            var sponsor = _SponsorRepository.GetSingle(x => x.SponsorId == SponsorId && x.IsActive == true && x.IsDeleted == false);
             if (sponsor != null&& sponsor.SponsorId>0)
             {
                 sponsor.IsDeleted = true;

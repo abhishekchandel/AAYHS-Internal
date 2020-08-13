@@ -13,10 +13,11 @@ namespace AAYHS.Core.DTOs.Response
     public class BaseResponse
     {
         public string Message { get; set; }     
+        public int NewId { get; set; }
         public bool Success { get; set; } = true;
-       
-    }
 
+    }
+  
     public class MainResponse : BaseResponse
     {
         public BaseResponse BaseResponse { get; set; }
