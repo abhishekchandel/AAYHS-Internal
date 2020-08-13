@@ -52,7 +52,6 @@ namespace AAYHS.Core.DTOs.Response
         public GetAllGroups GetAllGroups { get; set; }
         public GetHorseById GetHorseById { get; set; }
         public GetAllGroupExhibitors GetAllGroupExhibitors { get; set; }
-        public GetAllGroupFinacials GetAllGroupFinacials { get; set; }
 
     }
    
