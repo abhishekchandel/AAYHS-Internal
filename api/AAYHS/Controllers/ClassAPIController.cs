@@ -39,7 +39,7 @@ namespace AAYHS.API.Controllers
         /// <param name="classRequest"></param>
         /// <returns></returns>
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         public IActionResult GetAllClasses(ClassRequest classRequest)
         {
             _mainResponse = _classService.GetAllClasses(classRequest);
@@ -52,7 +52,7 @@ namespace AAYHS.API.Controllers
         /// <param name="classRequest"></param>
         /// <returns></returns>
         [HttpGet]
-        //[Authorize]
+        [Authorize]
         public IActionResult GetClass(int ClassId)
         {
             _mainResponse = _classService.GetClass(ClassId);
@@ -65,7 +65,7 @@ namespace AAYHS.API.Controllers
         /// <param name="ClassId"></param>
         /// <returns></returns>
         [HttpGet]
-        //[Authorize]
+        [Authorize]
         public IActionResult GetClassExhibitors(int ClassId)
         {
             _mainResponse = _classService.GetClassExhibitors(ClassId);
@@ -78,7 +78,7 @@ namespace AAYHS.API.Controllers
         /// <param name="ClassId"></param>
         /// <returns></returns>
         [HttpGet]
-        //[Authorize]
+        [Authorize]
         public IActionResult GetExhibitorHorses(int ExhibitorId)
         {
             _mainResponse = _classService.GetExhibitorHorses(ExhibitorId);
@@ -91,7 +91,7 @@ namespace AAYHS.API.Controllers
         /// <param name="classRequest"></param>
         /// <returns></returns>
         [HttpGet]
-        //[Authorize]
+        [Authorize]
         public IActionResult GetClassExhibitorsAndHorses(int ClassId)
         {
             _mainResponse = _classService.GetClassExhibitorsAndHorses(ClassId);
@@ -105,7 +105,7 @@ namespace AAYHS.API.Controllers
         /// <param name="addClassRequest"></param>
         /// <returns></returns>
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> CreateUpdateClass(AddClassRequest addClassRequest)
         {
             string actionBy = User.Identity.Name;
@@ -119,7 +119,7 @@ namespace AAYHS.API.Controllers
         /// <param name="addClassExhibitor"></param>
         /// <returns></returns>
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> AddExhibitorToClass(AddClassExhibitor addClassExhibitor)
         {
             string actionBy = User.Identity.Name;
@@ -133,7 +133,7 @@ namespace AAYHS.API.Controllers
         /// <param name="classRequest"></param>
         /// <returns></returns>
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         public IActionResult GetClassEntries(ClassRequest classRequest)
         {
             _mainResponse = _classService.GetClassEntries(classRequest);
@@ -146,7 +146,7 @@ namespace AAYHS.API.Controllers
         /// <param name="ExhibitorClassId"></param>
         /// <returns></returns>
         [HttpDelete]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> DeleteClassExhibitor(int ExhibitorClassId)
         {
             string actionBy = User.Identity.Name;
@@ -160,7 +160,7 @@ namespace AAYHS.API.Controllers
         /// <param name="removeClass"></param>
         /// <returns></returns>
         [HttpDelete]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> RemoveClass(int ClassId)
         {
              string actionBy = User.Identity.Name;
@@ -174,7 +174,7 @@ namespace AAYHS.API.Controllers
         /// <param name="backNumberRequest"></param>
         /// <returns></returns>
         [HttpGet]
-        //[Authorize]
+        [Authorize]
         public IActionResult GetBackNumberForAllExhibitor(int ClassId)
         {
 
@@ -188,7 +188,7 @@ namespace AAYHS.API.Controllers
         /// <param name="resultExhibitorRequest"></param>
         /// <returns></returns>
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         public IActionResult GetResultExhibitorDetails(ResultExhibitorRequest resultExhibitorRequest)
         {
            
@@ -202,7 +202,7 @@ namespace AAYHS.API.Controllers
         /// <param name="resultExhibitorRequest"></param>
         /// <returns></returns>
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         public async Task< IActionResult> AddClassResult(AddClassResultRequest addClassResultRequest)
         {
             string actionBy = User.Identity.Name;
@@ -216,7 +216,7 @@ namespace AAYHS.API.Controllers
         /// <param name="classRequest"></param>
         /// <returns></returns>
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         public IActionResult GetResultOfClass(ClassRequest classRequest)
         {
             _mainResponse =  _classService.GetResultOfClass(classRequest);
@@ -229,7 +229,7 @@ namespace AAYHS.API.Controllers
         /// <param name="searchRequest"></param>
         /// <returns></returns>
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         public IActionResult SearchClass(SearchRequest searchRequest)
         {
             _mainResponse = _classService.SearchClass(searchRequest);
@@ -237,7 +237,7 @@ namespace AAYHS.API.Controllers
             return new OkObjectResult(_jsonString);
         }
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         public IActionResult UpdateClassExhibitorScratch(ClassExhibitorScratch classExhibitorScratch)
         {
             string actionBy = User.Identity.Name;

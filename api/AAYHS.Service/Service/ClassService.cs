@@ -26,7 +26,7 @@ namespace AAYHS.Service.Service
         #endregion
 
         #region private
-        private MainResponse _mainResponse;
+        private MainResponse _mainResponse;       
         #endregion
 
         public ClassService(IClassRepository classRepository,IScheduleDateRepository scheduleDateRepository,IExhibitorClassRepository exhibitorClassRepository,
@@ -189,6 +189,7 @@ namespace AAYHS.Service.Service
                
                 _mainResponse.Message = Constants.CLASS_CREATED;
                 _mainResponse.Success = true;
+                _mainResponse.NewId= _class.ClassId;
                 return _mainResponse;
             }
             else
@@ -233,9 +234,10 @@ namespace AAYHS.Service.Service
                         };
                         await _splitClassRepository.AddAsync(classSplit);
                     };
-                }                    
+                }                
                 _mainResponse.Message = Constants.CLASS_UPDATED;
                 _mainResponse.Success = true;
+                _mainResponse.NewId = addClassRequest.ClassId;
                 return _mainResponse;
             }
            
