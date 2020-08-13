@@ -285,6 +285,7 @@
                                         <tr *ngFor="let list of groupsExhibitorList; let i=index">
                                             <td data-label="Exhibitor Id">{{list.ExhibitorId}}</td>
                                             <td data-label="Exhibitor Name">{{list.ExhibitorName}}</td>
+                                            
 											<td data-label="Group Exhibitor">
                                                         <select class="dynDataSeclect">
                                                             <option  class="selectDropdown"
@@ -292,6 +293,7 @@
                                                              {{item.HorseName}}</option>
                                                         </select>
                                             </td>
+
                                             <td data-label="Birth Year">{{list.BirthYear}}</td>
                                             <td data-label="Remove">
                                             <button class="icon" 
