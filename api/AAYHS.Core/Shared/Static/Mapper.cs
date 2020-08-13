@@ -15,6 +15,7 @@ namespace AAYHS.Core.Shared.Static
             Response<T> response = new Response<T>();
             response.Message = mainReponse.Message;
             response.Success = mainReponse.Success;
+            response.NewId = mainReponse.NewId;
 
             if (mainReponse.Success == true)
             {

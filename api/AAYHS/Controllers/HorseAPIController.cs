@@ -7,6 +7,7 @@ using AAYHS.Core.DTOs.Response;
 using AAYHS.Core.DTOs.Response.Common;
 using AAYHS.Core.Shared.Static;
 using AAYHS.Service.IService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,7 +38,7 @@ namespace AAYHS.API.Controllers
         /// <param name="horseRequest"></param>
         /// <returns></returns>
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         public IActionResult GetAllHorses(HorseRequest horseRequest)
         {
             _mainResponse = _horseService.GetAllHorses(horseRequest);
@@ -50,7 +51,7 @@ namespace AAYHS.API.Controllers
         /// <param name="horseRequest"></param>
         /// <returns></returns>
         [HttpGet]
-        //[Authorize]
+        [Authorize]
         public IActionResult GetHorse(int HorseId)
         {
             _mainResponse = _horseService.GetHorse(HorseId);
@@ -63,7 +64,7 @@ namespace AAYHS.API.Controllers
         /// <param name="horseId"></param>
         /// <returns></returns>
         [HttpDelete]
-        //[Authorize]
+        [Authorize]
         public IActionResult RemoveHorse(int horseId)
         {
             string actionBy = User.Identity.Name;
@@ -77,7 +78,7 @@ namespace AAYHS.API.Controllers
         /// <param name="horseId"></param>
         /// <returns></returns>
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         public IActionResult AddUpdateHorse(HorseAddRequest horseAddRequest)
         {
             string actionBy = User.Identity.Name;
@@ -91,7 +92,7 @@ namespace AAYHS.API.Controllers
         /// <param name="horseAddRequest"></param>
         /// <returns></returns>
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         public IActionResult SearchHorse(SearchRequest searchRequest)
         {           
             _mainResponse = _horseService.SearchHorse(searchRequest);
@@ -104,7 +105,7 @@ namespace AAYHS.API.Controllers
         /// <param name="searchRequest"></param>
         /// <returns></returns>
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         public IActionResult LinkedExhibitors(HorseExhibitorRequest horseExhibitorRequest)
         {
             _mainResponse = _horseService.LinkedExhibitors(horseExhibitorRequest);
@@ -116,7 +117,7 @@ namespace AAYHS.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        //[Authorize]
+        [Authorize]
         public IActionResult GetGroups()
         {
             _mainResponse = _horseService.GetGroups();

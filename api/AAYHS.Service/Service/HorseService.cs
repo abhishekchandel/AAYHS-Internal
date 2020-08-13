@@ -111,7 +111,7 @@ namespace AAYHS.Service.Service
                 };
                var _horse= _horseRepository.Add(horse);
 
-              
+                _mainResponse.NewId = _horse.HorseId;
                 _mainResponse.Message = Constants.HORSE_ADDED;
                 _mainResponse.Success = true;
                 
@@ -131,6 +131,7 @@ namespace AAYHS.Service.Service
 
                     _horseRepository.Update(horse);
 
+                    _mainResponse.NewId = horseAddRequest.HorseId;
                     _mainResponse.Message = Constants.HORSE_UPDATED;
                     _mainResponse.Success = true;
                 }
