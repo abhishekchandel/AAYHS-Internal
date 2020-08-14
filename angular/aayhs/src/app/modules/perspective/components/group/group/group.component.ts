@@ -38,8 +38,26 @@ export class GroupComponent implements OnInit {
     OrderByDescending: true,
     AllRecords: false
   }
+  currentDate = new Date();
+  cutOffDate = new Date();
   groupsList: any;
-  groupsExhibitorList: any;
+  groupExhibitorsList: any;
+  groupFinancialsList:any;
+  FeeTypes:any;
+  TimeFrameTypes:any;
+  groupFinancialsRequest: any={
+    GroupFinancialId: 0,
+    GroupId:0,
+    FeeTypeId:0,
+    TimeFrameId:0,
+    Amount:0,
+  }
+FinancialsFeeTypeId:number=null;
+FinancialsTimeFrameTypeId:number=null;
+FinancialsAmount:number=null;
+
+
+
   enablePagination: boolean = true;
   sortColumn: string = "";
   reverseSort: boolean = false;
@@ -72,6 +90,7 @@ export class GroupComponent implements OnInit {
   ngOnInit(): void {
     this.getAllGroups();
     this.getAllStates();
+    this.getAllTimeFrameTypes();
   }
 
   getAllGroups() {
@@ -116,15 +135,12 @@ export class GroupComponent implements OnInit {
   }
 
   GetGroupExhibitors(GroupId: number) {
-   debugger
     this.loading = true;
-    this.groupsExhibitorList=null;
+    this.groupExhibitorsList=null;
     this.groupService.getGroupExhibitors(GroupId).subscribe(response => {
       if(response.Data!=null && response.Data.TotalRecords>0)
       {
-     this.groupsExhibitorList = response.Data.getGroupExhibitors;
-     this.totalItems = response.Data.TotalRecords;
-     //this.resetForm();
+     this.groupExhibitorsList = response.Data.getGroupExhibitors;
       }
       this.loading = false;
     }, error => {
@@ -132,6 +148,21 @@ export class GroupComponent implements OnInit {
       this.loading = false;
     })
   }
+
+  GetGroupFinancials(GroupId: number) {
+     this.loading = true;
+     this.groupFinancialsList=null;
+     this.groupService.getAllGroupFinancials(GroupId).subscribe(response => {
+       if(response.Data!=null && response.Data.TotalRecords>0)
+       {
+      this.groupFinancialsList = response.Data.getGroupFinacials;
+       }
+       this.loading = false;
+     }, error => {
+      
+       this.loading = false;
+     })
+   }
 
 
   AddUpdateGroup=(group)=>{
@@ -167,7 +198,26 @@ export class GroupComponent implements OnInit {
     
     }
 
-   
+  AddUpdateGroupFinancials(){
+    debugger
+      this.loading=true;
+      this.groupFinancialsRequest.GroupFinancialId=0;
+      this.groupFinancialsRequest.GroupId=this.selectedGroupId;
+      this.groupFinancialsRequest.FeeTypeId=this.FinancialsFeeTypeId;
+      this.groupFinancialsRequest.TimeFrameId=this.FinancialsTimeFrameTypeId;
+      this.groupFinancialsRequest.Amount=this.FinancialsAmount;
+
+      this.groupService.addUpdateGroupFinancials(this.groupFinancialsRequest).subscribe(response=>{
+        this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
+        this.GetGroupFinancials(this.selectedGroupId);
+        this.FinancialsTimeFrameTypeId = null;
+        this.FinancialsAmount=null;
+       }, error=>{
+          this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
+          this.loading = false;
+       })
+      
+      }
     
   getCities(id: number) {
     return new Promise((resolve, reject) => {
@@ -195,6 +245,65 @@ export class GroupComponent implements OnInit {
      
   }
   
+  getAllFeeTypes() {
+    this.loading = true;
+    this.FeeTypes=null;
+    this.groupService.getGlobalCodes('FeeType').subscribe(response => {
+      if(response.Data!=null && response.Data.totalRecords>0)
+      {
+     this.FeeTypes = response.Data.globalCodeResponse;
+      }
+      this.loading = false;
+    }, error => {
+      this.loading = false;
+    })
+  }
+
+  getAllTimeFrameTypes() {
+    this.loading = true;
+    this.TimeFrameTypes=null;
+    this.groupService.getGlobalCodes('TimeFrameType').subscribe(response => {
+      if(response.Data!=null && response.Data.totalRecords>0)
+      {
+     this.TimeFrameTypes = response.Data.globalCodeResponse;
+     this.setFinancialsTimeFrameType();
+      }
+      this.loading = false;
+    }, error => {
+      this.loading = false;
+    })
+  }
+
+
+  
+setFinancialsFeeType(id){
+  debugger
+  this.FinancialsFeeTypeId=Number(id);
+}
+setFinancialsTimeFrameType(){
+ if(this.TimeFrameTypes!=null && this.TimeFrameTypes!=undefined)
+ {
+  if(this.cutOffDate<=this.currentDate)
+  {
+    var CurrentTimeFrame=this.TimeFrameTypes.find(x => x.CodeName == 'Pre');
+    if(CurrentTimeFrame!=null && CurrentTimeFrame!=undefined){
+    this.FinancialsTimeFrameTypeId=CurrentTimeFrame.GlobalCodeId;
+    }
+  }
+  else{
+    var CurrentTimeFrame=this.TimeFrameTypes.find(x => x.CodeName == 'Post');
+    if(CurrentTimeFrame!=null && CurrentTimeFrame!=undefined){
+      this.FinancialsTimeFrameTypeId=CurrentTimeFrame.GlobalCodeId;
+      }
+  }
+}
+}
+setFinancialsAmount(id){
+  debugger
+  this.FinancialsAmount=Number(id);
+}
+
+
 
   //confirm delete 
   confirmRemoveGroup(e, index, Groupid): void {
@@ -225,9 +334,25 @@ export class GroupComponent implements OnInit {
     });
   }
 
+  confirmRemoveGroupFinancials(e, index, GroupFinancialId): void {
+    e.stopPropagation();
+    const message = `Are you sure you want to remove the group Financials?`;
+    const dialogData = new ConfirmDialogModel("Confirm Action", message);
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      this.result = dialogResult;
+      if (this.result){ this.deleteGroupFinancials(GroupFinancialId,index) }
+    });
+  }
+
+
+
+
   //delete record
   deleteGroup(Groupid,index) {
-    debugger
     this.loading = true;
     this.groupService.deleteGroup(Groupid).subscribe(response => {
       
@@ -254,9 +379,8 @@ export class GroupComponent implements OnInit {
     })
    
   }
-
-   //delete record
-   deleteGroupExhibitor(GroupExhibitorid,index) {
+  
+  deleteGroupExhibitor(GroupExhibitorid,index) {
     debugger
     this.loading = true;
     this.groupService.deleteGroupExhibitors(GroupExhibitorid).subscribe(response => {
@@ -264,6 +388,27 @@ export class GroupComponent implements OnInit {
       if(response.Success==true)
       {
        this.GetGroupExhibitors(this.selectedGroupId)
+        this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
+      }
+      else{
+        this.loading = false;
+        this.snackBar.openSnackBar(response.Message, 'Close', 'red-snackbar');
+       
+      }
+    }, error => {
+      this.loading = false;
+    })
+   
+  }
+
+  deleteGroupFinancials(GroupFinancialId,index) {
+    debugger
+    this.loading = true;
+    this.groupService.deleteGroupFinancials(GroupFinancialId).subscribe(response => {
+      
+      if(response.Success==true)
+      {
+       this.GetGroupFinancials(this.selectedGroupId)
         this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
       }
       else{
@@ -293,6 +438,7 @@ export class GroupComponent implements OnInit {
     this.groupInfoForm.resetForm();
     this.selectedGroupId=0;
     this.selectedRowIndex =-1;
+    this.FeeTypes=null;
   }
 
   getNext(event) {
@@ -327,6 +473,8 @@ export class GroupComponent implements OnInit {
     this.selectedGroupId=selectedGroupId;
     this.getGroupDetails(selectedGroupId,i);
     this.GetGroupExhibitors(selectedGroupId);
+    this.GetGroupFinancials(selectedGroupId);
+    this.getAllFeeTypes();
   }
 
 

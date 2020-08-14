@@ -28,11 +28,7 @@ namespace AAYHS.Core.DTOs.Request
         public int TimeFrameId { get; set; }
         public double Amount { get; set; }
     }
-    public class GroupFinancialRequest : BaseRecordFilterRequest
-    {
-        public int GroupFinancialId { get; set; }
-        public int GroupId { get; set; }
-    }
+
 
 
 }

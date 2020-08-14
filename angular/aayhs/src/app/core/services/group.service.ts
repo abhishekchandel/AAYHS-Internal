@@ -17,6 +17,7 @@ getAllGroups(data){
 getGroup(id:number){
   return this.http.get<any>(`${this.api}GroupAPI/GetGroupById?GroupId=${id}`);
   }
+ 
 
 addUpdateGroup(data){
     return this.http.post<any>(this.api +'GroupAPI/AddUpdateGroup',data);
@@ -37,5 +38,16 @@ getGroupExhibitors(id:number){
 deleteGroupExhibitors(id:number){
       return this.http.delete<any>(`${this.api}GroupAPI/DeleteGroupExhibitor?groupExhibitorId=${id}`);
     }
-  
+getAllGroupFinancials(id:number){
+      return this.http.get<any>(`${this.api}GroupAPI/GetAllGroupFinancials?GroupId=${id}`);
+}
+addUpdateGroupFinancials(data){
+  return this.http.post<any>(this.api +'GroupAPI/AddUpdateGroupFinancials',data);
+}
+deleteGroupFinancials(id:number){
+  return this.http.delete<any>(`${this.api}GroupAPI/DeleteGroupFinancials?groupFinancialId=${id}`);
+}
+getGlobalCodes(type:string){
+  return this.http.get<any>(`${this.api}CommonAPI/GetGlobalCode?categoryName=${type}`);
+}
 }

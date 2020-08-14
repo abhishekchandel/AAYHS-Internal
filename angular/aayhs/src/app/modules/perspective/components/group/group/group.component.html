@@ -1,9 +1,11 @@
 <div class="innerContent">
+
 	<div class="sortData">
         <div class="sponBtn"><button 
           class="btn btn-red btnCss"
           (click)="resetForm()">Add new Group</button></div>
     </div>
+
    <!---->
 	<div class="gridTable addBlueStrip">
 	   <div class="table-responsive">
@@ -46,7 +48,8 @@
         </div>
 	   </div>
 	</div>
-	<!---->	
+    <!---->	
+    
 	 <div class="dataDesc gridTable">
 		 <table class="table table-bordered tableBodyScroll">
 			 <tbody>
@@ -266,6 +269,7 @@
 
             </mat-tab>
 
+
             <mat-tab  class="nav-link nav nav-tabs" label="Exhibitor">
                 <div class="card dataEntriesTable">
                     <div class="card-body"> 
@@ -282,7 +286,7 @@
                                 </thead> 
                                 <perfect-scrollbar class="nicescrollBar-2"> 
                                     <tbody>
-                                        <tr *ngFor="let list of groupsExhibitorList; let i=index">
+                                        <tr *ngFor="let list of groupExhibitorsList; let i=index">
                                             <td data-label="Exhibitor Id">{{list.ExhibitorId}}</td>
                                             <td data-label="Exhibitor Name">{{list.ExhibitorName}}</td>
                                             
@@ -313,46 +317,62 @@
                     <div class="actionBtn text-right mb-3 ">
                         <button (click)='tabGroup.selectedIndex = 0' class="btn btn-red btnCss roundBtn">Previous</button>
                         <button (click)='tabGroup.selectedIndex = 2' class="btn btn-red btnCss roundBtn">Next</button>
-                        <button class="btn btn-red btnCss roundBtn">Submit</button>
+                        <!-- <button class="btn btn-red btnCss roundBtn">Submit</button> -->
                     </div>
                 </div>
             </mat-tab>
+
+
             <mat-tab  class="nav-link nav nav-tabs" label="Financials">
                 <div class="card dataEntriesTable">
+                    <form #groupFinancialForm="ngForm" name="groupFinancialForm" 
+                    (ngSubmit)="groupFinancialForm.valid && AddUpdateGroupFinancials()">
                     <div class="card-body"> 
                         <div class="table-responsive tableTab" id="contentscroll2">
                             <table class="table table-bordered tableBodyScroll">
                                 <thead>
                                 <tr>
-                                        <th>Date </th> 
+                                        <th>Date</th> 
                                         <th>Type of fee</th> 
                                         <th>Pre/Post</th>
-                                        <th>Total</th>
+                                        <th>Amount</th>
+                                        <th>Remove</th>
                                 </tr>	
                                 </thead> 
                                 <perfect-scrollbar class="nicescrollBar-2"> 
                                     <tbody>
-                                        <tr >
-                                            <td data-label="Date"></td>
-                                            <td data-label="Type of free">Track Stall</td>
-                                            <td data-label="Pre/Post">
-                                                <div class="prePostField">
-                                                    <label class="radioBtn">Pre
-                                                        <input type="radio" checked="checked" name="radio">
-                                                        <span class="checkmark"></span>
-                                                    </label>
-                                                    <label class="radioBtn">Post
-                                                        <input type="radio" name="radio">
-                                                        <span class="checkmark"></span>
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td data-label="Total"></td>                                            
+                                        <tr *ngFor="let list of groupFinancialsList;let i=index">
+                                            <td data-label="Date">{{list.Date | date:'dd-MM-yyyy'}}</td>
+                                            <td data-label="Type of free">{{list.FeeTypeName}}</td>
+                                            <td data-label="Pre/Post">{{list.TimeFrameName}}</td>
+                                            <td data-label="Amount">{{list.Amount}}</td>  
+                                            <td data-label="Remove">
+                                                <button type="button"
+                                                class="icon" 
+                                                (click)="confirmRemoveGroupFinancials($event,i,list.GroupFinancialId)">
+                                                <span></span> <i class="fa fa-trash-o"
+                                                aria-hidden="true"></i>
+                                            </button>
+                                            </td>                                          
                                         </tr>	
                                         <tr >
-                                            <td data-label="Date"></td>
-                                            <td data-label="Type of free">Horse Stall</td>
-                                            <td data-label="Pre/Post">
+                                            <td data-label="Date">{{currentDate | date:'dd-MM-yyyy'}}</td>
+                                            <td data-label="Fee Type">
+                                                <select class="dynDataSeclect" name="horsefeetypes" required [(ngModel)]="FinancialsFeeTypeId"
+                                                #groupFeeTypeControl="ngModel" (change)="setFinancialsFeeType($event.target.value)" >
+                                                    <option disabled="true" [ngValue]="null" class="selectDropdown">Select Fee Type</option>
+                                                    <option  class="selectDropdown"
+                                                    [value]="item.GlobalCodeId"
+                                                     *ngFor="let item of FeeTypes">
+                                                     {{item.CodeName}}</option>
+                                                </select>
+                                            <span class="help-block"
+                                                *ngIf="(groupFinancialForm.submitted || groupFeeTypeControl.touched) && groupFeeTypeControl.invalid">Please
+                                                select fee type
+                                            </span>
+                                        </td>
+                                        
+                                        <td data-label="Pre/Post">
                                                 <div class="prePostField">
                                                     <label class="radioBtn">Pre
                                                         <input type="radio" checked="checked" name="radio">
@@ -364,7 +384,26 @@
                                                     </label>
                                                 </div>
                                             </td>
-                                            <td data-label="Total"></td>                                            
+
+                                            <td data-label="Amount" >
+                                                <div class="form-group">
+                                            <input
+                                            type="text" 
+                                            class="form-control whitebg" 
+                                            placeholder="Amount"
+                                            name="horsefeeamount" 
+                                            required 
+                                            [(ngModel)]="FinancialsAmount"
+                                            #groupAmountControl="ngModel" 
+                                            (change)="setFinancialsAmount($event.target.value)">
+
+                                           <span class="help-block"
+                                            *ngIf="(groupFinancialForm.submitted || groupAmountControl.touched) 
+                                            && groupAmountControl.invalid">Please select amount
+                                           </span>
+                                        </div> 
+                                        </td> 
+                                        <td></td>  
                                         </tr>
                                        
                                        
@@ -374,6 +413,12 @@
                             </table> 
                         </div> 
                     </div>
+                    <div class="actionBtn text-right mb-3 ">
+                        <button type="button" (click)='tabGroup.selectedIndex = 1' class="btn btn-red btnCss roundBtn">Previous</button>
+                        <button type="button" (click)='tabGroup.selectedIndex = 3' class="btn btn-red btnCss roundBtn">Next</button>
+                        <button type="submit" class="btn btn-red btnCss roundBtn">Submit</button>
+                    </div>
+                    </form>
                 </div>
             </mat-tab>
             <mat-tab  class="nav-link nav nav-tabs" label="Statements">

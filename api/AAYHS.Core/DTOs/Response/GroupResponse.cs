@@ -42,6 +42,7 @@ namespace AAYHS.Core.DTOs.Response
     public class GetAllGroupFinacials
     {
         public List<GetGroupFinacials> getGroupFinacials {get;set;}
+        public GetGroupFinacialsTotals getGroupFinacialsTotals {get;set; }
         public int TotalRecords { get; set; }
     }
     public class GetGroupFinacials
@@ -49,7 +50,25 @@ namespace AAYHS.Core.DTOs.Response
         public int GroupFinancialId { get; set; }
         public DateTime Date { get; set; }
         public int FeeTypeId { get; set; }
+        public string FeeTypeName { get; set; }
         public int TimeFrameId { get; set; }
+        public string TimeFrameName { get; set; }
         public double Amount { get; set; }
     }
+    public class GetGroupFinacialsTotals
+    {
+        public double PreStallSum { get; set; }
+        public double PreTackStallSum { get; set; }
+        public double PreTotal { get; set; }
+
+        public double PostStallSum { get; set; }
+        public double PostTackStallSum { get; set; }
+        public double PostTotal { get; set; }
+
+        public double PrePostStallSum { get; set; }
+        public double PrePostTackStallSum { get; set; }
+        public double PrePostTotal { get; set; }
+
+    }
+
 }

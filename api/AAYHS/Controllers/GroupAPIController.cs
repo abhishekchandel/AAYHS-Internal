@@ -161,11 +161,11 @@ namespace AAYHS.API.Controllers
         /// </summary>
         /// <param name="groupFinancialRequest"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpGet]
         //[Authorize]   
-        public IActionResult GetAllGroupFinancials(GroupFinancialRequest groupFinancialRequest)
+        public IActionResult GetAllGroupFinancials(int GroupId)
         {
-            _mainResponse = _GroupService.GetAllGroupFinancials(groupFinancialRequest);
+            _mainResponse = _GroupService.GetAllGroupFinancials(GroupId);
             _jsonString = Mapper.Convert<GetAllGroupFinacials>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }

@@ -285,6 +285,7 @@ namespace AAYHS.Service.Service
             if (deleteFinancial!=null)
             {
                 deleteFinancial.IsDeleted = true;
+                deleteFinancial.IsActive = false;
                 deleteFinancial.DeletedBy = actionBy;
                 deleteFinancial.DeletedDate = DateTime.Now;
 
@@ -301,19 +302,13 @@ namespace AAYHS.Service.Service
             return _mainResponse; 
         }
 
-        public MainResponse GetAllGroupFinancials(GroupFinancialRequest groupFinancialRequest)
+        public MainResponse GetAllGroupFinancials(int GroupId)
         {
-            var financials = _groupFinancialRepository.GetRecordsWithFilters(groupFinancialRequest.Page, groupFinancialRequest.Limit, groupFinancialRequest.OrderBy, 
-                             groupFinancialRequest.OrderByDescending, groupFinancialRequest.AllRecords, x =>x.GroupId== groupFinancialRequest.GroupId && x.IsActive == true && x.IsDeleted == false);
-            if (financials!=null)
+            var financials = _GroupRepository.GetAllGroupFinancials(GroupId);
+            if (financials!=null && financials.getGroupFinacials.Count()>0)
             {
-                var groupFinancials = _Mapper.Map<List<GetGroupFinacials>>(financials);
-
-                GetAllGroupFinacials getAllGroupFinacials = new GetAllGroupFinacials();
-                getAllGroupFinacials.getGroupFinacials = groupFinancials;
-                _mainResponse.GetAllGroupFinacials = getAllGroupFinacials;
-                _mainResponse.GetAllGroupFinacials.TotalRecords = groupFinancials.Count();
-
+                _mainResponse.GetAllGroupFinacials = financials;
+                _mainResponse.GetAllGroupFinacials.TotalRecords = financials.getGroupFinacials.Count();
                 _mainResponse.Success = true;
                
             }

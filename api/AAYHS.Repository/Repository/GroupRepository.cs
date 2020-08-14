@@ -207,6 +207,29 @@ namespace AAYHS.Repository.Repository
             return getAllGroupExhibitors;
         }
 
-        
-   }
+        public GetAllGroupFinacials GetAllGroupFinancials(int GroupId)
+        {
+            GetAllGroupFinacials getAllGroupFinacials = new GetAllGroupFinacials();
+            List<GetGroupFinacials> list = new List<GetGroupFinacials>();
+            list = (from financial in _context.GroupFinancials
+                    join feetype in _context.GlobalCodes on financial.FeeTypeId equals feetype.GlobalCodeId
+                    join timeframe in _context.GlobalCodes on financial.TimeFrameId equals timeframe.GlobalCodeId
+                    where financial.GroupId == GroupId && financial.IsActive == true && financial.IsDeleted == false
+                    && feetype.IsActive == true && feetype.IsDeleted == false
+                      && timeframe.IsActive == true && timeframe.IsDeleted == false
+                    select new GetGroupFinacials
+                    {
+                        GroupFinancialId = financial.GroupFinancialId,
+                        Date = financial.Date,
+                        FeeTypeId = financial.FeeTypeId,
+                        FeeTypeName = feetype.CodeName,
+                        TimeFrameId = financial.TimeFrameId,
+                        TimeFrameName = timeframe.CodeName,
+                        Amount = financial.Amount
+                    }).ToList();
+
+            getAllGroupFinacials.getGroupFinacials = list;
+            return getAllGroupFinacials;
+        }
+    }
 }
