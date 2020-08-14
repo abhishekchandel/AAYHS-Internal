@@ -61,6 +61,7 @@ namespace AAYHS.Core.DTOs.Response
         public double PreTackStallSum { get; set; }
         public double PreTotal { get; set; }
 
+
         public double PostStallSum { get; set; }
         public double PostTackStallSum { get; set; }
         public double PostTotal { get; set; }

@@ -10,6 +10,7 @@ using System.Text;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text.RegularExpressions;
+using System.Security.Cryptography.X509Certificates;
 
 namespace AAYHS.Repository.Repository
 {
@@ -26,6 +27,7 @@ namespace AAYHS.Repository.Repository
         #region public
         public AAYHSDBContext _context;
         #endregion
+
 
         public GroupRepository(AAYHSDBContext ObjContext, IMapper Mapper) : base(ObjContext)
         {
@@ -227,9 +229,54 @@ namespace AAYHS.Repository.Repository
                         TimeFrameName = timeframe.CodeName,
                         Amount = financial.Amount
                     }).ToList();
+          
+
 
             getAllGroupFinacials.getGroupFinacials = list;
+            getAllGroupFinacials.getGroupFinacialsTotals = getTotals(list);
             return getAllGroupFinacials;
+        }
+        public GetGroupFinacialsTotals getTotals(List<GetGroupFinacials> list)
+        {
+            GetGroupFinacialsTotals getGroupFinacialsTotals = new GetGroupFinacialsTotals();
+
+            var codes = (from gcc in _context.GlobalCodeCategories
+                         join gc in _context.GlobalCodes on gcc.GlobalCodeCategoryId equals gc.CategoryId
+                         where gcc.CategoryName == "TimeFrameType" && gc.IsDeleted == false && gc.IsActive == true
+                         select new
+                         {
+                             gc.GlobalCodeId,
+                             gc.CodeName
+
+                         }).ToList();
+            var Preid = (from code in codes where code.CodeName == "Pre" select code.GlobalCodeId).FirstOrDefault();
+            var Postid = (from code in codes where code.CodeName == "Post" select code.GlobalCodeId).FirstOrDefault();
+            var fees = (from gcc in _context.GlobalCodeCategories
+                         join gc in _context.GlobalCodes on gcc.GlobalCodeCategoryId equals gc.CategoryId
+                         where gcc.CategoryName == "FeeType" && gc.IsDeleted == false && gc.IsActive == true
+                         select new
+                         {
+                             gc.GlobalCodeId,
+                             gc.CodeName
+
+                         }).ToList();
+            var horsestallid = (from code in fees where code.CodeName == "Horse Stall" select code.GlobalCodeId).FirstOrDefault();
+            var tackstallid = (from code in fees where code.CodeName == "Tack Stall" select code.GlobalCodeId).FirstOrDefault();
+
+
+            getGroupFinacialsTotals.PreStallSum = list.Where(x=>x.TimeFrameId==Preid && x.FeeTypeId== horsestallid).Select(x=>x.Amount).Sum();
+            getGroupFinacialsTotals.PreTackStallSum = list.Where(x => x.TimeFrameId == Preid && x.FeeTypeId == tackstallid).Select(x => x.Amount).Sum();
+            getGroupFinacialsTotals.PreTotal = list.Where(x => x.TimeFrameId == Preid).Select(x => x.Amount).Sum(); ;
+
+            getGroupFinacialsTotals.PostStallSum = list.Where(x => x.TimeFrameId == Postid && x.FeeTypeId == horsestallid).Select(x => x.Amount).Sum(); 
+            getGroupFinacialsTotals.PostTackStallSum = list.Where(x => x.TimeFrameId == Postid && x.FeeTypeId == tackstallid).Select(x => x.Amount).Sum();
+            getGroupFinacialsTotals.PostTotal = list.Where(x => x.TimeFrameId == Postid).Select(x => x.Amount).Sum();
+
+            getGroupFinacialsTotals.PrePostStallSum = list.Where(x => x.FeeTypeId == horsestallid).Select(x => x.Amount).Sum();
+            getGroupFinacialsTotals.PrePostTackStallSum = list.Where(x => x.FeeTypeId == tackstallid).Select(x => x.Amount).Sum();
+            getGroupFinacialsTotals.PrePostTotal = list.Select(x => x.Amount).Sum();
+
+            return getGroupFinacialsTotals;
         }
     }
 }
