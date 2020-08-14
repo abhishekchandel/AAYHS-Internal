@@ -194,7 +194,7 @@ namespace AAYHS.Service.Service
             }
             else
             {
-                var updateClass = _classRepository.GetSingle(x => x.ClassId == addClassRequest.ClassId);
+                var updateClass = _classRepository.GetSingle(x => x.ClassId == addClassRequest.ClassId && x.IsActive==true && x.IsDeleted==false);
                 if (updateClass!=null)
                 {
                     updateClass.ClassNumber = addClassRequest.ClassNumber;
@@ -206,7 +206,7 @@ namespace AAYHS.Service.Service
                     updateClass.ModifiedDate = DateTime.Now;
                     await _classRepository.UpdateAsync(updateClass);
                 }
-                var updateClassSchedule = _scheduleDateRepository.GetSingle(x => x.ClassId == addClassRequest.ClassId);
+                var updateClassSchedule = _scheduleDateRepository.GetSingle(x => x.ClassId == addClassRequest.ClassId && x.IsActive == true && x.IsDeleted == false);
                 if (updateClassSchedule!=null)
                 {
                     updateClassSchedule.Date = addClassRequest.ScheduleDate;
@@ -305,6 +305,17 @@ namespace AAYHS.Service.Service
                 _class.DeletedBy = actionBy;
                 _class.DeletedDate = DateTime.Now;
                 await _classRepository.UpdateAsync(_class);
+
+                var _schedule = _scheduleDateRepository.GetSingle(x => x.ClassId == ClassId);
+
+                if (_schedule!=null)
+                {
+                    _schedule.IsDeleted = true;
+                    _schedule.DeletedBy = actionBy;
+                    _schedule.DeletedDate = DateTime.Now;
+
+                    await _scheduleDateRepository.UpdateAsync(_schedule);
+                }
 
                 _mainResponse.Success = true;
                 _mainResponse.Message = Constants.CLASS_REMOVED;

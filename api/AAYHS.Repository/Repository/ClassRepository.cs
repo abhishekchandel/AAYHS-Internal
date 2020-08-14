@@ -83,7 +83,7 @@ namespace AAYHS.Repository.Repository
                     from scheduleDate2 in scheduleDate1.DefaultIfEmpty()
                     join splitClass in _ObjContext.ClassSplits on classes.ClassId equals splitClass.ClassId into splitClass1
                     from splitClass2 in splitClass1.DefaultIfEmpty()                                    
-                    where classes.IsActive == true && classes.IsDeleted == false && splitClass2.IsActive==true && splitClass2.IsDeleted==false 
+                    where classes.IsActive == true && classes.IsDeleted == false && scheduleDate2.IsDeleted==false
                     && classes.ClassId == ClassId
                     select new ClassResponse
                     {
@@ -95,11 +95,10 @@ namespace AAYHS.Repository.Repository
                         Location= classes!=null?classes.Location:"",
                         ScheduleDate= scheduleDate2.Date,
                         SchedulTime= scheduleDate2.Time,
-                        SplitNumber= splitClass2.SplitNumber,
-                        ChampionShipIndicator=splitClass2.ChampionShipIndicator,
-                        getClassSplit = (from splitClass in _ObjContext.ClassSplits
-                                        join classes in _ObjContext.Classes on splitClass.ClassId equals classes.ClassId 
-                                        where classes.IsActive == true && classes.IsDeleted == false && splitClass.IsActive==true && splitClass.IsDeleted==false
+                        SplitNumber= splitClass2!=null?splitClass2.SplitNumber:0,
+                        ChampionShipIndicator= splitClass2 != null ? splitClass2.ChampionShipIndicator:false,
+                        getClassSplit = (from splitClass in _ObjContext.ClassSplits                                     
+                                        where  splitClass.IsActive==true && splitClass.IsDeleted==false
                                         && splitClass.ClassId == ClassId
                                         select new GetClassSplit
                                         {                                           
@@ -181,7 +180,7 @@ namespace AAYHS.Repository.Repository
                     join f in _ObjContext.Fees on paymentdetails2.FeeId equals f.FeeId into f1
                     from f2 in f1.DefaultIfEmpty()
                     where exhibitorclasses.IsDeleted == false && exhibitors2.IsDeleted == false && exhibitorclasses.IsActive == true && exhibitors2.IsActive == true &&
-                    horses2.IsDeleted==false && horses2.IsActive==true && paymentdetails2.IsDeleted==false && f2.IsDeleted==false &&
+                    horses2.IsDeleted==false && horses2.IsActive==true &&
                     exhibitorclasses.ClassId== classRequest.ClassId
                     select new GetClassEntries
                     {
@@ -249,7 +248,7 @@ namespace AAYHS.Repository.Repository
                              where exhibitors.IsActive == true && exhibitors.IsDeleted == false &&
                              exhibitors.BackNumber == resultExhibitorRequest.BackNumber && exhibitorsClass2.ClassId == resultExhibitorRequest.ClassId
                              && exhibitorsClass2.IsActive == true && exhibitorsClass2.IsDeleted == false
-                             && addresses2.IsDeleted==false && city2.IsDeleted==false && state2.IsDeleted==false && paymentdetails2.IsDeleted==false && f2.IsDeleted==false
+                             && addresses2.IsDeleted==false && city2.IsDeleted==false && state2.IsDeleted==false
                              select new ResultExhibitorDetails
                              {
                                  ExhibitorId=exhibitors.ExhibitorId,
@@ -285,8 +284,7 @@ namespace AAYHS.Repository.Repository
                     join f in _ObjContext.Fees on paymentdetails2.FeeId equals f.FeeId into f1
                     from f2  in f1.DefaultIfEmpty()
                     where result.IsActive == true && result.IsDeleted == false && exhibitor2.IsActive == true && exhibitor2.IsDeleted == false
-                    && exhibitorsClass2.IsDeleted==false && addresses2.IsDeleted == false && city2.IsDeleted == false && state2.IsDeleted == false
-                    && paymentdetails2.IsDeleted == false && f2.IsDeleted == false
+                    && exhibitorsClass2.IsDeleted==false && addresses2.IsDeleted == false && city2.IsDeleted == false && state2.IsDeleted == false                   
                     && result.ClassId == classRequest.ClassId
                     select new GetResultOfClass
                     {
