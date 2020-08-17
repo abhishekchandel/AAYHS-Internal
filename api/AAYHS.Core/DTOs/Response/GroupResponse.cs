@@ -71,5 +71,41 @@ namespace AAYHS.Core.DTOs.Response
         public double PrePostTotal { get; set; }
 
     }
+    public class GetGroupInfo
+    {
+        public string GroupName { get; set; }
+        public string ContactName { get; set; }
+        public string Address { get; set; }
+        public string CityStateZip { get; set; }
+        public string PhoneNumebr { get; set; }
+        public string Email { get; set; }
+    }
+    public class GroupStatement
+    {
+        public double TotalHorseStallFee { get; set; }
+        public double TotalStackStallFee { get; set; }
+        public int StallQuantity { get; set; }
+        public int TackStallQuantity { get; set; }
+        public double Refund { get; set; }
+        public double AmountDue { get; set; }
+        public double ReceviedAmount { get; set; }
+    }
+    public class GetStatementExhibitor
+    {
+        public int BackNumber { get; set; }
+        public string ExhibitorName { get; set; }
+        public string HorseName { get; set; }
+    }
+    public class GetAllStatementExhibitor
+    {
+        public List<GetStatementExhibitor> getStatementExhibitors { get; set; }
+        public int TotalRecords { get; set; }
+    }
+    public class GetGroupStatement
+    {
+        public GetGroupInfo getGroupInfo { get; set; }
+        public GroupStatement groupStatement { get; set; }
+        public List<GetStatementExhibitor> getStatementExhibitors { get; set; }
 
+    }
 }

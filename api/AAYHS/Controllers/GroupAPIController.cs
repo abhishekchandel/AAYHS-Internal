@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AAYHS.Core.DTOs.Request;
 using AAYHS.Core.DTOs.Response;
+using AAYHS.Core.DTOs.Response.Common;
 using AAYHS.Core.Shared.Static;
 using AAYHS.Service.IService;
 using Microsoft.AspNetCore.Authorization;
@@ -18,10 +19,12 @@ namespace AAYHS.API.Controllers
     {
         private readonly IGroupService _GroupService;
         private MainResponse _mainResponse;
+        private IStallService _StallService;
         private string _jsonString = string.Empty;
-        public GroupAPIController(IGroupService GroupService)
+        public GroupAPIController(IGroupService GroupService,IStallService StallService)
         {
             _GroupService = GroupService;
+            _StallService = StallService;
             _mainResponse = new MainResponse();
         }
 
@@ -169,5 +172,18 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<GetAllGroupFinacials>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
+        /// <summary>
+        /// This api used to get all stall
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        //[Authorize]   
+        public IActionResult GetAllStall()
+        {
+            _mainResponse = _StallService.GetAllStall();
+            _jsonString = Mapper.Convert<GetAllStall>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
     }
+    
 }

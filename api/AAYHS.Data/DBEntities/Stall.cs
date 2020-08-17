@@ -13,9 +13,8 @@ namespace AAYHS.Data.DBEntities
         [Key]
         public int StallId { get; set; }
         public int StallNumber { get; set; }
-        public int MaxNumberOfHorseAssignment { get; set; }
-        [Column(TypeName = "varchar(5000)")]
-        public string Comments { get; set; }
-        public string Location { get; set; }
+        public bool IsPortable { get; set; }
+        public int ProtableStallTypeId { get; set; }
+        public string Description { get; set; }
     }
 }
