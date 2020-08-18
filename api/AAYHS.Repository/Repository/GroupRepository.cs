@@ -11,6 +11,8 @@ using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text.RegularExpressions;
 using System.Security.Cryptography.X509Certificates;
+using System.Security.Cryptography;
+using AAYHS.Core.DTOs.Response.Common;
 
 namespace AAYHS.Repository.Repository
 {
@@ -236,6 +238,7 @@ namespace AAYHS.Repository.Repository
             getAllGroupFinacials.getGroupFinacialsTotals = getTotals(list);
             return getAllGroupFinacials;
         }
+
         public GetGroupFinacialsTotals getTotals(List<GetGroupFinacials> list)
         {
             GetGroupFinacialsTotals getGroupFinacialsTotals = new GetGroupFinacialsTotals();
@@ -278,5 +281,110 @@ namespace AAYHS.Repository.Repository
 
             return getGroupFinacialsTotals;
         }
+
+        public GetGroupStatement GetGroupStatement(int GroupId)
+        {
+            GetGroupStatement getGroupStatement = new GetGroupStatement();
+
+            IEnumerable<AAYHSInfo> data;
+
+            data = (from aayhs in _context.AAYHSContact
+                    join address in _context.Addresses on aayhs.StreetReturnAddressId equals address.AddressId into address1
+                    from address2 in address1.DefaultIfEmpty()
+                    join city in _context.Cities on address2.CityId equals city.CityId into city1
+                    from city2 in city1.DefaultIfEmpty()
+                    join state in _context.States on city2.StateId equals state.StateId into state1
+                    from state2 in state1.DefaultIfEmpty()
+                    where aayhs.IsActive == true && aayhs.IsDeleted == false && address2.IsActive == true && address2.IsDeleted == false
+                    select new AAYHSInfo 
+                    { 
+                       Email=aayhs.Email1,
+                       Address=address2.Address,
+                       CityStateZip= city2.Name + ", " + state2.Code + "  " + address2.ZipCode,
+                       PhoneNumber=aayhs.Phone1
+                    });
+
+            getGroupStatement.aAYHSInfo = data.FirstOrDefault();
+
+            IEnumerable<GetGroupInfo> data1;
+            
+            data1 = (from groups in _context.Groups
+                    join address in _context.Addresses on groups.AddressId equals address.AddressId into address1
+                    from address2 in address1.DefaultIfEmpty()
+                    join city in _context.Cities on address2.CityId equals city.CityId into city1
+                    from city2 in city1.DefaultIfEmpty()
+                    join state in _context.States on city2.StateId equals state.StateId into state1
+                    from state2 in state1.DefaultIfEmpty()
+                    where groups.IsActive == true && groups.IsDeleted == false && address2.IsActive == true
+                    && address2.IsDeleted == false && groups.GroupId == GroupId
+                    select new GetGroupInfo
+                    {
+                        GroupName = groups.GroupName,
+                        ContactName = groups.ContactName,
+                        Address = address2.Address,
+                        CityStateZip = city2.Name + ", " + state2.Code + "  " + address2.ZipCode,
+                        PhoneNumebr = groups.Phone,
+                        Email = groups.Email
+
+                    });
+            getGroupStatement.getGroupInfo = data1.FirstOrDefault();
+
+
+            var fees = (from gcc in _context.GlobalCodeCategories
+                        join gc in _context.GlobalCodes on gcc.GlobalCodeCategoryId equals gc.CategoryId
+                        where gcc.CategoryName == "FeeType" && gc.IsDeleted == false && gc.IsActive == true
+                        select new
+                        {
+                            gc.GlobalCodeId,
+                            gc.CodeName
+
+                        }).ToList();
+
+            var horseStallId = (from code in fees where code.CodeName == "Horse Stall" select code.GlobalCodeId).FirstOrDefault();
+            var tackStallId = (from code in fees where code.CodeName == "Tack Stall" select code.GlobalCodeId).FirstOrDefault();
+
+            GroupStatement groupStatement = new GroupStatement();
+
+            groupStatement.TotalHorseStall = _context.GroupFinancials.Where(x => x.GroupId == GroupId && 
+                                                             x.FeeTypeId== horseStallId && x.IsActive==true && x.IsDeleted==false).Select(x => x.Amount).Sum();
+            groupStatement.TotalTackStall = _context.GroupFinancials.Where(x => x.GroupId == GroupId &&
+                                                             x.FeeTypeId == tackStallId && x.IsActive == true && x.IsDeleted == false).Select(x => x.Amount).Sum();
+            groupStatement.StallQuantity = _context.StallAssignment.Where(x => x.GroupId == GroupId && 
+                                                             x.IsDeleted == false && x != null).Select(x => x.StallAssignmentId).Count();
+            groupStatement.TackStallQuantity = _context.TackStallAssignment.Where(x => x.GroupId == GroupId 
+                                                             && x.IsDeleted == false).Select(x => x.TackStallAssignmentId).Count();
+            decimal stallAmount = _context.YearlyMaintainenceFee.Where(x => x.FeeTypeId == horseStallId 
+                                                       && x.IsActive == true && x.IsDeleted == false).Select(x=>x.Amount).Sum();
+            decimal tackStallAmount = _context.YearlyMaintainenceFee.Where(x => x.FeeTypeId == tackStallId
+                                                        && x.IsActive == true && x.IsDeleted == false).Select(x => x.Amount).Sum();
+            groupStatement.AmountDue = (groupStatement.StallQuantity * stallAmount) + (groupStatement.TackStallQuantity * tackStallAmount);
+            groupStatement.ReceviedAmount =Convert.ToDecimal(groupStatement.TotalHorseStall + groupStatement.TotalTackStall);
+            groupStatement.OverPayment = groupStatement.ReceviedAmount - groupStatement.AmountDue;
+
+            getGroupStatement.groupStatement = groupStatement;
+
+            IEnumerable<GetStatementExhibitor> data2;
+
+            data2 = (from groupExhibitors in _context.GroupExhibitors
+                     join exhibitorsHorses in _context.ExhibitorHorse on groupExhibitors.ExhibitorId equals exhibitorsHorses.ExhibitorId into exhibitorsHorses1
+                     from exhibitorsHorses2 in exhibitorsHorses1.DefaultIfEmpty()
+                     join horses in _context.Horses on exhibitorsHorses2.HorseId equals horses.HorseId into horses1
+                     from horses2 in horses1.DefaultIfEmpty()
+                     join exhibitors in _context.Exhibitors on groupExhibitors.ExhibitorId equals exhibitors.ExhibitorId into exhibitors1
+                     from exhibitors2 in exhibitors1.DefaultIfEmpty()
+                     where groupExhibitors.IsActive == true && groupExhibitors.IsDeleted == false && exhibitors2.IsActive == true
+                     && exhibitors2.IsActive == true && exhibitors2.IsDeleted == false && horses2.IsActive == true && horses2.IsDeleted == false
+                     && exhibitors2.IsDeleted == false && groupExhibitors.GroupId == GroupId
+                     select new GetStatementExhibitor
+                     {
+                         BackNumber = exhibitors2.BackNumber,
+                         ExhibitorName = exhibitors2.FirstName + " " + exhibitors2.LastName,
+                         HorseName = horses2.Name
+                     });
+            getGroupStatement.getStatementExhibitors = data2.ToList();
+
+            return getGroupStatement;
+        }
+
     }
 }
