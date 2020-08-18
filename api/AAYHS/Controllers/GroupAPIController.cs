@@ -184,6 +184,19 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<GetAllStall>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
+        /// <summary>
+        /// This api used to get group statement
+        /// </summary>
+        /// <param name="GroupId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        //[Authorize]   
+        public IActionResult GetGroupStatement(int GroupId)
+        {
+            _mainResponse = _GroupService.GetGroupStatement(GroupId);
+            _jsonString = Mapper.Convert<GetGroupStatement>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
     }
     
 }

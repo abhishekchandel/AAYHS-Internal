@@ -319,5 +319,13 @@ namespace AAYHS.Service.Service
             }
             return _mainResponse;
         }
+
+        public MainResponse GetGroupStatement(int GroupId)
+        {
+            var groupStatement = _GroupRepository.GetGroupStatement(GroupId);
+            _mainResponse.GetGroupStatement = groupStatement;
+            _mainResponse.Success = true;
+            return _mainResponse;
+        }
    }
 }

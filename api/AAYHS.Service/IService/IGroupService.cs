@@ -18,5 +18,6 @@ namespace AAYHS.Service.IService
         MainResponse AddUpdateGroupFinancials(AddGroupFinancialRequest addGroupFinancialRequest, string actionBy);
         MainResponse DeleteGroupFinancials(int groupFinancialId, string actionBy);
         MainResponse GetAllGroupFinancials(int GroupId);
+        MainResponse GetGroupStatement(int GroupId);
     }
 }

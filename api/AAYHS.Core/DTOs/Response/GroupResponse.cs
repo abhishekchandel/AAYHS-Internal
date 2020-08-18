@@ -82,13 +82,14 @@ namespace AAYHS.Core.DTOs.Response
     }
     public class GroupStatement
     {
-        public double TotalHorseStallFee { get; set; }
-        public double TotalStackStallFee { get; set; }
+        public double TotalHorseStall { get; set; }
+        public double TotalTackStall { get; set; }
         public int StallQuantity { get; set; }
         public int TackStallQuantity { get; set; }
-        public double Refund { get; set; }
-        public double AmountDue { get; set; }
-        public double ReceviedAmount { get; set; }
+        public decimal Refund { get; set; }
+        public decimal AmountDue { get; set; }
+        public decimal ReceviedAmount { get; set; }
+        public decimal OverPayment { get; set; }
     }
     public class GetStatementExhibitor
     {
@@ -103,9 +104,17 @@ namespace AAYHS.Core.DTOs.Response
     }
     public class GetGroupStatement
     {
+        public AAYHSInfo aAYHSInfo { get; set; }
         public GetGroupInfo getGroupInfo { get; set; }
         public GroupStatement groupStatement { get; set; }
         public List<GetStatementExhibitor> getStatementExhibitors { get; set; }
 
+    }
+    public class AAYHSInfo
+    {
+        public string Email { get; set; }
+        public string Address { get; set; }
+        public string CityStateZip { get; set; }
+        public string PhoneNumber { get; set; }
     }
 }
