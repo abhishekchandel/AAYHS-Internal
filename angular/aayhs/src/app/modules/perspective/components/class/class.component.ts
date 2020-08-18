@@ -168,7 +168,7 @@ export class ClassComponent implements OnInit {
       this.getClassEntries(this.classInfo.ClassId)
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
     }, error => {
-      this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
+      this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
       this.loading = false;
 
     })
@@ -357,7 +357,7 @@ export class ClassComponent implements OnInit {
       this.getClassExhibitors(this.classInfo.ClassId);
       this.entriesForm.resetForm({ exhibitorId:null,horseId:null});
     }, error => {
-      this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
+      this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
       this.loading = false;
 
     })
@@ -370,7 +370,7 @@ export class ClassComponent implements OnInit {
       this.getClassEntries(this.classInfo.ClassId);
       this.getClassExhibitors(this.classInfo.ClassId);
     }, error => {
-      this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
+      this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
       this.loading = false;
 
     })
@@ -383,7 +383,7 @@ export class ClassComponent implements OnInit {
       this.totalItems=this.totalItems-1;
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
     }, error => {
-      this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
+      this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
       this.loading = false;
 
     })
@@ -450,7 +450,7 @@ export class ClassComponent implements OnInit {
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
 
     }, error => {
-      this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
+      this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
       this.loading = false;
 
     })

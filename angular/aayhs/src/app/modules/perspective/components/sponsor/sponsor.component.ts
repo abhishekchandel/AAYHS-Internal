@@ -216,7 +216,7 @@ export class SponsorComponent implements OnInit {
     });
      
     }, error=>{
-       this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
+       this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
        this.loading = false;
     })
     
@@ -234,7 +234,7 @@ export class SponsorComponent implements OnInit {
       this.exhibitorId = null;
       this.sponsortypeId=null;
      }, error=>{
-        this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
+        this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
         this.loading = false;
      })
     
@@ -250,7 +250,7 @@ export class SponsorComponent implements OnInit {
       this.GetSponsorClasses(this.selectedSponsorId);
       this.sponsorClassId=null;
      }, error=>{
-        this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
+        this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
         this.loading = false;
      })
      }

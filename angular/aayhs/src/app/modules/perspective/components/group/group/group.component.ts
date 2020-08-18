@@ -43,6 +43,7 @@ export class GroupComponent implements OnInit {
   groupsList: any;
   groupExhibitorsList: any;
   groupFinancialsList:any;
+  groupFinancialsTotals:any;
   FeeTypes:any;
   TimeFrameTypes:any;
   groupFinancialsRequest: any={
@@ -120,7 +121,7 @@ FinancialsAmount:number=null;
     this.groupService.getGroup(id).subscribe(response => {
       if(response.Data!=null)
       {
-        debugger;
+      
       this.getCities(response.Data.StateId).then(res => {
        
          this.groupInfo = response.Data;
@@ -152,10 +153,12 @@ FinancialsAmount:number=null;
   GetGroupFinancials(GroupId: number) {
      this.loading = true;
      this.groupFinancialsList=null;
+     this.groupFinancialsTotals=null;
      this.groupService.getAllGroupFinancials(GroupId).subscribe(response => {
        if(response.Data!=null && response.Data.TotalRecords>0)
        {
       this.groupFinancialsList = response.Data.getGroupFinacials;
+      this.groupFinancialsTotals=response.Data.getGroupFinacialsTotals;
        }
        this.loading = false;
      }, error => {
@@ -171,7 +174,7 @@ FinancialsAmount:number=null;
     this.groupInfo.AmountReceived=this.groupInfo.AmountReceived==null ?0:this.groupInfo.AmountReceived;
     this.groupService.addUpdateGroup(this.groupInfo).subscribe(response=>{
      this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
-    debugger
+    
         // this.baseRequest.Page= 1;
         // this.baseRequest.Limit= 5;
         // this.baseRequest.OrderBy= 'GroupId';
@@ -192,14 +195,14 @@ FinancialsAmount:number=null;
       });
     
     }, error=>{
-       this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
+       this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
        this.loading = false;
     })
     
     }
 
   AddUpdateGroupFinancials(){
-    debugger
+    
       this.loading=true;
       this.groupFinancialsRequest.GroupFinancialId=0;
       this.groupFinancialsRequest.GroupId=this.selectedGroupId;
@@ -212,8 +215,9 @@ FinancialsAmount:number=null;
         this.GetGroupFinancials(this.selectedGroupId);
         this.FinancialsTimeFrameTypeId = null;
         this.FinancialsAmount=null;
+        this.FinancialsFeeTypeId=null;
        }, error=>{
-          this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
+          this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
           this.loading = false;
        })
       
@@ -266,7 +270,7 @@ FinancialsAmount:number=null;
       if(response.Data!=null && response.Data.totalRecords>0)
       {
      this.TimeFrameTypes = response.Data.globalCodeResponse;
-     this.setFinancialsTimeFrameType();
+     this.setFinancialsTimeFrameType(this.TimeFrameTypes[0].GlobalCodeId);
       }
       this.loading = false;
     }, error => {
@@ -277,29 +281,13 @@ FinancialsAmount:number=null;
 
   
 setFinancialsFeeType(id){
-  debugger
   this.FinancialsFeeTypeId=Number(id);
 }
-setFinancialsTimeFrameType(){
- if(this.TimeFrameTypes!=null && this.TimeFrameTypes!=undefined)
- {
-  if(this.cutOffDate<=this.currentDate)
-  {
-    var CurrentTimeFrame=this.TimeFrameTypes.find(x => x.CodeName == 'Pre');
-    if(CurrentTimeFrame!=null && CurrentTimeFrame!=undefined){
-    this.FinancialsTimeFrameTypeId=CurrentTimeFrame.GlobalCodeId;
-    }
-  }
-  else{
-    var CurrentTimeFrame=this.TimeFrameTypes.find(x => x.CodeName == 'Post');
-    if(CurrentTimeFrame!=null && CurrentTimeFrame!=undefined){
-      this.FinancialsTimeFrameTypeId=CurrentTimeFrame.GlobalCodeId;
-      }
-  }
+setFinancialsTimeFrameType(id){
+    this.FinancialsTimeFrameTypeId=Number(id);
 }
-}
+
 setFinancialsAmount(id){
-  debugger
   this.FinancialsAmount=Number(id);
 }
 

@@ -374,12 +374,20 @@
                                         
                                         <td data-label="Pre/Post">
                                                 <div class="prePostField">
-                                                    <label class="radioBtn">Pre
-                                                        <input type="radio" checked="checked" name="radio">
-                                                        <span class="checkmark"></span>
-                                                    </label>
-                                                    <label class="radioBtn">Post
-                                                        <input type="radio" name="radio">
+                                                    <label *ngFor="let fee of TimeFrameTypes;let i=index" 
+                                                    class="radioBtn">{{fee.CodeName}}
+                                                    
+                                                    <input type="radio" *ngIf="fee.CodeName=='Pre'"  
+                                                    [value]="fee.GlobalCodeId" 
+                                                     checked="checked"
+                                                      name="fee.CodeName"
+                                                     (change)="setFinancialsTimeFrameType($event.target.value)">
+
+                                                     <input type="radio" *ngIf="fee.CodeName=='Post'"  
+                                                     [value]="fee.GlobalCodeId" 
+                                                       name="fee.CodeName"
+                                                      (change)="setFinancialsTimeFrameType($event.target.value)">
+
                                                         <span class="checkmark"></span>
                                                     </label>
                                                 </div>
@@ -409,8 +417,19 @@
                                        
                                     
                                     </tbody>
-                                </perfect-scrollbar> 
-                            </table> 
+                                  
+                                </perfect-scrollbar>
+                             
+                                
+                            </table>
+                            <tfoot>
+                                <tr *ngIf="groupFinancialsList!=null && groupFinancialsList.length>0 && groupFinancialsTotals!=null">
+                                    <td style="width: 20%;"><b>Pre Total : ${{groupFinancialsTotals.PreTotal}}</b></td> <td style="width: 20%;"></td>  
+                                    <td style="width: 20%;"><b>Post Total : ${{groupFinancialsTotals.PostTotal}}</b></td>  <td style="width: 20%;"></td>   
+                                    <td style="width: 20%;"><b>Total : ${{groupFinancialsTotals.PrePostTotal}}</b></td>
+                                  
+                                </tr>
+                              </tfoot>
                         </div> 
                     </div>
                     <div class="actionBtn text-right mb-3 ">

@@ -181,7 +181,7 @@ getClassEntries(id:number){
    this. resetForm()
   }, error => {
     debugger;
-    this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
+    this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
     this.loading = false;
     this.classEntries=null
   })
