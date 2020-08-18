@@ -159,6 +159,7 @@ FinancialsAmount:number=null;
        {
       this.groupFinancialsList = response.Data.getGroupFinacials;
       this.groupFinancialsTotals=response.Data.getGroupFinacialsTotals;
+      
        }
        this.loading = false;
      }, error => {

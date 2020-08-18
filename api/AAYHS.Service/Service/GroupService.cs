@@ -262,7 +262,6 @@ namespace AAYHS.Service.Service
                     groupFinancial.Amount = addGroupFinancialRequest.Amount;
                     groupFinancial.ModifiedBy = actionBy;
                     groupFinancial.ModifiedDate = DateTime.Now;
-
                     _groupFinancialRepository.Update(groupFinancial);
 
                     _mainResponse.Success = true;

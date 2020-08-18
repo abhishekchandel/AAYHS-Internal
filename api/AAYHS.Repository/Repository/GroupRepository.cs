@@ -245,6 +245,7 @@ namespace AAYHS.Repository.Repository
             GetGroupFinacialsTotals getGroupFinacialsTotals = new GetGroupFinacialsTotals();
             if (list.Count() > 0)
             {
+
                 var codes = (from gcc in _context.GlobalCodeCategories
                              join gc in _context.GlobalCodes on gcc.GlobalCodeCategoryId equals gc.CategoryId
                              where gcc.CategoryName == "TimeFrameType" && gc.IsDeleted == false && gc.IsActive == true
@@ -277,6 +278,7 @@ namespace AAYHS.Repository.Repository
                 getGroupFinacialsTotals.PrePostTackStallSum = list.Where(x => x.FeeTypeId == tackstallid).Select(x => x.Amount).Sum();
                 getGroupFinacialsTotals.PrePostTotal = list.Select(x => x.Amount).Sum();
             }
+
             return getGroupFinacialsTotals;
         }
 
