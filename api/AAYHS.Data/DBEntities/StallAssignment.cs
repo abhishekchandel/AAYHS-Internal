@@ -15,6 +15,6 @@ namespace AAYHS.Data.DBEntities
         public int StallId { get; set; }
         public int GroupId { get; set; }       
         public int ExhibitorId { get; set; }
-        public string BookedBy { get; set; }
+        public string BookedByType { get; set; }
     }
 }

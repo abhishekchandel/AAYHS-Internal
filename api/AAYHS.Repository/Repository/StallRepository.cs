@@ -46,10 +46,11 @@ namespace AAYHS.Repository.Repository
                              IsPortable = stalls.IsPortable,
                              ProtableStallTypeId = stalls.ProtableStallTypeId,
                              IsBooked = stallAssign2 != null ? true : false,
-                             BookedById = stallAssign2 != null ? (stallAssign2.BookedBy == "Group" ? stallAssign2.GroupId : stallAssign2.ExhibitorId) : 0,
-                             BookedByName = stallAssign2 != null ? (stallAssign2.BookedBy == "Group" ?
+                             BookedById = stallAssign2 != null ? (stallAssign2.BookedByType == "Group" ? stallAssign2.GroupId : stallAssign2.ExhibitorId) : 0,
+                             BookedByType= stallAssign2 != null ? stallAssign2.BookedByType : "",
+                             BookedByName = stallAssign2 != null ? (stallAssign2.BookedByType == "Group" ?
                                            _ObjContext.Groups.Where(x => x.GroupId == stallAssign2.GroupId).Select(x => x.GroupName).FirstOrDefault() :
-                                           _ObjContext.Exhibitors.Where(x => x.ExhibitorId == stallAssign2.ExhibitorId).Select(x => x.FirstName + " " + x.LastName).FirstOrDefault()) : ""
+                                           _ObjContext.Exhibitors.Where(x => x.ExhibitorId == stallAssign2.ExhibitorId).Select(x => x.FirstName + " " + x.LastName).FirstOrDefault()) : "",
                          }).ToList();
 
             getAllStall.stallResponses = stall.ToList();

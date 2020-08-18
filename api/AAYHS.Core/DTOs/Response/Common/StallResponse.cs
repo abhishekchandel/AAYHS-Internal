@@ -13,6 +13,7 @@ namespace AAYHS.Core.DTOs.Response.Common
         public bool IsBooked { get; set; } = false;
         public int BookedById { get; set; }
         public string BookedByName { get; set; }
+        public string BookedByType { get; set; }
     }
     public class GetAllStall
     {
