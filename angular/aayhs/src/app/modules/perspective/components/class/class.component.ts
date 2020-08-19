@@ -15,7 +15,11 @@ import * as moment from 'moment';
 import { ExportAsService, ExportAsConfig ,SupportedExtensions } from 'ngx-export-as';
 import * as jsPDF from 'jspdf';
 import {  ExportConfirmationModalComponent } from '../../../../shared/ui/modals/export-confirmation-modal/export-confirmation-modal.component'
-
+import 'jspdf-autotable';
+import { UserOptions } from 'jspdf-autotable';
+interface jsPDFWithPlugin extends jsPDF {
+  autoTable: (options: UserOptions) => jsPDF;
+}
 
 @Component({
   selector: 'app-class',
@@ -81,7 +85,7 @@ export class ClassComponent implements OnInit {
     Page: 1,
     Limit: 5,
     OrderBy: 'ClassId',
-    OrderByDescending: false,
+    OrderByDescending: true,
     AllRecords: false
   };
   classInfo: ClassInfoModel = {
@@ -168,7 +172,7 @@ export class ClassComponent implements OnInit {
       this.getClassEntries(this.classInfo.ClassId)
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
     }, error => {
-      this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
+      this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
       this.loading = false;
 
     })
@@ -198,6 +202,7 @@ export class ClassComponent implements OnInit {
   }
 
   getAllClasses() {
+    return new Promise((resolve, reject) => {
     this.loading = true;
     this.classService.getAllClasses(this.baseRequest).subscribe(response => {
       this.classesList = response.Data.classesResponse;
@@ -208,12 +213,15 @@ export class ClassComponent implements OnInit {
 
     }
     )
+    resolve();
+  });
   }
   sortData(column) {
     this.reverseSort = (this.sortColumn === column) ? !this.reverseSort : false
     this.sortColumn = column
     this.baseRequest.OrderBy = column;
     this.baseRequest.OrderByDescending = this.reverseSort;
+    this.resetForm();
     this.getAllClasses()
   }
 
@@ -251,8 +259,21 @@ export class ClassComponent implements OnInit {
     this.classService.createUpdateClass(this.classInfo).subscribe(response => {
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
       this.loading = false;
-      this.resetForm();
-      this.getAllClasses();
+
+      this.getAllClasses().then(res =>{ 
+        if(response.NewId !=null && response.NewId>0)
+        {
+          if(this.classInfo.ClassId>0)
+          {
+            this.highlight(response.NewId,this.selectedRowIndex);
+          }
+          else{
+            this.highlight(response.NewId,0);
+          }
+        
+        }
+      });
+
     }, error => {
       this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
       this.loading = false;
@@ -276,7 +297,7 @@ export class ClassComponent implements OnInit {
     this.exhibitorsResponse =null;
     this.exhibitorsHorsesResponse=null;
     this.classInfoForm.resetForm();
-    this.tabGroup.selectedIndex = 0
+    // this.tabGroup.selectedIndex = 0
     this.backNumbersResponse =null;
     this.entriesForm.resetForm({ exhibitorId:null,horseId:null})
     this.resultForm.resetForm({ backNumber:null});
@@ -357,7 +378,7 @@ export class ClassComponent implements OnInit {
       this.getClassExhibitors(this.classInfo.ClassId);
       this.entriesForm.resetForm({ exhibitorId:null,horseId:null});
     }, error => {
-      this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
+      this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
       this.loading = false;
 
     })
@@ -370,7 +391,7 @@ export class ClassComponent implements OnInit {
       this.getClassEntries(this.classInfo.ClassId);
       this.getClassExhibitors(this.classInfo.ClassId);
     }, error => {
-      this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
+      this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
       this.loading = false;
 
     })
@@ -379,16 +400,17 @@ export class ClassComponent implements OnInit {
     this.loading = true;
     this.classService.deleteClass(id).subscribe(response => {
       this.loading = false;
-      this.classesList.splice(index, 1);
-      this.totalItems=this.totalItems-1;
+     this.getAllClasses();
+     this.resetForm();
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
     }, error => {
-      this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
+      this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
       this.loading = false;
 
     })
   }
   getNext(event) {
+    this.resetForm();
     this.baseRequest.Page = (event.pageIndex) + 1;
     this.getAllClasses()
   }
@@ -450,7 +472,7 @@ export class ClassComponent implements OnInit {
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
 
     }, error => {
-      this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
+      this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
       this.loading = false;
 
     })
@@ -538,22 +560,53 @@ pdfCallbackFn (pdf: any) {
 
  savePDF(): void {
   let content=this.content.nativeElement;
-  let doc = new jsPDF();
-  let _elementHandlers =
-  {
-    '#editor':function(element,renderer){
-      return true;
-    }
-  };
-  doc.fromHTML(content.innerHTML,15,15,{
+  let doc = new jsPDF("p", "mm", "a4") as jsPDFWithPlugin;
+   doc.setFontSize(10);
+  // doc.setFontType("bold");
+  doc.text('Class Name :', 10, 10).setFontType("Bold");
+  doc.text('Class Number :', 60, 10).setFontType("Bold");
+  doc.text('Age Group :', 110, 10).setFontType("Bold");
 
-    'width':10,
-    'elementHandlers':_elementHandlers
-  });
+  doc.text(this.classInfo.Name,35, 10).setFontType("Arial");
+  doc.text(this.classInfo.ClassNumber,85, 10).setFontType("Arial");
+  doc.text(this.classInfo.AgeGroup,135, 10).setFontType("Arial");
+
+
+ doc.autoTable({
+  body: this.resultResponse,
+  columns:
+      [
+          { header: 'Result', dataKey: 'Place' },
+          { header: 'Back No', dataKey: 'BackNumber' },
+          { header: 'Exhibitor Name', dataKey: 'ExhibitorName' },
+          { header: 'Birth Year', dataKey: 'BirthYear' },
+          { header: 'Horse Name', dataKey: 'HorseName' },
+          { header: 'City, St. Zip', dataKey: 'Address' },
+          { header: 'Amount paid', dataKey: 'AmountPaid' },
+          { header: 'Amount Due', dataKey: 'AmountDue' }
+
+      ],
+})
+
+
+
+  // let _elementHandlers =
+  // {
+  //   '#editor':function(element,renderer){
+  //     return true;
+  //   }
+  // };
+  // doc.fromHTML(content.innerHTML,2,2,{
+
+  //   'width':1,
+  //   'elementHandlers':_elementHandlers
+  // });
 
   doc.save('test.pdf');
-}
 
+
+
+}
 
 confirmDownload(): void {
   const message = `Are you sure you want to remove the class?`;

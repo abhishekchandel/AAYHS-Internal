@@ -111,7 +111,7 @@ font-size:13px;
 text-transform:uppercase;
 border:1px solid #a0b8f9;
 text-align: center;
-padding: 6px;
+padding: 12px 10px;
 vertical-align: middle;
 line-height: 16px;
 height: 36px;
@@ -134,9 +134,7 @@ i{
 font-size:22px;
 }
 }
-@media(max-width:767px) {
-text-align: right;
-}
+
 }
 }
 }
@@ -157,8 +155,11 @@ tr{
 th{
 font-size:13px ;
 vertical-align: middle;
-line-height: 16px;
-height: 45px;
+line-height: 15px;
+height: auto;
+min-height: 45px;
+padding: 12px 10px;
+display: table-cell;
 @media(max-width:767px) {
 height: auto;
 }
@@ -170,7 +171,10 @@ tr {
 td {
 font-size: 13px;
 line-height: 16px;
-height: 45px;
+height: auto;
+min-height: 45px;
+padding: 15px 10px;
+display: table-cell;
 @media(max-width:767px) {
 height: auto;
 }
@@ -238,10 +242,12 @@ tbody {
 tr {
 td {
 font-size: 13px;
-line-height: 24px;
+line-height: 15px;
 vertical-align: middle;
-height: 45px;
-padding: 6px 10px;
+height: auto;
+min-height: 45px;
+padding: 15px 10px;
+display: table-cell;
 @media(max-width:767px) {
 padding: 6px 20px;
 }
@@ -256,78 +262,96 @@ font-family:'Roboto-Medium';
 }
 
 @media screen and (max-width:767px) {
-table {
-border: 0;
-&.table-condensed{
-margin-top: 15px;
-margin-bottom: 20px;
 
-thead {
-height: auto;
-margin: 0px;
-position: relative;
-width: auto;
-th{
-&.switch {
-padding: 5px 0 !important;
-}
-}
-}
-tr {
-display: table-row;
-margin-bottom: 0;
-td {
-display: table-cell;
-}
-}
-}
-}
-table caption {
-font-size: 1.3em;
-}
-table thead {
-border: none;
-clip: rect(0 0 0 0);
-height: 1px;
-margin: -1px;
-overflow: hidden;
-padding: 0;
-position: absolute;
-width: 1px;
-}
+    table{
+        &.pdfdataTable {
+            width:740px !important;
+        }
+    }
+    .tableTab {
+        &.ssReports {
+            table {
+                width: 100% !important;
+                tr{
+                    td{
+                        padding: 15px 18px;
+                    }
+                }
+            }
+        }
+    }
+    .tableTab {
+        padding-bottom: 15px;
+        table {
+            width: 740px !important;
+            tbody {
+                tr {
+                    td {
+                        padding: 15px 18px;
+                    }
+                }
+            }
+        }
+    }
+    .dataDesc{
+        &.gridTable{
+            table {
+                tr{
+                    td {
+                        display: block;
+                        line-height: 24px;
+                    } 
+                }
+            }
+        }
+    }
+    .quantityWrapper {
+        float: left !important;
+        margin-bottom: 20px;
+    }
+    .actionBtn {
+        .btnCss {
+            margin-bottom: 10px;
+        }
+    }
+    //radio button
+    .sponTabbing {
+        .tab-content {
+            .card {
+                .prePostField  {
+                    .form-group {
+                        width: 50%;
+                        margin: 10px 0;
+                    }
+                }
+            }
+        }
+    }
+    // footer
+    footer {
+        padding: 0px 0 15px;
+    }
 
-table tr {
-border: 1px solid #eee;
-display: block;
-margin-bottom: .625em;
-}
 
-table td {
-display: block;
-font-size: .8em;
-text-align: right;
 }
-
-table td::before {
-content: attr(data-label);
-float: left;
-font-family:'Roboto-Medium';
-text-transform:capitalize;
-}
-
-table td:last-child {
-border-bottom: 0;
-}
+@media screen and (max-width:480px) {
+    .gridTable{
+        &.addBlueStrip {
+            table{
+                width: 480px;
+            }            
+        }
+    }
 }
 
 /* class page */
 .addBlueStrip {
 position: relative;
-&:before {
+&:before {   
 position: absolute;
 content: "";
 width: 30px;
-height: 37px;
+height: 43px;
 background-color: #a0b8f9;
 left: -30px;
 top: 0;
@@ -346,7 +370,7 @@ tr{
 background-color: transparent;
 td{
 border: none;
-padding: 0;
+padding: 10px 10px;
 @media(max-width:767px) {
 line-height: 15px;
 vertical-align: middle;
@@ -767,6 +791,9 @@ padding: 8px 10px;
 border-radius: 5px 5px 0 0;
 margin-right: 5px;
 width: 33.333%;
+@media(max-width:991px) {
+    width: auto;
+}
 &.mat-tab-label-active{
 background-color: #7b1124;
 opacity: 1;
@@ -1079,6 +1106,9 @@ app-register{
     display: block;
     .loginWrapper{ 
         height: calc(90vh );
+        @media(max-width: 1024px){
+            height:100%;
+        }
     }  
 }
 app-login {
@@ -1098,6 +1128,9 @@ app-login {
 }
 .loginWrapper{ 
     height: calc(100vh - 205px);
+    @media(max-width: 1024px){
+        height:100%;
+    }
 
     .commonCol {
         background-color: #fff;
@@ -1325,17 +1358,28 @@ footer{
 		padding: 30px 15px 10px;
 	}
 }
+span{
+    &.help-block{
+        &.ng-star-inserted {
+            display: flex;
+            width: 100%;
+            text-align: center;
+            float: none;
+            justify-content: center;
+        }
+    }
+}
 .dwnFile {
 	display: block;
 	position: relative;
 	margin-bottom: 12px;
 	cursor: pointer;
-	font-size: 22px;
+	font-size: 18px;
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
-	max-width: 250px;
+	max-width: 230px;
     margin: 0 auto 20px;
 	input {
 		opacity: 0;
@@ -1370,8 +1414,8 @@ footer{
 			content: "";
 			position: absolute;
 			display: none;
-			left: 20px;
-			top: 14px;
+			left: 17px;
+			top: 10px;
 			width: 8px;
 			height: 16px;
 			border: solid white;
@@ -1384,8 +1428,8 @@ footer{
 			position: absolute;
 			content: "";
 			background-color: #273992;
-			width: 40px;
-			height: 40px;
+			width: 34px;
+			height: 34px;
 			left: 4px;
 			top: 3px;
 			border-radius: 50px;
@@ -1453,10 +1497,188 @@ footer{
         background-color: #b5cbf7;
         border-radius: 50px;
         overflow: hidden;
+        display: flex;  
+        @media(max-width:767px){
+            max-width: 215px;
+        }
     
         .form-control {
             max-width: 300px ;
             width: 100% !important ;
+            @media(max-width:767px){
+                max-width: 170px;
+            }
+        }
+        i {
+            position: relative;
+            right: 0;
+            top: 7px;
         }
     }
 }
+
+// sustom radio button
+.prePostField {
+    display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-flow: wrap;
+		max-width: 250px;
+		margin:0 auto;
+    .form-group {
+        margin: 10px 0 0;
+        width: 50%;
+    }
+}
+.radioBtn {
+    display: block;
+    position: relative;
+    padding-left: 25px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    margin-right: 15px !important;
+    line-height: 20px;
+    input {
+        position: absolute !important;
+        opacity: 0;
+        cursor: pointer;
+        &:checked {
+			~ {
+				.checkmark {					
+					&:after {
+						display: block;
+                      }
+                      &:before {
+						display: block;
+                      }
+                      border: 1px solid #fff;
+				}
+			}
+		}
+      }
+    .checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 20px;
+        width: 20px;        
+        background-color: transparent;
+        border-radius: 50%;
+        margin-top: 0 !important;
+        border: 1px solid #000;
+        &:before{
+            content: "";
+            position: absolute;
+            display: none;
+            top: -1px;
+            left: -1px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #7b1124;
+        }
+        &:after {
+            content: "";
+            position: absolute;
+            display: none;
+            top: 4px;
+            left: 4px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: white;
+        }
+    }
+  }
+  //financial css
+.indicatorWrapper {
+    display: flex;
+    justify-content: flex-end;
+    .form-group {
+        margin-left: 20px;
+        display: inline-flex;
+        align-items: center;
+        input{
+            position: relative;
+            top: 2px;
+        }
+    }
+}
+.tableCaption {
+    background-color: #273992;
+    color: #fff;
+    font-size: 17px;
+    text-align: center;
+    margin: 0;
+    padding: 10px 15px;
+}
+.dataDesc{
+    &.gridTable{
+        table {
+            tr{
+                td {
+                    line-height: 24px;
+                } 
+            }
+        }
+    }
+}
+.ftButton {
+    a {
+        font-size: 20px;
+        margin: 0 8px;
+        color: #000;
+    }
+}
+.rmStrip{
+    &:before{
+        display:none !important;
+    }
+}
+@media(max-width:767px){
+    .ftButtonSection {
+        button {
+            margin-bottom: 8px;
+        }
+    }
+}
+
+ //  financial statement 
+.rmStrip{
+    &:before{
+        display:none !important;
+    }
+}
+.ftButton {
+    a {
+        font-size: 20px;
+        margin: 0 8px;
+        color: #000;
+    }
+}	
+#fTransactions {
+    table{
+        border-bottom: none;  
+    }
+	.modal-dialog {
+		max-width: 1310px;
+        margin: auto;
+        @media(max-width:767px){
+            margin: 1.75rem auto;
+        }
+	}
+	.modal-body {
+		padding: 0px 15px 20px;
+	}
+}
+@media(max-width:1300px){
+	.fTransactions {
+		table {
+			width: 1234px;
+		}
+	}
+} 

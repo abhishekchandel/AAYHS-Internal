@@ -52,7 +52,7 @@ export class HorseComponent implements OnInit {
     Page: 1,
     Limit: 5,
     OrderBy: 'HorseId',
-    OrderByDescending: false,
+    OrderByDescending: true,
     AllRecords: false
   };
 
@@ -73,6 +73,7 @@ export class HorseComponent implements OnInit {
     this.sortColumn=column
     this.baseRequest.OrderBy = column;
     this.baseRequest.OrderByDescending = this.reverseSort;
+    this.resetForm();
     this.getAllHorses()
   }
   
@@ -95,8 +96,22 @@ export class HorseComponent implements OnInit {
     this.horseService.createUpdateHorse(this.horseInfo).subscribe(response => {
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
       this.loading = false;
-      this.resetForm();
-      this.getAllHorses();
+
+      this.getAllHorses().then(res =>{ 
+        if(response.NewId !=null && response.NewId>0)
+        {
+          if(this.horseInfo.HorseId>0)
+          {
+            this.highlight(response.NewId,this.selectedRowIndex);
+          }
+          else{
+            this.highlight(response.NewId,0);
+          }
+        
+        }
+      });
+    
+
     }, error => {
       this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
       this.loading = false;
@@ -105,6 +120,7 @@ export class HorseComponent implements OnInit {
   }
 
   getAllHorses() {
+    return new Promise((resolve, reject) => {
     this.loading = true;
     this.horseService.getAllHorses(this.baseRequest).subscribe(response => {
       this.horsesList = response.Data.horsesResponse;
@@ -114,9 +130,12 @@ export class HorseComponent implements OnInit {
       this.loading = false;
     }
     )
+    resolve();
+  });
   }
 
   getNext(event) {
+    this.resetForm()
     this.baseRequest.Page = (event.pageIndex) + 1;
     this.getAllHorses()
   }
@@ -175,11 +194,11 @@ export class HorseComponent implements OnInit {
     this.loading = true;
     this.horseService.deleteHorse(id).subscribe(response => {
       this.loading = false;
-      this.horsesList.splice(index, 1);
-      this.totalItems=this.totalItems-1;
+      this.getAllHorses()
+      this.resetForm();
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
     }, error => {
-      this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
+      this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
       this.loading = false;
 
     })
@@ -231,4 +250,139 @@ getJumpHeight(){
     this.groups =null;
   })
 }
+
+print() {
+  let printContents, popupWin, gridTableDesc,printbutton;
+  gridTableDesc=document.getElementById('gridTableDescPrint').style.display = "block";
+  printbutton = document.getElementById('inputprintbutton').style.display = "none";
+  printContents = document.getElementById('print-linkedExhibitors').innerHTML;
+  popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
+  popupWin.document.open();
+  popupWin.document.write(`
+    <html>
+      <head>
+    
+        <title>Print tab</title>
+        <style media="print">
+  
+        * {
+          -webkit-print-color-adjust: exact; /*Chrome, Safari */
+          color-adjust: exact;  /*Firefox*/
+          box-sizing: border-box;
+          font-family: Roboto, "Helvetica Neue", sans-serif;
+          }
+          table {
+            border-collapse: collapse;
+            border-spacing: 2px;
+            margin-bottom:0 !important; 
+            padding-bottom:0 !important;   
+        }
+          table thead tr th {
+            background-color: #a0b8f9;
+            font-family: "Roboto-Medium" ,sans-serif;
+            font-size: 13px;
+            text-transform: uppercase;
+            border: 1px solid #a0b8f9;
+            text-align: center;
+            padding: 6px;
+            vertical-align: middle;
+            line-height: 16px;
+            cursor: pointer;
+            letter-spacing: 1px;
+        }
+        .mat-tab-group {
+          font-family: "Roboto-Regular", sans-serif;
+      }
+        table tbody tr td {
+          border: 1px solid #a0b8f9;
+          text-align: center;
+          color: #000;
+          font-weight: 500;
+          font-size: 13px;
+          line-height: 24px;
+          vertical-align: middle;
+          padding: 6px 10px;
+          font-family: "Roboto-Medium" ,sans-serif;
+      }
+      .dynDataSeclect {
+        width: 100%;
+        padding: 2px 15px 2px 5px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        min-height: 30px;
+    }
+    select {
+      -webkit-appearance: none;
+      background-image: url(select-arrow.png);
+      background-repeat: no-repeat;
+      background-position: center right;
+      margin: 0;
+      font-family: inherit;
+      font-size: inherit;
+      line-height: inherit;
+  }
+  select {
+    -webkit-writing-mode: horizontal-tb !important;
+    text-rendering: auto;
+    color: -internal-light-dark(black, white);
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-transform: none;
+    text-indent: 0px;
+    text-shadow: none;
+    display: inline-block;
+    text-align: start;
+    appearance: menulist;
+    box-sizing: border-box;
+    align-items: center;
+    white-space: pre;
+    -webkit-rtl-ordering: logical;
+    background-color: -internal-light-dark(rgb(255, 255, 255), rgb(59, 59, 59));
+    cursor: default;
+    margin: 0em;
+    font: 400 13.3333px Arial;
+    border-radius: 0px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: -internal-light-dark(rgb(118, 118, 118), rgb(195, 195, 195));
+    border-image: initial;
+}
+.table-responsive {
+  display: block;
+  width: 100%;
+}
+.pdfdataTable {
+  position: absolute;
+  top: 50px;
+  width: 98%;
+  left:0;
+  margin: 0 1%;
+}
+
+table.pdfTable,table.pdfTable tbody,table.pdfTable tr {
+  width:100%;
+  display:table;
+}
+table.pdfTable tbody tr td{
+    background-color: #a0b8f9;
+    margin: 30px 0;
+    padding: 0px 15px;
+    position: relative; 
+    width:33.333%;
+    display:table-cell;
+    
+}
+.print-element { display: block !important;}
+.non-print-element {display: none !important;}
+ 
+        </style>
+      </head>
+  <body onload="window.print();window.close()">${printContents}</body>
+    </html>`
+  );
+  gridTableDesc=document.getElementById('gridTableDescPrint').style.display = "none";
+  printbutton = document.getElementById('inputprintbutton').style.display = "inline-block";
+  popupWin.document.close();
+}
+
 }

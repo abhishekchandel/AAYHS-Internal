@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import{SponsorViewModel} from '../models/sponsor-model'
 import { BaseUrl } from '../../config/url-config';
 @Injectable({
   providedIn: 'root'
