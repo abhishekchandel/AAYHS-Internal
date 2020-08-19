@@ -336,6 +336,7 @@
                                         <th>Type of fee</th> 
                                         <th>Pre/Post</th>
                                         <th>Amount</th>
+                                        <th>Update</th>
                                         <th>Remove</th>
                                 </tr>	
                                 </thead> 
@@ -346,13 +347,22 @@
                                             <td data-label="Type of free">{{list.FeeTypeName}}</td>
                                             <td data-label="Pre/Post">{{list.TimeFrameName}}</td>
                                             <td data-label="Amount">{{list.Amount}}</td>  
+                                           
+                                            <td data-label="Remove">
+                                                <button type="button"
+                                                class="icon" 
+                                                (click)="editinfo($event,i,list.GroupFinancialId)">
+                                                <span></span> <i class="fa fa-edit"
+                                                aria-hidden="true"></i>
+                                               </button>
+                                            </td>  
                                             <td data-label="Remove">
                                                 <button type="button"
                                                 class="icon" 
                                                 (click)="confirmRemoveGroupFinancials($event,i,list.GroupFinancialId)">
                                                 <span></span> <i class="fa fa-trash-o"
                                                 aria-hidden="true"></i>
-                                            </button>
+                                               </button>
                                             </td>                                          
                                         </tr>	
                                         <tr >
@@ -411,6 +421,7 @@
                                            </span>
                                         </div> 
                                         </td> 
+                                        <td></td>  
                                         <td></td>  
                                         </tr>
                                        

@@ -279,7 +279,9 @@ FinancialsAmount:number=null;
     })
   }
 
-
+  editinfo(e, index, GroupFinancialId){
+    
+  }
   
 setFinancialsFeeType(id){
   this.FinancialsFeeTypeId=Number(id);
