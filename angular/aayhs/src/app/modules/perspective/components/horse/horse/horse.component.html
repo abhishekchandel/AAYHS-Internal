@@ -160,8 +160,20 @@
 										<i class="fa fa-search" aria-hidden="true"></i>
 									</div>
 								</form>
-								<div class="table-responsive">
-									<table class="table table-bordered tableBodyScroll">
+								<div id="print-linkedExhibitors" class="table-responsive">
+
+									<table id="gridTableDescPrint" style="display: none;"
+											class="table table-bordered tableBodyScroll pdfTable">
+											<tbody>
+												<tr>
+													<td><span class="blueBox"></span><b>Horse Name:</b>
+														{{horseInfo.Name}} </td>
+												
+												</tr>
+											</tbody>
+										</table>
+
+									<table class="table table-bordered tableBodyScroll pdfdataTable">
 										<thead>
 											<tr>
 												<th>Exhibitor ID</th>
@@ -182,6 +194,8 @@
 							<div class="actionBtn text-right mt-3 mb-3">
 								<button (click)='tabGroup.selectedIndex = 0'
 									class="btn btn-red btnCss">Previous</button>
+									<button (click)="print()" id="inputprintbutton" type="button"
+										class="btn btn-red btnCss">Print</button>
 							</div>
 
 
