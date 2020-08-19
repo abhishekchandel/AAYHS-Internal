@@ -28,7 +28,11 @@ namespace AAYHS.Core.DTOs.Request
         public int TimeFrameId { get; set; }
         public double Amount { get; set; }
     }
-
+    public class UpdateGroupFinancialAmountRequest
+    {
+        public int GroupFinancialId { get; set; }
+        public double Amount { get; set; }
+    }
 
 
 }

@@ -264,8 +264,9 @@ export class SponsorComponent implements OnInit {
   }
   
   setSponsorType(id){
-    
     this.sponsortypeId=Number(id);
+    this.GetSponsorClasses(this.selectedSponsorId);
+
   }
 
   setSponsorClass(id){

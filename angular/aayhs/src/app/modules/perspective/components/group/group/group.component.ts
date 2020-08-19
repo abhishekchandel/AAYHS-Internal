@@ -53,10 +53,16 @@ export class GroupComponent implements OnInit {
     TimeFrameId:0,
     Amount:0,
   }
+
+  updateGroupFinancialsRequest: any={
+    GroupFinancialId: 0,
+    Amount:0,
+  }
+
 FinancialsFeeTypeId:number=null;
 FinancialsTimeFrameTypeId:number=null;
 FinancialsAmount:number=null;
-
+UpdatedFinancialAmount:number=null;
 
 
   enablePagination: boolean = true;
@@ -70,6 +76,8 @@ FinancialsAmount:number=null;
   statesResponse: any;
   result: string = '';
   totalItems: number = 0;
+  updatemode=false;
+  updateRowIndex=-1;
   groupInfo: GroupInformationViewModel = {
     GroupName: null,
     ContactName: null,
@@ -279,10 +287,40 @@ FinancialsAmount:number=null;
     })
   }
 
-  editinfo(e, index, GroupFinancialId){
-    
+  editFinancialsAmount(e, index, GroupFinancialId,Amount){
+    debugger
+    this.updatemode=true;
+    this.updateRowIndex=index;
+    this.UpdatedFinancialAmount=Number(Amount);
+  }
+  setUpdatedFinancialAmount(data){
+    this.UpdatedFinancialAmount=Number(data);
+  }
+  cancelUpdateFinancialsAmount(e, index, GroupFinancialId){
+    this.updatemode=false;
+    this.updateRowIndex=index;
   }
   
+  updateGroupFinancialsAmount(e, index, GroupFinancialId){
+    this.loading=true;
+    this.updateRowIndex=index;
+    this.updateGroupFinancialsRequest.GroupFinancialId=GroupFinancialId;
+    this.updateGroupFinancialsRequest.Amount=this.UpdatedFinancialAmount;
+    
+
+     this.groupService.UpdateGroupFinancialsAmount(this.updateGroupFinancialsRequest).subscribe(response=>{
+      this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
+      this.loading = false;
+      this.updatemode=false;
+     }, error=>{
+        this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
+        this.loading = false;
+        this.updatemode=false;
+     })
+    }
+
+ 
+
 setFinancialsFeeType(id){
   this.FinancialsFeeTypeId=Number(id);
 }
@@ -290,8 +328,8 @@ setFinancialsTimeFrameType(id){
     this.FinancialsTimeFrameTypeId=Number(id);
 }
 
-setFinancialsAmount(id){
-  this.FinancialsAmount=Number(id);
+setFinancialsAmount(data){
+  this.FinancialsAmount=Number(data);
 }
 
 

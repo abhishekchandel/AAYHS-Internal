@@ -115,6 +115,8 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
+
+
         public MainResponse DeleteGroup(int GroupId)
         {
             var Group = _GroupRepository.GetSingle(x => x.GroupId == GroupId && x.IsActive == true && x.IsDeleted == false);
@@ -274,6 +276,27 @@ namespace AAYHS.Service.Service
                     _mainResponse.Message = Constants.NO_RECORD_FOUND;
                 }
             }
+            return _mainResponse;
+        }
+
+        public MainResponse UpdateGroupFinancialsAmount(UpdateGroupFinancialAmountRequest request)
+        {
+                var groupFinancial = _groupFinancialRepository.GetSingle(x => x.GroupFinancialId == request.GroupFinancialId
+                                     && x.IsActive == true && x.IsDeleted == false);
+                if (groupFinancial != null)
+                {
+                    groupFinancial.Amount = request.Amount;
+                    groupFinancial.ModifiedDate = DateTime.Now;
+                    _groupFinancialRepository.Update(groupFinancial);
+                    _mainResponse.Success = true;
+                    _mainResponse.Message = Constants.GROUP_FINANCIAL_UPDATED;
+                }
+                else
+                {
+                    _mainResponse.Success = false;
+                    _mainResponse.Message = Constants.NO_RECORD_EXIST_WITH_ID;
+                }
+            
             return _mainResponse;
         }
 

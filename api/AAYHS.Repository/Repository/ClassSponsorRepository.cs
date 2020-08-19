@@ -135,30 +135,6 @@ namespace AAYHS.Repository.Repository
                                          Name = classes.Name,
                                          AgeGroup = classes.AgeGroup,
 
-                                         //ExhibitorId =Convert.ToInt32((from classexhibitor in _context.ExhibitorClass
-                                         //                              where classexhibitor.ClassId == sponsorClass.ClassId
-                                         //                              && classexhibitor.IsActive==true && classexhibitor.IsDeleted==false
-                                         //                              select classexhibitor.ExhibitorId).FirstOrDefault()),
-
-                                         //HorseId = Convert.ToInt32((from classexhibitor in _context.ExhibitorClass
-                                         //                           where classexhibitor.ClassId == sponsorClass.ClassId
-                                         //                            && classexhibitor.IsActive == true && classexhibitor.IsDeleted == false
-                                         //                           select classexhibitor.HorseId).FirstOrDefault()),
-
-                                         //ExhibitorName = (from classexhibitor in _context.ExhibitorClass join
-                                         //                 exhibitor in _context.Exhibitors 
-                                         //                 on classexhibitor.ExhibitorId equals exhibitor.ExhibitorId
-                                         //                 where classexhibitor.ClassId == sponsorClass.ClassId
-                                         //                  && classexhibitor.IsActive == true && classexhibitor.IsDeleted == false
-                                         //                 select exhibitor.FirstName+ ' '+ exhibitor.LastName).FirstOrDefault(),
-
-                                         //HorseName = (from classexhibitor in _context.ExhibitorClass join
-                                         //            horse in _context.Horses on classexhibitor.HorseId equals horse.HorseId
-                                         //               where classexhibitor.ClassId == sponsorClass.ClassId
-                                         //                && classexhibitor.IsActive == true && classexhibitor.IsDeleted == false
-                                         //             select horse.Name).FirstOrDefault(),
-                                      
-
                                      }).ToList();
             foreach(var item in sponsorClassResponses)
             {

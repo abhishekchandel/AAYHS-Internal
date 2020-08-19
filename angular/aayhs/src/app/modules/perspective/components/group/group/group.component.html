@@ -346,15 +346,43 @@
                                             <td data-label="Date">{{list.Date | date:'dd-MM-yyyy'}}</td>
                                             <td data-label="Type of free">{{list.FeeTypeName}}</td>
                                             <td data-label="Pre/Post">{{list.TimeFrameName}}</td>
-                                            <td data-label="Amount">{{list.Amount}}</td>  
+                                            <td data-label="Amount" *ngIf="updatemode==false || (updatemode==true && updateRowIndex!=i)" >{{list.Amount}}</td>  
+                                            <td data-label="Amount" *ngIf="updatemode==true && updateRowIndex==i" >
+                                                <input
+                                                type="text" 
+                                                class="form-control whitebg" 
+                                                placeholder="Amount"
+                                                name="updateamount" 
+                                                required
+                                                [(ngModel)]="list.Amount"
+                                                 #groupUpdatedAmountControl="ngModel" 
+                                                (change)="setUpdatedFinancialAmount($event.target.value)">
+                                            </td>  
                                            
                                             <td data-label="Remove">
-                                                <button type="button"
+
+                                                <button 
+                                                *ngIf="updatemode==false  || (updatemode==true && updateRowIndex!=i)"  
+                                                type="button"
                                                 class="icon" 
-                                                (click)="editinfo($event,i,list.GroupFinancialId)">
+                                                (click)="editFinancialsAmount($event,i,list.GroupFinancialId,list.Amount)">
                                                 <span></span> <i class="fa fa-edit"
                                                 aria-hidden="true"></i>
                                                </button>
+
+                                             <button 
+                                             *ngIf="updatemode==true && updateRowIndex==i" 
+                                             type="button"
+                                             class="icon" 
+                                             (click)="updateGroupFinancialsAmount($event,i,list.GroupFinancialId)">Update
+                                              </button>
+                                             <button 
+                                              *ngIf="updatemode==true && updateRowIndex==i" 
+                                              type="button"
+                                              class="icon" 
+                                              (click)="cancelUpdateFinancialsAmount($event,i,list.GroupFinancialId)">Cancel
+                                             </button>
+
                                             </td>  
                                             <td data-label="Remove">
                                                 <button type="button"
@@ -404,7 +432,7 @@
                                             </td>
 
                                             <td data-label="Amount" >
-                                                <div class="form-group">
+                                                
                                             <input
                                             type="text" 
                                             class="form-control whitebg" 
@@ -419,7 +447,7 @@
                                             *ngIf="(groupFinancialForm.submitted || groupAmountControl.touched) 
                                             && groupAmountControl.invalid">Please select amount
                                            </span>
-                                        </div> 
+                                       
                                         </td> 
                                         <td></td>  
                                         <td></td>  

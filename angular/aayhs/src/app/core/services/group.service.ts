@@ -44,6 +44,10 @@ getAllGroupFinancials(id:number){
 addUpdateGroupFinancials(data){
   return this.http.post<any>(this.api +'GroupAPI/AddUpdateGroupFinancials',data);
 }
+UpdateGroupFinancialsAmount(data){
+  return this.http.post<any>(this.api +'GroupAPI/UpdateGroupFinancialsAmount',data);
+}
+
 deleteGroupFinancials(id:number){
   return this.http.delete<any>(`${this.api}GroupAPI/DeleteGroupFinancials?groupFinancialId=${id}`);
 }

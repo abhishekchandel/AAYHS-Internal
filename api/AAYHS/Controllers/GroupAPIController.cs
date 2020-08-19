@@ -145,6 +145,26 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
+
+
+
+        /// <summary>
+        /// This api used to update group financial amount
+        /// </summary>
+        /// <param name="UpdateGroupFinancialAmountRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        //[Authorize]
+        public IActionResult UpdateGroupFinancialsAmount(UpdateGroupFinancialAmountRequest request)
+        {
+            _mainResponse = _GroupService.UpdateGroupFinancialsAmount(request);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+
+
+
+
         /// <summary>
         /// This api used to delete group financial
         /// </summary>
