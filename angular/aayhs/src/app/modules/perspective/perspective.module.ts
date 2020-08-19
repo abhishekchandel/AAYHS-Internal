@@ -9,10 +9,11 @@ import { HorseComponent } from './components/horse/horse/horse.component';
 import { SharedModule } from '../../shared/shared.module';
 import { LayoutComponent } from './components/layout/layout/layout.component';
 import { SponsorComponent } from './components/sponsor/sponsor.component';
+import { StallComponent } from './components/stall/stall.component';
 
 
 @NgModule({
-  declarations: [ClassComponent, ExhibitorComponent, GroupComponent,LayoutComponent, HorseComponent,SponsorComponent],
+  declarations: [ClassComponent, ExhibitorComponent, GroupComponent,LayoutComponent, HorseComponent,SponsorComponent, StallComponent],
   imports: [
     CommonModule,
     PerspectiveRoutingModule,

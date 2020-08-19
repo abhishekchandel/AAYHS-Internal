@@ -1,0 +1,103 @@
+//  stall diagram  
+
+
+  .card {
+    border: 1px solid #a0b8f9;
+    border-radius: 0 0 15px 15px;
+    height: 100%;
+    overflow: auto;
+    max-height: 455px;
+    min-height: 455px;
+  }
+  /* custom scrollbar */
+  .card{
+  &::-webkit-scrollbar {
+  width: 10px;
+  }
+  &::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+  background: #98b0ff ;
+  border-radius: 10px;
+  }
+  }
+  
+
+.stallDiagram {
+  margin-right: 20px; }
+
+.stallWrapper {
+  display: flex;
+  overflow-x: auto;
+  padding-bottom: 10px; }
+  .stallWrapper::-webkit-scrollbar {
+    width: 6px; }
+  .stallWrapper::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 6px; }
+  .stallWrapper::-webkit-scrollbar-thumb {
+    background: #98b0ff;
+    border-radius: 6px; }
+
+.stallControll {
+  display: flex;
+  flex-flow: wrap;
+  max-width: 360px;
+  margin: 0 auto; }
+  .stallControll .dwnFile {
+    font-size: 18px;
+    width: 50%;
+    padding: 0 4px; }
+    .stallControll .dwnFile .checkmark {
+      padding: 5px 0;
+      background-color: transparent;
+      border: 1px solid #b5cbf7; }
+      .stallControll .dwnFile .checkmark:before {
+        width: 30px;
+        height: 30px;
+        left: 4px;
+        top: 3px; }
+      .stallControll .dwnFile .checkmark:after {
+        left: 16px;
+        top: 11px;
+        width: 7px;
+        height: 12px; }
+
+.roundBtn {
+  background-color: #7b1124;
+  color: #fff;
+  min-width: 100px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  border-radius: 50px;
+  padding: 6px 20px; }
+  .roundBtn:hover {
+    background-color: #273992;
+    color: #fff; }
+
+@media (max-width: 767px) {
+  .stallDiagram .table-responsive .table tbody tr td {
+    display: table-cell;
+    padding: 5px 10px; } }
+
+
+    .mat-ripple.mat-tab-label.mat-tab-label-active {
+      background-color: #7b1124;
+      color: #fff;
+      opacity: 1;
+      border-radius: 5px 5px 0 0;
+      margin-right: 5px;
+  }
+  .mat-ripple.mat-tab-label {
+    background-color: #a0b8f9;
+    opacity: 1;
+    color: #000;
+    height: auto;
+    padding: 8px 10px;
+    border-radius: 5px 5px 0 0;
+    margin-right: 5px;
+}
+
+ 

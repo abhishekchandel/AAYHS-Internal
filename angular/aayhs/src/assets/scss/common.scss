@@ -1665,7 +1665,7 @@ span{
         border-bottom: none;  
     }
 	.modal-dialog {
-		max-width: 1310px;
+		max-width: 98%;
         margin: auto;
         @media(max-width:767px){
             margin: 1.75rem auto;
@@ -1682,3 +1682,75 @@ span{
 		}
 	}
 } 
+.dataDesc{
+    &.gridTable{
+        &.rmStrip {
+            .tableBodyScroll {
+                tbody {
+                    tr {
+                        td {
+                            text-align: left;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+// stal diagram
+.blueBg {
+    background-color: #b5cbf7 !important;
+}
+.darkblueBg{
+	background-color: #a0b8f9 !important;
+}
+.mat-dialog-container {
+    background-color: transparent !important;
+}
+.stallControll{
+	display: flex;
+    flex-flow: wrap;
+    max-width: 360px;
+	margin: 0 auto;
+	.dwnFile {
+		font-size: 18px;
+		width: 50%;
+		padding: 0 4px;
+		.checkmark {
+			padding: 5px 0;
+			background-color: transparent;
+			border: 1px solid #b5cbf7;
+
+			&:before {
+				width: 30px;
+				height: 30px;
+				left: 4px;
+				top: 3px;
+			}
+			&:after {
+				left: 16px;
+				top: 11px;
+				width: 7px;
+				height: 12px;
+			}
+		}
+	}
+}
+.roundBtn {
+    background-color: #7b1124;
+    color: #fff;
+    min-width: 100px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    border-radius: 50px;
+    padding: 6px 20px;
+}
+.trashPopup{
+    &#confirmAction {
+        .modal-body {
+            padding: 20px 15px 0;
+            font-size: 18px;
+        }
+    }
+}
+

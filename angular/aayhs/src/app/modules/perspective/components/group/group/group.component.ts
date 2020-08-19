@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { BaseRecordFilterRequest } from 'src/app/core/models/base-record-filter-request-model';
 import { MatSnackbarComponent } from 'src/app/shared/ui/mat-snackbar/mat-snackbar/mat-snackbar.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog,MatDialogConfig } from '@angular/material/dialog';
 import { GroupService } from 'src/app/core/services/group.service';
 import { ConfirmDialogComponent, ConfirmDialogModel } from 'src/app/shared/ui/modals/confirmation-modal/confirm-dialog/confirm-dialog.component';
 
@@ -16,6 +16,7 @@ import { GroupInformationViewModel } from 'src/app/core/models/group-model';
 
 
 import PerfectScrollbar from 'perfect-scrollbar';
+import { StallComponent } from '../../stall/stall.component';
 
 
 @Component({
@@ -529,6 +530,34 @@ setFinancialsAmount(data){
 
   getCityName(e) {
   this.groupInfo.CityId = Number(e.target.options[e.target.selectedIndex].value)
+  }
+
+  openStallDiagram() {
+    var data = {
+      
+    }
+
+    let config = new MatDialogConfig();
+  config = {
+    position: {
+      top: '10px',
+      right: '10px'
+    },
+    height: '98%',
+    width: '100vw',
+    maxWidth: '100vw',
+      maxHeight: '100vh',
+    panelClass: 'full-screen-modal',
+  };
+
+    const dialogRef = this.dialog.open(StallComponent, config);
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      const result: any = dialogResult;
+      if (result && result.submitted == true) {
+       
+      }
+    });
   }
 }
 
