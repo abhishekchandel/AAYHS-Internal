@@ -1647,4 +1647,32 @@ span{
     }
 }
 
-  
+ //  financial statement 
+.rmStrip{
+    &:before{
+        display:none !important;
+    }
+}
+.ftButton {
+    a {
+        font-size: 20px;
+        margin: 0 8px;
+        color: #000;
+    }
+}	
+#fTransactions {
+	.modal-dialog {
+		max-width: 1310px;
+		margin: 1.75rem auto;
+	}
+	.modal-body {
+		padding: 0px 15px 20px;
+	}
+}
+@media(max-width:1300px){
+	.fTransactions {
+		table {
+			width: 1234px;
+		}
+	}
+} 
