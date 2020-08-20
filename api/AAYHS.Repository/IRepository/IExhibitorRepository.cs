@@ -9,7 +9,6 @@ namespace AAYHS.Repository.IRepository
 {
    public interface IExhibitorRepository : IGenericRepository<Exhibitors>
     {
-        MainResponse GetAllExhibitors();
-        MainResponse GetAllExhibitorsWithFilters(BaseRecordFilterRequest request);
+        MainResponse GetAllExhibitors(BaseRecordFilterRequest filterRequest);       
     }
 }

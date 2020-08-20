@@ -21,8 +21,8 @@ namespace AAYHS.Core.DTOs.Response
         public string Phone { get; set; }
     }
     public class ExhibitorListResponse
-    {
-        public int TotalRecords { get; set; }
+    {   
         public List<ExhibitorResponse> exhibitorResponses { get; set; }
+        public int TotalRecords { get; set; }
     }
 }

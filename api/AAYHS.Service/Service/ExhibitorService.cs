@@ -31,49 +31,61 @@ namespace AAYHS.Service.Service
             _mainResponse = new MainResponse();
         }
 
-        public MainResponse AddUpdateExhibitor(ExhibitorRequest request)
+        public MainResponse AddUpdateExhibitor(ExhibitorRequest request, string actionBy)
         {
             if (request.ExhibitorId <= 0)
             {
-                var Exhibitor = _Mapper.Map<Exhibitors>(request);
-                _ExhibitorRepository.Add(Exhibitor);
+                var exhibitor = new Exhibitors
+                {
+                    GroupId=request.GroupId,
+                    AddressId=request.AddressId,
+                    FirstName=request.FirstName,
+                    LastName=request.LastName,
+                    BackNumber=request.BackNumber,
+                    BirthYear=request.BirthYear,
+                    IsNSBAMember=request.IsNSBAMember,
+                    IsDoctorNote=request.IsDoctorNote,
+                    QTYProgram=request.QTYProgram,
+                    PrimaryEmail=request.PrimaryEmail,
+                    SecondaryEmail=request.SecondaryEmail,
+                    Phone=request.Phone,
+                    CreatedBy = actionBy,
+                    CreatedDate = DateTime.Now
+                };
+               
+                _ExhibitorRepository.Add(exhibitor);
                 _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
                 _mainResponse.Success = true;
             }
             else
             {
-                var Exhibitor = _Mapper.Map<Exhibitors>(request);
-                Exhibitor.ModifiedDate = DateTime.Now;
-                _ExhibitorRepository.Update(Exhibitor);
+                var exhibitor = _ExhibitorRepository.GetSingle(x => x.ExhibitorId == request.ExhibitorId && x.IsActive == true && x.IsDeleted == false);
+                exhibitor.GroupId = request.GroupId;
+                exhibitor.AddressId = request.AddressId;
+                exhibitor.FirstName = request.FirstName;
+                exhibitor.LastName = request.LastName;
+                exhibitor.BackNumber = request.BackNumber;
+                exhibitor.BirthYear = request.BirthYear;
+                exhibitor.IsNSBAMember = request.IsNSBAMember;
+                exhibitor.IsDoctorNote = request.IsDoctorNote;
+                exhibitor.QTYProgram = request.QTYProgram;
+                exhibitor.PrimaryEmail = request.PrimaryEmail;
+                exhibitor.SecondaryEmail = request.SecondaryEmail;
+                exhibitor.Phone = request.Phone;
+                exhibitor.ModifiedDate = DateTime.Now;
+                exhibitor.ModifiedBy = actionBy;
+                _ExhibitorRepository.Update(exhibitor);
                 _mainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
                 _mainResponse.Success = true;
             }
             return _mainResponse;
         }
-
-        public MainResponse GetAllExhibitorsWithFilter(BaseRecordFilterRequest request)
+    
+        public MainResponse GetAllExhibitors(BaseRecordFilterRequest filterRequest)
         {
-            _mainResponse = _ExhibitorRepository.GetAllExhibitorsWithFilters(request);
-            if (_mainResponse.ExhibitorListResponse.exhibitorResponses != null && _mainResponse.ExhibitorListResponse.exhibitorResponses.Count > 0)
+            _mainResponse = _ExhibitorRepository.GetAllExhibitors(filterRequest);
+            if (_mainResponse.ExhibitorListResponse.exhibitorResponses != null && _mainResponse.ExhibitorListResponse.TotalRecords > 0)
             {
-                _mainResponse.ExhibitorListResponse.TotalRecords = _mainResponse.ExhibitorListResponse.exhibitorResponses.Count();
-                _mainResponse.Message = Constants.RECORD_FOUND;
-                _mainResponse.Success = true;
-            }
-            else
-            {
-                _mainResponse.Message = Constants.NO_RECORD_FOUND;
-                _mainResponse.Success = false;
-            }
-            return _mainResponse;
-        }
-
-        public MainResponse GetAllExhibitors()
-        {
-            _mainResponse = _ExhibitorRepository.GetAllExhibitors();
-            if (_mainResponse.ExhibitorListResponse.exhibitorResponses != null && _mainResponse.ExhibitorListResponse.exhibitorResponses.Count > 0)
-            {
-                _mainResponse.ExhibitorListResponse.TotalRecords = _mainResponse.ExhibitorListResponse.exhibitorResponses.Count();
                 _mainResponse.Message = Constants.RECORD_FOUND;
                 _mainResponse.Success = true;
             }
@@ -103,7 +115,7 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
-        public MainResponse DeleteExhibitor(int ExhibitorId)
+        public MainResponse DeleteExhibitor(int ExhibitorId,string actionBy)
         {
             var Exhibitor = _ExhibitorRepository.GetSingle(x => x.ExhibitorId == ExhibitorId);
             if (Exhibitor != null && Exhibitor.ExhibitorId>0)
@@ -111,6 +123,7 @@ namespace AAYHS.Service.Service
                 Exhibitor.IsDeleted = true;
                 Exhibitor.IsActive = false;
                 Exhibitor.DeletedDate = DateTime.Now;
+                Exhibitor.DeletedBy = actionBy;
                 _ExhibitorRepository.Update(Exhibitor);
                 _mainResponse.Message = Constants.RECORD_DELETE_SUCCESS;
                 _mainResponse.Success = true;

@@ -9,10 +9,9 @@ namespace AAYHS.Service.IService
 {
    public interface IExhibitorService
     {
-        MainResponse AddUpdateExhibitor(ExhibitorRequest request);
-        MainResponse GetAllExhibitorsWithFilter(BaseRecordFilterRequest request);
-        MainResponse GetAllExhibitors();
+        MainResponse AddUpdateExhibitor(ExhibitorRequest request,string actionBy);
+        MainResponse GetAllExhibitors(BaseRecordFilterRequest filterRequest);
         MainResponse GetExhibitorById(int ExhibitorId);
-        MainResponse DeleteExhibitor(int ExhibitorId);
+        MainResponse DeleteExhibitor(int ExhibitorId,string actionBy);
     }
 }

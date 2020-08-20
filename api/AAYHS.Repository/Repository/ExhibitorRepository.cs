@@ -31,7 +31,7 @@ namespace AAYHS.Repository.Repository
             _context = ObjContext;
             _Mapper = Mapper;
         }
-        public MainResponse GetAllExhibitors()
+        public MainResponse GetAllExhibitors(BaseRecordFilterRequest filterRequest)
         {
             IEnumerable<ExhibitorResponse> exhibitorResponses = null;
             ExhibitorListResponse exhibitorListResponses = new ExhibitorListResponse();
@@ -53,58 +53,29 @@ namespace AAYHS.Repository.Repository
                                           SecondaryEmail = exhibitor.SecondaryEmail,
                                           Phone = exhibitor.Phone,
                                       }).ToList();
-            exhibitorListResponses.exhibitorResponses = exhibitorResponses.ToList();
-            _mainResponse.ExhibitorListResponse = exhibitorListResponses;
-            return _mainResponse;
-        }
-        public MainResponse GetAllExhibitorsWithFilters(BaseRecordFilterRequest request)
-        {
-            IEnumerable<ExhibitorResponse> exhibitorResponses = null;
-            ExhibitorListResponse exhibitorListResponses = new ExhibitorListResponse();
-            exhibitorResponses = (from exhibitor in _context.Exhibitors
-                                  where exhibitor.IsActive == true && exhibitor.IsDeleted == false
-                                  select new ExhibitorResponse
-                                  {
-                                      ExhibitorId = exhibitor.ExhibitorId,
-                                      GroupId = exhibitor.GroupId,
-                                      AddressId = exhibitor.AddressId,
-                                      FirstName = exhibitor.FirstName,
-                                      LastName = exhibitor.LastName,
-                                      BackNumber = exhibitor.BackNumber,
-                                      BirthYear = exhibitor.BirthYear,
-                                      IsNSBAMember = exhibitor.IsNSBAMember,
-                                      IsDoctorNote = exhibitor.IsDoctorNote,
-                                      QTYProgram = exhibitor.QTYProgram,
-                                      PrimaryEmail = exhibitor.PrimaryEmail,
-                                      SecondaryEmail = exhibitor.SecondaryEmail,
-                                      Phone = exhibitor.Phone,
-                                  }).ToList();
-
-
             if (exhibitorResponses.Count() > 0)
             {
-                var propertyInfo = typeof(ExhibitorResponse).GetProperty(request.OrderBy);
-                if (request.OrderByDescending == true)
+                var propertyInfo = typeof(ExhibitorResponse).GetProperty(filterRequest.OrderBy);
+                if (filterRequest.OrderByDescending == true)
                 {
-                    exhibitorResponses = exhibitorResponses.OrderByDescending(s => s.GetType().GetProperty(request.OrderBy).GetValue(s)).ToList();
+                    exhibitorResponses = exhibitorResponses.OrderByDescending(s => s.GetType().GetProperty(filterRequest.OrderBy).GetValue(s)).ToList();
                 }
                 else
                 {
                     exhibitorResponses = exhibitorResponses.AsEnumerable().OrderBy(s => propertyInfo.GetValue(s, null)).ToList();
                 }
-
-                if (request.AllRecords == true)
+                exhibitorListResponses.TotalRecords = exhibitorResponses.Count();
+                if (filterRequest.AllRecords == true)
                 {
-                    exhibitorResponses = exhibitorResponses.ToList();
+                    exhibitorListResponses.exhibitorResponses = exhibitorResponses.ToList();
                 }
                 else
                 {
-                    exhibitorResponses = exhibitorResponses.Skip((request.Page - 1) * request.Limit).Take(request.Limit).ToList();
+                    exhibitorListResponses.exhibitorResponses = exhibitorResponses.Skip((filterRequest.Page - 1) * filterRequest.Limit).Take(filterRequest.Limit).ToList();
                 }
-            }
-            exhibitorListResponses.exhibitorResponses = exhibitorResponses.ToList();
+            }           
             _mainResponse.ExhibitorListResponse = exhibitorListResponses;
             return _mainResponse;
-        }
-    }
+        }      
+   }
 }

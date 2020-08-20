@@ -18,9 +18,15 @@ namespace AAYHS.API.Controllers
     [ApiController]
     public class ExhibitorAPIController : ControllerBase
     {
-        private readonly IExhibitorService _ExhibitorService;
+        #region private       
         private MainResponse _mainResponse;
         private string _jsonString = string.Empty;
+        #endregion
+
+        #region readonly
+        private readonly IExhibitorService _ExhibitorService;
+        #endregion
+
         public ExhibitorAPIController(IExhibitorService ExhibitorService)
         {
             _ExhibitorService = ExhibitorService;
@@ -33,35 +39,20 @@ namespace AAYHS.API.Controllers
         /// <param name="No parameter is required"></param>
         /// <returns>All Exhibitors list</returns>
         [HttpPost]
-        public ActionResult GetAllExhibitors()
+        public ActionResult GetAllExhibitors(BaseRecordFilterRequest filterRequest)
         {
 
-            _mainResponse = _ExhibitorService.GetAllExhibitors(); 
+            _mainResponse = _ExhibitorService.GetAllExhibitors(filterRequest); 
               _jsonString = Mapper.Convert<ExhibitorListResponse> (_mainResponse);
             return new OkObjectResult(_jsonString);
         }
-
-
-        /// <summary>
-        /// This API is used to get all Exhibitors with filters.
-        /// </summary>
-        /// <param name="filter parameters is required"></param>
-        /// <returns>All Exhibitors list with filter</returns>
-        [HttpPost]
-        public ActionResult GetAllExhibitorsWithFilter([FromBody] BaseRecordFilterRequest request)
-        {
-
-            _mainResponse = _ExhibitorService.GetAllExhibitorsWithFilter(request);
-            _jsonString = Mapper.Convert<ExhibitorListResponse>(_mainResponse);
-            return new OkObjectResult(_jsonString);
-        }
-
+      
         /// <summary>
         /// This API is used to get  Exhibitor by Exhibitor id.
         /// </summary>
         /// <param name="Exhibitor id parameter is required"></param>
         /// <returns> Single Exhibitor record</returns>
-        [HttpPost]
+        [HttpGet]
         public ActionResult GetExhibitorById(int ExhibitorId)
         {
             _mainResponse = _ExhibitorService.GetExhibitorById(ExhibitorId);
@@ -77,7 +68,8 @@ namespace AAYHS.API.Controllers
         [HttpPost]
         public ActionResult AddUpdateExhibitor([FromBody] ExhibitorRequest request)
         {
-            _mainResponse = _ExhibitorService.AddUpdateExhibitor(request);
+            string actionBy = User.Identity.Name;
+            _mainResponse = _ExhibitorService.AddUpdateExhibitor(request, actionBy);
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
@@ -88,10 +80,11 @@ namespace AAYHS.API.Controllers
         /// </summary>
         /// <param name="Exhibitor detail with Exhibitor id is required"></param>
         /// <returns> success true or false with message</returns>
-        [HttpPost]
+        [HttpDelete]
         public ActionResult DeleteExhibitor(int ExhibitorId)
         {
-            _mainResponse = _ExhibitorService.DeleteExhibitor(ExhibitorId);
+            string actionBy = User.Identity.Name;
+            _mainResponse = _ExhibitorService.DeleteExhibitor(ExhibitorId, actionBy);
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }

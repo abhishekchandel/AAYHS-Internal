@@ -34,6 +34,7 @@ namespace AAYHS.Core.AutoMapper
             CreateMap<Horses, GetHorseById>();
             CreateMap<Groups, GetGroup>();
             CreateMap<GroupFinancials, GetGroupFinacials>();
+            CreateMap<Exhibitors, ExhibitorRequest>();
 
         }
     }
