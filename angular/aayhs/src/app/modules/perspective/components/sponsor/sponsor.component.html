@@ -268,8 +268,25 @@
 													</span>
 												</td>
 
+												<td *ngIf="sponsortypeId==1 || sponsortypeId==2" data-label="Type"  colspan="2">
+													<select  class="dynDataSeclect" name="type" [required]="sponsortypeId==1 || sponsortypeId==2" [(ngModel)]="typeId"
+													#typeControl="ngModel" (change)="setType($event.target.value)" >
+														<option   disabled="true" [ngValue]="null" class="selectDropdown">Select</option>
+														<option   class="selectDropdown"
+														[value]="item.Id"
+														 *ngFor="let item of typeList">
+														 {{item.Name}}</option>
+													</select>
+												  <span class="help-block"
+													*ngIf="(sponsorExhibitorForm.submitted || typeControl.touched) && typeControl.invalid">Please
+													select 
+												</span>
+											  </td>
+
+											 
+
                                                    
-                                                    <td colspan="3"></td>
+                                                    <td ></td>
                                                 </tr>
                                             </tbody>
                                         

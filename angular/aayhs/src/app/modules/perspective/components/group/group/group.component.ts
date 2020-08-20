@@ -30,6 +30,7 @@ export class GroupComponent implements OnInit {
   @ViewChild('groupInfoForm') groupInfoForm: NgForm;
   @ViewChild('tabGroup') tabGroup: MatTabGroup;
   @ViewChild('perfect-scrollbar ') perfectScrollbar: PerfectScrollbar
+  @ViewChild('groupFinancialForm') groupFinancialForm: NgForm;
 
   baseRequest: BaseRecordFilterRequest = {
     Page: 1,
@@ -44,6 +45,11 @@ export class GroupComponent implements OnInit {
   groupExhibitorsList: any;
   groupFinancialsList:any;
   groupFinancialsTotals:any;
+
+  PreTotal:number=0;
+  PostTotal:number=0;
+  PrePostTotal:number=0;
+
   FeeTypes:any;
   TimeFrameTypes:any;
   groupFinancialsRequest: any={
@@ -167,7 +173,9 @@ UpdatedFinancialAmount:number=null;
        {
       this.groupFinancialsList = response.Data.getGroupFinacials;
       this.groupFinancialsTotals=response.Data.getGroupFinacialsTotals;
-      
+      this.PreTotal=this.groupFinancialsTotals.PreTotal
+      this.PostTotal=this.groupFinancialsTotals.PostTotal
+      this.PrePostTotal=this.groupFinancialsTotals.PrePostTotal
        }
        this.loading = false;
      }, error => {
@@ -225,6 +233,8 @@ UpdatedFinancialAmount:number=null;
         this.FinancialsTimeFrameTypeId = null;
         this.FinancialsAmount=null;
         this.FinancialsFeeTypeId=null;
+        this.groupFinancialForm.resetForm({FinancialsAmount:null,FinancialsFeeTypeId:null});
+
        }, error=>{
           this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
           this.loading = false;
@@ -301,7 +311,8 @@ UpdatedFinancialAmount:number=null;
     this.updateRowIndex=index;
   }
   
-  updateGroupFinancialsAmount(e, index, GroupFinancialId){
+  updateGroupFinancialsAmount(e, index, GroupFinancialId,timeframename){
+    debugger
     this.loading=true;
     this.updateRowIndex=index;
     this.updateGroupFinancialsRequest.GroupFinancialId=GroupFinancialId;
@@ -312,6 +323,19 @@ UpdatedFinancialAmount:number=null;
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
       this.loading = false;
       this.updatemode=false;
+if(timeframename=="Pre")
+{
+  this.PreTotal=this.UpdatedFinancialAmount;
+}
+else{
+  this.PostTotal=this.UpdatedFinancialAmount;
+}
+this.PrePostTotal= this.PreTotal+this.PostTotal;
+
+    // this.groupFinancialsTotals.PreTotal
+    // this.groupFinancialsTotals.PostTotal
+    // this.groupFinancialsTotals.PrePostTotal
+
      }, error=>{
         this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
         this.loading = false;
@@ -504,6 +528,7 @@ setFinancialsAmount(data){
     this.GetGroupExhibitors(selectedGroupId);
     this.GetGroupFinancials(selectedGroupId);
     this.getAllFeeTypes();
+    this.groupFinancialForm.resetForm({FinancialsAmount:null,FinancialsFeeTypeId:null});
   }
 
 

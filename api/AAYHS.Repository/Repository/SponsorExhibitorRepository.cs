@@ -40,18 +40,17 @@ namespace AAYHS.Repository.Repository
             sponsorExhibitorResponses = (from sponsorexhibitor in _context.SponsorExhibitor
                         join exhibitor in _context.Exhibitors
                         on sponsorexhibitor.ExhibitorId equals exhibitor.ExhibitorId
-                        into data1
-                        from data2 in data1.DefaultIfEmpty()
                         where sponsorexhibitor.SponsorId == SponsorId
                         && sponsorexhibitor.IsActive == true && sponsorexhibitor.IsDeleted == false
-                        select new SponsorExhibitorResponse
+                        && exhibitor.IsActive == true && exhibitor.IsDeleted == false
+                                         select new SponsorExhibitorResponse
                         {
                             SponsorExhibitorId = sponsorexhibitor.SponsorExhibitorId,
                             SponsorId = sponsorexhibitor.SponsorId,
-                            ExhibitorId = data2!=null? data2.ExhibitorId:0,
-                            FirstName = data2 != null ? data2.FirstName:"",
-                            LastName = data2 != null ? data2.LastName:"",
-                            BirthYear = data2 != null ? data2.BirthYear:0,
+                            ExhibitorId = exhibitor.ExhibitorId,
+                            FirstName = exhibitor.FirstName,
+                            LastName = exhibitor.LastName,
+                            BirthYear = exhibitor.BirthYear,
                             SponsorTypeId = sponsorexhibitor.SponsorTypeId,
                             IdNumber =sponsorexhibitor.SponsorTypeId== (int)SponsorTypes.Class?Convert.ToString(_context.Classes.Where(x=>x.ClassId== sponsorexhibitor.TypeId).Select(x=>x.ClassNumber).FirstOrDefault())
                                        :(sponsorexhibitor.SponsorTypeId == (int)SponsorTypes.Add? Convert.ToString(_context.Advertisements.Where(x => x.AdvertisementId == sponsorexhibitor.TypeId).Select(x => x.AdvertisementId).FirstOrDefault())

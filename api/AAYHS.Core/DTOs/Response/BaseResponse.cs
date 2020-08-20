@@ -55,6 +55,8 @@ namespace AAYHS.Core.DTOs.Response
         public GetAllStall GetAllStall { get; set; }
         public GetGroupStatement GetGroupStatement { get; set; }
 
+        public AdvertisementResponse AdvertisementResponse { get; set; }
+        public AdvertisementListResponse AdvertisementListResponse { get; set; }
     }
    
     public class Response<T> : BaseResponse

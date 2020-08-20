@@ -55,6 +55,7 @@ namespace AAYHS.Service.Service
                     SponsorExhibitor.SponsorId = request.SponsorId;
                     SponsorExhibitor.ExhibitorId = request.ExhibitorId;
                     SponsorExhibitor.SponsorTypeId = request.SponsorTypeId;
+                    SponsorExhibitor.TypeId = request.TypeId;
                     _SponsorExhibitorRepository.Update(SponsorExhibitor);
                     _mainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
                     _mainResponse.Success = true;

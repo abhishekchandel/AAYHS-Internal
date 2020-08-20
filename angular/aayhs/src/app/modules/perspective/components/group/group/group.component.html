@@ -374,7 +374,7 @@
                                              *ngIf="updatemode==true && updateRowIndex==i" 
                                              type="button"
                                              class="icon" 
-                                             (click)="updateGroupFinancialsAmount($event,i,list.GroupFinancialId)">Update
+                                             (click)="updateGroupFinancialsAmount($event,i,list.GroupFinancialId,list.TimeFrameName)">Update
                                               </button>
                                              <button 
                                               *ngIf="updatemode==true && updateRowIndex==i" 
@@ -464,9 +464,9 @@
                             <tfoot>
                                 
                                 <tr *ngIf="groupFinancialsList!=null && groupFinancialsList.length>0 && groupFinancialsTotals!=null">
-                                    <td style="width: 20%;"><b>Pre Total : ${{groupFinancialsTotals.PreTotal}}</b></td> <td style="width: 20%;"></td>  
-                                    <td style="width: 20%;"><b>Post Total : ${{groupFinancialsTotals.PostTotal}}</b></td>  <td style="width: 20%;"></td>   
-                                    <td style="width: 20%;"><b>Total : ${{groupFinancialsTotals.PrePostTotal}}</b></td>
+                                    <td style="width: 20%;"><b>Pre Total : ${{PreTotal}}</b></td> <td style="width: 20%;"></td>  
+                                    <td style="width: 20%;"><b>Post Total : ${{PostTotal}}</b></td>  <td style="width: 20%;"></td>   
+                                    <td style="width: 20%;"><b>Total : ${{PrePostTotal}}</b></td>
                                   
                                 </tr>
                               </tfoot>

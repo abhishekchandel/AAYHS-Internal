@@ -1,3 +1,5 @@
+import { NumberValueAccessor } from '@angular/forms';
+
 export interface SponsorInformationViewModel
 {
     SponsorName:string;
@@ -12,6 +14,11 @@ export interface SponsorInformationViewModel
     SponsorId:number;
     sponsorExhibitors:Array<SponsorExhibitors>;
     sponsorClasses:Array<SponsorClasses>
+}
+export interface TypesList
+{
+    Id:number;
+    Name:string;
 }
 
 export interface SponsorExhibitors{

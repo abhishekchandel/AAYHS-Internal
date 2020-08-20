@@ -125,7 +125,6 @@ namespace AAYHS.Repository.Repository
                                      where sponsorClass.SponsorId==SponsorId
                                      && sponsorClass.IsActive == true && sponsorClass.IsDeleted == false
                                      && classes.IsActive ==true && classes.IsDeleted == false
-                                     && classes.IsDeleted ==false
                                      select new SponsorClassResponse
                                      {
                                          ClassSponsorId = sponsorClass.ClassSponsorId,

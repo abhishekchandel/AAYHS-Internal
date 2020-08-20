@@ -1,22 +1,22 @@
-﻿using AAYHS.Data.Base;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace AAYHS.Data.DBEntities
+namespace AAYHS.Core.DTOs.Response
 {
-    public class Advertisements : BaseEntity
+   public class AdvertisementResponse
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Key]
         public int AdvertisementId { get; set; }
         public int AdvertisementTypeId { get; set; }
         public int AdvertisementSizeId { get; set; }
         public int AdvertisementNumberId { get; set; }
         public string Name { get; set; }
         public string Comments { get; set; }
-       
+    }
+
+    public class AdvertisementListResponse
+    {
+        public int TotalRecords { get; set; }
+        public List<AdvertisementResponse> advertisementResponses { get; set; }
     }
 }

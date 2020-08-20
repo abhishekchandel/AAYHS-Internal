@@ -57,11 +57,15 @@ export class ClassComponent implements OnInit {
     AllRecords: false
    };
    classInfo: ClassInfoModel = {
-    ClassHeaderId:null,
-    ClassNumber:null,
-    Name:null,
-    AgeGroup:null,
-    ScheduleDate:null
+    ClassId: 0,
+    ClassHeaderId: null,
+    ClassNumber: null,
+    Name: null,
+    AgeGroup: null,
+    ScheduleDate: null,
+    getClassSplit: null,
+    SplitNumber: 0,
+    ChampionShipIndicator:false
 
   }
   constructor(

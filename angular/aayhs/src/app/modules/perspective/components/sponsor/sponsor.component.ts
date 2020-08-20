@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { SponsorInformationViewModel } from '../../../../core/models/sponsor-model';
-import { SponsorService } from '../../../../core/services/sponsor.service';
+import { SponsorInformationViewModel ,TypesList} from '../../../../core/models/sponsor-model';
+import { SponsorService} from '../../../../core/services/sponsor.service';
+import {  AdvertisementService } from '../../../../core/services/advertisement.service';
 import { ConfirmDialogComponent, ConfirmDialogModel } from '../../../../shared/ui/modals/confirmation-modal/confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackbarComponent } from '../../../../shared/ui/mat-snackbar/mat-snackbar/mat-snackbar.component';
@@ -25,6 +26,10 @@ export class SponsorComponent implements OnInit {
   @ViewChild('sponsorInfoForm') sponsorInfoForm: NgForm;
   @ViewChild('tabGroup') tabGroup: MatTabGroup;
   @ViewChild('perfect-scrollbar ') perfectScrollbar: PerfectScrollbar
+  @ViewChild('sponsorExhibitorForm') sponsorExhibitorForm: NgForm;
+  @ViewChild('sponsorClassForm') sponsorClassForm: NgForm;
+
+ 
   selectedRowIndex: any;
   citiesResponse: any;
   statesResponse: any;
@@ -55,20 +60,27 @@ export class SponsorComponent implements OnInit {
   sponsorClassesList:any
   UnassignedSponsorExhibitor:any
   UnassignedSponsorClasses:any
+  advertisementsList:any
   SponsorTypes:any
   selectedSponsorId:number=0;
 
 
   exhibitorId: number = null;
   sponsortypeId:number=null;
+  typeId:number=null;
   sponsorClassId:number=null;
-
+  showAds=false;
+  showClasses=false;
+  typeList:any=[];
   
+
+
   sponsorExhibitorRequest: any={
     SponsorExhibitorId: null,
     SponsorId:null,
     ExhibitorId:null,
     SponsorTypeId:null,
+    TypeId:null
   }
   sponsorClassRequest: any={
     ClassSponsorId:null,
@@ -83,11 +95,18 @@ export class SponsorComponent implements OnInit {
     OrderByDescending: true,
     AllRecords: false
   }
-
+  adsBaseRequest: BaseRecordFilterRequest = {
+    Page: 1,
+    Limit: 20,
+    OrderBy: 'AdvertisementId',
+    OrderByDescending: true,
+    AllRecords: true
+  }
 
   sponsors: SponsorInformationViewModel[];
 
   constructor(private sponsorService: SponsorService,
+    private advertisementService: AdvertisementService,
     private dialog: MatDialog,
     private snackBar: MatSnackbarComponent
   ) { }
@@ -97,7 +116,7 @@ export class SponsorComponent implements OnInit {
   ngOnInit(): void {
     this.getAllSponsors();
     this.getAllStates();
-
+    this.GetAllAdvertisements()
   }
 
   
@@ -179,6 +198,7 @@ export class SponsorComponent implements OnInit {
       if(response.Data!=null && response.Data.TotalRecords>0)
       {
       this.sponsorClassesList = response.Data.sponsorClassesListResponses;
+      this.setSponsorType(this.sponsortypeId)
       }
       this.UnassignedSponsorClasses=response.Data.unassignedSponsorClasses;
       this.loading=false;
@@ -186,6 +206,23 @@ export class SponsorComponent implements OnInit {
       this.loading=false;
     })
     
+  }
+
+  GetAllAdvertisements(){
+    this.adsBaseRequest.OrderBy = "AdvertisementId";
+    this.adsBaseRequest.OrderByDescending = true;
+    this.adsBaseRequest.AllRecords=true;
+    this.advertisementsList=null;
+    
+    this.advertisementService.getAllAdvertisements(this.adsBaseRequest).subscribe(response=>{ 
+      if(response.Data!=null && response.Data.TotalRecords>0)
+      {
+        debugger
+      this.advertisementsList = response.Data.advertisementResponses;
+      this.setSponsorType(this.sponsortypeId)
+      }
+    },error=>{
+    })
   }
 
 
@@ -228,11 +265,15 @@ export class SponsorComponent implements OnInit {
     this.sponsorExhibitorRequest.SponsorId=this.selectedSponsorId;
     this.sponsorExhibitorRequest.ExhibitorId=this.exhibitorId;
     this.sponsorExhibitorRequest.SponsorTypeId=this.sponsortypeId;
+    this.sponsorExhibitorRequest.TypeId=this.typeId!=null ?this.typeId:0;
+    debugger
     this.sponsorService.AddUpdateSponsorExhibitor(this.sponsorExhibitorRequest).subscribe(response=>{
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
       this.GetSponsorExhibitorBySponsorId(this.selectedSponsorId);
       this.exhibitorId = null;
       this.sponsortypeId=null;
+      this.sponsorExhibitorForm.resetForm({ exhibitorId:null,sponsortypeId:null});
+
      }, error=>{
         this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
         this.loading = false;
@@ -249,24 +290,61 @@ export class SponsorComponent implements OnInit {
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
       this.GetSponsorClasses(this.selectedSponsorId);
       this.sponsorClassId=null;
+      this.sponsorClassForm.resetForm({ sponsorClassId:null});
      }, error=>{
         this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
         this.loading = false;
      })
      }
 
-
-
-
-
   setSponsorExhibitor(id){
     this.exhibitorId=Number(id);
   }
-  
-  setSponsorType(id){
-    this.sponsortypeId=Number(id);
-    this.GetSponsorClasses(this.selectedSponsorId);
 
+  setSponsorType(id){
+    debugger
+    this.sponsortypeId=Number(id);
+    this.typeList=[];
+    this.typeId=null;
+    if(this.SponsorTypes!=null && this.SponsorTypes!=undefined && this.sponsortypeId!=null&& this.sponsortypeId>0)
+    {
+    
+      var sponsorTypename=this.SponsorTypes.filter((x) => { return x.GlobalCodeId == this.sponsortypeId; });
+     
+      if(sponsorTypename[0].CodeName=="Class")
+      {
+        this.showClasses=true;
+        this.showAds=false;
+       this.sponsorClassesList.forEach((data) => { 
+       var listdata:TypesList={
+        Id:data.ClassId,
+        Name:data.Name
+       }
+        this.typeList.push(listdata)
+      })  
+
+
+      }
+      if(sponsorTypename[0].CodeName=="Ad")
+      {
+        this.showClasses=false;
+        this.showAds=true;
+        this.advertisementsList.forEach((data) => { 
+          var listdata:TypesList={
+           Id:data.AdvertisementId,
+           Name:data.Name
+          }
+           this.typeList.push(listdata)
+         })  
+        
+
+      }
+    }
+  }
+
+  setType(id){
+    debugger
+    this.typeId=Number(id);
   }
 
   setSponsorClass(id){
@@ -463,6 +541,8 @@ export class SponsorComponent implements OnInit {
     this.sponsortypeId=null;
     this.sponsorClassId=null;
     this.GetSponsorClasses(selectedSponsorId);
+    this.sponsorClassForm.resetForm({sponsorClassId:null});
+    this.sponsorExhibitorForm.resetForm({ exhibitorId:null,sponsortypeId:null});
   }
 
   sortData(column) {

@@ -25,6 +25,7 @@
     "classlist.js": "^1.1.20150312",
     "font-awesome": "^4.7.0",
     "jspdf": "^1.5.3",
+    "jspdf-autotable": "^3.5.9",
     "mask": "^0.2.2",
     "moment": "^2.27.0",
     "ngx": "^2.4.0",
