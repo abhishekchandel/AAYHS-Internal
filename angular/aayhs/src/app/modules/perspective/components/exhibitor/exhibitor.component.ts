@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import {FinancialTransactionsComponent} from '../../../../../shared/ui/modals/financial-transactions/financial-transactions.component'
+import {FinancialTransactionsComponent} from '../../../../shared/ui/modals/financial-transactions/financial-transactions.component'
 
 @Component({
   selector: 'app-exhibitor',

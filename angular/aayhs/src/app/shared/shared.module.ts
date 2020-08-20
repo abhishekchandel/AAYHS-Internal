@@ -43,6 +43,7 @@ import { ExportConfirmationModalComponent } from './ui/modals/export-confirmatio
 import { OrderModule } from 'ngx-order-pipe';
 import { ExportAsModule } from 'ngx-export-as';
 import {NgxPrintModule} from 'ngx-print';
+import { AssignStallModalComponent } from './ui/modals/assign-stall-modal/assign-stall-modal.component';
 import { FinancialTransactionsComponent } from './ui/modals/financial-transactions/financial-transactions.component';
 
 export var options: Partial<IConfig> | (() => Partial<IConfig>);
@@ -51,7 +52,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 };
 
 @NgModule({
-  declarations: [HeaderComponent, FooterComponent,SidebarComponent, MatSnackbarComponent, ConfirmDialogComponent, AddSplitClassModalComponent, ExportConfirmationModalComponent, ConfirmEqualValidatorDirective, SearchPipe,FinancialTransactionsComponent],
+  declarations: [HeaderComponent, FooterComponent,SidebarComponent, MatSnackbarComponent, ConfirmDialogComponent, AddSplitClassModalComponent, ExportConfirmationModalComponent, ConfirmEqualValidatorDirective, SearchPipe, AssignStallModalComponent, FinancialTransactionsComponent],
   imports: [
     CommonModule,
     RouterModule,
