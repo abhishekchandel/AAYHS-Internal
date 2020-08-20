@@ -18,22 +18,7 @@ export class StallComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  getAllStalls(){
-    this.loading = true;
-    this.groupService.getAllStall().subscribe(response => {
-        this.stallResponse = response.Data.stallResponses;
-        const chunkData=this.chunk(this.stallResponse, 20);
-
-        this.chunkedData = chunkData.map(chunk => {
-          return this.chunk(chunk, 10);
-        });
-        
-        debugger;
-        this.loading = false;
-    }, error => {
-      this.loading = false;
-    })
-  }
+ 
 
   chunk(arr,size){
     var newArr = [];

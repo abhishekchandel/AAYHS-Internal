@@ -16,7 +16,7 @@ import { GroupInformationViewModel } from 'src/app/core/models/group-model';
 
 
 import PerfectScrollbar from 'perfect-scrollbar';
-import { StallComponent } from '../../stall/stall.component';
+import { StallComponent } from '../stall/stall.component';
 
 
 @Component({

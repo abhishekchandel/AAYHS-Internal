@@ -1,11 +1,11 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
-import { MatSnackbarComponent } from '../../../../../shared/ui/mat-snackbar/mat-snackbar/mat-snackbar.component'
-import {HorseService } from '../../../../../core/services/horse.service';
-import { BaseRecordFilterRequest } from '../../../../../core/models/base-record-filter-request-model'
-import {  HorseInfoModel } from '../../../../../core/models/horse-model'
+import { MatSnackbarComponent } from '../../../../shared/ui/mat-snackbar/mat-snackbar/mat-snackbar.component'
+import {HorseService } from '../../../../core/services/horse.service';
+import { BaseRecordFilterRequest } from '../../../../core/models/base-record-filter-request-model'
+import {  HorseInfoModel } from '../../../../core/models/horse-model'
 import { MatTabGroup } from '@angular/material/tabs'
 import { NgForm } from '@angular/forms';
-import { ConfirmDialogComponent, ConfirmDialogModel } from'../../../../../shared/ui/modals/confirmation-modal/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent, ConfirmDialogModel } from'../../../../shared/ui/modals/confirmation-modal/confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 
 
