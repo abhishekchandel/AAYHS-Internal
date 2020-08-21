@@ -10,8 +10,11 @@ namespace AAYHS.Core.DTOs.Response.Common
         public int StallNumber { get; set; }
         public bool IsPortable { get; set; }
         public int ProtableStallTypeId { get; set; }
+        public string Description { get; set; }
         public bool IsBooked { get; set; } = false;
         public int BookedById { get; set; }
+        public int StallAssignmentId { get; set; }
+        public int StallAssignmentTypeId { get; set; }
         public string BookedByName { get; set; }
         public string BookedByType { get; set; }
     }

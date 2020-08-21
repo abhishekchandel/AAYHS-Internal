@@ -16,10 +16,17 @@ namespace AAYHS.Core.DTOs.Request
         public string ZipCode { get; set; }
         public int CityId { get; set; }
         public int StateId { get; set; }
+        public List<GroupStallAssignmentRequest> groupStallAssignmentRequests { get; set; }
 
     }
-   
 
+    public class GroupStallAssignmentRequest 
+    {
+        public int StallAssignmentId { get; set; }
+        public int StallId { get; set; }
+        public int StallAssignmentTypeId { get; set; }
+        public int BookedById { get; set; }
+    }
     public class AddGroupFinancialRequest
     {
         public int GroupFinancialId { get; set; }

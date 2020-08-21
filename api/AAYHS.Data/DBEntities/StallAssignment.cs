@@ -13,6 +13,7 @@ namespace AAYHS.Data.DBEntities
         [Key]
         public int StallAssignmentId { get; set; }
         public int StallId { get; set; }
+        public int StallAssignmentTypeId { get; set; }
         public int GroupId { get; set; }       
         public int ExhibitorId { get; set; }
         public string BookedByType { get; set; }

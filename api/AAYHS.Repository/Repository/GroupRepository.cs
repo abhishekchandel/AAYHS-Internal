@@ -351,8 +351,8 @@ namespace AAYHS.Repository.Repository
                                                              x.FeeTypeId == tackStallId && x.IsActive == true && x.IsDeleted == false).Select(x => x.Amount).Sum();
             groupStatement.StallQuantity = _context.StallAssignment.Where(x => x.GroupId == GroupId && 
                                                              x.IsDeleted == false && x != null).Select(x => x.StallAssignmentId).Count();
-            groupStatement.TackStallQuantity = _context.TackStallAssignment.Where(x => x.GroupId == GroupId 
-                                                             && x.IsDeleted == false).Select(x => x.TackStallAssignmentId).Count();
+            //groupStatement.TackStallQuantity = _context.TackStallAssignment.Where(x => x.GroupId == GroupId 
+            //                                                 && x.IsDeleted == false).Select(x => x.TackStallAssignmentId).Count();
             decimal stallAmount = _context.YearlyMaintainenceFee.Where(x => x.FeeTypeId == horseStallId 
                                                        && x.IsActive == true && x.IsDeleted == false).Select(x=>x.Amount).Sum();
             decimal tackStallAmount = _context.YearlyMaintainenceFee.Where(x => x.FeeTypeId == tackStallId

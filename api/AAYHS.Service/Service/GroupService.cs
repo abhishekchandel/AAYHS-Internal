@@ -23,16 +23,18 @@ namespace AAYHS.Service.Service
         private MainResponse _mainResponse;
         private BaseResponse newIdResponse;
         private IGroupRepository _GroupRepository;
+        private IStallAssignmentRepository _stallAssignmentRepository;
         private IAddressRepository _AddressRepository;
         private readonly IGroupExhibitorRepository _groupExhibitorRepository;
         private readonly IGroupFinancialRepository _groupFinancialRepository;
         #endregion
 
-        public GroupService(IGroupRepository GroupRepository, IAddressRepository AddressRepository,IGroupExhibitorRepository groupExhibitorRepository
+        public GroupService(IGroupRepository GroupRepository, IStallAssignmentRepository stallAssignmentRepository, IAddressRepository AddressRepository,IGroupExhibitorRepository groupExhibitorRepository
                           ,IGroupFinancialRepository groupFinancialRepository, IMapper Mapper)
         {
             _GroupRepository = GroupRepository;
             _AddressRepository = AddressRepository;
+            _stallAssignmentRepository = stallAssignmentRepository;
             _groupExhibitorRepository = groupExhibitorRepository;
             _groupFinancialRepository = groupFinancialRepository;
             _Mapper = Mapper;
@@ -71,7 +73,21 @@ namespace AAYHS.Service.Service
                     AddressId = address != null ? address.AddressId : 0,
                     CreatedDate = DateTime.Now
                 };
-              var Data= _GroupRepository.Add(Group);
+                var Data= _GroupRepository.Add(Group);
+                if(Data!=null && Data.GroupId>0&& request.groupStallAssignmentRequests!=null && request.groupStallAssignmentRequests.Count>0)
+                {
+                    StallAssignment stallAssignment;
+                    foreach (var item in request.groupStallAssignmentRequests)
+                    {
+                        stallAssignment = new StallAssignment();
+                        stallAssignment.StallId = item.StallId;
+                        stallAssignment.StallAssignmentTypeId = item.StallAssignmentTypeId;
+                        stallAssignment.GroupId = Data.GroupId;
+                        stallAssignment.ExhibitorId = 0;
+                        stallAssignment.BookedByType = "Group";
+                        _stallAssignmentRepository.Add(stallAssignment);
+                    }
+                }
                 _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
                 _mainResponse.Success = true;
                 _mainResponse.NewId = Data.GroupId;
@@ -100,6 +116,30 @@ namespace AAYHS.Service.Service
                         address.ModifiedDate = DateTime.Now;
                         _AddressRepository.Update(address);
                     }
+                    var assignments = _stallAssignmentRepository.GetAll(x=>x.GroupId==request.GroupId && x.IsActive==true && x.IsDeleted==false);
+                   if(assignments!=null && assignments.Count>0)
+                    {
+                        foreach(var assignment in assignments)
+                        {
+                            _stallAssignmentRepository.Delete(assignment);
+                        }
+                    }
+                    if (request.groupStallAssignmentRequests != null && request.groupStallAssignmentRequests.Count > 0)
+                    {
+                        StallAssignment stallAssignment;
+                        foreach (var item in request.groupStallAssignmentRequests)
+                        {
+                            stallAssignment = new StallAssignment();
+                            stallAssignment.StallId = item.StallId;
+                            stallAssignment.StallAssignmentTypeId = item.StallAssignmentTypeId;
+                            stallAssignment.GroupId =Group.GroupId;
+                            stallAssignment.ExhibitorId =0;
+                            stallAssignment.BookedByType = "Group";
+                            _stallAssignmentRepository.Add(stallAssignment);
+                        }
+                    }
+
+
                     _mainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
                     _mainResponse.Success = true;
                     _mainResponse.NewId = Convert.ToInt32(request.GroupId);
@@ -114,8 +154,6 @@ namespace AAYHS.Service.Service
             }
             return _mainResponse;
         }
-
-
 
         public MainResponse DeleteGroup(int GroupId)
         {

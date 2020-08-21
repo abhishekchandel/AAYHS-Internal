@@ -158,7 +158,6 @@ namespace AAYHS
             services.AddTransient<IEmailSenderRepository, EmailSenderRepository>();
             services.AddTransient<IApplicationSettingRepository, ApplicationSettingRepository>();
             services.AddTransient<IStallAssignmentRepository, StallAssignmentRepository>();
-            services.AddTransient<ITackStallAssignmentRepository, TackStallAssignmentRepository>();
             services.AddTransient<IGroupRepository, GroupRepository>();
             services.AddTransient<IGroupExhibitorRepository, GroupExhibitorRepository>();
             services.AddTransient<IGroupFinancialRepository, GroupFinancialRepository>();

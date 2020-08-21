@@ -20,7 +20,7 @@ namespace AAYHS.Service.Service
         private IMapper _mapper;
         private readonly IHorseRepository _horseRepository;
         private readonly IStallAssignmentRepository _stallAssignmentRepository;
-        private readonly ITackStallAssignmentRepository _tackStallAssignmentRepository;
+      
         private readonly IGroupRepository _groupRepository;      
         #endregion
 
@@ -29,11 +29,11 @@ namespace AAYHS.Service.Service
         #endregion
 
         public HorseService(IHorseRepository horseRepository,IStallAssignmentRepository stallAssignmentRepository,
-                           ITackStallAssignmentRepository tackStallAssignmentRepository,IGroupRepository groupRepository, IMapper Mapper)
+                           IGroupRepository groupRepository, IMapper Mapper)
         {
             _horseRepository = horseRepository;
             _stallAssignmentRepository = stallAssignmentRepository;
-            _tackStallAssignmentRepository = tackStallAssignmentRepository;
+           
             _groupRepository = groupRepository;
             _mapper = Mapper;
             _mainResponse = new MainResponse();
