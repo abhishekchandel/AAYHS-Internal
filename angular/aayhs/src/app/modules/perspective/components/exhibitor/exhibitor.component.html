@@ -1,6 +1,6 @@
 <div class="innerContent">
 	<div class="sortData">
-	   <div class="sponBtn"><button class="btn btn-red btnCss">Add new Exhibitor</button></div>						   
+	   <div class="sponBtn"><button class="btn btn-red btnCss" (click)="resetForm()">Add new Exhibitor</button></div>						   
    </div>
    <!---->
 	<div class="gridTable addBlueStrip">
@@ -8,82 +8,36 @@
 		 <table class="table table-bordered tableBodyScroll">
 		   <thead>
 			  <tr>
-				<th>Exhibitor Id
-					<span></span>
+				<th (click)="sortData('ExhibitorId')">Exhibitor Id
+					<span [ngClass]="getSort('ExhibitorId')"></span>
 				</th> 
-				 <th>Exhibitor Name
-					<span></span>
+				 <th (click)="sortData('FirstName')">Exhibitor Name
+					<span [ngClass]="getSort('FirstName')"></span>
 				 </th> 
-				 <th>Birth Year
-					<span></span>
+				 <th (click)="sortData('BirthYear')">Birth Year
+					<span [ngClass]="getSort('BirthYear')"></span>
 				 </th>
 				 <th>Remove</th> 
 			  </tr>	
 		   </thead> 
 		   <perfect-scrollbar class="nicescrollBar-1"> 
 			   <tbody>
-                <tr >
-                    <td>2536</td>
-                    <td>Joan Clark</td>
-                    <td>2011</td>
-                    <td><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                </tr>	
-                <tr>
-                    <td>307</td>
-                    <td>Margaret Hamilton</td>
-                    <td>2013</td>
-                     <td><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                </tr>	  
-                 <tr>
-                    <td>101</td>
-                    <td>Grace Hopper</td>
-                    <td>2007</td>
-                    <td><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                </tr>
-                <tr>
-                    <td>307</td>
-                    <td>Kristyn Monroe</td>
-                    <td>2012</td>
-                     <td><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                </tr>
-                <tr >
-                    <td>2536</td>
-                    <td>Joan Clark</td>
-                    <td>2011</td>
-                    <td><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                </tr>	
-                <tr>
-                    <td>307</td>
-                    <td>Margaret Hamilton</td>
-                    <td>2013</td>
-                     <td><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                </tr>	  
-                 <tr>
-                    <td>101</td>
-                    <td>Grace Hopper</td>
-                    <td>2007</td>
-                    <td><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                </tr>
-                <tr>
-                    <td>307</td>
-                    <td>Kristyn Monroe</td>
-                    <td>2012</td>
-                     <td><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+                <tr *ngFor="let exhibitor of exhibitorsList;let i = index " (click)="highlight(exhibitor.ExhibitorId,i)" [ngClass]="{'blueRow': selectedRowIndex == i}">
+                    <td data-label="Exhibitor Id">{{exhibitor.ExhibitorId}}</td>
+                    <td data-label="Name">{{exhibitor.FirstName}} {{exhibitor.LastName}}</td>
+                    <td data-label="Birth Year">{{exhibitor.BirthYear}}</td>
+                    <td data-label="Remove">
+                        <div (click)="confirmRemoveExhibitor($event, i,exhibitor.ExhibitorId)" class="icon"><i
+                                class="fa fa-trash-o" aria-hidden="true"></i></div>
+                    </td>
                 </tr>
 			   </tbody>
 			 </perfect-scrollbar> 
 		 </table> 
-		 <div class="paginationWrapper mt-4 text-center">
-			 <ul class="pagination">
-				 <li class="page-item"><a class="page-link" href="#"><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>
-				 <li class="page-item"><a class="page-link" href="#">1</a></li>
-				 <li class="page-item"><a class="page-link" href="#">2</a></li>
-				 <li class="page-item"><a class="page-link" href="#">3</a></li>
-				 <li class="page-item"><a class="page-link" href="#">4</a></li>
-				 <li class="page-item"><a class="page-link" href="#">5</a></li>
-				 <li class="page-item"><a class="page-link" href="#"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
-			 </ul>
-		 </div>
+         <div [hidden]="totalItems == 0">
+            <mat-paginator #paginator [length]="totalItems" (page)="getNext($event)" [pageSizeOptions]="[5]">
+            </mat-paginator>
+        </div>
 	   </div>
 	</div>
 	<!---->	
@@ -91,9 +45,9 @@
 		 <table class="table table-bordered tableBodyScroll">
 			 <tbody>
 				 <tr>
-					 <td><span class="blueBox"></span><b>Exhibitor:</b> 3341  </td>
-                     <td><span class="blueBox"></span><b>Exhibitor Name:</b> Grace Hopper</td>
-                     <td><span class="blueBox"></span><b>Group Name:</b></td>
+					 <td><span class="blueBox"></span><b>Exhibitor:</b> {{exhibitorInfo.ExhibitorId}}  </td>
+                     <td><span class="blueBox"></span><b>Exhibitor Name:</b> {{this.exhibitorInfo.FirstName}} {{this.exhibitorInfo.LastName}}</td>
+                     <td><span class="blueBox"></span><b>Group Name:</b>{{this.exhibitorInfo.GroupName}}</td>
 				 </tr>
 			 </tbody>
 		 </table>
@@ -106,91 +60,140 @@
 	 <div class="tab-content">
 	   <div class="tab-pane  active" id="home">
 		<mat-tab-group #tabGroup>
-			<mat-tab  class="nav-link active nav nav-tabs" label="Exhibitor">
+			<mat-tab  class="nav-link active nav nav-tabs" label="Exhibitor Info">
+                <form #exhibitorInfoForm="ngForm" name="exhibitorInfoForm" (ngSubmit)="exhibitorInfoForm.valid && addUpdateExhibitor()" novalidate>
                 <div class="card">
                     <div class="card-body"> 
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label><input type="checkbox" value="" class="ciCheckbox">NSBA Indicator</label>
+                                    <label><input #nsbaIndicator="ngModel" name="nsbaIndicator" [(ngModel)]="exhibitorInfo.IsNSBAMember" type="checkbox" value="" class="ciCheckbox">NSBA Indicator</label>
                                 </div>
                                 <div class="form-group">
-                                    <label>Bank Number <span>*</span></label>	
-                                    <input type="text" class="form-control" placeholder="Bank Number"/>
+                                    <label>Bank Number </label>	
+                                    <input #backNumber="ngModel" name="backNumber" pattern="(^[0-9]*$)" [(ngModel)]="exhibitorInfo.BackNumber" type="text" class="form-control" placeholder="Back Number"/>                                
+                                     <span class="help-block" *ngIf="backNumber.errors?.pattern">Back Number is not valid</span>
                                 </div>
                                 <div class="form-group">
                                     <label>First name <span>*</span></label>	
-                                    <input type="text" class="form-control" placeholder="First name"/>
+                                    <input #firstName="ngModel" name="firstName" [(ngModel)]="exhibitorInfo.FirstName" required  type="text" class="form-control" placeholder="First name"/>
+                                    <span class="help-block"
+                                    *ngIf="firstName.errors?.required && (firstName.touched || exhibitorInfoForm.submitted)">First
+                                    Name is required</span>
                                 </div>
                                 <div class="form-group">
                                     <label>Last name <span>*</span></label>	
-                                    <input type="text" class="form-control" placeholder="First name"/>
+                                    <input  #lastName="ngModel" name="lastName" [(ngModel)]="exhibitorInfo.LastName" required type="text" class="form-control" placeholder="First name"/>
+                                    <span class="help-block"
+                                    *ngIf="lastName.errors?.required && (lastName.touched || exhibitorInfoForm.submitted)">Last
+                                    Name is required</span>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-7">
                                         <div class="form-group">
                                             <label>State <span>*</span></label>	
-                                            <select required class="form-control" placeholder="State" name="state">
-                                                <option value="null"></option>                                                                                               
+                                            <select required class="form-control" placeholder="State" name="state" #state="ngModel" [(ngModel)]="exhibitorInfo.StateId" (change)="getCities($event.target.value);getStateName($event)">													
+                                                <option value="null" disabled="true" [selected]="true">
+                                                    Select State
+                                                </option>
+                                                <option *ngFor="let state of statesResponse"
+                                                    [value]="state.StateId">{{state.Name}} -
+                                                    {{state.Code}}
+                                                </option>                                                                                               
                                             </select>
+                                            <span class="help-block" *ngIf="state.errors?.required && (state.touched || exhibitorInfoForm.submitted)" >State is
+                                                required</span>
                                         </div>
                                     </div>
                                     <div class="col-md-5">
                                         <div class="form-group">
                                             <label>Zip Code <span>*</span></label>	
-                                            <input type="text" class="form-control" maxlength="5"  placeholder="Zip Code"name="zipcode"/>
+                                            <input type="text" class="form-control" maxlength="5" pattern="^[0-9]{5}(?:-[0-9]{4})?$" placeholder="Zip Code" #zipcode="ngModel" name="zipcode" [(ngModel)]="exhibitorInfo.ZipCode" required />
+                                            <span class="help-block"
+                                            *ngIf="zipcode.errors?.required && (zipcode.touched || exhibitorInfoForm.submitted)">Zip
+                                            is
+                                            required</span>
+                                            
+                                        <span class="help-block"
+                                            *ngIf="!zipcode.errors?.required && zipcode.errors?.pattern">Zip is invalid</span>
                                         </div> 
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label>City <span>*</span></label>	
-                                    <select required class="form-control" placeholder="city"  name="city">
-                                        <option value="0" selected>City</option>
-                                        <option >City</option>												
+                                    <select required class="form-control" placeholder="city" (change)="getCityName($event)" name="city" #city="ngModel" [(ngModel)]="exhibitorInfo.CityId" >																						
+                                        <option value="null" disabled="true" [selected]="true">
+                                            Select City
+                                        </option>                                               
+                                        <option *ngFor="let city of citiesResponse"
+                                        [value]="city.CityId">{{city.Name}}
+                                                </option>												
                                     </select>
+                                    <span class="help-block" *ngIf="city.errors?.required && (city.touched || exhibitorInfoForm.submitted)">City  is
+                                        required</span>
                                 </div>
+
                                 <div class="form-group">
-                                    <label>Quantity Programs <span>*</span></label>	
-                                    <input type="text" class="form-control" placeholder="First name"/>
+                                    <label>Quantity Programs </label>	
+                                    <input #quantityPrograms="ngModel" name="quantityPrograms" [(ngModel)]="exhibitorInfo.QTYProgram" type="text" class="form-control" placeholder="First name"/>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label><input type="checkbox" value="" class="ciCheckbox">NSBA Indicator</label>
+                                    <label><input type="checkbox"  #doctorVetNoteIndicator="ngModel" name="doctorVetNoteIndicator" [(ngModel)]="exhibitorInfo.IsDoctorNote" value="" class="ciCheckbox">Doctor/Vet Note Indicator</label>
                                 </div>
                                 <div class="form-group">
-                                    <label>Birth Year <span>*</span></label>	
-                                    <input type="text" class="form-control" placeholder="Birth Year"/>
+                                    <label>Birth Year <span>*</span></label>                                  
+                                    <input pattern="(^[0-9]*$)" maxlength="4"  #birthYear="ngModel" name="birthYear" required [(ngModel)]="exhibitorInfo.BirthYear" type="text" class="form-control" placeholder="Birth Year"/>
+                                    <span class="help-block"
+                                    *ngIf="birthYear.errors?.required && (birthYear.touched || exhibitorInfoForm.submitted)">Birth Year
+                                     is required</span>
+                                     <span class="help-block" *ngIf="birthYear.errors?.pattern">Year is not valid</span>
                                 </div>
                                 <div class="form-group">
-                                    <label>Phone <span>*</span></label>	
-                                    <input type="text" class="form-control" placeholder="Phone"/>
+                                    <label>Phone </label>	
+                                    <input mask="(000) 000-0000" #phone="ngModel" name="phone" [(ngModel)]="exhibitorInfo.Phone" type="text" class="form-control" placeholder="Phone"/>
                                 </div>
                                 <div class="form-group">
-                                    <label>Email 1 <span>*</span></label>	
-                                    <input type="text" class="form-control" placeholder="Email 1"/>
+                                    <label>Email 1 </label>	
+                                    <input #primaryEmail="ngModel" name="primaryEmail" [(ngModel)]="exhibitorInfo.PrimaryEmail" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" type="text" class="form-control" placeholder="Email 1"/>
+                                    <span class="help-block" *ngIf="primaryEmail.errors?.required && (primaryEmail.touched || exhibitorInfoForm.submitted)">Email is
+                                        required</span>
+                                     <span class="help-block" *ngIf="!primaryEmail.errors?.required && primaryEmail.errors?.pattern">Primary Email is
+                                        invalid</span>
                                 </div>
                                 <div class="form-group">
-                                    <label>Email 2 <span>*</span></label>	
-                                    <input type="text" class="form-control" placeholder="Email 2"/>
+                                    <label>Email 2 </label>	
+                                    <input #secondaryEmail="ngModel" name="secondaryEmail" [(ngModel)]="exhibitorInfo.SecondaryEmail" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}"  type="text" class="form-control" placeholder="Email 2"/>
+                                    <span class="help-block" *ngIf="secondaryEmail.errors?.required && (secondaryEmail.touched || exhibitorInfoForm.submitted)">Email is
+                                        required</span>
+                                     <span class="help-block" *ngIf="!secondaryEmail.errors?.required && secondaryEmail.errors?.pattern">Secondary Email is
+                                        invalid</span>
                                 </div>
                                 <div class="form-group">
-                                    <label>Choose Group <span>*</span></label>	
-                                    <select required class="form-control" placeholder="city"  name="Choose Group">
-                                        <option value="0" selected>Choose Group</option>
-                                        <option >Choose Group</option>												
-                                    </select>
+                                    <label>Choose Group </label>	                              
+                                                   <select #groupId="ngModel" name="groupId"
+													[(ngModel)]="exhibitorInfo.GroupId" class="form-control">
+													<option [ngValue]="null">
+														Select Group
+													</option>
+													<option *ngFor="let group of groups" [value]="group.GroupId">
+														{{group.GroupName}}
+													</option>
+                                                </select>
+                                                
                                 </div>
                             </div>
                             <div class="col-sm-12">
                                 <div class="buttons text-right">
-                                  <button class="btn btn-red btnCss roundBtn">Next</button>  
-                                  <button class="btn btn-red btnCss roundBtn">Submit</button> 
+                                  <button (click)='tabGroup.selectedIndex = 1' class="btn btn-red btnCss roundBtn">Next</button>  
+                                  <button type="submit" class="btn btn-red btnCss roundBtn">Submit</button> 
                                 </div> 
                             </div>
                         </div>
                     </div>
                 </div>
+            </form>
             </mat-tab>
 
             <mat-tab  class="nav-link nav nav-tabs" label="Horse">
@@ -705,4 +708,6 @@
 
     </div>
     <!----> 
-	
+	<div class="loaderWrapper" *ngIf="loading">
+        <div class="loader"></div>
+    </div>

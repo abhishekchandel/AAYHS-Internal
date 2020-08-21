@@ -1,0 +1,19 @@
+export interface ExhibitorInfoModel
+{
+    ExhibitorId:number;
+    BackNumber:number;
+    FirstName:string;
+    LastName:string;
+    StateId:number;
+    CityId:number;
+    ZipCode:string
+    QTYProgram:string;
+    BirthYear:number;
+    Phone:string
+    PrimaryEmail:string;
+    SecondaryEmail:string
+    IsNSBAMember:boolean;
+    IsDoctorNote:boolean;
+    GroupId:number,
+    GroupName:string
+}

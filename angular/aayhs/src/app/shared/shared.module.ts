@@ -8,7 +8,8 @@ import { FooterComponent } from '../shared/layout/footer/footer/footer.component
 import { RouterModule } from '@angular/router';
 import { ConfirmEqualValidatorDirective } from './directives/confirm-equal-validator.directive';
 import {SearchPipe} from '../shared/filters/search.pipe'
-
+import { AssignStallModalComponent } from './ui/modals/assign-stall-modal/assign-stall-modal.component';
+import { FinancialTransactionsComponent } from './ui/modals/financial-transactions/financial-transactions.component';
 
 //All material imports here//
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -43,8 +44,7 @@ import { ExportConfirmationModalComponent } from './ui/modals/export-confirmatio
 import { OrderModule } from 'ngx-order-pipe';
 import { ExportAsModule } from 'ngx-export-as';
 import {NgxPrintModule} from 'ngx-print';
-import { AssignStallModalComponent } from './ui/modals/assign-stall-modal/assign-stall-modal.component';
-import { FinancialTransactionsComponent } from './ui/modals/financial-transactions/financial-transactions.component';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 export var options: Partial<IConfig> | (() => Partial<IConfig>);
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -81,7 +81,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     PerfectScrollbarModule,
     OrderModule,
     ExportAsModule,
-    NgxPrintModule
+    NgxPrintModule,
+    BsDatepickerModule.forRoot()
   ],
   exports: [
     HeaderComponent,
@@ -116,7 +117,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     ExportAsModule,
     NgxPrintModule,
     ConfirmEqualValidatorDirective,
-    SearchPipe
+    SearchPipe,
+    BsDatepickerModule
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
