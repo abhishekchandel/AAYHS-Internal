@@ -163,6 +163,7 @@ namespace AAYHS
             services.AddTransient<IGroupFinancialRepository, GroupFinancialRepository>();
             services.AddTransient<IStallRepository, StallRepository>();
             services.AddTransient<IAdvertisementRepository, AdvertisementRepository>();
+            services.AddTransient<IExhibitorHorseRepository, ExhibitorHorseRepository>();
 
             services.AddControllers();
         }

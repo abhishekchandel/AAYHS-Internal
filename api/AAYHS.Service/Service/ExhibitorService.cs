@@ -1,5 +1,6 @@
 ﻿using AAYHS.Core.DTOs.Request;
 using AAYHS.Core.DTOs.Response;
+using AAYHS.Core.DTOs.Response.Common;
 using AAYHS.Core.Shared.Static;
 using AAYHS.Data.DBEntities;
 using AAYHS.Repository.IRepository;
@@ -16,20 +17,25 @@ namespace AAYHS.Service.Service
   public  class ExhibitorService: IExhibitorService
     {
         #region readonly
-        private readonly IMapper _Mapper;
+        private readonly IMapper _mapper;
         #endregion
 
         #region private
         private MainResponse _mainResponse;
-        private IExhibitorRepository _ExhibitorRepository;
+        private IExhibitorRepository _exhibitorRepository;
         private IAddressRepository _addressRepository;
+        private IExhibitorHorseRepository _exhibitorHorseRepository;
+        private IHorseRepository _horseRepository;
         #endregion
 
-        public ExhibitorService(IExhibitorRepository ExhibitorRepository,IAddressRepository addressRepository, IMapper Mapper)
+        public ExhibitorService(IExhibitorRepository exhibitorRepository,IAddressRepository addressRepository,
+                                 IExhibitorHorseRepository exhibitorHorseRepository,IHorseRepository horseRepository,IMapper mapper)
         {
-            _ExhibitorRepository = ExhibitorRepository;
+            _exhibitorRepository = exhibitorRepository;
             _addressRepository = addressRepository;
-            _Mapper = Mapper;
+            _exhibitorHorseRepository = exhibitorHorseRepository;
+            _horseRepository = horseRepository;
+            _mapper = mapper;
             _mainResponse = new MainResponse();
         }
 
@@ -37,7 +43,7 @@ namespace AAYHS.Service.Service
         {
             if (request.ExhibitorId <= 0)
             {
-                var exhibitorBackNumberExist = _ExhibitorRepository.GetSingle(x => x.BackNumber == request.BackNumber && x.IsActive == true && x.IsDeleted == false);
+                var exhibitorBackNumberExist = _exhibitorRepository.GetSingle(x => x.BackNumber == request.BackNumber && x.IsActive == true && x.IsDeleted == false);
                 if (exhibitorBackNumberExist != null && exhibitorBackNumberExist.ExhibitorId>0)
                 {
                     _mainResponse.Message = Constants.BACKNUMBER_AlREADY_EXIST;
@@ -71,7 +77,7 @@ namespace AAYHS.Service.Service
                     CreatedDate = DateTime.Now
                 };
                
-                var _exhibitor= _ExhibitorRepository.Add(exhibitor);
+                var _exhibitor= _exhibitorRepository.Add(exhibitor);
              
                 _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
                 _mainResponse.NewId = _exhibitor.ExhibitorId;
@@ -79,7 +85,7 @@ namespace AAYHS.Service.Service
             }
             else
             {               
-                var exhibitor = _ExhibitorRepository.GetSingle(x => x.ExhibitorId == request.ExhibitorId && x.IsActive == true && x.IsDeleted == false);
+                var exhibitor = _exhibitorRepository.GetSingle(x => x.ExhibitorId == request.ExhibitorId && x.IsActive == true && x.IsDeleted == false);
                
                 if (exhibitor!=null && exhibitor.ExhibitorId>0)
                 {
@@ -96,7 +102,7 @@ namespace AAYHS.Service.Service
                     exhibitor.Phone = request.Phone;
                     exhibitor.ModifiedDate = DateTime.Now;
                     exhibitor.ModifiedBy = actionBy;
-                    _ExhibitorRepository.Update(exhibitor);
+                    _exhibitorRepository.Update(exhibitor);
                     _mainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
                     _mainResponse.NewId = request.ExhibitorId;
                     _mainResponse.Success = true;
@@ -125,9 +131,10 @@ namespace AAYHS.Service.Service
     
         public MainResponse GetAllExhibitors(BaseRecordFilterRequest filterRequest)
         {
-            _mainResponse = _ExhibitorRepository.GetAllExhibitors(filterRequest);
-            if (_mainResponse.ExhibitorListResponse.exhibitorResponses != null && _mainResponse.ExhibitorListResponse.TotalRecords > 0)
+            var exhibitorList = _exhibitorRepository.GetAllExhibitors(filterRequest);
+            if (exhibitorList.exhibitorResponses != null && exhibitorList.TotalRecords > 0)
             {
+                _mainResponse.ExhibitorListResponse = exhibitorList;
                 _mainResponse.Message = Constants.RECORD_FOUND;
                 _mainResponse.Success = true;
             }
@@ -139,9 +146,9 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
-        public MainResponse GetExhibitorById(int ExhibitorId)
+        public MainResponse GetExhibitorById(int exhibitorId)
         {
-            var data = _ExhibitorRepository.GetExhibitorById(ExhibitorId);
+            var data = _exhibitorRepository.GetExhibitorById(exhibitorId);
             if (data.exhibitorResponses != null && data.TotalRecords > 0)
             {               
                 _mainResponse.ExhibitorListResponse =data;
@@ -157,22 +164,95 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
-        public MainResponse DeleteExhibitor(int ExhibitorId,string actionBy)
+        public MainResponse DeleteExhibitor(int exhibitorId,string actionBy)
         {
-            var Exhibitor = _ExhibitorRepository.GetSingle(x => x.ExhibitorId == ExhibitorId);
+            var Exhibitor = _exhibitorRepository.GetSingle(x => x.ExhibitorId == exhibitorId);
             if (Exhibitor != null && Exhibitor.ExhibitorId>0)
             {
                 Exhibitor.IsDeleted = true;
                 Exhibitor.IsActive = false;
                 Exhibitor.DeletedDate = DateTime.Now;
                 Exhibitor.DeletedBy = actionBy;
-                _ExhibitorRepository.Update(Exhibitor);
+                _exhibitorRepository.Update(Exhibitor);
                 _mainResponse.Message = Constants.RECORD_DELETE_SUCCESS;
                 _mainResponse.Success = true;
             }
             else
             {
                 _mainResponse.Message = Constants.NO_RECORD_EXIST_WITH_ID;
+                _mainResponse.Success = false;
+            }
+            return _mainResponse;
+        }
+
+        public MainResponse SearchExhibitor(SearchRequest searchRequest)
+        {
+            var exhibitorList = _exhibitorRepository.SearchExhibitor(searchRequest);
+            if (exhibitorList.exhibitorResponses != null && exhibitorList.TotalRecords > 0)
+            {
+                _mainResponse.ExhibitorListResponse = exhibitorList;
+                _mainResponse.Message = Constants.RECORD_FOUND;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+                _mainResponse.Success = false;
+            }
+            return _mainResponse;
+        }
+
+        public MainResponse GetExhibitorHorses(int exhibitorId)
+        {
+            var exhibitorHorses = _exhibitorRepository.GetExhibitorHorses(exhibitorId);
+            if (exhibitorHorses.exhibitorHorses!=null && exhibitorHorses.TotalRecords>0)
+            {
+                _mainResponse.ExhibitorHorsesResponse = exhibitorHorses;
+                _mainResponse.ExhibitorHorsesResponse.TotalRecords = exhibitorHorses.TotalRecords;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+                _mainResponse.Success = false;
+            }
+            return _mainResponse;
+        }
+
+        public MainResponse DeleteExhibitorHorse(int exhibitorHorseId,string actionBy)
+        {
+            var exhibitorHorse = _exhibitorHorseRepository.GetSingle(x => x.ExhibitorHorseId == exhibitorHorseId && x.IsActive == true && x.IsDeleted == false);
+            if (exhibitorHorse!=null && exhibitorHorse.ExhibitorId>0)
+            {
+                exhibitorHorse.IsDeleted = true;
+                exhibitorHorse.DeletedBy = actionBy;
+                exhibitorHorse.DeletedDate = DateTime.Now;
+                _exhibitorHorseRepository.Update(exhibitorHorse);
+                _mainResponse.Message = Constants.EXHIBITOR_HORSE_DELETED;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+                _mainResponse.Success = false;
+            }
+            return _mainResponse;
+        }
+
+        public MainResponse GetAllHorses()
+        {
+            var horses = _horseRepository.GetAll(x => x.IsActive == true && x.IsDeleted == false);
+            if (horses.Count>0)
+            {
+                var allHorses=  _mapper.Map<List<GetHorses>>(horses);
+                GetExhibitorHorsesList getExhibitorHorsesList = new GetExhibitorHorsesList();
+                getExhibitorHorsesList.getHorses = allHorses;
+                _mainResponse.GetExhibitorHorsesList = getExhibitorHorsesList;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
                 _mainResponse.Success = false;
             }
             return _mainResponse;

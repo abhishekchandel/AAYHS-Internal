@@ -31,4 +31,26 @@ namespace AAYHS.Core.DTOs.Response
         public List<ExhibitorResponse> exhibitorResponses { get; set; }
         public int TotalRecords { get; set; }
     }
+    public class ExhibitorHorses
+    {
+        public int ExhibitorHorseId { get; set; }
+        public string HorseName { get; set; }
+        public string HorseType { get; set; }
+        public int BackNumber { get; set; }
+    }
+    public class ExhibitorHorsesResponse
+    {
+        public List<ExhibitorHorses> exhibitorHorses { get; set; }
+        public int TotalRecords { get; set; }
+    }
+    public class GetHorses
+    {
+        public int HorseId { get; set; }
+        public string Name { get; set; }
+    }
+    public class GetExhibitorHorsesList
+    {
+        public List<GetHorses> getHorses { get; set; }       
+    }
+
 }

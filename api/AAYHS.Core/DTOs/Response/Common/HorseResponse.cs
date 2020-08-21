@@ -7,10 +7,10 @@ namespace AAYHS.Core.DTOs.Response.Common
     public class HorseResponse
     {
         public int HorseId { get; set; }
-        public string Name { get; set; }
         public string HorseType { get; set; }
-        public int Number { get; set; }
         public int GroupId { get; set; }
+        public string Name { get; set; }     
+        public int Number { get; set; }    
         public string JumpHeight { get; set; }
         public bool NSBAIndicator { get; set; }      
 

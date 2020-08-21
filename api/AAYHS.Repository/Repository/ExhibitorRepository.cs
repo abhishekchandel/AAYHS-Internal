@@ -31,7 +31,8 @@ namespace AAYHS.Repository.Repository
             _context = ObjContext;
             _Mapper = Mapper;
         }
-        public MainResponse GetAllExhibitors(BaseRecordFilterRequest filterRequest)
+
+        public ExhibitorListResponse GetAllExhibitors(BaseRecordFilterRequest filterRequest)
         {
             IEnumerable<ExhibitorResponse> exhibitorResponses = null;
             ExhibitorListResponse exhibitorListResponses = new ExhibitorListResponse();
@@ -74,11 +75,11 @@ namespace AAYHS.Repository.Repository
                     exhibitorListResponses.exhibitorResponses = exhibitorResponses.Skip((filterRequest.Page - 1) * filterRequest.Limit).Take(filterRequest.Limit).ToList();
                 }
             }
-            _mainResponse.ExhibitorListResponse = exhibitorListResponses;
-            return _mainResponse;
+            
+            return exhibitorListResponses;
         }
 
-        public ExhibitorListResponse GetExhibitorById(int ExhibitorId)
+        public ExhibitorListResponse GetExhibitorById(int exhibitorId)
         {
             IEnumerable<ExhibitorResponse> exhibitorResponses = null;
             ExhibitorListResponse exhibitorListResponses = new ExhibitorListResponse();
@@ -87,7 +88,7 @@ namespace AAYHS.Repository.Repository
                                   from address2 in address1.DefaultIfEmpty()
                                   where exhibitor.IsActive == true && exhibitor.IsDeleted == false                                 
                                   && address2.IsActive==true && address2.IsDeleted==false
-                                  && exhibitor.ExhibitorId==ExhibitorId
+                                  && exhibitor.ExhibitorId== exhibitorId
                                   select new ExhibitorResponse 
                                   { 
                                     ExhibitorId=exhibitor.ExhibitorId,
@@ -116,5 +117,88 @@ namespace AAYHS.Repository.Repository
             }
             return exhibitorListResponses;
         }
+
+        public ExhibitorListResponse SearchExhibitor(SearchRequest searchRequest)
+        {
+            IEnumerable<ExhibitorResponse> exhibitorResponses = null;
+            ExhibitorListResponse exhibitorListResponses = new ExhibitorListResponse();
+
+            exhibitorResponses=(from exhibitor in _context.Exhibitors
+                                where exhibitor.IsActive == true && exhibitor.IsDeleted == false
+                                 && ((searchRequest.SearchTerm != string.Empty ? Convert.ToString(exhibitor.ExhibitorId).Contains(searchRequest.SearchTerm) : (1 == 1))
+                                   || (searchRequest.SearchTerm != string.Empty ? exhibitor.FirstName.Contains(searchRequest.SearchTerm) : (1 == 1))
+                                   || (searchRequest.SearchTerm != string.Empty ? exhibitor.LastName.Contains(searchRequest.SearchTerm) : (1 == 1)))
+                                select new ExhibitorResponse
+                                {
+                                    ExhibitorId = exhibitor.ExhibitorId,
+                                    GroupId = exhibitor.GroupId,
+                                    AddressId = exhibitor.AddressId,
+                                    FirstName = exhibitor.FirstName,
+                                    LastName = exhibitor.LastName,
+                                    BackNumber = exhibitor.BackNumber,
+                                    BirthYear = exhibitor.BirthYear,
+                                    IsNSBAMember = exhibitor.IsNSBAMember,
+                                    IsDoctorNote = exhibitor.IsDoctorNote,
+                                    QTYProgram = exhibitor.QTYProgram,
+                                    PrimaryEmail = exhibitor.PrimaryEmail,
+                                    SecondaryEmail = exhibitor.SecondaryEmail,
+                                    Phone = exhibitor.Phone,
+                                }).ToList();
+
+            if (exhibitorResponses.Count() > 0)
+            {
+                var propertyInfo = typeof(SponsorResponse).GetProperty(searchRequest.OrderBy);
+                if (searchRequest.OrderByDescending == true)
+                {
+                    exhibitorResponses = exhibitorResponses.OrderByDescending(s => s.GetType().GetProperty(searchRequest.OrderBy).GetValue(s)).ToList();
+                }
+                else
+                {
+                    exhibitorResponses = exhibitorResponses.AsEnumerable().OrderBy(s => propertyInfo.GetValue(s, null)).ToList();
+                }
+                exhibitorListResponses.TotalRecords = exhibitorResponses.Count();
+                if (searchRequest.AllRecords == true)
+                {
+                    exhibitorResponses = exhibitorResponses.ToList();
+                }
+                else
+                {
+                    exhibitorResponses = exhibitorResponses.Skip((searchRequest.Page - 1) * searchRequest.Limit).Take(searchRequest.Limit).ToList();
+                }
+            }
+
+            exhibitorListResponses.exhibitorResponses = exhibitorResponses.ToList();
+            return exhibitorListResponses;
+        }
+
+        public ExhibitorHorsesResponse GetExhibitorHorses(int exhibitorId)
+        {
+            IEnumerable<ExhibitorHorses> exhibitorHorses = null;
+            ExhibitorHorsesResponse exhibitorHorsesResponse = new ExhibitorHorsesResponse();
+
+            exhibitorHorses = (from exhibitorHorse in _context.ExhibitorHorse
+                               join horse in _context.Horses on exhibitorHorse.HorseId equals horse.HorseId
+                               join exhibitor in _context.Exhibitors on exhibitorHorse.ExhibitorId equals exhibitor.ExhibitorId
+                               where exhibitorHorse.IsActive == true && exhibitorHorse.IsDeleted == false
+                               && horse.IsActive == true && horse.IsDeleted == false
+                               && exhibitor.IsActive==true && exhibitor.IsDeleted==false
+                               && exhibitorHorse.ExhibitorId == exhibitorId
+                               select new ExhibitorHorses 
+                               { 
+                                 ExhibitorHorseId=exhibitorHorse.ExhibitorHorseId,
+                                 HorseName=horse.Name,
+                                 HorseType=_context.GlobalCodes.Where(x=>x.GlobalCodeId==horse.HorseTypeId).Select(y=>y.CodeName).First(),
+                                 BackNumber= exhibitor.BackNumber
+                               });
+
+            if (exhibitorHorses.Count()!=0)
+            {
+                exhibitorHorsesResponse.exhibitorHorses = exhibitorHorses.ToList();
+                exhibitorHorsesResponse.TotalRecords = exhibitorHorses.Count();
+            }
+            return exhibitorHorsesResponse;
+        }
+        
+        
     }
 }

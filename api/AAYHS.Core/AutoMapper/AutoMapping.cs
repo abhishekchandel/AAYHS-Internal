@@ -20,7 +20,7 @@ namespace AAYHS.Core.AutoMapper
             CreateMap<APILogRequest, Apilogs>();
             CreateMap<States, State>();
             CreateMap<Cities, City>();
-
+            CreateMap<Exhibitors, ExhibitorRequest>();
 
 
 
@@ -34,7 +34,8 @@ namespace AAYHS.Core.AutoMapper
             CreateMap<Horses, GetHorseById>();
             CreateMap<Groups, GetGroup>();
             CreateMap<GroupFinancials, GetGroupFinacials>();
-            CreateMap<Exhibitors, ExhibitorRequest>();
+            CreateMap<Horses, GetHorses>();
+
 
         }
     }
