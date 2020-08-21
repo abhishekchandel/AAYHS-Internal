@@ -56,7 +56,7 @@ namespace AAYHS.API.Controllers
         public ActionResult GetExhibitorById(int ExhibitorId)
         {
             _mainResponse = _ExhibitorService.GetExhibitorById(ExhibitorId);
-            _jsonString = Mapper.Convert<ExhibitorResponse>(_mainResponse);
+            _jsonString = Mapper.Convert<ExhibitorListResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
 

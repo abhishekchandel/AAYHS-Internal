@@ -22,11 +22,13 @@ namespace AAYHS.Service.Service
         #region private
         private MainResponse _mainResponse;
         private IExhibitorRepository _ExhibitorRepository;
+        private IAddressRepository _addressRepository;
         #endregion
 
-        public ExhibitorService(IExhibitorRepository ExhibitorRepository, IMapper Mapper)
+        public ExhibitorService(IExhibitorRepository ExhibitorRepository,IAddressRepository addressRepository, IMapper Mapper)
         {
             _ExhibitorRepository = ExhibitorRepository;
+            _addressRepository = addressRepository;
             _Mapper = Mapper;
             _mainResponse = new MainResponse();
         }
@@ -35,10 +37,26 @@ namespace AAYHS.Service.Service
         {
             if (request.ExhibitorId <= 0)
             {
+                var exhibitorBackNumberExist = _ExhibitorRepository.GetSingle(x => x.BackNumber == request.BackNumber && x.IsActive == true && x.IsDeleted == false);
+                if (exhibitorBackNumberExist != null && exhibitorBackNumberExist.ExhibitorId>0)
+                {
+                    _mainResponse.Message = Constants.BACKNUMBER_AlREADY_EXIST;
+                    _mainResponse.Success = false;
+                    return _mainResponse;
+                }
+                var address = new Addresses
+                {
+                    Address = request.Address,
+                    CityId = request.CityId,
+                    ZipCode = request.ZipCode,
+                    CreatedBy = actionBy,
+                    CreatedDate = DateTime.Now
+                };
+                var _address = _addressRepository.Add(address);
                 var exhibitor = new Exhibitors
                 {
                     GroupId=request.GroupId,
-                    AddressId=request.AddressId,
+                    AddressId= _address.AddressId,
                     FirstName=request.FirstName,
                     LastName=request.LastName,
                     BackNumber=request.BackNumber,
@@ -54,31 +72,53 @@ namespace AAYHS.Service.Service
                 };
                
                 var _exhibitor= _ExhibitorRepository.Add(exhibitor);
+             
                 _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
                 _mainResponse.NewId = _exhibitor.ExhibitorId;
                 _mainResponse.Success = true;
             }
             else
-            {
+            {               
                 var exhibitor = _ExhibitorRepository.GetSingle(x => x.ExhibitorId == request.ExhibitorId && x.IsActive == true && x.IsDeleted == false);
-                exhibitor.GroupId = request.GroupId;
-                exhibitor.AddressId = request.AddressId;
-                exhibitor.FirstName = request.FirstName;
-                exhibitor.LastName = request.LastName;
-                exhibitor.BackNumber = request.BackNumber;
-                exhibitor.BirthYear = request.BirthYear;
-                exhibitor.IsNSBAMember = request.IsNSBAMember;
-                exhibitor.IsDoctorNote = request.IsDoctorNote;
-                exhibitor.QTYProgram = request.QTYProgram;
-                exhibitor.PrimaryEmail = request.PrimaryEmail;
-                exhibitor.SecondaryEmail = request.SecondaryEmail;
-                exhibitor.Phone = request.Phone;
-                exhibitor.ModifiedDate = DateTime.Now;
-                exhibitor.ModifiedBy = actionBy;
-                _ExhibitorRepository.Update(exhibitor);
-                _mainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
-                _mainResponse.NewId = request.ExhibitorId;
-                _mainResponse.Success = true;
+               
+                if (exhibitor!=null && exhibitor.ExhibitorId>0)
+                {
+                    exhibitor.GroupId = request.GroupId;
+                    exhibitor.FirstName = request.FirstName;
+                    exhibitor.LastName = request.LastName;
+                    exhibitor.BackNumber = request.BackNumber;
+                    exhibitor.BirthYear = request.BirthYear;
+                    exhibitor.IsNSBAMember = request.IsNSBAMember;
+                    exhibitor.IsDoctorNote = request.IsDoctorNote;
+                    exhibitor.QTYProgram = request.QTYProgram;
+                    exhibitor.PrimaryEmail = request.PrimaryEmail;
+                    exhibitor.SecondaryEmail = request.SecondaryEmail;
+                    exhibitor.Phone = request.Phone;
+                    exhibitor.ModifiedDate = DateTime.Now;
+                    exhibitor.ModifiedBy = actionBy;
+                    _ExhibitorRepository.Update(exhibitor);
+                    _mainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
+                    _mainResponse.NewId = request.ExhibitorId;
+                    _mainResponse.Success = true;
+
+                    var address = _addressRepository.GetSingle(x => x.AddressId == request.AddressId && x.IsActive == true && x.IsDeleted == false);
+                    if (address!=null && address.AddressId>0)
+                    {
+                        address.Address = request.Address;
+                        address.CityId = request.CityId;
+                        address.ZipCode = request.ZipCode;
+                        address.ModifiedBy = actionBy;
+                        address.ModifiedDate = DateTime.Now;
+                        _addressRepository.Update(address);
+                    }
+                }
+                else
+                {
+                    _mainResponse.Message = Constants.NO_RECORD_EXIST_WITH_ID;
+                    _mainResponse.Success = false;
+                }
+               
+               
             }
             return _mainResponse;
         }
@@ -101,10 +141,10 @@ namespace AAYHS.Service.Service
 
         public MainResponse GetExhibitorById(int ExhibitorId)
         {
-            var data = _ExhibitorRepository.GetSingle(x => x.ExhibitorId == ExhibitorId && x.IsActive == true && x.IsDeleted == false);
-            if (data != null && data.ExhibitorId > 0)
-            {
-                _mainResponse.ExhibitorResponse = _Mapper.Map<ExhibitorResponse>(data);
+            var data = _ExhibitorRepository.GetExhibitorById(ExhibitorId);
+            if (data.exhibitorResponses != null && data.TotalRecords > 0)
+            {               
+                _mainResponse.ExhibitorListResponse =data;
                 _mainResponse.Message = Constants.RECORD_FOUND;
                 _mainResponse.Success = true;
             }
