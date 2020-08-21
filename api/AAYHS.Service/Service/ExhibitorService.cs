@@ -53,8 +53,9 @@ namespace AAYHS.Service.Service
                     CreatedDate = DateTime.Now
                 };
                
-                _ExhibitorRepository.Add(exhibitor);
+                var _exhibitor= _ExhibitorRepository.Add(exhibitor);
                 _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
+                _mainResponse.NewId = _exhibitor.ExhibitorId;
                 _mainResponse.Success = true;
             }
             else
@@ -76,6 +77,7 @@ namespace AAYHS.Service.Service
                 exhibitor.ModifiedBy = actionBy;
                 _ExhibitorRepository.Update(exhibitor);
                 _mainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
+                _mainResponse.NewId = request.ExhibitorId;
                 _mainResponse.Success = true;
             }
             return _mainResponse;
