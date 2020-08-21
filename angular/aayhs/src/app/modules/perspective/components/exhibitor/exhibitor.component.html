@@ -70,7 +70,7 @@
                                     <label><input #nsbaIndicator="ngModel" name="nsbaIndicator" [(ngModel)]="exhibitorInfo.IsNSBAMember" type="checkbox" value="" class="ciCheckbox">NSBA Indicator</label>
                                 </div>
                                 <div class="form-group">
-                                    <label>Bank Number </label>	
+                                    <label>Back Number </label>	
                                     <input #backNumber="ngModel" name="backNumber" pattern="(^[0-9]*$)" [(ngModel)]="exhibitorInfo.BackNumber" type="text" class="form-control" placeholder="Back Number"/>                                
                                      <span class="help-block" *ngIf="backNumber.errors?.pattern">Back Number is not valid</span>
                                 </div>
@@ -83,7 +83,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Last name <span>*</span></label>	
-                                    <input  #lastName="ngModel" name="lastName" [(ngModel)]="exhibitorInfo.LastName" required type="text" class="form-control" placeholder="First name"/>
+                                    <input  #lastName="ngModel" name="lastName" [(ngModel)]="exhibitorInfo.LastName" required type="text" class="form-control" placeholder="Last name"/>
                                     <span class="help-block"
                                     *ngIf="lastName.errors?.required && (lastName.touched || exhibitorInfoForm.submitted)">Last
                                     Name is required</span>
@@ -135,7 +135,7 @@
 
                                 <div class="form-group">
                                     <label>Quantity Programs </label>	
-                                    <input #quantityPrograms="ngModel" name="quantityPrograms" [(ngModel)]="exhibitorInfo.QTYProgram" type="text" class="form-control" placeholder="First name"/>
+                                    <input #quantityPrograms="ngModel" name="quantityPrograms" [(ngModel)]="exhibitorInfo.QTYProgram" type="text" class="form-control" placeholder="Quantity Programs"/>
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -144,11 +144,17 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Birth Year <span>*</span></label>                                  
-                                    <input pattern="(^[0-9]*$)" maxlength="4"  #birthYear="ngModel" name="birthYear" required [(ngModel)]="exhibitorInfo.BirthYear" type="text" class="form-control" placeholder="Birth Year"/>
+                                    <select required class="form-control" placeholder="Birth Year" name="birthYear" #birthYear="ngModel" [(ngModel)]="exhibitorInfo.BirthYear" (change)="setBirthYear($event)">													
+                                        <option value="null" disabled="true" [selected]="true">
+                                            Select Birth Year
+                                        </option>
+                                        <option *ngFor="let year of years"
+                                            [value]="year">{{year}}
+                                        </option>                                                                                               
+                                    </select>
                                     <span class="help-block"
                                     *ngIf="birthYear.errors?.required && (birthYear.touched || exhibitorInfoForm.submitted)">Birth Year
-                                     is required</span>
-                                     <span class="help-block" *ngIf="birthYear.errors?.pattern">Year is not valid</span>
+                                     is required</span>                                    
                                 </div>
                                 <div class="form-group">
                                     <label>Phone </label>	

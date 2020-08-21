@@ -22,8 +22,8 @@ export class ExhibitorComponent implements OnInit {
 
   datePickerConfig: Partial<BsDatepickerConfig>;
   minMode: BsDatepickerViewMode = 'year';
-  minDate: Date;
-  maxDate:Date;
+  maxyear: any;
+  minyear:any;
   result: string = '';
   loading = false;
   exhibitorsList: any;
@@ -34,6 +34,7 @@ export class ExhibitorComponent implements OnInit {
   citiesResponse: any;
   statesResponse: any;
   groups:any;
+  years=[]
 
   baseRequest: BaseRecordFilterRequest = {
     Page: 1,
@@ -72,6 +73,7 @@ export class ExhibitorComponent implements OnInit {
     this.getAllExhibitors();
     this.getAllStates();
     this.getAllGroups();
+    this.setYears();
   }
 
   showFinancialTransaction(){
@@ -125,7 +127,9 @@ export class ExhibitorComponent implements OnInit {
       this.exhibitorInfo.GroupId=null,
       this.exhibitorInfo.GroupName=null
       this.exhibitorInfoForm.resetForm();
-      this.tabGroup.selectedIndex = 0
+      // this.tabGroup.selectedIndex = 0;
+      this.selectedRowIndex = null
+
   }
 
   getNext(event) {
@@ -247,6 +251,11 @@ getStateName(e) {
   this.exhibitorInfo.StateId =Number( e.target.options[e.target.selectedIndex].value)
 }
 
+setBirthYear(e){
+  this.exhibitorInfo.BirthYear =Number( e.target.value)
+
+}
+
 getCityName(e) {
 this.exhibitorInfo.CityId = Number(e.target.options[e.target.selectedIndex].value)
 }
@@ -281,4 +290,11 @@ getExhibitorDetails(id:number){
   )
 }
 
+setYears(){
+   this.maxyear = new Date().getFullYear();
+    this.minyear = this.maxyear - 18;
+  for (var i = this.minyear; i<=this.maxyear; i++){
+   this.years.push(i)
+}
+}
 }

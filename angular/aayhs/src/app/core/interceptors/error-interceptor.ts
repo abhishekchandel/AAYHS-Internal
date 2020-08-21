@@ -24,7 +24,7 @@ export class ErrorInterceptor implements HttpInterceptor {
       if (err.status === 401) {
         this._localStorageService.logout();
         // window.location.href = "everyobit/login";
-        window.location.href = "/auth/login";
+        window.location.href = "/login";
       }
 
       const error = err.error.Message || err.statusText;
