@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AuthService } from '../../../../../core/services/auth.service';
+import { AuthService } from '../../../../core/services/auth.service';
 import { NgForm } from '@angular/forms';
-import { MatSnackbarComponent } from '../../../../../shared/ui/mat-snackbar/mat-snackbar/mat-snackbar.component';
+import { MatSnackbarComponent } from '../../../../shared/ui/mat-snackbar/mat-snackbar/mat-snackbar.component';
 
 @Component({
   selector: 'app-reset-password',
@@ -27,7 +27,6 @@ export class ResetPasswordComponent implements OnInit {
     private snackBar: MatSnackbarComponent) { }
 
   ngOnInit(): void {
-    debugger;
     this.email = this.route.snapshot.queryParams.email
     this.token = this.route.snapshot.queryParams.token
     let query = {
@@ -43,7 +42,6 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   submit(form: NgForm) {
-    debugger
     if (form.valid) {
       this.disable = true;
       this.resetPasswordData.email = this.email;
