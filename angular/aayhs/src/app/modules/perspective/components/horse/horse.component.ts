@@ -161,7 +161,7 @@ export class HorseComponent implements OnInit {
     this.horseInfo.NSBAIndicator=false;
     this.linkedExhibitors = null;
     this.horseInfoForm.resetForm();
-    this.tabGroup.selectedIndex = 0;
+    // this.tabGroup.selectedIndex = 0;
     this.selectedRowIndex = null;
     this.linkedExhibitors = null
   }
