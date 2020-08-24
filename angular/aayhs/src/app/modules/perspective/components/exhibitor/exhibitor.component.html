@@ -24,7 +24,7 @@
 			   <tbody>
                 <tr *ngFor="let exhibitor of exhibitorsList;let i = index " (click)="highlight(exhibitor.ExhibitorId,i)" [ngClass]="{'blueRow': selectedRowIndex == i}">
                     <td data-label="Exhibitor Id">{{exhibitor.ExhibitorId}}</td>
-                    <td data-label="Name">{{exhibitor.FirstName}} {{exhibitor.LastName}}</td>
+                    <td data-label="Name">{{exhibitor.FirstName | titlecase}} {{exhibitor.LastName | titlecase}}</td>
                     <td data-label="Birth Year">{{exhibitor.BirthYear}}</td>
                     <td data-label="Remove">
                         <div (click)="confirmRemoveExhibitor($event, i,exhibitor.ExhibitorId)" class="icon"><i
@@ -46,7 +46,7 @@
 			 <tbody>
 				 <tr>
 					 <td><span class="blueBox"></span><b>Exhibitor:</b> {{exhibitorInfo.ExhibitorId}}  </td>
-                     <td><span class="blueBox"></span><b>Exhibitor Name:</b> {{this.exhibitorInfo.FirstName}} {{this.exhibitorInfo.LastName}}</td>
+                     <td><span class="blueBox"></span><b>Exhibitor Name:</b> {{this.exhibitorInfo.FirstName }} {{this.exhibitorInfo.LastName}}</td>
                      <td><span class="blueBox"></span><b>Group Name:</b>{{this.exhibitorInfo.GroupName}}</td>
 				 </tr>
 			 </tbody>

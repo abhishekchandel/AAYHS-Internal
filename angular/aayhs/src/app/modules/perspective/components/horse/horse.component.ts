@@ -34,7 +34,7 @@ export class HorseComponent implements OnInit {
 
   horseInfo:HorseInfoModel={
     Name:null,
-    HorseTypeId:null,
+    HorseTypeId:2002,
     HorseId:null,
     NSBAIndicator:false,
     GroupId:null,

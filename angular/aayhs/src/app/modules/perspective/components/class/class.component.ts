@@ -564,12 +564,13 @@ pdfCallbackFn (pdf: any) {
    doc.setFontSize(10);
   // doc.setFontType("bold");
   doc.text('Class Name :', 10, 10).setFontType("Bold");
-  doc.text('Class Number :', 60, 10).setFontType("Bold");
-  doc.text('Age Group :', 110, 10).setFontType("Bold");
-
   doc.text(this.classInfo.Name,35, 10).setFontType("Arial");
-  doc.text(this.classInfo.ClassNumber,85, 10).setFontType("Arial");
-  doc.text(this.classInfo.AgeGroup,135, 10).setFontType("Arial");
+
+  doc.text('Class Number :', 10, 20).setFontType("Bold");
+  doc.text(this.classInfo.ClassNumber,35, 20).setFontType("Arial");
+
+  doc.text('Age Group :', 10, 30).setFontType("Bold");
+  doc.text(this.classInfo.AgeGroup,35, 30).setFontType("Arial");
 
 
  doc.autoTable({

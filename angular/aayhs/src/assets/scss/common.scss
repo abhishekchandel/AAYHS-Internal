@@ -345,6 +345,14 @@ font-family:'Roboto-Medium';
 }
 
 /* class page */
+.addBlueStrip{
+    .table-responsive {
+        .table {
+            border-bottom: none;
+        }
+    }
+}
+
 .addBlueStrip {
 position: relative;
 &:before {   
@@ -355,6 +363,7 @@ height: 43px;
 background-color: #a0b8f9;
 left: -30px;
 top: 0;
+
 @media(max-width:767px) {
 display:none;
 }
@@ -882,8 +891,9 @@ color: #7b1124;
 }
 /* nicescroll */
 .nicescrollBar-1{
-height: 228px;
+height: 295px;
 overflow-y: auto;
+ 
 .ps__rail-x {
 display: block !important;
 opacity: 1 !important;
