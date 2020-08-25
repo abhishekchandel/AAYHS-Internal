@@ -5,7 +5,7 @@ using System.Text;
 namespace AAYHS.Core.DTOs.Request
 {
    public class ExhibitorRequest
-    {
+   {
         public int ExhibitorId { get; set; }
         public int GroupId { get; set; }
         public int AddressId { get; set; }
@@ -23,6 +23,11 @@ namespace AAYHS.Core.DTOs.Request
         public int CityId { get; set; }
         public int StateId { get; set; }
         public string Address { get; set; }
+   }
+   public class AddExhibitorHorseRequest
+   {
+        public int ExhibitorId { get; set; }
+        public int HorseId { get; set; }
+        public int BackNumber { get; set; }
     }
- 
 }

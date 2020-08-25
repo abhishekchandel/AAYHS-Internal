@@ -51,5 +51,6 @@ namespace AAYHS.Core.Shared.Static
         public const string RESULT_DELETED= "Result deleted successfully";
         public const string CLASS_EXIST= "This class name already exist with this age group";
         public const string HORSE_EXIST= "This horse name already exist";
+        public const string EXHIBITOR_HORSE_ADDED = "Exhibitor horse added successfully";
     }
 }

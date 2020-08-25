@@ -17,5 +17,7 @@ namespace AAYHS.Service.IService
         MainResponse GetExhibitorHorses(int exhibitorId);
         MainResponse DeleteExhibitorHorse(int exhibitorHorseId, string actionBy);
         MainResponse GetAllHorses();
+        MainResponse GetHorseDetail(int horseId);
+        MainResponse AddExhibitorHorse(AddExhibitorHorseRequest addExhibitorHorseRequest, string actionBy);
     }
 }
