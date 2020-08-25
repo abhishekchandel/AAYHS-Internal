@@ -891,7 +891,7 @@ color: #7b1124;
 }
 /* nicescroll */
 .nicescrollBar-1{
-height: 295px;
+height: 298px;
 overflow-y: auto;
  
 .ps__rail-x {
@@ -1631,7 +1631,44 @@ span{
         table {
             tr{
                 td {
+                    &:nth-child(2){
+                        display: inline-flex; 
+                        flex-flow: wrap;                       
+                    }
+                    .classNameExt{
+                        max-width: 130px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        display: inline-block;
+                        margin-left: 5px;
+                        color: #000;
+                        text-decoration: none;
+                        cursor: text;
+                    }
                     line-height: 24px;
+                    position: relative;
+                    .toolTipText {
+                        transition-delay: 0.2s;
+                        -webkit-transition-delay: 0.2s;
+                        -ms-transition-delay: 0.2s;
+                        -moz-transition-delay: 0.2s;
+                        position: absolute;
+                        background-color: #fff;
+                        border: 1px solid #a0b8f9;
+                        right: 0;
+                        font-size: 12px;
+                        padding: 2px 6px;
+                        line-height: 16px;
+                        top: -50px; 
+                        opacity: 0;
+                    }
+                    &:hover{
+                        .toolTipText {
+                            top: 30px; 
+                            opacity: 1;                           
+                        }
+                    }
                 } 
             }
         }
