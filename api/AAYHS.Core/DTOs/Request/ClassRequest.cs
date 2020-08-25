@@ -66,5 +66,6 @@ namespace AAYHS.Core.DTOs.Request
     {
         public int ResultId { get; set; }
         public int Place { get; set; }
+        public int ExhibitorId { get; set; }
     }
 }

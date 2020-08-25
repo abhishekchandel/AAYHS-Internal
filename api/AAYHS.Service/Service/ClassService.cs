@@ -446,6 +446,7 @@ namespace AAYHS.Service.Service
             if (result!=null)
             {
                 result.Placement = updateClassResult.Place;
+                result.ExhibitorId = updateClassResult.ExhibitorId;
                 result.ModifiedDate = DateTime.Now;
                 result.ModifiedBy = actionBy;
                 _resultRepository.Update(result);

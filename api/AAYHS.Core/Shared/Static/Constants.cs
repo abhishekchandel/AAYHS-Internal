@@ -49,5 +49,7 @@ namespace AAYHS.Core.Shared.Static
         public const string EXHIBITOR_HORSE_DELETED = "Exhibitor horse deleted";
         public const string RESULT_UPDATED = "Result updated successfully";
         public const string RESULT_DELETED= "Result deleted successfully";
+        public const string CLASS_EXIST= "This class name already exist with this age group";
+        public const string HORSE_EXIST= "This horse name already exist";
     }
 }

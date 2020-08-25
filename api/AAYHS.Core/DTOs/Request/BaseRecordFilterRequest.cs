@@ -7,6 +7,10 @@ namespace AAYHS.Core.DTOs.Request
     public class BaseRecordFilterRequest
     {
         /// <summary>
+        /// To search the record
+        /// </summary>
+        public string SearchTerm { get; set; }
+        /// <summary>
         /// Send According to the number of page required
         /// </summary>
         public int Page { get; set; } = 1;
