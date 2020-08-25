@@ -9,7 +9,7 @@ import {
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { LocalStorageService } from "../services/local-storage.service";
-import { MatSnackbarComponent } from '../../shared/ui/mat-snackbar/mat-snackbar/mat-snackbar.component';
+import { MatSnackbarComponent } from '../../shared/ui/mat-snackbar/mat-snackbar.component';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -23,8 +23,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(catchError(err => {
       if (err.status === 401) {
         this._localStorageService.logout();
-        // window.location.href = "everyobit/login";
-        window.location.href = "/login";
+        window.location.href = "aayhs/login";
       }
 
       const error = err.error.Message || err.statusText;

@@ -2,9 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { SponsorInformationViewModel ,TypesList} from '../../../../core/models/sponsor-model';
 import { SponsorService} from '../../../../core/services/sponsor.service';
 import {  AdvertisementService } from '../../../../core/services/advertisement.service';
-import { ConfirmDialogComponent, ConfirmDialogModel } from '../../../../shared/ui/modals/confirmation-modal/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent, ConfirmDialogModel } from '../../../../shared/ui/modals/confirmation-modal/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackbarComponent } from '../../../../shared/ui/mat-snackbar/mat-snackbar/mat-snackbar.component';
+import { MatSnackbarComponent } from '../../../../shared/ui/mat-snackbar/mat-snackbar.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { NgForm } from '@angular/forms';
 import { MatTabGroup } from '@angular/material/tabs'
@@ -93,14 +93,17 @@ export class SponsorComponent implements OnInit {
     Limit: 5,
     OrderBy: 'SponsorId',
     OrderByDescending: true,
-    AllRecords: false
+    AllRecords: false,
+    SearchTerm:null
   }
   adsBaseRequest: BaseRecordFilterRequest = {
     Page: 1,
     Limit: 20,
     OrderBy: 'AdvertisementId',
     OrderByDescending: true,
-    AllRecords: true
+    AllRecords: true,
+    SearchTerm:null
+
   }
 
   sponsors: SponsorInformationViewModel[];

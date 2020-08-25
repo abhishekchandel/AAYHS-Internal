@@ -29,6 +29,7 @@
     "mask": "^0.2.2",
     "moment": "^2.27.0",
     "ngx": "^2.4.0",
+    "ngx-bootstrap": "^5.6.1",
     "ngx-export-as": "^1.4.2",
     "ngx-mask": "^9.1.2",
     "ngx-order-pipe": "^2.0.4",

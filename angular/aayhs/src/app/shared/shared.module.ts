@@ -2,9 +2,9 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { HeaderComponent } from '../shared/layout/header/header/header.component';
-import { SidebarComponent } from '../shared/layout/sidebar/sidebar/sidebar.component';
-import { FooterComponent } from '../shared/layout/footer/footer/footer.component';
+import { HeaderComponent } from '../shared/layout/header/header.component';
+import { SidebarComponent } from '../shared/layout/sidebar/sidebar.component';
+import { FooterComponent } from '../shared/layout/footer/footer.component';
 import { RouterModule } from '@angular/router';
 import { ConfirmEqualValidatorDirective } from './directives/confirm-equal-validator.directive';
 import {SearchPipe} from '../shared/filters/search.pipe'
@@ -33,8 +33,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSnackbarComponent } from './ui/mat-snackbar/mat-snackbar/mat-snackbar.component';
-import { ConfirmDialogComponent } from './ui/modals/confirmation-modal/confirm-dialog/confirm-dialog.component';
+import { MatSnackbarComponent } from './ui/mat-snackbar/mat-snackbar.component';
+import { ConfirmDialogComponent } from './ui/modals/confirmation-modal/confirm-dialog.component';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { AddSplitClassModalComponent } from './ui/modals/add-split-class-modal/add-split-class-modal.component'
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
