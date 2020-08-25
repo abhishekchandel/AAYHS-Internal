@@ -433,5 +433,33 @@ namespace AAYHS.Service.Service
             }
             return _mainResponse;
         }
+        public MainResponse UpdateClassResult(UpdateClassResult updateClassResult,string actionBy)
+        {
+            var result = _resultRepository.GetSingle(x => x.ResultId == updateClassResult.ResultId && x.IsActive == true && x.IsDeleted == false);
+            if (result!=null)
+            {
+                result.Placement = updateClassResult.Place;
+                result.ModifiedDate = DateTime.Now;
+                result.ModifiedBy = actionBy;
+                _resultRepository.Update(result);
+                _mainResponse.Message = Constants.RESULT_UPDATED;
+                _mainResponse.Success = true;
+            }
+            return _mainResponse;
+        }
+        public MainResponse DeleteClassResult(int resultId,string actionBy)
+        {
+            var result = _resultRepository.GetSingle(x => x.ResultId == resultId && x.IsActive == true && x.IsDeleted == false);
+            if (result!=null)
+            {
+                result.IsDeleted = true;
+                result.DeletedDate = DateTime.Now;
+                result.DeletedBy = actionBy;
+                _resultRepository.Update(result);
+                _mainResponse.Message = Constants.RESULT_DELETED;
+                _mainResponse.Success = true;
+            }
+            return _mainResponse;
+        }
     }
 }

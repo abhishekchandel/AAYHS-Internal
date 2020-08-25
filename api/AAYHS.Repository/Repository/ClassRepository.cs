@@ -288,6 +288,7 @@ namespace AAYHS.Repository.Repository
                     && result.ClassId == classRequest.ClassId
                     select new GetResultOfClass
                     {
+                        ResultId=result.ResultId,
                         ExhibitorId = exhibitor2.ExhibitorId,
                         Place = result.Placement,
                         BackNumber= exhibitor2.BackNumber,

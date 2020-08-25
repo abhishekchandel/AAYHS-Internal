@@ -47,5 +47,7 @@ namespace AAYHS.Core.Shared.Static
         public const string GROUP_FINANCIAL_DELETED = "Group financial deleted successfully";
         public const string BACKNUMBER_AlREADY_EXIST = "BackNumber Already Exist";
         public const string EXHIBITOR_HORSE_DELETED = "Exhibitor horse deleted";
+        public const string RESULT_UPDATED = "Result updated successfully";
+        public const string RESULT_DELETED= "Result deleted successfully";
     }
 }

@@ -25,5 +25,7 @@ namespace AAYHS.Service.IService
         MainResponse GetResultOfClass(ClassRequest classRequest);
         MainResponse SearchClass(SearchRequest searchRequest);
         MainResponse UpdateClassExhibitorScratch(ClassExhibitorScratch classExhibitorScratch, string actionBy);
+        MainResponse UpdateClassResult(UpdateClassResult updateClassResult, string actionBy);
+        MainResponse DeleteClassResult(int resultId, string actionBy);
     }
 }
