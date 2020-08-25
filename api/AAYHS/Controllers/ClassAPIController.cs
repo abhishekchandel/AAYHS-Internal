@@ -236,12 +236,45 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<GetAllClasses>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
+        /// <summary>
+        /// This api used to update class exhibitor scratch
+        /// </summary>
+        /// <param name="classExhibitorScratch"></param>
+        /// <returns></returns>
         [HttpPost]
         [Authorize]
         public IActionResult UpdateClassExhibitorScratch(ClassExhibitorScratch classExhibitorScratch)
         {
             string actionBy = User.Identity.Name;
             _mainResponse = _classService.UpdateClassExhibitorScratch(classExhibitorScratch, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to update class result
+        /// </summary>
+        /// <param name="updateClassResult"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Authorize]
+        public IActionResult UpdateClassResult(UpdateClassResult updateClassResult)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _classService.UpdateClassResult(updateClassResult, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to delete class result
+        /// </summary>
+        /// <param name="deleteClassResult"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        [Authorize]
+        public IActionResult DeleteClassResult(int resultId)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _classService.DeleteClassResult(resultId, actionBy);
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }

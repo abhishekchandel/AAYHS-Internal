@@ -98,6 +98,13 @@ namespace AAYHS.Service.Service
         {
             if (horseAddRequest.HorseId==0)
             {
+                var horseExist = _horseRepository.GetSingle(x => x.Name == horseAddRequest.Name && x.IsActive == true && x.IsDeleted == false);
+                if (horseExist!=null && horseExist.HorseId>0)
+                {
+                    _mainResponse.Message = Constants.HORSE_EXIST;
+                    _mainResponse.Success = false;
+                    return _mainResponse;
+                }
                 var horse = new Horses
                 {
                     Name = horseAddRequest.Name,

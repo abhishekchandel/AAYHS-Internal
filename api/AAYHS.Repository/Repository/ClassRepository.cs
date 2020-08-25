@@ -51,6 +51,11 @@ namespace AAYHS.Repository.Repository
                   });
             if (data.Count()!=0)
             {
+                if (classRequest.SearchTerm!=null && classRequest.SearchTerm!="")
+                {
+                    data = data.Where(x => x.ClassNumber.Contains(classRequest.SearchTerm) || x.Name.ToLower().Contains(classRequest.SearchTerm.ToLower()) ||
+                                     Convert.ToString(x.Entries).Contains(classRequest.SearchTerm));
+                }
                 if (classRequest.OrderByDescending == true)
                 {
                     data = data.OrderByDescending(x => x.GetType().GetProperty(classRequest.OrderBy).GetValue(x));
@@ -288,6 +293,7 @@ namespace AAYHS.Repository.Repository
                     && result.ClassId == classRequest.ClassId
                     select new GetResultOfClass
                     {
+                        ResultId=result.ResultId,
                         ExhibitorId = exhibitor2.ExhibitorId,
                         Place = result.Placement,
                         BackNumber= exhibitor2.BackNumber,

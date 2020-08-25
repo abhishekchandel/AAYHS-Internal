@@ -46,6 +46,11 @@ namespace AAYHS.Repository.Repository
 
             if (data.Count() != 0)
             {
+                if (horseRequest.SearchTerm!=null && horseRequest.SearchTerm!="")
+                {
+                    data = data.Where(x => Convert.ToString(x.HorseId).Contains(horseRequest.SearchTerm) || x.Name.ToLower().Contains(horseRequest.SearchTerm.ToLower()) ||
+                                     x.HorseType.ToLower().Contains(horseRequest.SearchTerm.ToLower()));
+                }
                 if (horseRequest.OrderByDescending == true)
                 {
                     data = data.OrderByDescending(x => x.GetType().GetProperty(horseRequest.OrderBy).GetValue(x));

@@ -144,6 +144,13 @@ namespace AAYHS.Service.Service
         {
             if (addClassRequest.ClassId == 0)
             {
+                var classExist = _classRepository.GetSingle(x => x.Name == addClassRequest.Name && x.AgeGroup == addClassRequest.AgeGroup && x.IsActive==true && x.IsDeleted==false);
+                if (classExist!=null && classExist.ClassId>0)
+                {
+                    _mainResponse.Message = Constants.CLASS_EXIST;
+                    _mainResponse.Success = false;
+                    return _mainResponse;
+                }
                 var classes = new Classes
                 {
                     ClassNumber = addClassRequest.ClassNumber,
@@ -430,6 +437,35 @@ namespace AAYHS.Service.Service
             {
                 _mainResponse.Success = false;
                 _mainResponse.Message = Constants.NO_RECORD_FOUND;
+            }
+            return _mainResponse;
+        }
+        public MainResponse UpdateClassResult(UpdateClassResult updateClassResult,string actionBy)
+        {
+            var result = _resultRepository.GetSingle(x => x.ResultId == updateClassResult.ResultId && x.IsActive == true && x.IsDeleted == false);
+            if (result!=null)
+            {
+                result.Placement = updateClassResult.Place;
+                result.ExhibitorId = updateClassResult.ExhibitorId;
+                result.ModifiedDate = DateTime.Now;
+                result.ModifiedBy = actionBy;
+                _resultRepository.Update(result);
+                _mainResponse.Message = Constants.RESULT_UPDATED;
+                _mainResponse.Success = true;
+            }
+            return _mainResponse;
+        }
+        public MainResponse DeleteClassResult(int resultId,string actionBy)
+        {
+            var result = _resultRepository.GetSingle(x => x.ResultId == resultId && x.IsActive == true && x.IsDeleted == false);
+            if (result!=null)
+            {
+                result.IsDeleted = true;
+                result.DeletedDate = DateTime.Now;
+                result.DeletedBy = actionBy;
+                _resultRepository.Update(result);
+                _mainResponse.Message = Constants.RESULT_DELETED;
+                _mainResponse.Success = true;
             }
             return _mainResponse;
         }

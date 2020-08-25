@@ -62,4 +62,10 @@ namespace AAYHS.Core.DTOs.Request
         public int ExhibitorClassId { get; set; }
         public bool IsScratch { get; set; }
     }
+    public class UpdateClassResult
+    {
+        public int ResultId { get; set; }
+        public int Place { get; set; }
+        public int ExhibitorId { get; set; }
+    }
 }
