@@ -60,14 +60,14 @@ export class SponsorComponent implements OnInit {
   sponsorClassesList:any
   UnassignedSponsorExhibitor:any
   UnassignedSponsorClasses:any
-  advertisementsList:any
+  //advertisementsList:any
   SponsorTypes:any
   selectedSponsorId:number=0;
 
 
   exhibitorId: number = null;
   sponsortypeId:number=null;
-  typeId:number=null;
+  typeId:string=null;
   sponsorClassId:number=null;
   showAds=false;
   showClasses=false;
@@ -116,7 +116,7 @@ export class SponsorComponent implements OnInit {
   ngOnInit(): void {
     this.getAllSponsors();
     this.getAllStates();
-    this.GetAllAdvertisements()
+   // this.GetAllAdvertisements()
   }
 
   
@@ -213,22 +213,22 @@ export class SponsorComponent implements OnInit {
     
   }
 
-  GetAllAdvertisements(){
-    this.adsBaseRequest.OrderBy = "AdvertisementId";
-    this.adsBaseRequest.OrderByDescending = true;
-    this.adsBaseRequest.AllRecords=true;
-    this.advertisementsList=null;
+  // GetAllAdvertisements(){
+  //   this.adsBaseRequest.OrderBy = "AdvertisementId";
+  //   this.adsBaseRequest.OrderByDescending = true;
+  //   this.adsBaseRequest.AllRecords=true;
+  //   this.advertisementsList=null;
     
-    this.advertisementService.getAllAdvertisements(this.adsBaseRequest).subscribe(response=>{ 
-      if(response.Data!=null && response.Data.TotalRecords>0)
-      {
+  //   this.advertisementService.getAllAdvertisements(this.adsBaseRequest).subscribe(response=>{ 
+  //     if(response.Data!=null && response.Data.TotalRecords>0)
+  //     {
         
-      this.advertisementsList = response.Data.advertisementResponses;
-      this.setSponsorType(this.sponsortypeId)
-      }
-    },error=>{
-    })
-  }
+  //     this.advertisementsList = response.Data.advertisementResponses;
+  //     this.setSponsorType(this.sponsortypeId)
+  //     }
+  //   },error=>{
+  //   })
+  // }
 
 
   AddUpdateSponsor=(sponsor)=>{
@@ -267,12 +267,13 @@ export class SponsorComponent implements OnInit {
     }
 
   AddUpdateSponsorExhibitor(){
+    debugger
     this.loading=true;
     this.sponsorExhibitorRequest.SponsorExhibitorId=0;
     this.sponsorExhibitorRequest.SponsorId=this.selectedSponsorId;
     this.sponsorExhibitorRequest.ExhibitorId=this.exhibitorId;
     this.sponsorExhibitorRequest.SponsorTypeId=this.sponsortypeId;
-    this.sponsorExhibitorRequest.TypeId=this.typeId!=null ?this.typeId:0;
+    this.sponsorExhibitorRequest.TypeId=this.typeId!=null ?this.typeId:"";
     
     this.sponsorService.AddUpdateSponsorExhibitor(this.sponsorExhibitorRequest).subscribe(response=>{
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
@@ -322,36 +323,32 @@ export class SponsorComponent implements OnInit {
       {
         this.showClasses=true;
         this.showAds=false;
+        debugger
        this.sponsorClassesList.forEach((data) => { 
        var listdata:TypesList={
         Id:data.ClassId,
-        Name:data.Name
+        Name:data.ClassNumber + '/' +data.Name
        }
         this.typeList.push(listdata)
       })  
-
-
-      }
+    }
       if(sponsorTypename[0].CodeName=="Ad")
       {
         this.showClasses=false;
         this.showAds=true;
-        this.advertisementsList.forEach((data) => { 
-          var listdata:TypesList={
-           Id:data.AdvertisementId,
-           Name:data.Name
-          }
-           this.typeList.push(listdata)
-         })  
-        
-
+        // this.advertisementsList.forEach((data) => { 
+        //   var listdata:TypesList={
+        //    Id:data.AdvertisementId,
+        //    Name:data.Name
+        //   }
+        //    this.typeList.push(listdata)
+        //  })  
       }
     }
   }
 
-  setType(id){
-    
-    this.typeId=Number(id);
+  setType(value){
+      this.typeId=value;
   }
 
   setSponsorClass(id){
@@ -605,9 +602,6 @@ export class SponsorComponent implements OnInit {
 
   goToLink(url: string){
   window.open(url, "_blank");
-}
-setTwoNumberDecimal($event) {
-  $event.target.value = parseFloat($event.target.value).toFixed(2);
 }
 
 }
