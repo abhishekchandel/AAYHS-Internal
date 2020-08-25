@@ -57,7 +57,9 @@
 			<tbody>
 				<tr>
 					<td><span class="blueBox"></span><b>Class Number:</b> {{classInfo.ClassNumber}} </td>
-					<td><span class="blueBox"></span><b>Class Name:</b> {{classInfo.Name}}</td>
+					<td><span class="blueBox"></span><b>Class Name:</b> <span class="classNameExt">{{classInfo.Name}}</span>
+						<p class="toolTipText">{{classInfo.Name}}</p>
+					</td>
 					<td><span class="blueBox"></span><b>Class Age Group:</b> {{classInfo.AgeGroup}}</td>
 				</tr>
 			</tbody>
@@ -138,14 +140,10 @@
 														placeholder="Billing Date" class="form-control"
 														name="scheduleDate" #scheduleDate="ngModel"
 														(dateChange)="handleScheduleDateSelection()"
-														[(ngModel)]="classInfo.ScheduleDate" required>
+														[(ngModel)]="classInfo.ScheduleDate">
 													<mat-datepicker-toggle matSuffix [for]="scheduleDatePicker">
 													</mat-datepicker-toggle>
-													<mat-datepicker #scheduleDatePicker></mat-datepicker>
-													<span class="help-block"
-														*ngIf="scheduleDate.errors?.required && (scheduleDate.touched || classInfoForm.submitted)">Schedule
-														Date is
-														required</span>
+													<mat-datepicker #scheduleDatePicker></mat-datepicker>													
 												</mat-form-field>
 
 											</div>
@@ -184,7 +182,7 @@
 													<td><span class="blueBox"></span><b>Class Number:</b>
 														{{classInfo.ClassNumber}} </td>
 													<td><span class="blueBox"></span><b>Class Name:</b>
-														{{classInfo.Name}}</td>
+														{{classInfo.Name}} </td>
 													<td><span class="blueBox"></span><b>Class Age Group:</b>
 														{{classInfo.AgeGroup}}</td>
 												</tr>
@@ -289,11 +287,11 @@
 										class="btn btn-red btnCss">Previous</button>
 									<a [routerLink]="['/perspective/exhibitor']" target="_blank"><button type="button"
 											class="btn btn-red btnCss">+ Exhibitor</button></a>
-									<button type="submit" class="btn btn-red btnCss">Submit</button>
 									<button typee="button" (click)='tabGroup.selectedIndex = 2'
 										class="btn btn-red btnCss">Next</button>
 									<button (click)="print()" id="inputprintbutton" type="button"
 										class="btn btn-red btnCss">Display/Print</button>
+										<button type="submit" class="btn btn-red btnCss">Submit</button>
 								</div>
 							</form>
 						</div>

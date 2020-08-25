@@ -126,7 +126,6 @@ export class ExhibitorComponent implements OnInit {
       this.exhibitorInfo.GroupId=null,
       this.exhibitorInfo.GroupName=null
       this.exhibitorInfoForm.resetForm();
-      // this.tabGroup.selectedIndex = 0;
       this.selectedRowIndex = null
 
   }
