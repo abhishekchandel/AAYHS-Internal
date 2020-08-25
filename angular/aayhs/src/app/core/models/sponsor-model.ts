@@ -1,4 +1,5 @@
 import { NumberValueAccessor } from '@angular/forms';
+import { DecimalPipe } from '@angular/common';
 
 export interface SponsorInformationViewModel
 {
@@ -10,7 +11,7 @@ export interface SponsorInformationViewModel
     CityId:number;
     StateId:number;
     ZipCode:string;
-    AmountReceived :number;
+    AmountReceived :any;
     SponsorId:number;
     sponsorExhibitors:Array<SponsorExhibitors>;
     sponsorClasses:Array<SponsorClasses>

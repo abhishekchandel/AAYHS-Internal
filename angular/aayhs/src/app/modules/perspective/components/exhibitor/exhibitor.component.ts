@@ -7,7 +7,7 @@ import { ConfirmDialogComponent, ConfirmDialogModel } from'../../../../shared/ui
 import { MatSnackbarComponent } from '../../../../shared/ui/mat-snackbar/mat-snackbar/mat-snackbar.component'
 import {ExhibitorInfoModel} from '../../../../core/models/exhibitor-model'
 import { MatTabGroup } from '@angular/material/tabs'
-import { BsDatepickerConfig,BsDatepickerViewMode  } from 'ngx-bootstrap/datepicker';
+
 import { NgForm } from '@angular/forms';
 
 @Component({
@@ -20,8 +20,7 @@ export class ExhibitorComponent implements OnInit {
   @ViewChild('tabGroup') tabGroup: MatTabGroup;
   @ViewChild('exhibitorInfoForm') exhibitorInfoForm: NgForm;
 
-  datePickerConfig: Partial<BsDatepickerConfig>;
-  minMode: BsDatepickerViewMode = 'year';
+ 
   maxyear: any;
   minyear:any;
   result: string = '';

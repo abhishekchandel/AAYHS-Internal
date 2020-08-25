@@ -49,7 +49,7 @@ export class SponsorComponent implements OnInit {
     CityId: null,
     StateId: null,
     ZipCode: null,
-    AmountReceived: 0,
+    AmountReceived: '0.00',
     SponsorId: 0,
     sponsorExhibitors: null,
     sponsorClasses: null,
@@ -154,17 +154,22 @@ export class SponsorComponent implements OnInit {
   }
 
   getSponsorDetails = (id: number,selectedRowIndex) => {
+    
     this.loading = true;
     this.sponsorService.getSponsor(id).subscribe(response => {
+      
       if(response.Data!=null)
       {
-        debugger;
+        
       this.getCities(response.Data.StateId).then(res => {
-       
+      
          this.sponsorInfo = response.Data;
          this.selectedRowIndex=selectedRowIndex;
+
+         this.sponsorInfo.AmountReceived= this.sponsorInfo.AmountReceived.toFixed(2);
+        console.log(this.sponsorInfo);
       });
-      debugger;
+      ;
       }
       this.loading = false;
     }, error => {
@@ -217,7 +222,7 @@ export class SponsorComponent implements OnInit {
     this.advertisementService.getAllAdvertisements(this.adsBaseRequest).subscribe(response=>{ 
       if(response.Data!=null && response.Data.TotalRecords>0)
       {
-        debugger
+        
       this.advertisementsList = response.Data.advertisementResponses;
       this.setSponsorType(this.sponsortypeId)
       }
@@ -227,6 +232,8 @@ export class SponsorComponent implements OnInit {
 
 
   AddUpdateSponsor=(sponsor)=>{
+    console.log(this.sponsorInfo);
+//return
     this.loading=true;
     this.sponsorInfo.AmountReceived=this.sponsorInfo.AmountReceived==null ?0:this.sponsorInfo.AmountReceived;
     this.sponsorService.addUpdateSponsor(this.sponsorInfo).subscribe(response=>{
@@ -266,7 +273,7 @@ export class SponsorComponent implements OnInit {
     this.sponsorExhibitorRequest.ExhibitorId=this.exhibitorId;
     this.sponsorExhibitorRequest.SponsorTypeId=this.sponsortypeId;
     this.sponsorExhibitorRequest.TypeId=this.typeId!=null ?this.typeId:0;
-    debugger
+    
     this.sponsorService.AddUpdateSponsorExhibitor(this.sponsorExhibitorRequest).subscribe(response=>{
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
       this.GetSponsorExhibitorBySponsorId(this.selectedSponsorId);
@@ -302,7 +309,7 @@ export class SponsorComponent implements OnInit {
   }
 
   setSponsorType(id){
-    debugger
+    
     this.sponsortypeId=Number(id);
     this.typeList=[];
     this.typeId=null;
@@ -343,7 +350,7 @@ export class SponsorComponent implements OnInit {
   }
 
   setType(id){
-    debugger
+    
     this.typeId=Number(id);
   }
 
@@ -407,7 +414,7 @@ export class SponsorComponent implements OnInit {
 
 //delete record
   deleteSponsor(Sponsorid,index) {
-    debugger
+    
     this.loading = true;
     this.sponsorService.deleteSponsor(Sponsorid).subscribe(response => {
       
@@ -599,7 +606,9 @@ export class SponsorComponent implements OnInit {
   goToLink(url: string){
   window.open(url, "_blank");
 }
-
+setTwoNumberDecimal($event) {
+  $event.target.value = parseFloat($event.target.value).toFixed(2);
+}
 
 }
 

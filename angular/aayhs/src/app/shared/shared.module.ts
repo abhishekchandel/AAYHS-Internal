@@ -44,7 +44,8 @@ import { ExportConfirmationModalComponent } from './ui/modals/export-confirmatio
 import { OrderModule } from 'ngx-order-pipe';
 import { ExportAsModule } from 'ngx-export-as';
 import {NgxPrintModule} from 'ngx-print';
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+
+
 
 export var options: Partial<IConfig> | (() => Partial<IConfig>);
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -82,7 +83,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     OrderModule,
     ExportAsModule,
     NgxPrintModule,
-    BsDatepickerModule.forRoot()
+   
   ],
   exports: [
     HeaderComponent,
@@ -118,7 +119,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     NgxPrintModule,
     ConfirmEqualValidatorDirective,
     SearchPipe,
-    BsDatepickerModule
+    
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

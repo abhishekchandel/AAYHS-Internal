@@ -94,7 +94,7 @@ UpdatedFinancialAmount:number=null;
     CityId: null,
     StateId: null,
     ZipCode: null,
-    AmountReceived: 0,
+    AmountReceived: '0.00',
     GroupId: 0,
    
 
@@ -141,6 +141,7 @@ UpdatedFinancialAmount:number=null;
        
          this.groupInfo = response.Data;
          this.selectedRowIndex= selectedRowIndex;
+         this.groupInfo.AmountReceived= this.groupInfo.AmountReceived.toFixed(2);
        });
       
       }
