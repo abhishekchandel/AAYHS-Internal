@@ -273,8 +273,8 @@
 													</span>
 												</td>
 
-												<td *ngIf="sponsortypeId==1 || sponsortypeId==2" data-label="Type"  colspan="2">
-													<select  class="dynDataSeclect" name="type" [required]="sponsortypeId==1 || sponsortypeId==2" [(ngModel)]="typeId"
+												<td *ngIf="sponsortypeId==2" data-label="Type"  colspan="2">
+													<select  class="dynDataSeclect" name="type" [required]="sponsortypeId==2" [(ngModel)]="typeId"
 													#typeControl="ngModel" (change)="setType($event.target.value)" >
 														<option   disabled="true" [ngValue]="null" class="selectDropdown">Select</option>
 														<option   class="selectDropdown"
@@ -284,11 +284,21 @@
 													</select>
 												  <span class="help-block"
 													*ngIf="(sponsorExhibitorForm.submitted || typeControl.touched) && typeControl.invalid">Please
-													select 
+													select class
 												</span>
 											  </td>
 
-											 
+											  <td *ngIf="sponsortypeId==1" data-label="Type"  colspan="2">
+                                                
+												<input type="text" class="form-control whitebg" placeholder="Ad Number"
+												name="typeId" required="sponsortypeId==1"[(ngModel)]="typeId"
+												#typeControl="ngModel" (change)="setType($event.target.value)">
+	
+											   <span class="help-block"
+												*ngIf="(sponsorExhibitorForm.submitted || typeControl.touched) 
+												&& typeControl.invalid">Please Add Ad Number
+											   </span>
+											</td> 
 
                                                    
                                                     <td ></td>
@@ -305,7 +315,7 @@
 								<div class="actionBtn text-right mt-3 mb-3 ">
 									<button (click)='tabGroup.selectedIndex = 0' class="btn btn-red btnCss roundBtn">Previous</button>
 									<button (click)='tabGroup.selectedIndex = 2' class="btn btn-red btnCss roundBtn">Next</button>
-									<button (click)="goToLink('auth/exhibitor')" class="btn btn-red btnCss roundBtn">+ Exhibitor</button>
+									<button (click)="goToLink('perspective/exhibitor')" class="btn btn-red btnCss roundBtn">+ Exhibitor</button>
 									<button type="submit" class="btn btn-red btnCss roundBtn">Submit</button>
 								</div>
 
@@ -384,7 +394,7 @@
 								
 									<div class="actionBtn mt-3 mb-3 text-right">
 										<button (click)='tabGroup.selectedIndex = 1' class="btn btn-red btnCss roundBtn">Previous</button>
-										<button (click)="goToLink('auth/class')"class="btn btn-red btnCss roundBtn">+ Class</button>
+										<button (click)="goToLink('perspective/class')"class="btn btn-red btnCss roundBtn">+ Class</button>
 										<button type="submit" class="btn btn-red btnCss roundBtn">Submit</button>
 									</div>
 								</form>

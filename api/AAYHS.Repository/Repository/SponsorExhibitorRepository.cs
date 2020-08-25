@@ -52,8 +52,8 @@ namespace AAYHS.Repository.Repository
                             LastName = exhibitor.LastName,
                             BirthYear = exhibitor.BirthYear,
                             SponsorTypeId = sponsorexhibitor.SponsorTypeId,
-                            IdNumber =sponsorexhibitor.SponsorTypeId== (int)SponsorTypes.Class?Convert.ToString(_context.Classes.Where(x=>x.ClassId== sponsorexhibitor.TypeId).Select(x=>x.ClassNumber).FirstOrDefault())
-                                       :(sponsorexhibitor.SponsorTypeId == (int)SponsorTypes.Add? Convert.ToString(_context.Advertisements.Where(x => x.AdvertisementId == sponsorexhibitor.TypeId).Select(x => x.AdvertisementId).FirstOrDefault())
+                            IdNumber =sponsorexhibitor.SponsorTypeId== (int)SponsorTypes.Class?Convert.ToString(_context.Classes.Where(x=>x.ClassId==Convert.ToInt32(sponsorexhibitor.TypeId)).Select(x=>x.ClassNumber).FirstOrDefault())
+                                       :(sponsorexhibitor.SponsorTypeId == (int)SponsorTypes.Add? sponsorexhibitor.TypeId
                                        : Convert.ToString(0)),
                         }).ToList();
             sponsorExhibitorListResponses.SponsorExhibitorResponses = sponsorExhibitorResponses.ToList();
