@@ -346,6 +346,7 @@ export class ClassComponent implements OnInit {
     this.resetExhibitorInfo()
     this.initialPostion=1;
     this.selectedRowIndex = null
+    this.cancelEdit()
   }
 
   getClassEntries(id: number) {
@@ -547,21 +548,26 @@ export class ClassComponent implements OnInit {
     })
   }
 
-  updateResult(resultId:number){
+  updateResult(resultId){
     this.loading = true;
     var addClassResult = {
       ClassId:this.classInfo.ClassId,
-      ExhibitorId:this.exhibitorInfo.ExhibitorId,
+      ExhibitorId:this.editExhibitorInfo.ExhibitorId,
       Place:this.place,
       ResultId:resultId
     }
-    this.classService.addResult(addClassResult).subscribe(response => {
+    this.classService.updateResult(addClassResult).subscribe(response => {
       this.loading = false;
       this.getClassResult(this.classInfo.ClassId);
       this.resultForm.resetForm({ backNumber:null});
       this.resetExhibitorInfo();
       this.initialPostion=1;
       this.showPosition=false
+      this.updatemode=false;
+      this.showEditInfo=false;
+      this.place=null;
+      this.editBackNumber=null
+      this.updateRowIndex=-1;
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
 
     }, error => {
@@ -984,12 +990,15 @@ setPlace(data){
   this.place=Number(data);
 }
 
-editResult( index){
+editResult( index,data){
+  debugger;
   this.updatemode=true;
   this.updateRowIndex=index;
+  this.place=data.Place;
+  this.editBackNumber=data.BackNumber
 }
 
-cancelEdit(index){
+cancelEdit(){
   this.updatemode=false;
   this.updateRowIndex=-1;
   this.showEditInfo=false;

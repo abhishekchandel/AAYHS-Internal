@@ -94,4 +94,8 @@ export class ClassService {
   deleteClassResult(id:number){
     return this.http.delete<any>(`${this.api}ClassAPI/DeleteClassResult?resultId=${id}`);
   }
+
+  updateResult(data){
+    return this.http.post<any>(`${this.api}ClassAPI/UpdateClassResult`,data);
+  }
 }

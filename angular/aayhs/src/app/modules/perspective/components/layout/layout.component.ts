@@ -15,7 +15,6 @@ export class LayoutComponent implements OnInit {
   constructor(private router: Router) {
     router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        debugger;
         this.title = this.getTitle(router.routerState, router.routerState.root).join('-');
         if(this.appHeader) this.appHeader.clearInput();
       }
