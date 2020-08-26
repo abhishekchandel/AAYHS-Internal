@@ -201,7 +201,7 @@
 															[ngClass]="getEntriesSort('BirthYear')"></span></th>
 													<th>Amount Paid</th>
 													<th>Amount Due</th>
-													<th (click)="sortEntriesData('Scratch')" class="non-print-element">Scratch <span
+													<th (click)="sortEntriesData('Scratch')">Scratch <span
 															[ngClass]="getEntriesSort('Scratch')"></span></th>
 													<th class="non-print-element">Remove</th>
 												</tr>
@@ -218,7 +218,7 @@
 														<td data-label="Birth Year">{{entry.BirthYear}}</td>
 														<td data-label="Amount Paid">{{entry.AmountPaid}}</td>
 														<td data-label="Amount Due">{{entry.AmountDue}}</td>
-														<td data-label="Scratch" class="non-print-element">
+														<td data-label="Scratch">
 															<div class="scratchimage"
 																(click)="confirmScratch(i,!entry.Scratch,entry.ExhibitorClassId)">
 																<img class="non-print-element" [src]="entry.Scratch===true ? 'assets/images/sizzer-icon.png' : 'assets/images/sizzer-icon-1.png'">

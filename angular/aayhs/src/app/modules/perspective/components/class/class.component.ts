@@ -991,7 +991,6 @@ setPlace(data){
 }
 
 editResult( index,data){
-  debugger;
   this.updatemode=true;
   this.updateRowIndex=index;
   this.place=data.Place;
