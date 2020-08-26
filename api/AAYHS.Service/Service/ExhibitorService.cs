@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace AAYHS.Service.Service
 {
   public  class ExhibitorService: IExhibitorService
-    {
+  {
         #region readonly
         private readonly IMapper _mapper;
         #endregion
@@ -223,11 +223,8 @@ namespace AAYHS.Service.Service
         {
             var exhibitorHorse = _exhibitorHorseRepository.GetSingle(x => x.ExhibitorHorseId == exhibitorHorseId && x.IsActive == true && x.IsDeleted == false);
             if (exhibitorHorse!=null && exhibitorHorse.ExhibitorId>0)
-            {
-                exhibitorHorse.IsDeleted = true;
-                exhibitorHorse.DeletedBy = actionBy;
-                exhibitorHorse.DeletedDate = DateTime.Now;
-                _exhibitorHorseRepository.Update(exhibitorHorse);
+            {              
+                _exhibitorHorseRepository.Delete(exhibitorHorse);
                 _mainResponse.Message = Constants.EXHIBITOR_HORSE_DELETED;
                 _mainResponse.Success = true;
             }
@@ -257,5 +254,39 @@ namespace AAYHS.Service.Service
             }
             return _mainResponse;
         }
-    }
+
+        public MainResponse GetHorseDetail(int horseId)
+        {
+            var horse = _horseRepository.GetSingle(x => x.HorseId == horseId && x.IsActive == true && x.IsDeleted == false);
+            if (horse != null && horse.HorseId>0)
+            {
+                var horseDetail = _mapper.Map<GetHorses>(horse);
+                _mainResponse.GetHorses = horseDetail;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+                _mainResponse.Success = false;
+            }
+            return _mainResponse;
+        }
+
+        public MainResponse AddExhibitorHorse(AddExhibitorHorseRequest addExhibitorHorseRequest,string actionBy)
+        {
+            var exhibitorHorse = new ExhibitorHorse
+            {
+                ExhibitorId = addExhibitorHorseRequest.ExhibitorId,
+                HorseId=addExhibitorHorseRequest.HorseId,
+                BackNumber=addExhibitorHorseRequest.BackNumber,
+                CreatedDate=DateTime.Now,
+                CreatedBy= actionBy
+            };
+
+            _exhibitorHorseRepository.Add(exhibitorHorse);
+            _mainResponse.Message = Constants.EXHIBITOR_HORSE_ADDED;
+            _mainResponse.Success = true;
+            return _mainResponse;
+        }
+  }
 }

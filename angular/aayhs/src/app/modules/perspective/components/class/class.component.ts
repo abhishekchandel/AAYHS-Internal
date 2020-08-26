@@ -1,11 +1,11 @@
-import { Component, OnInit, ViewChild,ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild,ElementRef,Input  } from '@angular/core';
 import {  ClassInfoModel } from '../../../../core/models/class-model'
-import { ConfirmDialogComponent, ConfirmDialogModel } from '../../../../shared/ui/modals/confirmation-modal/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent, ConfirmDialogModel } from '../../../../shared/ui/modals/confirmation-modal/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { AddSplitClassModalComponent } from '../../../../shared/ui/modals/add-split-class-modal/add-split-class-modal.component';
 import { BaseRecordFilterRequest } from '../../../../core/models/base-record-filter-request-model'
-import { MatSnackbarComponent } from '../../../../shared/ui/mat-snackbar/mat-snackbar/mat-snackbar.component'
+import { MatSnackbarComponent } from '../../../../shared/ui/mat-snackbar/mat-snackbar.component'
 import { MatTabGroup } from '@angular/material/tabs'
 import { NgForm } from '@angular/forms';
 import { MatTabChangeEvent } from '@angular/material/tabs'
@@ -17,6 +17,8 @@ import * as jsPDF from 'jspdf';
 import {  ExportConfirmationModalComponent } from '../../../../shared/ui/modals/export-confirmation-modal/export-confirmation-modal.component'
 import 'jspdf-autotable';
 import { UserOptions } from 'jspdf-autotable';
+import {GlobalService} from '../../../../core/services/global.service'
+
 interface jsPDFWithPlugin extends jsPDF {
   autoTable: (options: UserOptions) => jsPDF;
 }
@@ -27,6 +29,8 @@ interface jsPDFWithPlugin extends jsPDF {
   styleUrls: ['./class.component.scss']
 })
 export class ClassComponent implements OnInit {
+  // @Input() perspective: string
+
   @ViewChild('tabGroup') tabGroup: MatTabGroup;
   @ViewChild('classInfoForm') classInfoForm: NgForm;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -86,7 +90,9 @@ export class ClassComponent implements OnInit {
     Limit: 5,
     OrderBy: 'ClassId',
     OrderByDescending: true,
-    AllRecords: false
+    AllRecords: false,
+    SearchTerm:null
+
   };
   classInfo: ClassInfoModel = {
     ClassId: 0,
@@ -103,11 +109,15 @@ export class ClassComponent implements OnInit {
     public dialog: MatDialog,
     private classService: ClassService,
     private snackBar: MatSnackbarComponent,
-    private exportAsService: ExportAsService
+    private exportAsService: ExportAsService,
+    private data: GlobalService
   ) { }
 
   ngOnInit(): void {
-    this.getAllClasses();
+    this.data.searchTerm.subscribe((searchTerm: string) => {
+      this.baseRequest.SearchTerm = searchTerm;
+      this.getAllClasses();
+    });
     this.getClassheaders();
   }
 
@@ -178,6 +188,21 @@ export class ClassComponent implements OnInit {
     })
   }
 
+  confirmRemoveResult(index, data): void {
+    const message = `Are you sure you want to remove the result?`;
+    const dialogData = new ConfirmDialogModel("Confirm Action", message);
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      this.result = dialogResult;
+      if (this.result) {
+         this.deleteClassResult(data,index)
+      }
+    });
+
+  }
   showSplitClass() {
     var data = {
       splitNumber: this.classInfo.SplitNumber,
@@ -409,6 +434,18 @@ export class ClassComponent implements OnInit {
 
     })
   }
+  deleteClassResult(id, index) {
+    this.loading = true;
+    this.classService.deleteClassResult(id).subscribe(response => {
+      this.loading = false;
+     this.getClassResult(this.classInfo.ClassId);
+      this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
+    }, error => {
+      this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
+      this.loading = false;
+
+    })
+  }
   getNext(event) {
     this.resetForm();
     this.baseRequest.Page = (event.pageIndex) + 1;
@@ -561,16 +598,16 @@ pdfCallbackFn (pdf: any) {
  savePDF(): void {
   let content=this.content.nativeElement;
   let doc = new jsPDF("p", "mm", "a4") as jsPDFWithPlugin;
-   doc.setFontSize(10);
+    doc.setFontSize(10);
   // doc.setFontType("bold");
-  doc.text('Class Name :', 10, 10).setFontType("Bold");
-  doc.text(this.classInfo.Name,35, 10).setFontType("Arial");
+  doc.text('Class Name :', 10, 10);
+  doc.text(this.classInfo.Name,35, 10);
 
-  doc.text('Class Number :', 10, 20).setFontType("Bold");
-  doc.text(this.classInfo.ClassNumber,35, 20).setFontType("Arial");
+  doc.text('Class Number :', 10, 15);
+  doc.text(this.classInfo.ClassNumber,35, 15)
 
-  doc.text('Age Group :', 10, 30).setFontType("Bold");
-  doc.text(this.classInfo.AgeGroup,35, 30).setFontType("Arial");
+  doc.text('Age Group :', 10, 20);
+  doc.text(this.classInfo.AgeGroup,35, 20);
 
 
  doc.autoTable({
@@ -587,26 +624,8 @@ pdfCallbackFn (pdf: any) {
           { header: 'Amount Due', dataKey: 'AmountDue' }
 
       ],
-})
-
-
-
-  // let _elementHandlers =
-  // {
-  //   '#editor':function(element,renderer){
-  //     return true;
-  //   }
-  // };
-  // doc.fromHTML(content.innerHTML,2,2,{
-
-  //   'width':1,
-  //   'elementHandlers':_elementHandlers
-  // });
-
-  doc.save('test.pdf');
-
-
-
+      margin: { vertical: 35,horizontal:10 }})
+  doc.save('ClassResult.pdf');
 }
 
 confirmDownload(): void {
@@ -626,9 +645,9 @@ confirmDownload(): void {
 
 }
 
-
 print() {
-  let printContents, popupWin, gridTableDesc,printbutton;
+  let printContents, popupWin, gridTableDesc,printbutton,hideRow;
+  hideRow=document.getElementById('classEntries').hidden=true;
   gridTableDesc=document.getElementById('gridTableDescPrint').style.display = "block";
   printbutton = document.getElementById('inputprintbutton').style.display = "none";
   printContents = document.getElementById('print-entries').innerHTML;
@@ -758,10 +777,12 @@ table.pdfTable tbody tr td{
   );
   gridTableDesc=document.getElementById('gridTableDescPrint').style.display = "none";
   printbutton = document.getElementById('inputprintbutton').style.display = "inline-block";
+  hideRow=document.getElementById('classEntries').hidden=false;
   popupWin.document.close();
 }
 printResult() {
-  let printContents, popupWin, gridTableSection,printbutton;
+  let printContents, popupWin, gridTableSection,printbutton,hideRow;
+  hideRow=document.getElementById('addResultRow').hidden=true;
   gridTableSection=document.getElementById('gridTableSectionPrint').style.display = "block";
   printbutton = document.getElementById('inputprintbutton2').style.display = "none";
   printContents = document.getElementById('print-section').innerHTML;
@@ -889,6 +910,9 @@ table.pdfTable tbody tr td{
   );
   gridTableSection=document.getElementById('gridTableSectionPrint').style.display = "none";
   printbutton = document.getElementById('inputprintbutton2').style.display = "inline-block";
+  hideRow=document.getElementById('addResultRow').hidden=false;
+
   popupWin.document.close();
 }
+
 }

@@ -3,6 +3,7 @@ export interface BaseRecordFilterRequest{
     Limit: number,
     OrderBy: string,
     OrderByDescending: boolean,
-    AllRecords: boolean
+    AllRecords: boolean,
+    SearchTerm:string
 }
 

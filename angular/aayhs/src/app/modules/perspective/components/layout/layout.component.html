@@ -1,4 +1,4 @@
-<app-header [title]="title"></app-header>
+<app-header [title]="title" #appHeader></app-header>
 <div class="mainContent">
     <div class="whiteBg">
         <div class="container">
@@ -7,7 +7,7 @@
                     <app-sidebar ></app-sidebar>
                 </div>
                 <div class="col-md-9">
-                    <router-outlet></router-outlet>
+                    <router-outlet ></router-outlet>
                 </div>
             </div>
         </div>

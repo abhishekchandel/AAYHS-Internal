@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { BaseRecordFilterRequest } from 'src/app/core/models/base-record-filter-request-model';
-import { MatSnackbarComponent } from 'src/app/shared/ui/mat-snackbar/mat-snackbar/mat-snackbar.component';
+import { MatSnackbarComponent } from '../../../../shared/ui/mat-snackbar/mat-snackbar.component'
 import { MatDialog,MatDialogConfig } from '@angular/material/dialog';
 import { GroupService } from 'src/app/core/services/group.service';
-import { ConfirmDialogComponent, ConfirmDialogModel } from 'src/app/shared/ui/modals/confirmation-modal/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent, ConfirmDialogModel } from'../../../../shared/ui/modals/confirmation-modal/confirm-dialog.component';
 
 
 
@@ -38,7 +38,9 @@ export class GroupComponent implements OnInit {
     Limit: 5,
     OrderBy: 'GroupId',
     OrderByDescending: true,
-    AllRecords: false
+    AllRecords: false,
+    SearchTerm:null
+
   }
   currentDate = new Date();
   cutOffDate = new Date();

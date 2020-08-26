@@ -45,8 +45,7 @@ namespace AAYHS.API.Controllers
             _mainResponse = _exhibitorService.GetAllExhibitors(filterRequest); 
               _jsonString = Mapper.Convert<ExhibitorListResponse> (_mainResponse);
             return new OkObjectResult(_jsonString);
-        }
-      
+        }   
         /// <summary>
         /// This API is used to get  Exhibitor by Exhibitor id.
         /// </summary>
@@ -59,7 +58,6 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<ExhibitorListResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
-
         /// <summary>
         /// This API is used to add/update new  Exhibitor.
         /// </summary>
@@ -73,8 +71,6 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
-
-
         /// <summary>
         /// This API is used to delete existing Exhibitor.
         /// </summary>
@@ -118,11 +114,11 @@ namespace AAYHS.API.Controllers
         /// </summary>
         /// <param name="exhibitorId"></param>
         /// <returns></returns>
-        [HttpGet]
-        public ActionResult DeleteExhibitorHorse(int exhibitorId)
+        [HttpDelete]
+        public ActionResult DeleteExhibitorHorse(int exhibitorHorseId)
         {
             string actionBy = User.Identity.Name;
-            _mainResponse = _exhibitorService.DeleteExhibitorHorse(exhibitorId, actionBy);
+            _mainResponse = _exhibitorService.DeleteExhibitorHorse(exhibitorHorseId, actionBy);
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
@@ -136,6 +132,31 @@ namespace AAYHS.API.Controllers
         {
             _mainResponse = _exhibitorService.GetAllHorses();
             _jsonString = Mapper.Convert<GetExhibitorHorsesList>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to get selected horse detail
+        /// </summary>
+        /// <param name="horseId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetHorseDetail(int horseId)
+        {
+            _mainResponse = _exhibitorService.GetHorseDetail(horseId);
+            _jsonString = Mapper.Convert<GetHorses>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to add horses for the exhibitor
+        /// </summary>
+        /// <param name="addExhibitorHorseRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult AddExhibitorHorse(AddExhibitorHorseRequest addExhibitorHorseRequest)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _exhibitorService.AddExhibitorHorse(addExhibitorHorseRequest, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
     }

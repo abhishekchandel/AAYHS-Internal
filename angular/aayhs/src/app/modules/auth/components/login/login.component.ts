@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm, NgModel } from '@angular/forms';
-import { MatSnackbarComponent } from '../../../../shared/ui/mat-snackbar/mat-snackbar/mat-snackbar.component';
+import { MatSnackbarComponent } from '../../../../shared/ui/mat-snackbar/mat-snackbar.component';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
 import { LocalStorageService } from '../../../../core/services/local-storage.service';

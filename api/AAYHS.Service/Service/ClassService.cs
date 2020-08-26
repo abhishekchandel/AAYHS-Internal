@@ -443,7 +443,7 @@ namespace AAYHS.Service.Service
         public MainResponse UpdateClassResult(UpdateClassResult updateClassResult,string actionBy)
         {
             var result = _resultRepository.GetSingle(x => x.ResultId == updateClassResult.ResultId && x.IsActive == true && x.IsDeleted == false);
-            if (result!=null)
+            if (result!=null && result.ResultId>0)
             {
                 result.Placement = updateClassResult.Place;
                 result.ExhibitorId = updateClassResult.ExhibitorId;
@@ -452,13 +452,17 @@ namespace AAYHS.Service.Service
                 _resultRepository.Update(result);
                 _mainResponse.Message = Constants.RESULT_UPDATED;
                 _mainResponse.Success = true;
+            }else
+            {
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+                _mainResponse.Success = false;
             }
             return _mainResponse;
         }
         public MainResponse DeleteClassResult(int resultId,string actionBy)
         {
             var result = _resultRepository.GetSingle(x => x.ResultId == resultId && x.IsActive == true && x.IsDeleted == false);
-            if (result!=null)
+            if (result!=null && result.ResultId>0)
             {
                 result.IsDeleted = true;
                 result.DeletedDate = DateTime.Now;
@@ -466,6 +470,11 @@ namespace AAYHS.Service.Service
                 _resultRepository.Update(result);
                 _mainResponse.Message = Constants.RESULT_DELETED;
                 _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+                _mainResponse.Success = false;
             }
             return _mainResponse;
         }

@@ -3,10 +3,11 @@ import { MatDialog } from '@angular/material/dialog';
 import {FinancialTransactionsComponent} from '../../../../shared/ui/modals/financial-transactions/financial-transactions.component'
 import {ExhibitorService } from '../../../../core/services/exhibitor.service';
 import { BaseRecordFilterRequest } from '../../../../core/models/base-record-filter-request-model'
-import { ConfirmDialogComponent, ConfirmDialogModel } from'../../../../shared/ui/modals/confirmation-modal/confirm-dialog/confirm-dialog.component';
-import { MatSnackbarComponent } from '../../../../shared/ui/mat-snackbar/mat-snackbar/mat-snackbar.component'
+import { ConfirmDialogComponent, ConfirmDialogModel } from'../../../../shared/ui/modals/confirmation-modal/confirm-dialog.component';
+import { MatSnackbarComponent } from '../../../../shared/ui/mat-snackbar/mat-snackbar.component'
 import {ExhibitorInfoModel} from '../../../../core/models/exhibitor-model'
 import { MatTabGroup } from '@angular/material/tabs'
+import {GlobalService} from '../../../../core/services/global.service'
 
 import { NgForm } from '@angular/forms';
 
@@ -20,7 +21,7 @@ export class ExhibitorComponent implements OnInit {
   @ViewChild('tabGroup') tabGroup: MatTabGroup;
   @ViewChild('exhibitorInfoForm') exhibitorInfoForm: NgForm;
 
- 
+  searchTerm:string;
   maxyear: any;
   minyear:any;
   result: string = '';
@@ -40,7 +41,8 @@ export class ExhibitorComponent implements OnInit {
     Limit: 5,
     OrderBy: 'ExhibitorId',
     OrderByDescending: true,
-    AllRecords: false
+    AllRecords: false,
+    SearchTerm:null
   };
   
   exhibitorInfo:ExhibitorInfoModel={
@@ -65,12 +67,16 @@ export class ExhibitorComponent implements OnInit {
   constructor(
             public dialog: MatDialog,
             private exhibitorService: ExhibitorService,
-            private snackBar: MatSnackbarComponent
+            private snackBar: MatSnackbarComponent,
+            private data: GlobalService
             ) { }
 
   ngOnInit(): void {
-    this.getAllExhibitors();
-    this.getAllStates();
+    this.data.searchTerm.subscribe((searchTerm: string) => {
+      this.baseRequest.SearchTerm = searchTerm;
+      this.getAllExhibitors();
+
+    });    this.getAllStates();
     this.getAllGroups();
     this.setYears();
   }

@@ -240,7 +240,7 @@
 
 
 
-													<tr>
+													<tr id="classEntries">
 														<td colspan="2">
 															<select class="dynDataSeclect" name="exhibitor" required
 																[(ngModel)]="exhibitorId" #exhibitorControl="ngModel"
@@ -307,12 +307,16 @@
 											class="table table-bordered tableBodyScroll pdfTable">
 											<tbody>
 												<tr>
-													<td><span class="blueBox"></span><b>Class Number:</b>
-														{{classInfo.ClassNumber}} </td>
-													<td><span class="blueBox"></span><b>Class Name:</b>
-														{{classInfo.Name}}</td>
-													<td><span class="blueBox"></span><b>Class Age Group:</b>
-														{{classInfo.AgeGroup}}</td>
+													<td><span class="blueBox"></span><b>Class Number:</b></td>
+														<td>{{classInfo.ClassNumber}} </td>																										
+												</tr>
+												<tr>
+													<td><span class="blueBox"></span><b>Class Name:</b></td>
+														<td>{{classInfo.Name}}</td>
+												</tr>
+												<tr>
+													<td><span class="blueBox"></span><b>Class Age Group:</b></td>
+														<td>{{classInfo.AgeGroup}}</td>
 												</tr>
 											</tbody>
 										</table>
@@ -321,12 +325,13 @@
 												<tr>
 													<th>Result</th>
 													<th>Back No</th>
-													<th>Exhibitor Name</th>
+													<th>Name</th>
 													<th>Birth Year</th>
 													<th>Horse Name</th>
 													<th>City, St. Zip</th>
 													<th>Amount paid</th>
 													<th>Amount Due</th>
+													<th>Remove</th>
 												</tr>
 											</thead>
 											<perfect-scrollbar class="nicescrollBar-2">
@@ -341,9 +346,15 @@
 														<td data-label="City, St. Zip">{{result.Address}}</td>
 														<td data-label="Amount paid">{{result.AmountPaid}}</td>
 														<td data-label="Amount Due">{{result.AmountDue}}</td>
+														<td data-label="Remove">
+															 <button (click)="confirmRemoveResult(i,result.ResultId)" type="button" class="icon">
+															<span></span> <i class="fa fa-trash-o"
+																aria-hidden="true"></i>
+														</button>
+													</td>
 													</tr>
 
-													<tr>
+													<tr id="addResultRow">
 														<td *ngIf="showPosition">
 															{{initialPostion +ordinal_suffix_of(initialPostion)}}
 														</td>
@@ -373,6 +384,7 @@
 														<td>{{exhibitorInfo.Address}}</td>
 														<td>{{exhibitorInfo.AmountPaid}}</td>
 														<td>{{exhibitorInfo.AmountDue}}</td>
+														<td></td>
 													</tr>
 
 												</tbody>

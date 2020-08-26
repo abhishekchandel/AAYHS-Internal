@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatSnackbarComponent } from '../../../../shared/ui/mat-snackbar/mat-snackbar/mat-snackbar.component'
+import { MatSnackbarComponent } from '../../mat-snackbar/mat-snackbar.component'
 
 @Component({
   selector: 'app-add-split-class-modal',

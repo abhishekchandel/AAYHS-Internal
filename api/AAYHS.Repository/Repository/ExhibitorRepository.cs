@@ -56,6 +56,12 @@ namespace AAYHS.Repository.Repository
                                   }).ToList();
             if (exhibitorResponses.Count() > 0)
             {
+                if (filterRequest.SearchTerm!=null && filterRequest.SearchTerm!="")
+                {
+                    exhibitorResponses = exhibitorResponses.Where(x => Convert.ToString(x.ExhibitorId).Contains(filterRequest.SearchTerm) ||
+                                         x.FirstName.ToLower().Contains(filterRequest.SearchTerm.ToLower()) || x.LastName.ToLower().Contains(filterRequest.SearchTerm.ToLower()) ||
+                                         Convert.ToString(x.BirthYear).Contains(filterRequest.SearchTerm));
+                }
                 var propertyInfo = typeof(ExhibitorResponse).GetProperty(filterRequest.OrderBy);
                 if (filterRequest.OrderByDescending == true)
                 {
@@ -177,18 +183,16 @@ namespace AAYHS.Repository.Repository
             ExhibitorHorsesResponse exhibitorHorsesResponse = new ExhibitorHorsesResponse();
 
             exhibitorHorses = (from exhibitorHorse in _context.ExhibitorHorse
-                               join horse in _context.Horses on exhibitorHorse.HorseId equals horse.HorseId
-                               join exhibitor in _context.Exhibitors on exhibitorHorse.ExhibitorId equals exhibitor.ExhibitorId
+                               join horse in _context.Horses on exhibitorHorse.HorseId equals horse.HorseId                              
                                where exhibitorHorse.IsActive == true && exhibitorHorse.IsDeleted == false
-                               && horse.IsActive == true && horse.IsDeleted == false
-                               && exhibitor.IsActive==true && exhibitor.IsDeleted==false
+                               && horse.IsActive == true && horse.IsDeleted == false                               
                                && exhibitorHorse.ExhibitorId == exhibitorId
                                select new ExhibitorHorses 
                                { 
                                  ExhibitorHorseId=exhibitorHorse.ExhibitorHorseId,
                                  HorseName=horse.Name,
                                  HorseType=_context.GlobalCodes.Where(x=>x.GlobalCodeId==horse.HorseTypeId).Select(y=>y.CodeName).First(),
-                                 BackNumber= exhibitor.BackNumber
+                                 BackNumber= exhibitorHorse.BackNumber
                                });
 
             if (exhibitorHorses.Count()!=0)

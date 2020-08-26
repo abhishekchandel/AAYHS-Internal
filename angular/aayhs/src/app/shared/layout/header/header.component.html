@@ -10,7 +10,7 @@
      <div class="col-sm-6">
        <div class="headerInfo">
           <div class="search">
-            <input type="text" class="form-control" placeholder="Search"/>	
+            <input type="text" (input)="onInput($event)" #search="ngModel" [(ngModel)]="searchText" name="searchText"  class="form-control" placeholder="Search"/>	
               <span><i class="fa fa-search"></i></span>
        </div>
       <a   [routerLink]="['/login']" (click)="logoutSession()" class="logInBtn">Log off</a>

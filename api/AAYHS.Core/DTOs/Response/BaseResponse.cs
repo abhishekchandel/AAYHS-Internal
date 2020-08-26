@@ -59,6 +59,7 @@ namespace AAYHS.Core.DTOs.Response
         public AdvertisementListResponse AdvertisementListResponse { get; set; }
         public ExhibitorHorsesResponse ExhibitorHorsesResponse { get; set; }
         public GetExhibitorHorsesList GetExhibitorHorsesList { get; set; }
+        public GetHorses GetHorses { get; set; }
 
     }
    

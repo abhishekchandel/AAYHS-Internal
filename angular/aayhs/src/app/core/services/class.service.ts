@@ -91,4 +91,7 @@ export class ClassService {
     return this.http.get<any>(`${this.api}CommonAPI/GetGlobalCode?categoryName=ClassHeaderType`);
   }
 
+  deleteClassResult(id:number){
+    return this.http.delete<any>(`${this.api}ClassAPI/DeleteClassResult?resultId=${id}`);
+  }
 }

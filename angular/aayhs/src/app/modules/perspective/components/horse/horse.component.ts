@@ -1,12 +1,13 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
-import { MatSnackbarComponent } from '../../../../shared/ui/mat-snackbar/mat-snackbar/mat-snackbar.component'
+import { MatSnackbarComponent } from '../../../../shared/ui/mat-snackbar/mat-snackbar.component'
 import {HorseService } from '../../../../core/services/horse.service';
 import { BaseRecordFilterRequest } from '../../../../core/models/base-record-filter-request-model'
 import {  HorseInfoModel } from '../../../../core/models/horse-model'
 import { MatTabGroup } from '@angular/material/tabs'
 import { NgForm } from '@angular/forms';
-import { ConfirmDialogComponent, ConfirmDialogModel } from'../../../../shared/ui/modals/confirmation-modal/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent, ConfirmDialogModel } from'../../../../shared/ui/modals/confirmation-modal/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import {GlobalService} from '../../../../core/services/global.service'
 
 
 @Component({
@@ -53,16 +54,22 @@ export class HorseComponent implements OnInit {
     Limit: 5,
     OrderBy: 'HorseId',
     OrderByDescending: true,
-    AllRecords: false
+    AllRecords: false,
+    SearchTerm:null
+
   };
 
 
   constructor(private snackBar: MatSnackbarComponent,
               private horseService: HorseService,
-              public dialog: MatDialog,) { }
+              public dialog: MatDialog,
+              private data: GlobalService) { }
 
   ngOnInit(): void {
-    this.getAllHorses();
+    this.data.searchTerm.subscribe((searchTerm: string) => {
+      this.baseRequest.SearchTerm = searchTerm;
+      this.getAllHorses();
+    });
     this.getAllGroups();
     this.getHorseType();
     this.getJumpHeight();
