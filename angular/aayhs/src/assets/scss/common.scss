@@ -1801,3 +1801,12 @@ span{
     }
 }
 
+// table action button
+.ng-star-inserted {
+    .fa-times-circle {
+        color: #7b1124;
+    }
+    .fa-edit:before {
+        color: #273992;
+    }
+}

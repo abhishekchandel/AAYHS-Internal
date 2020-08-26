@@ -335,7 +335,7 @@
 											<perfect-scrollbar class="nicescrollBar-2">
 												<tbody>
 													<tr *ngFor="let result of resultResponse;let i=index">
-														<td  data-label="Result" *ngIf="updatemode==false && updateRowIndex!=i">
+														<td  data-label="Result" *ngIf="updatemode==false || (updatemode==true && updateRowIndex!=i)">
 															{{result.Place +ordinal_suffix_of(result.Place)}}
 														</td>
 														<td *ngIf="updatemode==true && updateRowIndex==i"> 
@@ -343,7 +343,7 @@
 														</td>
 
 
-														<td data-label="Back No" *ngIf="updatemode==false && updateRowIndex!=i">{{result.BackNumber}}</td>
+														<td data-label="Back No" *ngIf="updatemode==false || (updatemode==true && updateRowIndex!=i)">{{result.BackNumber}}</td>
 
 														<td  *ngIf="updatemode==true && updateRowIndex==i">
 															<select class="dynDataSeclect" name="backNumberEdit" required
@@ -356,35 +356,35 @@
 															</option>
 														</select>	
 														</td>
-														<td *ngIf="!showEditInfo" data-label="Exhibitor Name">{{result.ExhibitorName}}</td>
-														<td *ngIf="showEditInfo" data-label="Exhibitor Name">{{editExhibitorInfo.ExhibitorName}}</td>
+														<td *ngIf="!showEditInfo || (updatemode==true && updateRowIndex!=i)" data-label="Exhibitor Name">{{result.ExhibitorName}}</td>
+														<td *ngIf="showEditInfo && updatemode==true && updateRowIndex==i" data-label="Exhibitor Name">{{editExhibitorInfo.ExhibitorName}}</td>
 
 
-														<td *ngIf="!showEditInfo" data-label="Birth Year">{{result.BirthYear}}</td>
-														<td *ngIf="showEditInfo" data-label="Birth Year">{{editExhibitorInfo.BirthYear}}</td>
+														<td *ngIf="!showEditInfo || (updatemode==true && updateRowIndex!=i)" data-label="Birth Year">{{result.BirthYear}}</td>
+														<td *ngIf="showEditInfo && updatemode==true && updateRowIndex==i" data-label="Birth Year">{{editExhibitorInfo.BirthYear}}</td>
 
 
-														<td *ngIf="!showEditInfo" data-label="Horse Name">{{result.HorseName}}</td>
-														<td *ngIf="showEditInfo" data-label="Horse Name">{{editExhibitorInfo.HorseName}}</td>
+														<td *ngIf="!showEditInfo || (updatemode==true && updateRowIndex!=i)" data-label="Horse Name">{{result.HorseName}}</td>
+														<td *ngIf="showEditInfo && updatemode==true && updateRowIndex==i" data-label="Horse Name">{{editExhibitorInfo.HorseName}}</td>
 
 
-														<td *ngIf="!showEditInfo" data-label="City, St. Zip">{{result.Address}}</td>
-														<td *ngIf="showEditInfo" data-label="City, St. Zip">{{editExhibitorInfo.Address}}</td>
+														<td *ngIf="!showEditInfo || (updatemode==true && updateRowIndex!=i)" data-label="City, St. Zip">{{result.Address}}</td>
+														<td *ngIf="showEditInfo && updatemode==true && updateRowIndex==i" data-label="City, St. Zip">{{editExhibitorInfo.Address}}</td>
 
 
-														<td *ngIf="!showEditInfo" data-label="Amount paid">{{result.AmountPaid}}</td>
-														<td *ngIf="showEditInfo" data-label="Amount paid">{{editExhibitorInfo.AmountPaid}}</td>
+														<td *ngIf="!showEditInfo || (updatemode==true && updateRowIndex!=i)" data-label="Amount paid">{{result.AmountPaid}}</td>
+														<td *ngIf="showEditInfo &&  updatemode==true && updateRowIndex==i" data-label="Amount paid">{{editExhibitorInfo.AmountPaid}}</td>
 
 
-														<td *ngIf="!showEditInfo" data-label="Amount Due">{{result.AmountDue}}</td>
-														<td *ngIf="showEditInfo" data-label="Amount Due">{{editExhibitorInfo.AmountDue}}</td>
+														<td *ngIf="!showEditInfo || (updatemode==true && updateRowIndex!=i)" data-label="Amount Due">{{result.AmountDue}}</td>
+														<td *ngIf="showEditInfo && updatemode==true && updateRowIndex==i" data-label="Amount Due">{{editExhibitorInfo.AmountDue}}</td>
 
 
 														<td data-label="Update" class="non-print-element">
                                                             <button
                                                                 *ngIf="updatemode==false  || (updatemode==true && updateRowIndex!=i)"
                                                                 type="button" class="icon"
-                                                                (click)="editResult(i)">
+                                                                (click)="editResult(i,result)">
                                                                 <span></span> <i class="fa fa-edit"
                                                                     aria-hidden="true"></i>
                                                             </button>
@@ -395,7 +395,7 @@
                                                             </button>
                                                             <button *ngIf="updatemode==true && updateRowIndex==i"
                                                                 type="button" class="icon"
-                                                                (click)="cancelEdit(i)"><i class="fa fa-times-circle" aria-hidden="true"></i>
+                                                                (click)="cancelEdit()"><i class="fa fa-times-circle" aria-hidden="true"></i>
                                                             </button>
 
                                                         </td>
