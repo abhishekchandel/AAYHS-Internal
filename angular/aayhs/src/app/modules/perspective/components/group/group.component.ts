@@ -14,9 +14,9 @@ import { MatTable } from '@angular/material/table'
 import { MatTableDataSource } from '@angular/material/table/table-data-source';
 import { GroupInformationViewModel } from 'src/app/core/models/group-model';
 
-
 import PerfectScrollbar from 'perfect-scrollbar';
 import { StallComponent } from '../stall/stall.component';
+import { GlobalService } from 'src/app/core/services/global.service';
 
 
 @Component({
@@ -73,7 +73,6 @@ FinancialsTimeFrameTypeId:number=null;
 FinancialsAmount:number=null;
 UpdatedFinancialAmount:number=null;
 
-
   enablePagination: boolean = true;
   sortColumn: string = "";
   reverseSort: boolean = false;
@@ -103,10 +102,14 @@ UpdatedFinancialAmount:number=null;
   }
   constructor(private groupService: GroupService,
     private dialog: MatDialog,
-    private snackBar: MatSnackbarComponent
+    private snackBar: MatSnackbarComponent,
+    private data: GlobalService
   ) { }
   ngOnInit(): void {
-    this.getAllGroups();
+    this.data.searchTerm.subscribe((searchTerm: string) => {
+      this.baseRequest.SearchTerm = searchTerm;
+      this.getAllGroups();
+    });
     this.getAllStates();
     this.getAllTimeFrameTypes();
   }
@@ -187,7 +190,6 @@ UpdatedFinancialAmount:number=null;
        this.loading = false;
      })
    }
-
 
   AddUpdateGroup=(group)=>{
     
@@ -346,8 +348,6 @@ this.PrePostTotal= this.PreTotal+this.PostTotal;
         this.updatemode=false;
      })
     }
-
- 
 
 setFinancialsFeeType(id){
   this.FinancialsFeeTypeId=Number(id);

@@ -97,6 +97,13 @@ namespace AAYHS.Repository.Repository
 
             if (GroupResponses.Count() > 0)
             {
+
+                if (request.SearchTerm != null && request.SearchTerm != "")
+                {
+                    GroupResponses = GroupResponses.Where(x => Convert.ToString(x.GroupId).ToLower().Contains(request.SearchTerm)
+                    || x.GroupName.ToLower().Contains(request.SearchTerm.ToLower()));
+                                     
+                }
                 var propertyInfo = typeof(GroupResponse).GetProperty(request.OrderBy);
                 if (request.OrderByDescending == true)
                 {

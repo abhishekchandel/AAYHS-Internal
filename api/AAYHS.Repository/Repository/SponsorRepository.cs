@@ -92,6 +92,11 @@ namespace AAYHS.Repository.Repository
            
             if (sponsorResponses.Count() > 0)
             {
+                if (request.SearchTerm != null && request.SearchTerm != "")
+                {
+                    sponsorResponses = sponsorResponses.Where(x => Convert.ToString(x.SponsorId).ToLower().Contains(request.SearchTerm) 
+                    || x.SponsorName.ToLower().Contains(request.SearchTerm.ToLower()));
+                }
                 var propertyInfo = typeof(SponsorResponse).GetProperty(request.OrderBy);
                 if (request.OrderByDescending == true)
                 {

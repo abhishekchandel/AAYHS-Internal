@@ -13,6 +13,7 @@ import { MatTableDataSource } from '@angular/material/table/table-data-source';
 import { BaseRecordFilterRequest } from '../../../../core/models/base-record-filter-request-model'
 import { SponsorViewModel } from '../../../../core/models/sponsor-model'
 import PerfectScrollbar from 'perfect-scrollbar';
+import {GlobalService} from '../../../../core/services/global.service'
 
 @Component({
   selector: 'app-sponsor',
@@ -64,7 +65,6 @@ export class SponsorComponent implements OnInit {
   SponsorTypes:any
   selectedSponsorId:number=0;
 
-
   exhibitorId: number = null;
   sponsortypeId:number=null;
   typeId:string=null;
@@ -72,8 +72,6 @@ export class SponsorComponent implements OnInit {
   showAds=false;
   showClasses=false;
   typeList:any=[];
-  
-
 
   sponsorExhibitorRequest: any={
     SponsorExhibitorId: null,
@@ -96,30 +94,23 @@ export class SponsorComponent implements OnInit {
     AllRecords: false,
     SearchTerm:null
   }
-  adsBaseRequest: BaseRecordFilterRequest = {
-    Page: 1,
-    Limit: 20,
-    OrderBy: 'AdvertisementId',
-    OrderByDescending: true,
-    AllRecords: true,
-    SearchTerm:null
-
-  }
 
   sponsors: SponsorInformationViewModel[];
 
   constructor(private sponsorService: SponsorService,
-    private advertisementService: AdvertisementService,
     private dialog: MatDialog,
-    private snackBar: MatSnackbarComponent
+    private snackBar: MatSnackbarComponent,
+    private data: GlobalService
   ) { }
 
 
 
   ngOnInit(): void {
-    this.getAllSponsors();
+    this.data.searchTerm.subscribe((searchTerm: string) => {
+      this.baseRequest.SearchTerm = searchTerm;
+      this.getAllSponsors();
+    });
     this.getAllStates();
-   // this.GetAllAdvertisements()
   }
 
   
@@ -132,7 +123,6 @@ export class SponsorComponent implements OnInit {
       {
      this.sponsorsList = response.Data.sponsorResponses;
      this.totalItems = response.Data.TotalRecords;
-    // this.resetForm();
       }
       this.loading = false;
     }, error => {
@@ -216,22 +206,7 @@ export class SponsorComponent implements OnInit {
     
   }
 
-  // GetAllAdvertisements(){
-  //   this.adsBaseRequest.OrderBy = "AdvertisementId";
-  //   this.adsBaseRequest.OrderByDescending = true;
-  //   this.adsBaseRequest.AllRecords=true;
-  //   this.advertisementsList=null;
-    
-  //   this.advertisementService.getAllAdvertisements(this.adsBaseRequest).subscribe(response=>{ 
-  //     if(response.Data!=null && response.Data.TotalRecords>0)
-  //     {
-        
-  //     this.advertisementsList = response.Data.advertisementResponses;
-  //     this.setSponsorType(this.sponsortypeId)
-  //     }
-  //   },error=>{
-  //   })
-  // }
+  
 
 
   AddUpdateSponsor=(sponsor)=>{
@@ -241,13 +216,6 @@ export class SponsorComponent implements OnInit {
     this.sponsorInfo.AmountReceived=this.sponsorInfo.AmountReceived==null ?0:this.sponsorInfo.AmountReceived;
     this.sponsorService.addUpdateSponsor(this.sponsorInfo).subscribe(response=>{
      this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
-    
-      // this.baseRequest.Page= 1,
-      // this.baseRequest.Limit= 5,
-      // this.baseRequest.OrderBy= 'SponsorId',
-      // this.baseRequest.OrderByDescending= true,
-      // this.baseRequest.AllRecords= false
-    
      this.getAllSponsors().then(res =>{ 
       if(response.Data.NewId !=null && response.Data.NewId>0)
       {
@@ -339,13 +307,6 @@ export class SponsorComponent implements OnInit {
       {
         this.showClasses=false;
         this.showAds=true;
-        // this.advertisementsList.forEach((data) => { 
-        //   var listdata:TypesList={
-        //    Id:data.AdvertisementId,
-        //    Name:data.Name
-        //   }
-        //    this.typeList.push(listdata)
-        //  })  
       }
     }
   }
