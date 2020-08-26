@@ -201,9 +201,9 @@
 															[ngClass]="getEntriesSort('BirthYear')"></span></th>
 													<th>Amount Paid</th>
 													<th>Amount Due</th>
-													<th (click)="sortEntriesData('Scratch')">Scratch <span
+													<th (click)="sortEntriesData('Scratch')" class="non-print-element">Scratch <span
 															[ngClass]="getEntriesSort('Scratch')"></span></th>
-													<th>Remove</th>
+													<th class="non-print-element">Remove</th>
 												</tr>
 											</thead>
 											<perfect-scrollbar class="nicescrollBar-2">
@@ -218,7 +218,7 @@
 														<td data-label="Birth Year">{{entry.BirthYear}}</td>
 														<td data-label="Amount Paid">{{entry.AmountPaid}}</td>
 														<td data-label="Amount Due">{{entry.AmountDue}}</td>
-														<td data-label="Scratch">
+														<td data-label="Scratch" class="non-print-element">
 															<div class="scratchimage"
 																(click)="confirmScratch(i,!entry.Scratch,entry.ExhibitorClassId)">
 																<img class="non-print-element" [src]="entry.Scratch===true ? 'assets/images/sizzer-icon.png' : 'assets/images/sizzer-icon-1.png'">
@@ -226,7 +226,7 @@
 															</div>
 														</td>
 
-														<td data-label="Remove">
+														<td data-label="Remove" class="non-print-element">
 															<div [ngClass]="icon"
 																(click)="confirmRemoveExhibitor(i,entry.ExhibitorClassId)">
 																<img class="actionButton non-print-element" src='assets/images/delete-icon.png' alt="image" />
@@ -307,17 +307,14 @@
 											class="table table-bordered tableBodyScroll pdfTable">
 											<tbody>
 												<tr>
-													<td><span class="blueBox"></span><b>Class Number:</b></td>
-														<td>{{classInfo.ClassNumber}} </td>																										
-												</tr>
-												<tr>
-													<td><span class="blueBox"></span><b>Class Name:</b></td>
-														<td>{{classInfo.Name}}</td>
-												</tr>
-												<tr>
-													<td><span class="blueBox"></span><b>Class Age Group:</b></td>
-														<td>{{classInfo.AgeGroup}}</td>
-												</tr>
+													<td><span class="blueBox"></span><b>Class Number:</b>
+														{{classInfo.ClassNumber}}</td>
+													<td><span class="blueBox"></span><b>Class Name:</b>
+														{{classInfo.Name}}</td>
+													<td><span class="blueBox"></span><b>Class Age Group:</b>
+														{{classInfo.AgeGroup}}</td>																									
+												</tr>												
+												
 											</tbody>
 										</table>
 										<table id="results" class="table table-bordered tableBodyScroll pdfdataTable">
@@ -331,8 +328,8 @@
 													<th>City, St. Zip</th>
 													<th>Amount paid</th>
 													<th>Amount Due</th>
-													<th>Update</th>
-													<th>Remove</th>
+													<th class="non-print-element">Update</th>
+													<th class="non-print-element">Remove</th>
 												</tr>
 											</thead>
 											<perfect-scrollbar class="nicescrollBar-2">
@@ -383,7 +380,7 @@
 														<td *ngIf="showEditInfo" data-label="Amount Due">{{editExhibitorInfo.AmountDue}}</td>
 
 
-														<td data-label="Update">
+														<td data-label="Update" class="non-print-element">
                                                             <button
                                                                 *ngIf="updatemode==false  || (updatemode==true && updateRowIndex!=i)"
                                                                 type="button" class="icon"
@@ -394,15 +391,15 @@
 
                                                             <button [disabled]="!place || !editBackNumber" *ngIf="updatemode==true && updateRowIndex==i"
                                                                 type="button" class="icon"
-                                                                (click)="updateResult(result.ResultId)">Update
+                                                                (click)="updateResult(result.ResultId)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                             </button>
                                                             <button *ngIf="updatemode==true && updateRowIndex==i"
                                                                 type="button" class="icon"
-                                                                (click)="cancelEdit(i)">Cancel
+                                                                (click)="cancelEdit(i)"><i class="fa fa-times-circle" aria-hidden="true"></i>
                                                             </button>
 
                                                         </td>
-														<td data-label="Remove">
+														<td data-label="Remove" class="non-print-element">
 															 <button (click)="confirmRemoveResult(i,result.ResultId)" type="button" class="icon">
 															<span></span> <i class="fa fa-trash-o"
 																aria-hidden="true"></i>

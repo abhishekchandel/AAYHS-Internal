@@ -802,25 +802,24 @@ print() {
   display: block;
   width: 100%;
 }
-.pdfdataTable {
-  position: absolute;
-  top: 50px;
-  width: 98%;
-  left:0;
-  margin: 0 1%;
+
+table.pdfTable{
+  margin-bottom: 20px !important;
+  display:table;
 }
 
 table.pdfTable,table.pdfTable tbody,table.pdfTable tr {
   width:100%;
   display:table;
+  border:none;
 }
 table.pdfTable tbody tr td{
-    background-color: #a0b8f9;
-    margin: 30px 0;
-    padding: 0px 15px;
+    margin: 5px 0;
+    padding: 0px ;
     position: relative; 
-    width:33.333%;
-    display:table-cell;
+    border:none;
+    text-align:left;
+    display:block;
     
 }
 .print-element { display: block !important;}
@@ -937,27 +936,37 @@ printResult() {
   display: block;
   width: 100%;
 }
-.pdfdataTable {
-  position: absolute;
-  top: 50px;
-  width: 98%;
-  left:0;
-  margin: 0 1%;
+.fa {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
-
+table.pdfTable{
+  margin-bottom: 20px !important;
+  display:table;
+}
 table.pdfTable,table.pdfTable tbody,table.pdfTable tr {
   width:100%;
   display:table;
+  border:none;
 }
 table.pdfTable tbody tr td{
-    background-color: #a0b8f9;
-    margin: 30px 0;
-    padding: 0px 15px;
+    margin: 5px 0;
+    padding: 0px ;
     position: relative; 
-    width:33.333%;
-    display:table-cell;
+    border:none;
+    text-align:left;
+    display:block;
     
 }
+.non-print-element {display: none !important;}
+
+
+
+
  
         </style>
       </head>
