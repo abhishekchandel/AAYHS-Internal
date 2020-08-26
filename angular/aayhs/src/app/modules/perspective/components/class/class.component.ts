@@ -75,6 +75,11 @@ export class ClassComponent implements OnInit {
   resultResponse: any
   showPosition:boolean=false;
   backNumbersResponse:any;
+  updatemode=false;
+  updateRowIndex=-1;
+  place:number=null;
+  editBackNumber:number=null
+  showEditInfo=false
   exhibitorInfo={
     ExhibitorId:null,
     ExhibitorName:null,
@@ -85,6 +90,18 @@ export class ClassComponent implements OnInit {
     AmountDue:null,
     Place:null
   };
+
+  editExhibitorInfo={
+    ExhibitorId:null,
+    ExhibitorName:null,
+    BirthYear:null,
+    HorseName:null,
+    Address:null,
+    AmountPaid:null,
+    AmountDue:null,
+    Place:null
+  };
+
   baseRequest: BaseRecordFilterRequest = {
     Page: 1,
     Limit: 5,
@@ -491,13 +508,52 @@ export class ClassComponent implements OnInit {
       this.exhibitorInfo=null;
     })
   }
+
+  getEditExhibitorDetail(id){
+    var exhibitordetailRequest={
+      ClassId:this.classInfo.ClassId,
+      BackNumber:Number(id)
+    }
+    this.classService.getExhibitorDetails(exhibitordetailRequest).subscribe(response => {
+      this.editExhibitorInfo = response.Data;
+      this.showEditInfo=true
+    }, error => {
+      this.editExhibitorInfo=null;
+      this.showEditInfo=false
+
+    })
+  }
   addResult(){
     
     this.loading = true;
     var addClassResult = {
       ClassId:this.classInfo.ClassId,
       ExhibitorId:this.exhibitorInfo.ExhibitorId,
-      Place:this.initialPostion
+      Place:this.initialPostion,
+    }
+    this.classService.addResult(addClassResult).subscribe(response => {
+      this.loading = false;
+      this.getClassResult(this.classInfo.ClassId);
+      this.resultForm.resetForm({ backNumber:null});
+      this.resetExhibitorInfo();
+      this.initialPostion=1;
+      this.showPosition=false
+      this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
+
+    }, error => {
+      this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
+      this.loading = false;
+
+    })
+  }
+
+  updateResult(resultId:number){
+    this.loading = true;
+    var addClassResult = {
+      ClassId:this.classInfo.ClassId,
+      ExhibitorId:this.exhibitorInfo.ExhibitorId,
+      Place:this.place,
+      ResultId:resultId
     }
     this.classService.addResult(addClassResult).subscribe(response => {
       this.loading = false;
@@ -915,4 +971,20 @@ table.pdfTable tbody tr td{
   popupWin.document.close();
 }
 
+setPlace(data){
+  this.place=Number(data);
+}
+
+editResult( index){
+  this.updatemode=true;
+  this.updateRowIndex=index;
+}
+
+cancelEdit(index){
+  this.updatemode=false;
+  this.updateRowIndex=-1;
+  this.showEditInfo=false;
+  this.place=null;
+  this.editBackNumber=null
+}
 }

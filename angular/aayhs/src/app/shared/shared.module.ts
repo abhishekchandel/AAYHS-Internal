@@ -10,6 +10,7 @@ import { ConfirmEqualValidatorDirective } from './directives/confirm-equal-valid
 import {SearchPipe} from '../shared/filters/search.pipe'
 import { AssignStallModalComponent } from './ui/modals/assign-stall-modal/assign-stall-modal.component';
 import { FinancialTransactionsComponent } from './ui/modals/financial-transactions/financial-transactions.component';
+import { OnlynumberDirective } from './directives/only-number.directive';
 
 //All material imports here//
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -53,7 +54,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 };
 
 @NgModule({
-  declarations: [HeaderComponent, FooterComponent,SidebarComponent, MatSnackbarComponent, ConfirmDialogComponent, AddSplitClassModalComponent, ExportConfirmationModalComponent, ConfirmEqualValidatorDirective, SearchPipe, AssignStallModalComponent, FinancialTransactionsComponent],
+  declarations: [HeaderComponent, FooterComponent,SidebarComponent, MatSnackbarComponent, ConfirmDialogComponent, AddSplitClassModalComponent, ExportConfirmationModalComponent, ConfirmEqualValidatorDirective, SearchPipe, AssignStallModalComponent, FinancialTransactionsComponent, OnlynumberDirective],
   imports: [
     CommonModule,
     RouterModule,
@@ -119,6 +120,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     NgxPrintModule,
     ConfirmEqualValidatorDirective,
     SearchPipe,
+    OnlynumberDirective
     
   ],
   schemas: [
