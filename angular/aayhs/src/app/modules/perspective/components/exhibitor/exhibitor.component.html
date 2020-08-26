@@ -71,7 +71,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Back Number </label>	
-                                    <input #backNumber="ngModel" name="backNumber" pattern="(^[0-9]*$)" [(ngModel)]="exhibitorInfo.BackNumber" type="text" class="form-control" placeholder="Back Number"/>                                
+                                    <input #backNumber="ngModel" appOnlynumber name="backNumber" pattern="(^[0-9]*$)" [(ngModel)]="exhibitorInfo.BackNumber" type="text" class="form-control" placeholder="Back Number"/>                                
                                      <span class="help-block" *ngIf="backNumber.errors?.pattern">Back Number is not valid</span>
                                 </div>
                                 <div class="form-group">
