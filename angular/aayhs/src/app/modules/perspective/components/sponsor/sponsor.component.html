@@ -210,6 +210,21 @@
 
 							   <div class="card-body">  
 							   		<div class="table-responsive tableTab" id="contentscroll2">
+
+										<table id="gridTableDescPrint" style="display: none;"
+										class="table table-bordered tableBodyScroll pdfTable">
+										<tbody>
+											<tr>
+												<td><span class="blueBox"></span><b>Sponsor Id:</b>
+													{{sponsorInfo.SponsorId}} </td>
+												<td><span class="blueBox"></span><b>Sponsor Name:</b>
+													{{sponsorInfo.SponsorName}} </td>
+											</tr>
+										</tbody>
+									</table>
+
+
+
 										<table class="table table-bordered tableBodyScroll">
 										<thead>
 											<tr>
@@ -218,7 +233,7 @@
 												<th>Sponsor Type</th> 
 												<th>ID Number</th> 
 												<th>Birth Year</th>
-												<th>Remove</th> 
+												<th class="non-print-element">Remove</th> 
 											</tr>	
                                         </thead> 
 										<perfect-scrollbar class="nicescrollBar-2">
@@ -232,14 +247,16 @@
                                                     <td data-label="Sponsor Type" *ngIf="list.SponsorTypeId==4">Patron</td>
                                                     <td data-label="ID Number">{{list.IdNumber}}</td>
                                                     <td data-label="Birth Year">{{list.BirthYear}}</td>
-													<td data-label="Remove">
+													<td data-label="Remove"
+													 class="non-print-element">
 														<button class="icon" 
 														(click)="confirmRemoveExhibitor($event,i,list.SponsorExhibitorId)">
 														<span></span> <i class="fa fa-trash-o"
 														aria-hidden="true"></i>
 													</button></td>
 												</tr>	
-                                                <tr>
+
+                                                <tr id="sponsorExhibitorentry">
                                                     
 													<td data-label="Sponsor Exhibitor" colspan="2">
 															<select class="dynDataSeclect" name="exhibitor" required [(ngModel)]="exhibitorId"
@@ -302,7 +319,8 @@
 
                                                    
                                                     <td ></td>
-                                                </tr>
+												</tr>
+												
                                             </tbody>
                                         
 										</perfect-scrollbar>
@@ -315,6 +333,7 @@
 								<div class="actionBtn text-right mt-3 mb-3 ">
 									<button (click)='tabGroup.selectedIndex = 0' class="btn btn-red btnCss roundBtn">Previous</button>
 									<button (click)='tabGroup.selectedIndex = 2' class="btn btn-red btnCss roundBtn">Next</button>
+									<button (click)="printSponsorExhibitor()" id="inputprintbutton" type="button" class="btn btn-red btnCss">Display/Print</button>
 									<button (click)="goToLink('perspective/exhibitor')" class="btn btn-red btnCss roundBtn">+ Exhibitor</button>
 									<button type="submit" class="btn btn-red btnCss roundBtn">Submit</button>
 								</div>
@@ -330,15 +349,29 @@
 									<form #sponsorClassForm="ngForm" name="sponsorClassForm" 
 									(ngSubmit)="sponsorClassForm.valid && AddUpdateSponsorClass()">
 									<div class="card-body">    
-										<div class="table-responsive tableTab">
+										<div class="table-responsive tableTab" id="tblSponsorClasses">
+
+											<table id="gridTableDescPrint1" style="display: none;"
+											class="table table-bordered tableBodyScroll pdfTable">
+											<tbody>
+												<tr>
+													<td><span class="blueBox"></span><b>Sponsor Id:</b>
+														{{sponsorInfo.SponsorId}} </td>
+													<td><span class="blueBox"></span><b>Sponsor Name:</b>
+														{{sponsorInfo.SponsorName}} </td>
+												</tr>
+											</tbody>
+									     	</table>
+
+
 											<table class="table table-bordered tableBodyScroll">
 											<thead>
 												<tr>
 													<th>Class Number</th> 
 													<th>Class Name</th> 
 													<th>Age Group</th> 
-													<th>Exhibitor/Horse Name</th> 
-													<th>Remove</th> 
+													<th class="non-print-element">Exhibitor/Horse Name</th> 
+													<th  class="non-print-element">Remove</th> 
 												</tr>	
 											</thead> 
 											<perfect-scrollbar class="nicescrollBar-2">
@@ -347,13 +380,13 @@
 													<td data-label="Class Number">{{list.ClassNumber}}</td>
 													<td data-label="Class Name">{{list.Name}}</td>
 													<td data-label="Age Group">{{list.AgeGroup}}</td>
-													<td data-label="Exhibitor">
+													<td data-label="Exhibitor" class="non-print-element">
 														<select class="dynDataSeclect">
 															<option disabled=true selected>Exh Name/Horse Name</option>
 															<option *ngFor="let item of list.ClassExhibitorsAndHorses">{{item}}</option>
 														</select>
 													</td>
-													<td data-label="Remove">
+													<td data-label="Remove"  class="non-print-element">
 														<button type="button"
 														class="icon" 
 														(click)="confirmRemoveSponsorClass($event,i,list.ClassSponsorId)">
@@ -363,7 +396,7 @@
 												    </td>
 											
 												</tr>	
-												<tr>
+												<tr id="sponsorClassesentry">
 
 													<td data-label="Class Name" colspan="2">
 														<select class="dynDataSeclect" name="sponsorclass" required [(ngModel)]="sponsorClassId"
@@ -394,7 +427,8 @@
 								
 									<div class="actionBtn mt-3 mb-3 text-right">
 										<button (click)='tabGroup.selectedIndex = 1' class="btn btn-red btnCss roundBtn">Previous</button>
-									   
+										<button (click)="printSponsorClasses()" id="inputprintbutton" type="button"
+										 class="btn btn-red btnCss">Display/Print</button>
 										<button (click)="goToLink('perspective/class')"class="btn btn-red btnCss roundBtn">+ Class</button>
 										<button type="submit" class="btn btn-red btnCss roundBtn">Submit</button>
 									</div>

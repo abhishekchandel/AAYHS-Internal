@@ -276,14 +276,28 @@
                         <div class="card dataEntriesTable">
                             <div class="card-body">
                                 <div class="table-responsive tableTab" id="contentscroll2">
+
+                                    <table id="gridTableDescPrint" style="display: none;"
+                                    class="table table-bordered tableBodyScroll pdfTable">
+                                    <tbody>
+                                        <tr>
+                                            <td><span class="blueBox"></span><b>Group Id:</b>
+                                                {{groupInfo.GroupId}} </td>
+                                            <td><span class="blueBox"></span><b>Group Name:</b>
+                                                {{groupInfo.GroupName}} </td>
+                                        </tr>
+                                    </tbody>
+                                     </table>
+
+
                                     <table class="table table-bordered tableBodyScroll">
                                         <thead>
                                             <tr>
                                                 <th>Exhibitor Id </th>
                                                 <th>Exhibitor Name</th>
-                                                <th>Horse Name</th>
+                                                <th class="non-print-element">Horse Name</th>
                                                 <th>Birth Year</th>
-                                                <th>Remove</th>
+                                                <th  class="non-print-element">Remove</th>
                                             </tr>
                                         </thead>
                                         <perfect-scrollbar class="nicescrollBar-2">
@@ -292,7 +306,7 @@
                                                     <td data-label="Exhibitor Id">{{list.ExhibitorId}}</td>
                                                     <td data-label="Exhibitor Name">{{list.ExhibitorName}}</td>
 
-                                                    <td data-label="Group Exhibitor">
+                                                    <td data-label="Group Exhibitor" class="non-print-element">
                                                         <select class="dynDataSeclect">
                                                             <option class="selectDropdown"
                                                                 *ngFor="let item of list.getGroupExhibitorHorses">
@@ -301,7 +315,7 @@
                                                     </td>
 
                                                     <td data-label="Birth Year">{{list.BirthYear}}</td>
-                                                    <td data-label="Remove">
+                                                    <td data-label="Remove"  class="non-print-element">
                                                         <button class="icon"
                                                             (click)="confirmRemoveGroupExhibitor($event,i,list.GroupExhibitorId)">
                                                             <span></span> <i class="fa fa-trash-o"
@@ -321,6 +335,8 @@
                                     class="btn btn-red btnCss roundBtn">Previous</button>
                                 <button (click)='tabGroup.selectedIndex = 2'
                                     class="btn btn-red btnCss roundBtn">Next</button>
+                                    <button (click)="printGroupExhibitor()" id="inputprintbutton" type="button"
+										 class="btn btn-red btnCss">Display/Print</button>
                                 <!-- <button class="btn btn-red btnCss roundBtn">Submit</button> -->
                             </div>
                         </div>
@@ -332,7 +348,20 @@
                             <form #groupFinancialForm="ngForm" name="groupFinancialForm"
                                 (ngSubmit)="groupFinancialForm.valid && AddUpdateGroupFinancials()">
                                 <div class="card-body">
-                                    <div class="table-responsive tableTab" id="contentscroll2">
+                                    <div class="table-responsive tableTab" id="print-entries">
+
+                                        <table id="gridTableDescPrint" style="display: none;"
+                                        class="table table-bordered tableBodyScroll pdfTable">
+                                        <tbody>
+                                            <tr>
+                                                <td><span class="blueBox"></span><b>Group Id:</b>
+                                                    {{groupInfo.GroupId}} </td>
+                                                <td><span class="blueBox"></span><b>Group Name:</b>
+                                                    {{groupInfo.GroupName}} </td>
+                                            </tr>
+                                        </tbody>
+                                         </table>
+                                         
                                         <table class="table table-bordered tableBodyScroll">
                                             <thead>
                                                 <tr>
@@ -340,8 +369,8 @@
                                                     <th>Type of fee</th>
                                                     <th>Pre/Post</th>
                                                     <th>Amount</th>
-                                                    <th>Update</th>
-                                                    <th>Remove</th>
+                                                    <th  class="non-print-element">Update</th>
+                                                    <th  class="non-print-element">Remove</th>
                                                 </tr>
                                             </thead>
                                             <perfect-scrollbar class="nicescrollBar-2">
@@ -362,7 +391,7 @@
                                                                 (change)="setUpdatedFinancialAmount($event.target.value)">
                                                         </td>
 
-                                                        <td data-label="Remove">
+                                                        <td data-label="Remove"  class="non-print-element">
 
                                                             <button
                                                                 *ngIf="updatemode==false  || (updatemode==true && updateRowIndex!=i)"
@@ -382,7 +411,7 @@
                                                             </button>
 
                                                         </td>
-                                                        <td data-label="Remove">
+                                                        <td data-label="Remove"  class="non-print-element">
                                                             <button type="button" class="icon"
                                                                 (click)="confirmRemoveGroupFinancials($event,i,list.GroupFinancialId)">
                                                                 <span></span> <i class="fa fa-trash-o"
@@ -390,7 +419,7 @@
                                                             </button>
                                                         </td>
                                                     </tr>
-                                                    <tr>
+                                                    <tr id="groupFinancialsentry">
                                                         <td data-label="Date">{{currentDate | date:'dd-MM-yyyy'}}</td>
                                                         <td data-label="Fee Type">
                                                             <select class="dynDataSeclect" name="horsefeetypes" required
@@ -454,6 +483,7 @@
 
 
                                         </table>
+                                       
                                         <tfoot>
 
                                             <tr
@@ -473,6 +503,8 @@
                                         class="btn btn-red btnCss roundBtn">Previous</button>
                                     <button type="button" (click)='tabGroup.selectedIndex = 3'
                                         class="btn btn-red btnCss roundBtn">Next</button>
+                                        <button (click)="printGroupFinancials()" id="inputprintbutton" type="button"
+										 class="btn btn-red btnCss">Display/Print</button>
                                     <button type="submit" class="btn btn-red btnCss roundBtn">Submit</button>
                                 </div>
                             </form>

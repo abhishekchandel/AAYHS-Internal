@@ -24,17 +24,19 @@ namespace AAYHS.Service.Service
         private MainResponse _mainResponse;
         private IExhibitorRepository _exhibitorRepository;
         private IAddressRepository _addressRepository;
+        private IGroupExhibitorRepository _groupExhibitorRepository;
         private IExhibitorHorseRepository _exhibitorHorseRepository;
         private IHorseRepository _horseRepository;
         #endregion
 
         public ExhibitorService(IExhibitorRepository exhibitorRepository,IAddressRepository addressRepository,
-                                 IExhibitorHorseRepository exhibitorHorseRepository,IHorseRepository horseRepository,IMapper mapper)
+                                 IExhibitorHorseRepository exhibitorHorseRepository,IHorseRepository horseRepository, IGroupExhibitorRepository groupExhibitorRepository, IMapper mapper)
         {
             _exhibitorRepository = exhibitorRepository;
             _addressRepository = addressRepository;
             _exhibitorHorseRepository = exhibitorHorseRepository;
             _horseRepository = horseRepository;
+            _groupExhibitorRepository = groupExhibitorRepository;
             _mapper = mapper;
             _mainResponse = new MainResponse();
         }
@@ -78,7 +80,16 @@ namespace AAYHS.Service.Service
                 };
                
                 var _exhibitor= _exhibitorRepository.Add(exhibitor);
-             
+                if (request.GroupId != null && request.GroupId > 0)
+                {
+                    var groupExhibitor = new GroupExhibitors
+                    {
+                        ExhibitorId = _exhibitor.ExhibitorId,
+                        GroupId = request.GroupId,
+                         CreatedDate= DateTime.Now
+                };
+                    var _groupExhibitor = _groupExhibitorRepository.Add(groupExhibitor);
+                }
                 _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
                 _mainResponse.NewId = _exhibitor.ExhibitorId;
                 _mainResponse.Success = true;
@@ -117,6 +128,28 @@ namespace AAYHS.Service.Service
                         address.ModifiedDate = DateTime.Now;
                         _addressRepository.Update(address);
                     }
+
+                    if (request.GroupId != null && request.GroupId > 0)
+                    {
+                        var groupExhibitor = _groupExhibitorRepository.GetSingle(x => x.ExhibitorId == exhibitor.ExhibitorId);
+                        if (groupExhibitor != null && groupExhibitor.GroupExhibitorId > 0)
+                        {
+                            groupExhibitor.GroupId = request.GroupId;
+                            groupExhibitor.ModifiedDate = DateTime.Now;
+                            _groupExhibitorRepository.Update(groupExhibitor);
+                        }
+                    }
+                    else
+                    {
+                        var groupExhibitor = _groupExhibitorRepository.GetSingle(x => x.ExhibitorId == exhibitor.ExhibitorId);
+                        if (groupExhibitor != null && groupExhibitor.GroupExhibitorId > 0)
+                        {
+                            groupExhibitor.IsActive = false;
+                            groupExhibitor.IsDeleted = true;
+                            _groupExhibitorRepository.Update(groupExhibitor);
+                        }
+                    }
+
                 }
                 else
                 {

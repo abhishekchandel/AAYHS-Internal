@@ -191,25 +191,24 @@ namespace AAYHS.Repository.Repository
             GetAllGroupExhibitors getAllGroupExhibitors = new GetAllGroupExhibitors();
 
             data = (from groupExhibitors in _context.GroupExhibitors
-                    join exhibitors in _context.Exhibitors on groupExhibitors.ExhibitorId equals exhibitors.ExhibitorId into exhibitors1
-                    from exhibitors2 in exhibitors1.DefaultIfEmpty()                    
+                    join exhibitors in _context.Exhibitors on groupExhibitors.ExhibitorId equals exhibitors.ExhibitorId
                     where groupExhibitors.GroupId == GroupId && groupExhibitors.IsActive == true &&
-                    groupExhibitors.IsDeleted == false && exhibitors2.IsActive==true && exhibitors2.IsDeleted==false
+                    groupExhibitors.IsDeleted == false && exhibitors.IsActive==true && exhibitors.IsDeleted==false
                     select new GetGroupExhibitors 
                     { 
                        GroupExhibitorId=groupExhibitors.GroupExhibitorId,
                        ExhibitorId=groupExhibitors.ExhibitorId,
-                       ExhibitorName=exhibitors2.FirstName+" "+exhibitors2.LastName,                      
-                       BirthYear=exhibitors2.BirthYear,
+                       ExhibitorName= exhibitors.FirstName+" "+ exhibitors.LastName,                      
+                       BirthYear= exhibitors.BirthYear,
                        getGroupExhibitorHorses=(from exhibitorHorse in _context.ExhibitorHorse
-                                  join horse in _context.Horses on exhibitorHorse.HorseId equals horse.HorseId into horse1
-                                  from horse2 in horse1.DefaultIfEmpty()
-                                  where groupExhibitors.ExhibitorId==exhibitorHorse.ExhibitorId && exhibitorHorse.IsActive==true 
-                                  && exhibitorHorse.IsDeleted==false && horse2.IsActive==true && horse2.IsDeleted==false
+                                                 join horse in _context.Horses
+                                                 on exhibitorHorse.HorseId equals horse.HorseId
+                                where exhibitorHorse.ExhibitorId== groupExhibitors.ExhibitorId
+                                &&  exhibitorHorse.IsActive==true  && exhibitorHorse.IsDeleted==false
+                                && horse.IsActive==true && horse.IsDeleted==false
                                   select new GroupExhibitorHorses 
                                   { 
-                                     HorseName=horse2.Name
-
+                                     HorseName= horse.Name
                                   }).ToList()
                     });
            

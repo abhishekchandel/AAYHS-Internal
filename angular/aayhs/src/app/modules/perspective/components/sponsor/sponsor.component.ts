@@ -568,5 +568,279 @@ export class SponsorComponent implements OnInit {
   window.open(url, "_blank");
 }
 
+
+printSponsorExhibitor() {
+  let printContents, popupWin, printbutton,hideRow,gridTableDesc;
+  hideRow=document.getElementById('sponsorExhibitorentry').hidden=true;
+  printbutton = document.getElementById('inputprintbutton').style.display = "none";
+  gridTableDesc=document.getElementById('gridTableDescPrint').style.display = "block";
+  printContents = document.getElementById('contentscroll2').innerHTML;
+  popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
+  popupWin.document.open();
+  popupWin.document.write(`
+    <html>
+      <head>
+    
+        <title>Print tab</title>
+        <style media="print">
+  
+        * {
+          -webkit-print-color-adjust: exact; /*Chrome, Safari */
+          color-adjust: exact;  /*Firefox*/
+          box-sizing: border-box;
+          font-family: Roboto, "Helvetica Neue", sans-serif;
+          }
+          table {
+            border-collapse: collapse;
+            border-spacing: 2px;
+            margin-bottom:0 !important; 
+            padding-bottom:0 !important;   
+        }
+          table thead tr th {
+            background-color: #a0b8f9;
+            font-family: "Roboto-Medium" ,sans-serif;
+            font-size: 13px;
+            text-transform: uppercase;
+            border: 1px solid #a0b8f9;
+            text-align: center;
+            padding: 6px;
+            vertical-align: middle;
+            line-height: 16px;
+            cursor: pointer;
+            letter-spacing: 1px;
+        }
+        .mat-tab-group {
+          font-family: "Roboto-Regular", sans-serif;
+      }
+        table tbody tr td {
+          border: 1px solid #a0b8f9;
+          text-align: center;
+          color: #000;
+          font-weight: 500;
+          font-size: 13px;
+          line-height: 24px;
+          vertical-align: middle;
+          padding: 6px 10px;
+          font-family: "Roboto-Medium" ,sans-serif;
+      }
+      .dynDataSeclect {
+        width: 100%;
+        padding: 2px 15px 2px 5px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        min-height: 30px;
+    }
+    select {
+      -webkit-appearance: none;
+      background-image: url(select-arrow.png);
+      background-repeat: no-repeat;
+      background-position: center right;
+      margin: 0;
+      font-family: inherit;
+      font-size: inherit;
+      line-height: inherit;
+  }
+  select {
+    -webkit-writing-mode: horizontal-tb !important;
+    text-rendering: auto;
+    color: -internal-light-dark(black, white);
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-transform: none;
+    text-indent: 0px;
+    text-shadow: none;
+    display: inline-block;
+    text-align: start;
+    appearance: menulist;
+    box-sizing: border-box;
+    align-items: center;
+    white-space: pre;
+    -webkit-rtl-ordering: logical;
+    background-color: -internal-light-dark(rgb(255, 255, 255), rgb(59, 59, 59));
+    cursor: default;
+    margin: 0em;
+    font: 400 13.3333px Arial;
+    border-radius: 0px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: -internal-light-dark(rgb(118, 118, 118), rgb(195, 195, 195));
+    border-image: initial;
+}
+.table-responsive {
+  display: block;
+  width: 100%;
+}
+
+table.pdfTable{
+  margin-bottom: 20px !important;
+  display:table;
+}
+
+table.pdfTable,table.pdfTable tbody,table.pdfTable tr {
+  width:100%;
+  display:table;
+  border:none;
+}
+table.pdfTable tbody tr td{
+    margin: 5px 0;
+    padding: 0px ;
+    position: relative; 
+    border:none;
+    text-align:left;
+    display:block;
+    
+}
+.print-element { display: block !important;}
+.non-print-element {display: none !important;}
+ 
+        </style>
+      </head>
+  <body onload="window.print();window.close()">${printContents}</body>
+    </html>`
+  );
+  printbutton = document.getElementById('inputprintbutton').style.display = "inline-block";
+  hideRow=document.getElementById('sponsorExhibitorentry').hidden=false;
+  gridTableDesc=document.getElementById('gridTableDescPrint').style.display = "none";
+  popupWin.document.close();
+}
+
+
+printSponsorClasses() {
+  let printContents, popupWin, printbutton,hideRow,gridTableDesc;
+  hideRow=document.getElementById('sponsorClassesentry').hidden=true;
+  printbutton = document.getElementById('inputprintbutton').style.display = "none";
+  gridTableDesc=document.getElementById('gridTableDescPrint1').style.display = "block";
+  printContents = document.getElementById('tblSponsorClasses').innerHTML;
+  popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
+  popupWin.document.open();
+  popupWin.document.write(`
+    <html>
+      <head>
+    
+        <title>Print tab</title>
+        <style media="print">
+  
+        * {
+          -webkit-print-color-adjust: exact; /*Chrome, Safari */
+          color-adjust: exact;  /*Firefox*/
+          box-sizing: border-box;
+          font-family: Roboto, "Helvetica Neue", sans-serif;
+          }
+          table {
+            border-collapse: collapse;
+            border-spacing: 2px;
+            margin-bottom:0 !important; 
+            padding-bottom:0 !important;   
+        }
+          table thead tr th {
+            background-color: #a0b8f9;
+            font-family: "Roboto-Medium" ,sans-serif;
+            font-size: 13px;
+            text-transform: uppercase;
+            border: 1px solid #a0b8f9;
+            text-align: center;
+            padding: 6px;
+            vertical-align: middle;
+            line-height: 16px;
+            cursor: pointer;
+            letter-spacing: 1px;
+        }
+        .mat-tab-group {
+          font-family: "Roboto-Regular", sans-serif;
+      }
+        table tbody tr td {
+          border: 1px solid #a0b8f9;
+          text-align: center;
+          color: #000;
+          font-weight: 500;
+          font-size: 13px;
+          line-height: 24px;
+          vertical-align: middle;
+          padding: 6px 10px;
+          font-family: "Roboto-Medium" ,sans-serif;
+      }
+      .dynDataSeclect {
+        width: 100%;
+        padding: 2px 15px 2px 5px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        min-height: 30px;
+    }
+    select {
+      -webkit-appearance: none;
+      background-image: url(select-arrow.png);
+      background-repeat: no-repeat;
+      background-position: center right;
+      margin: 0;
+      font-family: inherit;
+      font-size: inherit;
+      line-height: inherit;
+  }
+  select {
+    -webkit-writing-mode: horizontal-tb !important;
+    text-rendering: auto;
+    color: -internal-light-dark(black, white);
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-transform: none;
+    text-indent: 0px;
+    text-shadow: none;
+    display: inline-block;
+    text-align: start;
+    appearance: menulist;
+    box-sizing: border-box;
+    align-items: center;
+    white-space: pre;
+    -webkit-rtl-ordering: logical;
+    background-color: -internal-light-dark(rgb(255, 255, 255), rgb(59, 59, 59));
+    cursor: default;
+    margin: 0em;
+    font: 400 13.3333px Arial;
+    border-radius: 0px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: -internal-light-dark(rgb(118, 118, 118), rgb(195, 195, 195));
+    border-image: initial;
+}
+.table-responsive {
+  display: block;
+  width: 100%;
+}
+
+table.pdfTable{
+  margin-bottom: 20px !important;
+  display:table;
+}
+
+table.pdfTable,table.pdfTable tbody,table.pdfTable tr {
+  width:100%;
+  display:table;
+  border:none;
+}
+table.pdfTable tbody tr td{
+    margin: 5px 0;
+    padding: 0px ;
+    position: relative; 
+    border:none;
+    text-align:left;
+    display:block;
+    
+}
+.print-element { display: block !important;}
+.non-print-element {display: none !important;}
+ 
+        </style>
+      </head>
+  <body onload="window.print();window.close()">${printContents}</body>
+    </html>`
+  );
+  printbutton = document.getElementById('inputprintbutton').style.display = "inline-block";
+  hideRow=document.getElementById('sponsorClassesentry').hidden=false;
+  gridTableDesc=document.getElementById('gridTableDescPrint1').style.display = "none";
+  popupWin.document.close();
+}
+
+
+
 }
 
