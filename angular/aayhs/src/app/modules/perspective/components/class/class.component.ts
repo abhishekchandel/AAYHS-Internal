@@ -504,11 +504,14 @@ export class ClassComponent implements OnInit {
       ClassId: this.classInfo.ClassId,
       BackNumber: Number(id)
     }
+    this.loading=true;
     this.classService.getExhibitorDetails(exhibitordetailRequest).subscribe(response => {
       this.exhibitorInfo = response.Data;
-      this.showPosition = true
+      this.showPosition = true;
+      this.loading=false;
     }, error => {
       this.exhibitorInfo = null;
+      this.loading=false;
     })
   }
 
@@ -517,12 +520,15 @@ export class ClassComponent implements OnInit {
       ClassId: this.classInfo.ClassId,
       BackNumber: Number(id)
     }
+    this.loading=true;
     this.classService.getExhibitorDetails(exhibitordetailRequest).subscribe(response => {
       this.editExhibitorInfo = response.Data;
-      this.showEditInfo = true
+      this.showEditInfo = true;
+      this.loading=false;
     }, error => {
       this.editExhibitorInfo = null;
-      this.showEditInfo = false
+      this.showEditInfo = false;
+      this.loading=false;
 
     })
   }
@@ -630,35 +636,7 @@ export class ClassComponent implements OnInit {
     }
   }
 
-  exportAs(type: SupportedExtensions, opt?: string) {
-    this.config.type = type;
-    // if (opt) {
-    //   this.config.options.jsPDF.orientation = opt;
-    // }
-    // this.exportAsService.save(this.config, 'myFile').subscribe(() => {
-    // });
-
-    this.exportAsService.get(this.config).subscribe(content => {
-      const link = document.createElement('a');
-      const fileName = 'export.xlsx';
-
-      link.href = content;
-      link.download = fileName;
-      link.click();
-      console.log(content);
-    });
-
-  }
-
-  pdfCallbackFn(pdf: any) {
-    // example to add page number as footer to every page of pdf
-    const noOfPages = pdf.internal.getNumberOfPages();
-    for (let i = 1; i <= noOfPages; i++) {
-      pdf.setPage(i);
-      pdf.text('Page ' + i + ' of ' + noOfPages, pdf.internal.pageSize.getWidth() - 100, pdf.internal.pageSize.getHeight() - 30);
-    }
-  }
-
+ 
   savePDF(): void {
     let content = this.content.nativeElement;
     let doc = new jsPDF("p", "mm", "a4") as jsPDFWithPlugin;
@@ -1018,7 +996,7 @@ table.pdfTable tbody tr td{
       name: 'Arial',
       size: 10,
       bold: true,
-      color: { argb: '0085A3' }
+      // color: { argb: '0085A3' }
     }
     ClassName.alignment = { vertical: 'middle', horizontal: 'center' }
 
@@ -1028,8 +1006,7 @@ table.pdfTable tbody tr td{
     ClassNameValue.font = {
       name: 'Arial',
       size: 10,
-      bold: true,
-      color: { argb: '0085A3' }
+      bold: false,
     }
     ClassNameValue.alignment = { vertical: 'middle', horizontal: 'center' }
 
@@ -1040,7 +1017,6 @@ table.pdfTable tbody tr td{
       name: 'Arial',
       size: 10,
       bold: true,
-      color: { argb: '0085A3' }
     }
     ClassNumber.alignment = { vertical: 'middle', horizontal: 'center' }
 
@@ -1050,8 +1026,7 @@ table.pdfTable tbody tr td{
     ClassNumberValue.font = {
       name: 'Arial',
       size: 10,
-      bold: true,
-      color: { argb: '0085A3' }
+      bold: false,
     }
     ClassNumberValue.alignment = { vertical: 'middle', horizontal: 'center' }
 
@@ -1062,7 +1037,6 @@ table.pdfTable tbody tr td{
       name: 'Arial',
       size: 10,
       bold: true,
-      color: { argb: '0085A3' }
     }
     AgeGroup.alignment = { vertical: 'middle', horizontal: 'center' }
 
@@ -1072,20 +1046,11 @@ table.pdfTable tbody tr td{
     AgeGroupValue.font = {
       name: 'Arial',
       size: 10,
-      bold: true,
-      color: { argb: '0085A3' }
+      bold: false,
     }
     AgeGroupValue.alignment = { vertical: 'middle', horizontal: 'center' }
 
-
-
     worksheet.addRow([]);
-    worksheet.addRow([]);
-    worksheet.addRow([]);
-
-    //const data =  this.dataForExcel;
-    debugger;
-    // let headers=Object.keys(this.resultResponse[0]);
     let headers = ['Result', 'Back Number', 'Name','Birth Year', 'Horse Name', 'City,State,Zip', 'Amount Paid', 'Amount Due'];
 
     let headerRow = worksheet.addRow(headers);
@@ -1093,12 +1058,12 @@ table.pdfTable tbody tr td{
       cell.fill = {
         type: 'pattern',
         pattern: 'solid',
-        fgColor: { argb: 'a0b8f9' },
-        bgColor: { argb: 'a0b8f9' }
+        fgColor: { argb: '#a0b8f9' },
+        bgColor: { argb: '#a0b8f9' }
       }
       cell.font = {
         bold: true,
-        color: { argb: 'FFFFFF' },
+        // color: { argb: 'FFFFFF' },
         size: 12
       }
     })
