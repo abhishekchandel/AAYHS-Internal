@@ -30,6 +30,6 @@ namespace AAYHS.Data.Base
         public DateTime? DeletedDate { get; set; }
 
         [DefaultValue("0")]
-        public bool IsDeleted { get; set; }
+        public bool IsDeleted { get; set; } = false;
     }
 }

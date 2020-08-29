@@ -346,16 +346,7 @@ debugger
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
       this.loading = false;
       this.updatemode=false;
-if(timeframename=="Pre")
-{
-  this.PreTotal=Number(this.UpdatedFinancialAmount.toFixed(2));
-}
-else{
-  this.PostTotal=Number(this.UpdatedFinancialAmount.toFixed(2));
-}
-this.PrePostTotal=Number(this.PreTotal+this.PostTotal.toFixed(2));
-
-
+      this.GetGroupFinancials(this.selectedGroupId);
      }, error=>{
         this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
         this.loading = false;
@@ -853,7 +844,7 @@ setFinancialsAmount(data){
     width: 100%;
   }
   table.table.table-bordered.tableBodyScroll.removeSpaceTop {
-    margin-top: -300px !important;
+    /*margin-top: -250px !important;*/
     margin-bottom: 10px !important;
 }
   

@@ -79,7 +79,9 @@ namespace AAYHS.Service.Service
                     SecondaryEmail=request.SecondaryEmail,
                     Phone=request.Phone,
                     CreatedBy = actionBy,
-                    CreatedDate = DateTime.Now
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                    IsDeleted = false
                 };
                
                 var _exhibitor= _exhibitorRepository.Add(exhibitor);
@@ -90,7 +92,9 @@ namespace AAYHS.Service.Service
                         ExhibitorId = _exhibitor.ExhibitorId,
                         GroupId = request.GroupId,
                         CreatedBy = actionBy,
-                        CreatedDate= DateTime.Now
+                        CreatedDate= DateTime.Now,
+                        IsActive=true,
+                        IsDeleted=false
                     };
                     var _groupExhibitor = _groupExhibitorRepository.Add(groupExhibitor);
                 }
