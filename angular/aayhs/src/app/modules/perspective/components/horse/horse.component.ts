@@ -163,7 +163,7 @@ export class HorseComponent implements OnInit {
   resetForm() {
     this.horseInfo.Name = null;
     this.horseInfo.HorseId = null;
-    this.horseInfo.HorseTypeId = null;
+    this.horseInfo.HorseTypeId = 2002;
     this.horseInfo.GroupId = null;
     this.horseInfo.JumpHeightId= null;
     this.horseInfo.NSBAIndicator=false;

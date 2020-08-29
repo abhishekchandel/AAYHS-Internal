@@ -113,6 +113,7 @@ export class ExhibitorComponent implements OnInit {
     this.resetForm()
     this.selectedRowIndex = i;
     this.getExhibitorDetails(id);
+    this.getExhibitorHorses(id);
   }
 
   resetForm(){

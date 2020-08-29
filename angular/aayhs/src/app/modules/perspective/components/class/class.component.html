@@ -140,7 +140,7 @@
 														placeholder="Billing Date" class="form-control"
 														name="scheduleDate" #scheduleDate="ngModel"
 														(dateChange)="handleScheduleDateSelection()"
-														[(ngModel)]="classInfo.ScheduleDate">
+														[(ngModel)]="classInfo.ScheduleDate" readonly>
 													<mat-datepicker-toggle matSuffix [for]="scheduleDatePicker">
 													</mat-datepicker-toggle>
 													<mat-datepicker #scheduleDatePicker></mat-datepicker>													
