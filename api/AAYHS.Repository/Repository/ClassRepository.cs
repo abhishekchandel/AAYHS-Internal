@@ -98,8 +98,8 @@ namespace AAYHS.Repository.Repository
                         Name= classes.Name,
                         AgeGroup= classes.AgeGroup,
                         Location= classes!=null?classes.Location:"",
-                        ScheduleDate= scheduleDate2.Date,
-                        SchedulTime= scheduleDate2.Time,
+                        ScheduleDate= scheduleDate2!=null? scheduleDate2.Date:null,
+                        SchedulTime= scheduleDate2 != null ? scheduleDate2.Time:null,
                         SplitNumber= splitClass2!=null?splitClass2.SplitNumber:0,
                         ChampionShipIndicator= splitClass2 != null ? splitClass2.ChampionShipIndicator:false,
                         getClassSplit = (from splitClass in _ObjContext.ClassSplits                                     

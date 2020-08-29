@@ -144,7 +144,8 @@ namespace AAYHS.Service.Service
         {
             if (addClassRequest.ClassId == 0)
             {
-                var classExist = _classRepository.GetSingle(x => x.Name == addClassRequest.Name && x.AgeGroup == addClassRequest.AgeGroup && x.IsActive==true && x.IsDeleted==false);
+                var classExist = _classRepository.GetSingle(x => x.Name == addClassRequest.Name && x.AgeGroup == addClassRequest.AgeGroup 
+                                                  && x.ClassNumber==addClassRequest.ClassNumber && x.IsActive==true && x.IsDeleted==false);
                 if (classExist!=null && classExist.ClassId>0)
                 {
                     _mainResponse.Message = Constants.CLASS_EXIST;
