@@ -53,7 +53,9 @@ namespace AAYHS.Service.Service
                     {
                         SponsorId = request.SponsorId,
                         ClassId = request.ClassId,
-                        CreatedDate = DateTime.Now
+                        CreatedDate = DateTime.Now,
+                        IsActive=true,
+                        IsDeleted=false
                     };
                     _ClassSponsorRepository.Add(classsponsor);
                     _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;

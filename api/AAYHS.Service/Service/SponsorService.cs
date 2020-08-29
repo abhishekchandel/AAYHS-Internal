@@ -54,8 +54,10 @@ namespace AAYHS.Service.Service
                 {
                     Address = request.Address,
                     CityId = request.CityId,
-                    ZipCode = request.ZipCode,
-                    CreatedDate = DateTime.Now
+                    ZipCodeId = request.ZipCodeId,
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                    IsDeleted = false
                 };
                 var address = _AddressRepository.Add(addressEntity);
                 var sponsor = new Sponsors
@@ -66,7 +68,9 @@ namespace AAYHS.Service.Service
                     Email = request.Email,
                     AmountReceived = request.AmountReceived,
                     AddressId = address!=null? address.AddressId:0,
-                    CreatedDate = DateTime.Now
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                    IsDeleted = false
                 };
               var Data=  _SponsorRepository.Add(sponsor);
                 _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
@@ -93,7 +97,7 @@ namespace AAYHS.Service.Service
                     {
                         address.Address = request.Address;
                         address.CityId = request.CityId;
-                        address.ZipCode = request.ZipCode;
+                        address.ZipCodeId = request.ZipCodeId;
                         address.ModifiedDate = DateTime.Now;
                         _AddressRepository.Update(address);
                     }

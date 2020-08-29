@@ -7,7 +7,7 @@ export interface GroupInformationViewModel
     Address:string;
     CityId:number;
     StateId:number;
-    ZipCode:string;
+    ZipCodeId:number;
     AmountReceived :any;
     GroupId:number;
 

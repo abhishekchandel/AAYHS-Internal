@@ -60,7 +60,7 @@ namespace AAYHS.Repository.Repository
                                  Email = groups.Email,
                                  AmountReceived = groups.AmountReceived,
                                  Address = data != null ? data.Address : "",
-                                 ZipCode = data != null ? data.ZipCode : "",
+                                 ZipCodeId = data != null ? data.ZipCodeId : 0,
                                  CityId = data != null ? data.CityId : 0,
                                  StateId = data != null ? _context.Cities.Where(x => x.CityId == data.CityId).Select(y => y.StateId).FirstOrDefault() : 0,
                              }).FirstOrDefault();
@@ -90,7 +90,7 @@ namespace AAYHS.Repository.Repository
                                     Email = Group.Email,
                                     AmountReceived = Group.AmountReceived,
                                     Address = data != null ? data.Address : "",
-                                    ZipCode = data != null ? data.ZipCode : "",
+                                    ZipCodeId = data != null ? data.ZipCodeId : 0,
                                     CityId = data != null ? data.CityId : 0,
                                     StateId = data != null ? _context.Cities.Where(x => x.CityId == data.CityId).Select(y => y.StateId).FirstOrDefault() : 0,
                                 }).ToList();
@@ -154,7 +154,7 @@ namespace AAYHS.Repository.Repository
                                     Email = Group.Email,
                                     AmountReceived = Group.AmountReceived,
                                     Address = data != null ? data.Address : "",
-                                    ZipCode = data != null ? data.ZipCode : "",
+                                    ZipCodeId = data != null ? data.ZipCodeId : 0,
                                     CityId = data != null ? data.CityId : 0,
                                     StateId = data != null ? _context.Cities.Where(x => x.CityId == data.CityId).Select(y => y.StateId).FirstOrDefault() : 0,
                                 }).ToList();
@@ -306,7 +306,7 @@ namespace AAYHS.Repository.Repository
                     { 
                        Email=aayhs.Email1,
                        Address=address2.Address,
-                       CityStateZip= city2.Name + ", " + state2.Code + "  " + address2.ZipCode,
+                       CityStateZip= city2.Name + ", " + state2.Code + "  " + address2.ZipCodeId,
                        PhoneNumber=aayhs.Phone1
                     });
 
@@ -328,7 +328,7 @@ namespace AAYHS.Repository.Repository
                         GroupName = groups.GroupName,
                         ContactName = groups.ContactName,
                         Address = address2.Address,
-                        CityStateZip = city2.Name + ", " + state2.Code + "  " + address2.ZipCode,
+                        CityStateZip = city2.Name + ", " + state2.Code + "  " + address2.ZipCodeId,
                         PhoneNumebr = groups.Phone,
                         Email = groups.Email
 

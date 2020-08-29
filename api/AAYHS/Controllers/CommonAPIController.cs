@@ -67,5 +67,19 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<CityResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
+
+        /// <summary>
+        /// This API is used for fetching all zipcodes.
+        /// </summary>
+        /// <param name="cityid"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult GetZipCodes(int cityId)
+        {
+
+            _mainResponse = _globalCodeService.GetAllZipCodes(cityId);
+            _jsonString = Mapper.Convert<ZipCodeResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
     }
 }

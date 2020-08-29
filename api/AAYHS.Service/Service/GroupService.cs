@@ -59,8 +59,10 @@ namespace AAYHS.Service.Service
                 {
                     Address = request.Address,
                     CityId = request.CityId,
-                    ZipCode = request.ZipCode,
-                    CreatedDate = DateTime.Now
+                    ZipCodeId = request.ZipCodeId,
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                    IsDeleted = false,
                 };
                 var address = _AddressRepository.Add(addressEntity);
                 var Group = new Groups
@@ -71,10 +73,12 @@ namespace AAYHS.Service.Service
                     Email = request.Email,
                     AmountReceived = request.AmountReceived,
                     AddressId = address != null ? address.AddressId : 0,
-                    CreatedDate = DateTime.Now
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                    IsDeleted = false,
                 };
                 var Data= _GroupRepository.Add(Group);
-                if(Data!=null && Data.GroupId>0&& request.groupStallAssignmentRequests!=null && request.groupStallAssignmentRequests.Count>0)
+                if(Data!=null && Data.GroupId>0 && request.groupStallAssignmentRequests!=null && request.groupStallAssignmentRequests.Count>0)
                 {
                     StallAssignment stallAssignment;
                     foreach (var item in request.groupStallAssignmentRequests)
@@ -85,6 +89,9 @@ namespace AAYHS.Service.Service
                         stallAssignment.GroupId = Data.GroupId;
                         stallAssignment.ExhibitorId = 0;
                         stallAssignment.BookedByType = "Group";
+                        stallAssignment.IsActive = true;
+                        stallAssignment.IsDeleted = false;
+                        stallAssignment.CreatedDate = DateTime.Now;
                         _stallAssignmentRepository.Add(stallAssignment);
                     }
                 }
@@ -112,7 +119,7 @@ namespace AAYHS.Service.Service
                     {
                         address.Address = request.Address;
                         address.CityId = request.CityId;
-                        address.ZipCode = request.ZipCode;
+                        address.ZipCodeId = request.ZipCodeId;
                         address.ModifiedDate = DateTime.Now;
                         _AddressRepository.Update(address);
                     }
@@ -135,10 +142,12 @@ namespace AAYHS.Service.Service
                             stallAssignment.GroupId =Group.GroupId;
                             stallAssignment.ExhibitorId =0;
                             stallAssignment.BookedByType = "Group";
+                            stallAssignment.IsActive = true;
+                            stallAssignment.IsDeleted = false;
+                            stallAssignment.CreatedDate = DateTime.Now;
                             _stallAssignmentRepository.Add(stallAssignment);
                         }
                     }
-
 
                     _mainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
                     _mainResponse.Success = true;
@@ -281,7 +290,9 @@ namespace AAYHS.Service.Service
                     TimeFrameId = addGroupFinancialRequest.TimeFrameId,
                     Amount = addGroupFinancialRequest.Amount,
                     CreatedBy = actionBy,
-                    CreatedDate = DateTime.Now
+                    CreatedDate = DateTime.Now,
+                    IsActive=true,
+                    IsDeleted=false
                 };
 
                 _groupFinancialRepository.Add(groupFinancial);

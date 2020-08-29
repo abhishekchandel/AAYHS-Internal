@@ -33,6 +33,7 @@ export class ExhibitorComponent implements OnInit {
   reverseSort : boolean = false;
   citiesResponse: any;
   statesResponse: any;
+  zipCodesResponse:any;
   groups:any;
   years=[]
 
@@ -52,7 +53,7 @@ export class ExhibitorComponent implements OnInit {
     LastName:null,
     StateId:null,
     CityId:null,
-    ZipCode:null,
+    ZipCodeId:null,
     QTYProgram:null,
     BirthYear:null,
     Phone:null,
@@ -121,7 +122,7 @@ export class ExhibitorComponent implements OnInit {
       this.exhibitorInfo.LastName=null,
       this.exhibitorInfo.StateId=null,
       this.exhibitorInfo.CityId=null,
-      this.exhibitorInfo.ZipCode=null,
+      this.exhibitorInfo.ZipCodeId=null,
       this.exhibitorInfo.QTYProgram=null,
       this.exhibitorInfo.BirthYear=null,
       this.exhibitorInfo.Phone=null,
@@ -216,6 +217,23 @@ getCities(id: number) {
   });
 }
 
+
+getZipCodes(id: number) {
+  return new Promise((resolve, reject) => {
+    this.loading = true;
+    this.zipCodesResponse=null;
+    this.exhibitorService.getZipCodes(Number(id)).subscribe(response => {
+      debugger
+        this.zipCodesResponse = response.Data.ZipCode;
+        this.loading = false;
+    }, error => {
+      this.loading = false;
+    })
+      resolve();
+  });
+}
+
+
 addUpdateExhibitor(){
   this.loading = true;
   this.exhibitorInfo.ExhibitorId=this.exhibitorInfo.ExhibitorId !=null ? Number(this.exhibitorInfo.ExhibitorId) :0
@@ -264,6 +282,10 @@ getCityName(e) {
 this.exhibitorInfo.CityId = Number(e.target.options[e.target.selectedIndex].value)
 }
 
+getZipNumber(e) {
+  this.exhibitorInfo.ZipCodeId = Number(e.target.options[e.target.selectedIndex].value)
+  }
+
 getAllGroups(){
   this.loading = true;
   this.exhibitorService.getGroups().subscribe(response => {
@@ -280,10 +302,13 @@ getExhibitorDetails(id:number){
   this.exhibitorService.getExhibitorById(id).subscribe(response => {
     if(response.Data!=null)
       {
+        debugger
       this.getCities(response.Data.exhibitorResponses[0].StateId).then(res => {
+        this.getZipCodes(response.Data.CityId).then(res => {
         this.exhibitorInfo = response.Data.exhibitorResponses[0];
       });
-      }
+    });
+  }
 
     this.exhibitorInfo.GroupId=this.exhibitorInfo.GroupId >0 ? Number(this.exhibitorInfo.GroupId) :null
     this.loading = false;

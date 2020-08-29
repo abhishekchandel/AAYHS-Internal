@@ -82,6 +82,7 @@ UpdatedFinancialAmount:number=null;
   selectedGroupId=0;
   citiesResponse: any;
   statesResponse: any;
+  zipCodesResponse: any;
   result: string = '';
   totalItems: number = 0;
   updatemode=false;
@@ -94,7 +95,7 @@ UpdatedFinancialAmount:number=null;
     Address: null,
     CityId: null,
     StateId: null,
-    ZipCode: null,
+    ZipCodeId: null,
     AmountReceived: '0.00',
     GroupId: 0,
    
@@ -143,11 +144,12 @@ UpdatedFinancialAmount:number=null;
       {
       
       this.getCities(response.Data.StateId).then(res => {
-       
+        this.getZipCodes(response.Data.CityId).then(res => {
          this.groupInfo = response.Data;
          this.selectedRowIndex= selectedRowIndex;
-         this.groupInfo.AmountReceived= this.groupInfo.AmountReceived.toFixed(2);
+         this.groupInfo.AmountReceived=Number(this.groupInfo.AmountReceived.toFixed(2));
        });
+      });
       
       }
       this.loading = false;
@@ -180,9 +182,9 @@ UpdatedFinancialAmount:number=null;
        {
       this.groupFinancialsList = response.Data.getGroupFinacials;
       this.groupFinancialsTotals=response.Data.getGroupFinacialsTotals;
-      this.PreTotal=this.groupFinancialsTotals.PreTotal
-      this.PostTotal=this.groupFinancialsTotals.PostTotal
-      this.PrePostTotal=this.groupFinancialsTotals.PrePostTotal
+      this.PreTotal=Number(this.groupFinancialsTotals.PreTotal.toFixed(2));
+      this.PostTotal=Number(this.groupFinancialsTotals.PostTotal.toFixed(2));
+      this.PrePostTotal=Number(this.groupFinancialsTotals.PrePostTotal.toFixed(2));
        }
        this.loading = false;
      }, error => {
@@ -194,7 +196,7 @@ UpdatedFinancialAmount:number=null;
   AddUpdateGroup=(group)=>{
     
     this.loading=true;
-    this.groupInfo.AmountReceived=this.groupInfo.AmountReceived==null ?0:this.groupInfo.AmountReceived;
+    this.groupInfo.AmountReceived=Number(this.groupInfo.AmountReceived==null ?0:this.groupInfo.AmountReceived);
     this.groupService.addUpdateGroup(this.groupInfo).subscribe(response=>{
      this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
     
@@ -232,11 +234,11 @@ UpdatedFinancialAmount:number=null;
       this.groupFinancialsRequest.FeeTypeId=this.FinancialsFeeTypeId;
       this.groupFinancialsRequest.TimeFrameId=this.FinancialsTimeFrameTypeId;
       this.groupFinancialsRequest.Amount=this.FinancialsAmount;
-
+debugger
       this.groupService.addUpdateGroupFinancials(this.groupFinancialsRequest).subscribe(response=>{
         this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
         this.GetGroupFinancials(this.selectedGroupId);
-        this.FinancialsTimeFrameTypeId = null;
+       // this.FinancialsTimeFrameTypeId = null;
         this.FinancialsAmount=null;
         this.FinancialsFeeTypeId=null;
         this.groupFinancialForm.resetForm({FinancialsAmount:null,FinancialsFeeTypeId:null});
@@ -261,6 +263,21 @@ UpdatedFinancialAmount:number=null;
         resolve();
     });
  }
+
+ getZipCodes(id: number) {
+  return new Promise((resolve, reject) => {
+    this.loading = true;
+    this.zipCodesResponse=null;
+    this.groupService.getZipCodes(Number(id)).subscribe(response => {
+      debugger
+        this.zipCodesResponse = response.Data.ZipCode;
+        this.loading = false;
+    }, error => {
+      this.loading = false;
+    })
+      resolve();
+  });
+}
 
   getAllStates() {
     
@@ -331,16 +348,13 @@ UpdatedFinancialAmount:number=null;
       this.updatemode=false;
 if(timeframename=="Pre")
 {
-  this.PreTotal=this.UpdatedFinancialAmount;
+  this.PreTotal=Number(this.UpdatedFinancialAmount.toFixed(2));
 }
 else{
-  this.PostTotal=this.UpdatedFinancialAmount;
+  this.PostTotal=Number(this.UpdatedFinancialAmount.toFixed(2));
 }
-this.PrePostTotal= this.PreTotal+this.PostTotal;
+this.PrePostTotal=Number(this.PreTotal+this.PostTotal.toFixed(2));
 
-    // this.groupFinancialsTotals.PreTotal
-    // this.groupFinancialsTotals.PostTotal
-    // this.groupFinancialsTotals.PrePostTotal
 
      }, error=>{
         this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
@@ -488,7 +502,7 @@ setFinancialsAmount(data){
     this.groupInfo.Address = null;
     this.groupInfo.CityId = null;
     this.groupInfo.StateId= null;
-    this.groupInfo.ZipCode = null;
+    this.groupInfo.ZipCodeId = null;
     this.groupInfo.AmountReceived = 0;
     this.groupInfo.GroupId = 0;
     this.tabGroup.selectedIndex = 0
@@ -559,6 +573,9 @@ setFinancialsAmount(data){
   getCityName(e) {
   this.groupInfo.CityId = Number(e.target.options[e.target.selectedIndex].value)
   }
+  getZipNumber(e) {
+    this.groupInfo.ZipCodeId = Number(e.target.options[e.target.selectedIndex].value)
+    }
 
   openStallDiagram() {
     var data = {
@@ -593,6 +610,7 @@ setFinancialsAmount(data){
     hideRow=document.getElementById('groupFinancialsentry').hidden=true;
     printbutton = document.getElementById('inputprintbutton').style.display = "none";
     gridTableDesc=document.getElementById('gridTableDescPrint').style.display = "block";
+
     printContents = document.getElementById('print-entries').innerHTML;
     popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
     popupWin.document.open();
@@ -689,11 +707,18 @@ setFinancialsAmount(data){
     display: block;
     width: 100%;
   }
-  
+
+  table.table.table-bordered.tableBodyScroll.removeSpaceTop {
+    margin-top: -300px !important;
+    margin-bottom: 10px !important;
+}
   table.pdfTable{
     margin-bottom: 20px !important;
     display:table;
   }
+  tfoot {
+    margin-top: 20px !important;
+}
   
   table.pdfTable,table.pdfTable tbody,table.pdfTable tr {
     width:100%;
@@ -717,6 +742,7 @@ setFinancialsAmount(data){
     <body onload="window.print();window.close()">${printContents}</body>
       </html>`
     );
+
     hideRow=document.getElementById('groupFinancialsentry').hidden=false;
     printbutton = document.getElementById('inputprintbutton').style.display = "inline-block";
     gridTableDesc=document.getElementById('gridTableDescPrint').style.display = "none";
@@ -826,6 +852,10 @@ setFinancialsAmount(data){
     display: block;
     width: 100%;
   }
+  table.table.table-bordered.tableBodyScroll.removeSpaceTop {
+    margin-top: -300px !important;
+    margin-bottom: 10px !important;
+}
   
   table.pdfTable{
     margin-bottom: 20px !important;

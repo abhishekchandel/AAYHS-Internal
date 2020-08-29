@@ -151,7 +151,7 @@ namespace AAYHS.Repository.Repository
         {
             List<string> list = new List<string>();
             var exhibitorClass = (from ce in _context.ExhibitorClass
-                                  where ce.ClassId == ClassId
+                                  where ce.ClassId == ClassId && ce.IsActive==true && ce.IsDeleted==false
                                   select ce).ToList();
 
             foreach (var data in exhibitorClass)

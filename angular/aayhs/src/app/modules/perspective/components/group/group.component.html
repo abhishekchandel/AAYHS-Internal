@@ -117,11 +117,7 @@
                                                     is
                                                     required</span>
                                             </div>
-
-
-
-                                            <div class="row">
-                                                <div class="col-md-7">
+                                            
                                                     <div class="form-group">
                                                         <label>State <span>*</span></label>
                                                         <select required class="form-control" placeholder="State"
@@ -143,43 +139,19 @@
                                                             is
                                                             required</span>
                                                     </div>
-                                                </div>
+                                           
 
-
-
-                                                <div class="col-md-5">
-                                                    <div class="form-group">
-                                                        <label>Zip Code <span>*</span></label>
-                                                        <input type="text" class="form-control" maxlength="5"
-                                                            pattern="^[0-9]{5}(?:-[0-9]{4})?$" placeholder="Zip Code"
-                                                            #zipcode="ngModel" name="zipcode"
-                                                            [(ngModel)]="groupInfo.ZipCode" required />
-                                                        <span class="help-block"
-                                                            *ngIf="zipcode.errors?.required && (zipcode.touched || groupInfoForm.submitted)">Zip
-                                                            is
-                                                            required</span>
-
-                                                        <span class="help-block"
-                                                            *ngIf="!zipcode.errors?.required && zipcode.errors?.pattern">Zip
-                                                            is invalid</span>
-                                                    </div>
-                                                </div>
-
-
-                                            </div>
-
-
+                                            <div class="row">
+                                                <div class="col-md-7">
                                             <div class="form-group">
                                                 <label>City <span>*</span></label>
                                                 <select required class="form-control" placeholder="city"
-                                                    (change)="getCityName($event)" name="city" #city="ngModel"
+                                                    (change)="getZipCodes($event.target.value);getCityName($event)"
+                                                     name="city" #city="ngModel"
                                                     [(ngModel)]="groupInfo.CityId">
-
-
                                                     <option value="null" disabled="true" [selected]="true">
                                                         Select City
                                                     </option>
-
                                                     <option *ngFor="let city of citiesResponse" [value]="city.CityId">
                                                         {{city.Name}}
                                                     </option>
@@ -188,23 +160,35 @@
                                                     *ngIf="city.errors?.required && (city.touched || groupInfoForm.submitted)">City
                                                     is
                                                     required</span>
-
                                             </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                                         </div>
+                                    
+                                        
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                <label>Zip Code<span>*</span></label>
+                                                <select required class="form-control" placeholder="Zip Code"
+                                                     #zipcodeid="ngModel" name="zipcodeid"
+                                                    [(ngModel)]="groupInfo.ZipCodeId"
+                                                    (change)="getZipNumber($event)">
+                                                    <option value="null" disabled="true" [selected]="true">
+                                                        Select Zip Code
+                                                    </option>
+                                                    <option *ngFor="let code of zipCodesResponse"
+                                                        [value]="code.ZipCodeId">{{code.Number}} 
+                                                    </option>
+                                                </select>
+                                                <span class="help-block"
+                                                    *ngIf="zipcodeid.errors?.required && (zipcodeid.touched || groupInfoForm.submitted)">
+                                                    Zip Code is required
+                                                </span>
+                                            </div>
+                                        </div>
+                                    
+                                    </div>
+                                        </div>
+
+
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label>Contact Name</label>
@@ -290,7 +274,7 @@
                                      </table>
 
 
-                                    <table class="table table-bordered tableBodyScroll">
+                                    <table class="table table-bordered tableBodyScroll removeSpaceTop">
                                         <thead>
                                             <tr>
                                                 <th>Exhibitor Id </th>
@@ -362,7 +346,7 @@
                                         </tbody>
                                          </table>
                                          
-                                        <table class="table table-bordered tableBodyScroll">
+                                        <table class="table table-bordered tableBodyScroll removeSpaceTop">
                                             <thead>
                                                 <tr>
                                                     <th>Date</th>

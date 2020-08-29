@@ -88,8 +88,7 @@
                                     *ngIf="lastName.errors?.required && (lastName.touched || exhibitorInfoForm.submitted)">Last
                                     Name is required</span>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-7">
+                               
                                         <div class="form-group">
                                             <label>State <span>*</span></label>	
                                             <select required class="form-control" placeholder="State" name="state" #state="ngModel" [(ngModel)]="exhibitorInfo.StateId" (change)="getCities($event.target.value);getStateName($event)">													
@@ -104,24 +103,13 @@
                                             <span class="help-block" *ngIf="state.errors?.required && (state.touched || exhibitorInfoForm.submitted)" >State is
                                                 required</span>
                                         </div>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <div class="form-group">
-                                            <label>Zip Code <span>*</span></label>	
-                                            <input type="text" class="form-control" maxlength="5" pattern="^[0-9]{5}(?:-[0-9]{4})?$" placeholder="Zip Code" #zipcode="ngModel" name="zipcode" [(ngModel)]="exhibitorInfo.ZipCode" required />
-                                            <span class="help-block"
-                                            *ngIf="zipcode.errors?.required && (zipcode.touched || exhibitorInfoForm.submitted)">Zip
-                                            is
-                                            required</span>
-                                            
-                                        <span class="help-block"
-                                            *ngIf="!zipcode.errors?.required && zipcode.errors?.pattern">Zip is invalid</span>
-                                        </div> 
-                                    </div>
-                                </div>
+                                    
+
+                                <div class="row">
+                                    <div class="col-md-7">
                                 <div class="form-group">
                                     <label>City <span>*</span></label>	
-                                    <select required class="form-control" placeholder="city" (change)="getCityName($event)" name="city" #city="ngModel" [(ngModel)]="exhibitorInfo.CityId" >																						
+                                    <select required class="form-control" placeholder="city" (change)="getZipCodes($event.target.value);getCityName($event)" name="city" #city="ngModel" [(ngModel)]="exhibitorInfo.CityId" >																						
                                         <option value="null" disabled="true" [selected]="true">
                                             Select City
                                         </option>                                               
@@ -132,6 +120,31 @@
                                     <span class="help-block" *ngIf="city.errors?.required && (city.touched || exhibitorInfoForm.submitted)">City  is
                                         required</span>
                                 </div>
+                            </div>
+
+
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label>Zip Code<span>*</span></label>
+                                        <select required class="form-control" placeholder="Zip Code"
+                                             #zipcodeid="ngModel" name="zipcodeid"
+                                            [(ngModel)]="exhibitorInfo.ZipCodeId"
+                                            (change)="getZipNumber($event)">
+                                            <option value="null" disabled="true" [selected]="true">
+                                                Select Zip Code
+                                            </option>
+                                            <option *ngFor="let code of zipCodesResponse"
+                                                [value]="code.ZipCodeId">{{code.Number}} 
+                                            </option>
+                                        </select>
+                                        <span class="help-block"
+                                            *ngIf="zipcodeid.errors?.required && (zipcodeid.touched || exhibitorInfoForm.submitted)">
+                                            Zip Code is required
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
 
                                 <div class="form-group">
                                     <label>Quantity Programs </label>	

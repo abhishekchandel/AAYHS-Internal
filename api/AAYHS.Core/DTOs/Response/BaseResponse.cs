@@ -40,6 +40,7 @@ namespace AAYHS.Core.DTOs.Response
         public ResultExhibitorDetails ResultExhibitorDetails { get; set; }
         public GetAllBackNumber GetAllBackNumber { get; set; }
         public CityResponse CityResponse { get; set; }
+        public ZipCodeResponse ZipCodeResponse { get; set; }
         public StateResponse StateResponse { get; set; }
         public GetExhibitorAllHorses GetExhibitorAllHorses { get; set; }
         public GetResult GetResult { get; set; }

@@ -56,7 +56,7 @@ namespace AAYHS.Service.Service
                 {
                     Address = request.Address,
                     CityId = request.CityId,
-                    ZipCode = request.ZipCode,
+                    ZipCodeId = request.ZipCodeId,
                     CreatedBy = actionBy,
                     CreatedDate = DateTime.Now
                 };
@@ -123,7 +123,7 @@ namespace AAYHS.Service.Service
                     {
                         address.Address = request.Address;
                         address.CityId = request.CityId;
-                        address.ZipCode = request.ZipCode;
+                        address.ZipCodeId = request.ZipCodeId;
                         address.ModifiedBy = actionBy;
                         address.ModifiedDate = DateTime.Now;
                         _addressRepository.Update(address);

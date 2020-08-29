@@ -53,7 +53,7 @@ namespace AAYHS.Repository.Repository
                                        Email = sponsor.Email,
                                        AmountReceived = sponsor.AmountReceived,
                                        Address = data != null ? data.Address : "",
-                                       ZipCode = data != null ? data.ZipCode : "",
+                                       ZipCodeId = data != null ? data.ZipCodeId :0,
                                        CityId = data != null ? data.CityId : 0,
                                        StateId = data != null ? _context.Cities.Where(x => x.CityId == data.CityId).Select(y => y.StateId).FirstOrDefault() : 0,
                                    }).FirstOrDefault();
@@ -85,7 +85,7 @@ namespace AAYHS.Repository.Repository
                                        Email = sponsor.Email,
                                        AmountReceived = sponsor.AmountReceived,
                                        Address = data != null ? data.Address : "",
-                                       ZipCode = data != null ? data.ZipCode : "",
+                                       ZipCodeId = data != null ? data.ZipCodeId :0,
                                        CityId = data != null ? data.CityId : 0,
                                        StateId = data != null ? _context.Cities.Where(x => x.CityId == data.CityId).Select(y => y.StateId).FirstOrDefault() : 0,
                                    }).ToList();
@@ -146,7 +146,7 @@ namespace AAYHS.Repository.Repository
                                        Email = sponsor.Email,
                                        AmountReceived = sponsor.AmountReceived,
                                        Address = data != null ? data.Address : "",
-                                       ZipCode = data != null ? data.ZipCode : "",
+                                       ZipCodeId = data != null ? data.ZipCodeId : 0,
                                        CityId = data != null ? data.CityId : 0,
                                        StateId = data != null ? _context.Cities.Where(x => x.CityId == data.CityId).Select(y => y.StateId).FirstOrDefault() : 0,
                                    }).ToList();

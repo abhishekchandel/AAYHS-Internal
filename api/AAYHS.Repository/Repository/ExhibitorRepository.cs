@@ -112,7 +112,7 @@ namespace AAYHS.Repository.Repository
                                     QTYProgram=exhibitor.QTYProgram,
                                     AddressId= address2 != null ? address2.AddressId:0,
                                     Address= address2 != null ? address2.Address:"",
-                                    ZipCode= address2 != null ? address2.ZipCode:"",
+                                    ZipCodeId= address2 != null ? address2.ZipCodeId:0,
                                     CityId= address2 != null ?address2.CityId:0,
                                     StateId = address2 != null ? _context.Cities.Where(x => x.CityId == address2.CityId).Select(y => y.StateId).FirstOrDefault() : 0,
                                   });

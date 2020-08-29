@@ -29,6 +29,11 @@ deleteGroup(id:number){
 getCities(stateId:number){
     return this.http.get<any>(`${this.api}CommonAPI/GetCities?stateId=${stateId}`);
   }
+
+getZipCodes(cityId:number){
+    return this.http.get<any>(`${this.api}CommonAPI/GetZipCodes?cityId=${cityId}`);
+  }
+
 getAllStates(){
     return this.http.get<any>(`${this.api}CommonAPI/GetStates`,{});
   }

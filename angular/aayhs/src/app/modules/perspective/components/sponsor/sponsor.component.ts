@@ -34,6 +34,7 @@ export class SponsorComponent implements OnInit {
   selectedRowIndex: any;
   citiesResponse: any;
   statesResponse: any;
+  zipCodesResponse: any;
   result: string = '';
   totalItems: number = 0;
  
@@ -49,7 +50,7 @@ export class SponsorComponent implements OnInit {
     Address: null,
     CityId: null,
     StateId: null,
-    ZipCode: null,
+    ZipCodeId: null,
     AmountReceived: '0.00',
     SponsorId: 0,
     sponsorExhibitors: null,
@@ -155,15 +156,13 @@ export class SponsorComponent implements OnInit {
       {
         
       this.getCities(response.Data.StateId).then(res => {
-      
+        this.getZipCodes(response.Data.CityId).then(res => {
          this.sponsorInfo = response.Data;
          this.selectedRowIndex=selectedRowIndex;
-
-         this.sponsorInfo.AmountReceived= this.sponsorInfo.AmountReceived.toFixed(2);
-        console.log(this.sponsorInfo);
+         this.sponsorInfo.AmountReceived=Number(this.sponsorInfo.AmountReceived.toFixed(2));
       });
-      ;
-      }
+    });
+  }
       this.loading = false;
     }, error => {
       this.loading = false;
@@ -213,7 +212,7 @@ export class SponsorComponent implements OnInit {
     console.log(this.sponsorInfo);
 //return
     this.loading=true;
-    this.sponsorInfo.AmountReceived=this.sponsorInfo.AmountReceived==null ?0:this.sponsorInfo.AmountReceived;
+    this.sponsorInfo.AmountReceived=Number(this.sponsorInfo.AmountReceived==null ?0:this.sponsorInfo.AmountReceived);
     this.sponsorService.addUpdateSponsor(this.sponsorInfo).subscribe(response=>{
      this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
      this.getAllSponsors().then(res =>{ 
@@ -454,7 +453,7 @@ export class SponsorComponent implements OnInit {
     this.sponsorInfo.Address = null;
     this.sponsorInfo.CityId = null;
     this.sponsorInfo.StateId= null;
-    this.sponsorInfo.ZipCode = null;
+    this.sponsorInfo.ZipCodeId = null;
     this.sponsorInfo.AmountReceived = 0;
     this.sponsorInfo.SponsorId = 0;
     this.sponsorInfoForm.resetForm();
@@ -556,6 +555,21 @@ export class SponsorComponent implements OnInit {
      
   }
 
+  getZipCodes(id: number) {
+    return new Promise((resolve, reject) => {
+      this.loading = true;
+      this.zipCodesResponse=null;
+      this.sponsorService.getZipCodes(Number(id)).subscribe(response => {
+        debugger
+          this.zipCodesResponse = response.Data.ZipCode;
+          this.loading = false;
+      }, error => {
+        this.loading = false;
+      })
+        resolve();
+    });
+  }
+
   getStateName(e) {
     this.sponsorInfo.StateId =Number( e.target.options[e.target.selectedIndex].value)
   }
@@ -563,6 +577,9 @@ export class SponsorComponent implements OnInit {
   getCityName(e) {
   this.sponsorInfo.CityId = Number(e.target.options[e.target.selectedIndex].value)
   }
+  getZipNumber(e) {
+    this.sponsorInfo.ZipCodeId = Number(e.target.options[e.target.selectedIndex].value)
+    }
 
   goToLink(url: string){
   window.open(url, "_blank");
@@ -669,6 +686,10 @@ printSponsorExhibitor() {
 .table-responsive {
   display: block;
   width: 100%;
+}
+table.table.table-bordered.tableBodyScroll.removeSpaceTop {
+  margin-top: -300px !important;
+  margin-bottom: 10px !important;
 }
 
 table.pdfTable{
@@ -806,7 +827,10 @@ printSponsorClasses() {
   display: block;
   width: 100%;
 }
-
+table.table.table-bordered.tableBodyScroll.removeSpaceTop {
+  margin-top: -300px !important;
+  margin-bottom: 10px !important;
+}
 table.pdfTable{
   margin-bottom: 20px !important;
   display:table;

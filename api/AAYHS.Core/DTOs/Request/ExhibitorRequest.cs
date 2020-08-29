@@ -19,7 +19,7 @@ namespace AAYHS.Core.DTOs.Request
         public string PrimaryEmail { get; set; }
         public string SecondaryEmail { get; set; }
         public string Phone { get; set; }
-        public string ZipCode { get; set; }
+        public int ZipCodeId { get; set; }
         public int CityId { get; set; }
         public int StateId { get; set; }
         public string Address { get; set; }

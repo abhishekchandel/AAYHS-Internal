@@ -11,5 +11,6 @@ namespace AAYHS.Service.IService
         Task<MainResponse> GetGlobalCode(string globalCodeType);
         MainResponse GetAllStates();
         MainResponse GetAllCities(int StateId);
+        MainResponse GetAllZipCodes(int CityId);
     }
 }

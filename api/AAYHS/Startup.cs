@@ -120,6 +120,8 @@ namespace AAYHS
             });
 
 
+
+
             //Dependency injection in ASP.NET Core (Services)
             services.AddTransient<IAPIErrorLogService, APIErrorLogService>();
             services.AddTransient<IClassSponsorService, ClassSponsorService>();
@@ -134,6 +136,9 @@ namespace AAYHS
             services.AddTransient<IGroupService, GroupService>();
             services.AddTransient<IStallService, StallService>();
             services.AddTransient<IAdvertisementService, AdvertisementService>();
+
+
+
 
             //Dependency injection in ASP.NET Core (Repositories)
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
@@ -164,6 +169,7 @@ namespace AAYHS
             services.AddTransient<IStallRepository, StallRepository>();
             services.AddTransient<IAdvertisementRepository, AdvertisementRepository>();
             services.AddTransient<IExhibitorHorseRepository, ExhibitorHorseRepository>();
+            services.AddTransient<IZipCodeRepository, ZipCodeRepository>();
 
             services.AddControllers();
         }

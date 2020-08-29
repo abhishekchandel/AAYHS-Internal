@@ -96,9 +96,7 @@
                                         <span class="help-block" *ngIf="address.errors?.required && (address.touched || sponsorInfoForm.submitted)">Address is
                                             required</span>
 								      </div> 									 
-									  
-									<div class="row">
-										<div class="col-md-7">
+									
 											<div class="form-group">
 												<label>State <span>*</span></label>	
 												<select required class="form-control" placeholder="State" name="state" #state="ngModel" [(ngModel)]="sponsorInfo.StateId" (change)="getCities($event.target.value);getStateName($event)">
@@ -115,22 +113,7 @@
                                                 <span class="help-block" *ngIf="state.errors?.required && (state.touched || sponsorInfoForm.submitted)" >State is
                                                     required</span>
 											</div>
-										</div>
-										<div class="col-md-5">
-											<div class="form-group">
-												<label>Zip Code <span>*</span></label>	
-                                                <input type="text" class="form-control" maxlength="5" pattern="^[0-9]{5}(?:-[0-9]{4})?$" placeholder="Zip Code" #zipcode="ngModel" name="zipcode" [(ngModel)]="sponsorInfo.ZipCode" required />
-                                        <span class="help-block"
-                                        *ngIf="zipcode.errors?.required && (zipcode.touched || sponsorInfoForm.submitted)">Zip
-                                        is
-										required</span>
-										
-                                    <span class="help-block"
-                                        *ngIf="!zipcode.errors?.required && zipcode.errors?.pattern">Zip is invalid</span>
-											</div> 
-										</div>
-									</div>
-							
+									
 									
 									  <div class="form-group">
 									    <label>Sponsor ID</label>	
@@ -169,9 +152,11 @@
 
 									  </div> 
 									  
+									  <div class="row">
+										<div class="col-md-7">
 									  <div class="form-group">
 									    <label>City <span>*</span></label>	
-										<select required class="form-control" placeholder="city" (change)="getCityName($event)" name="city" #city="ngModel" [(ngModel)]="sponsorInfo.CityId" >
+										<select required class="form-control" placeholder="city" (change)="getZipCodes($event.target.value);getCityName($event)" name="city" #city="ngModel" [(ngModel)]="sponsorInfo.CityId" >
 											
 											
 											<option value="null" disabled="true" [selected]="true">
@@ -185,8 +170,29 @@
                                         <span class="help-block" *ngIf="city.errors?.required && (city.touched || sponsorInfoForm.submitted)">City  is
                                             required</span>
 									  </div>
+									</div>
 
-
+									  <div class="col-md-5">
+									  <div class="form-group">
+										<label>Zip Code<span>*</span></label>
+										<select required class="form-control" placeholder="Zip Code"
+											 #zipcodeid="ngModel" name="zipcodeid"
+											[(ngModel)]="sponsorInfo.ZipCodeId"
+											(change)="getZipNumber($event)">
+											<option value="null" disabled="true" [selected]="true">
+												Select Zip Code
+											</option>
+											<option *ngFor="let code of zipCodesResponse"
+												[value]="code.ZipCodeId">{{code.Number}} 
+											</option>
+										</select>
+										<span class="help-block"
+											*ngIf="zipcodeid.errors?.required && (zipcodeid.touched || sponsorInfoForm.submitted)">
+											Zip Code is required
+										</span>
+									</div>
+							        	</div>
+									</div>
 
 									 
 								   </div>
@@ -225,7 +231,7 @@
 
 
 
-										<table class="table table-bordered tableBodyScroll">
+										<table class="table table-bordered tableBodyScroll removeSpaceTop">
 										<thead>
 											<tr>
 												<th>Exhibitor ID</th> 
@@ -364,7 +370,7 @@
 									     	</table>
 
 
-											<table class="table table-bordered tableBodyScroll">
+											<table class="table table-bordered tableBodyScroll removeSpaceTop">
 											<thead>
 												<tr>
 													<th>Class Number</th> 

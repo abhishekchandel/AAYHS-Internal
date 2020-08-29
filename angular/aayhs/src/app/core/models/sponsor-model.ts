@@ -10,7 +10,7 @@ export interface SponsorInformationViewModel
     Address:string;
     CityId:number;
     StateId:number;
-    ZipCode:string;
+    ZipCodeId:number;
     AmountReceived :any;
     SponsorId:number;
     sponsorExhibitors:Array<SponsorExhibitors>;

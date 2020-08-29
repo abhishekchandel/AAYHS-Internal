@@ -43,6 +43,9 @@ namespace AAYHS.Service.Service
                     return _mainResponse;
                 }
                 var SponsorExhibitor = _Mapper.Map<SponsorExhibitor>(request);
+                    SponsorExhibitor.IsActive = true;
+                    SponsorExhibitor.IsDeleted = false;
+                    SponsorExhibitor.CreatedDate = DateTime.Now;
                 _SponsorExhibitorRepository.Add(SponsorExhibitor);
                 _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
                 _mainResponse.Success = true;
@@ -56,6 +59,7 @@ namespace AAYHS.Service.Service
                     SponsorExhibitor.ExhibitorId = request.ExhibitorId;
                     SponsorExhibitor.SponsorTypeId = request.SponsorTypeId;
                     SponsorExhibitor.TypeId = request.TypeId;
+                    SponsorExhibitor.ModifiedDate = DateTime.Now;
                     _SponsorExhibitorRepository.Update(SponsorExhibitor);
                     _mainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
                     _mainResponse.Success = true;
