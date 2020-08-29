@@ -88,7 +88,7 @@ namespace AAYHS.Repository.Repository
                     from scheduleDate2 in scheduleDate1.DefaultIfEmpty()
                     join splitClass in _ObjContext.ClassSplits on classes.ClassId equals splitClass.ClassId into splitClass1
                     from splitClass2 in splitClass1.DefaultIfEmpty()                                    
-                    where classes.IsActive == true && classes.IsDeleted == false && scheduleDate2.IsDeleted==false
+                    where classes.IsActive == true && classes.IsDeleted == false 
                     && classes.ClassId == ClassId
                     select new ClassResponse
                     {
@@ -98,8 +98,8 @@ namespace AAYHS.Repository.Repository
                         Name= classes.Name,
                         AgeGroup= classes.AgeGroup,
                         Location= classes!=null?classes.Location:"",
-                        ScheduleDate= scheduleDate2.Date,
-                        SchedulTime= scheduleDate2.Time,
+                        ScheduleDate= scheduleDate2!=null? scheduleDate2.Date:null,
+                        SchedulTime= scheduleDate2 != null ? scheduleDate2.Time:null,
                         SplitNumber= splitClass2!=null?splitClass2.SplitNumber:0,
                         ChampionShipIndicator= splitClass2 != null ? splitClass2.ChampionShipIndicator:false,
                         getClassSplit = (from splitClass in _ObjContext.ClassSplits                                     

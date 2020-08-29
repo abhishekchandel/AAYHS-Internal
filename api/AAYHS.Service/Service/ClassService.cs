@@ -144,7 +144,8 @@ namespace AAYHS.Service.Service
         {
             if (addClassRequest.ClassId == 0)
             {
-                var classExist = _classRepository.GetSingle(x => x.Name == addClassRequest.Name && x.AgeGroup == addClassRequest.AgeGroup && x.IsActive==true && x.IsDeleted==false);
+                var classExist = _classRepository.GetSingle(x => x.Name == addClassRequest.Name && x.AgeGroup == addClassRequest.AgeGroup 
+                                                  && x.ClassNumber==addClassRequest.ClassNumber && x.IsActive==true && x.IsDeleted==false);
                 if (classExist!=null && classExist.ClassId>0)
                 {
                     _mainResponse.Message = Constants.CLASS_EXIST;
@@ -164,6 +165,7 @@ namespace AAYHS.Service.Service
                 };
                 var _class = await _classRepository.AddAsync(classes);
 
+
                 var schedule = new ScheduleDates
                 {
                     ClassId = _class.ClassId,
@@ -173,8 +175,8 @@ namespace AAYHS.Service.Service
                     CreatedBy = actionBy,
                     CreatedDate = DateTime.Now,
                 };
-                await _scheduleDateRepository.AddAsync(schedule);
-
+                 await _scheduleDateRepository.AddAsync(schedule);
+                                            
                 if (addClassRequest.getClassSplit != null)
                 {
                     foreach (var split in addClassRequest.getClassSplit)
@@ -213,8 +215,9 @@ namespace AAYHS.Service.Service
                     updateClass.ModifiedDate = DateTime.Now;
                     await _classRepository.UpdateAsync(updateClass);
                 }
+               
                 var updateClassSchedule = _scheduleDateRepository.GetSingle(x => x.ClassId == addClassRequest.ClassId && x.IsActive == true && x.IsDeleted == false);
-                if (updateClassSchedule!=null)
+                if (updateClassSchedule != null)
                 {
                     updateClassSchedule.Date = addClassRequest.ScheduleDate;
                     updateClassSchedule.Time = addClassRequest.ScheduleTime;
@@ -222,7 +225,7 @@ namespace AAYHS.Service.Service
                     updateClassSchedule.ModifiedDate = DateTime.Now;
                     await _scheduleDateRepository.UpdateAsync(updateClassSchedule);
                 }
-
+                              
                 if (addClassRequest.getClassSplit != null)
                 {
                     _splitClassRepository.DeleteSplitsByClassId(addClassRequest);

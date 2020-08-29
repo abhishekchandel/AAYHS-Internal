@@ -26,13 +26,16 @@ namespace AAYHS.Service.Service
         private IAddressRepository _addressRepository;
         private IGroupExhibitorRepository _groupExhibitorRepository;
         private IGlobalCodeRepository _globalCodeRepository;
+        private IExhibitorClassRepository _exhibitorClassRepository;
+        private IClassRepository _classRepository;
         private IExhibitorHorseRepository _exhibitorHorseRepository;
         private IHorseRepository _horseRepository;
         #endregion
 
         public ExhibitorService(IExhibitorRepository exhibitorRepository,IAddressRepository addressRepository,
                                  IExhibitorHorseRepository exhibitorHorseRepository,IHorseRepository horseRepository, 
-                                 IGroupExhibitorRepository groupExhibitorRepository,IGlobalCodeRepository globalCodeRepository,IMapper mapper)
+                                 IGroupExhibitorRepository groupExhibitorRepository,IGlobalCodeRepository globalCodeRepository,
+                                 IExhibitorClassRepository exhibitorClassRepository, IClassRepository classRepository,IMapper mapper)
         {
             _exhibitorRepository = exhibitorRepository;
             _addressRepository = addressRepository;
@@ -40,6 +43,8 @@ namespace AAYHS.Service.Service
             _horseRepository = horseRepository;
             _groupExhibitorRepository = groupExhibitorRepository;
             _globalCodeRepository = globalCodeRepository;
+            _exhibitorClassRepository = exhibitorClassRepository;
+            _classRepository = classRepository;
             _mapper = mapper;
             _mainResponse = new MainResponse();
         }
@@ -334,6 +339,85 @@ namespace AAYHS.Service.Service
                 _mainResponse.Message = Constants.NO_RECORD_FOUND;
                 _mainResponse.Success = false;
             }
+            return _mainResponse;
+        }
+
+        public MainResponse RemoveExhibitorFromClass(int exhibitorClassId, string actionBy)
+        {
+            var exhibitor = _exhibitorClassRepository.GetSingle(x => x.ExhibitorClassId == exhibitorClassId);
+
+            if (exhibitor != null)
+            {
+                exhibitor.IsDeleted = true;
+                exhibitor.DeletedBy = actionBy;
+                exhibitor.DeletedDate = DateTime.Now;
+                _exhibitorClassRepository.Update(exhibitor);
+
+                _mainResponse.Message = Constants.CLASS_REMOVED;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+                _mainResponse.Success = false;
+            }
+            return _mainResponse;
+        }
+
+        public MainResponse GetAllClasses(int exhibitorId)
+        {
+            var allClasses = _classRepository.GetAll(x => x.IsActive == true && x.IsDeleted == false);
+            var exhibitorInClass = _exhibitorClassRepository.GetAll(x => x.ExhibitorId == exhibitorId && x.IsActive == true && x.IsDeleted == false);
+
+            if (allClasses.Count > 0)
+            {
+                var classes = allClasses.Where(x => exhibitorInClass.All(y => y.ClassId != x.ClassId)).ToList();
+                var _allClasses = _mapper.Map<List<GetClassesForExhibitor>>(classes);
+                GetAllClassesForExhibitor getAllClassesForExhibitor = new GetAllClassesForExhibitor();
+                getAllClassesForExhibitor.getClassesForExhibitor = _allClasses;
+                _mainResponse.GetAllClassesForExhibitor = getAllClassesForExhibitor;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+                _mainResponse.Success = false;
+            }
+            return _mainResponse;
+        }
+
+        public MainResponse GetClassDetail(int classId)
+        {
+            var classDetail = _classRepository.GetSingle(x => x.ClassId == classId && x.IsActive == true && x.IsDeleted == false);
+            if (classDetail != null && classDetail.ClassId > 0)
+            {
+                var entries = _exhibitorClassRepository.GetAll(x => x.ClassId == classId && x.IsActive == true && x.IsDeleted == false);
+                var _class = _mapper.Map<GetClassesForExhibitor>(classDetail);
+                _class.Entries = entries.Count();
+                _mainResponse.GetClassesForExhibitor = _class;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+                _mainResponse.Success = false;
+            }
+            return _mainResponse;
+        }
+
+        public MainResponse AddExhibitorToClass(AddExhibitorToClass addExhibitorToClass, string actionBy)
+        {
+            var exhibitor = new ExhibitorClass
+            {
+                ExhibitorId = addExhibitorToClass.ExhibitorId,
+                ClassId = addExhibitorToClass.ClassId,
+                CreatedBy = actionBy,
+                CreatedDate = DateTime.Now
+            };
+
+            _exhibitorClassRepository.Add(exhibitor);
+            _mainResponse.Message = Constants.CLASS_EXHIBITOR;
+            _mainResponse.Success = true;
             return _mainResponse;
         }
     }

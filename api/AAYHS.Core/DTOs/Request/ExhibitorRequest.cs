@@ -29,5 +29,10 @@ namespace AAYHS.Core.DTOs.Request
         public int ExhibitorId { get; set; }
         public int HorseId { get; set; }
         public int BackNumber { get; set; }
+   }
+    public class AddExhibitorToClass
+    {
+        public int ExhibitorId { get; set; }
+        public int ClassId { get; set; }
     }
 }

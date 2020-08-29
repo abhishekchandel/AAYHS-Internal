@@ -19,5 +19,9 @@ namespace AAYHS.Service.IService
         MainResponse GetHorseDetail(int horseId);
         MainResponse AddExhibitorHorse(AddExhibitorHorseRequest addExhibitorHorseRequest, string actionBy);
         MainResponse GetAllClassesOfExhibitor(int exhibitorId);
+        MainResponse RemoveExhibitorFromClass(int exhibitorClassId, string actionBy);
+        MainResponse GetAllClasses(int exhibitorId);
+        MainResponse GetClassDetail(int classId);
+        MainResponse AddExhibitorToClass(AddExhibitorToClass addExhibitorToClass, string actionBy);
     }
 }

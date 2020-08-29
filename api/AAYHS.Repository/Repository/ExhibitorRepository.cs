@@ -161,9 +161,9 @@ namespace AAYHS.Repository.Repository
                              where exhibitorClass.IsActive == true && exhibitorClass.IsDeleted == false
                              && exhibitorClass.ExhibitorId == exhibitorId
                              select new GetClassesOfExhibitor
-                             { 
-                               ClassId= classes.ClassId,
-                               ClassNumber=classes.ClassNumber,
+                             {
+                               ExhibitorClassId = exhibitorClass.ExhibitorClassId,
+                               ClassNumber =classes.ClassNumber,
                                Name=classes.Name,
                                AgeGroup=classes.AgeGroup,
                                Entries= classes != null ? _context.ExhibitorClass.Where(x => x.ClassId == classes.ClassId && x.IsActive == true && x.IsDeleted == false).Select(x => x.ExhibitorClassId).Count() : 0,

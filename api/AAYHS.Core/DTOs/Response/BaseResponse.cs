@@ -62,7 +62,8 @@ namespace AAYHS.Core.DTOs.Response
         public GetExhibitorHorsesList GetExhibitorHorsesList { get; set; }
         public GetHorses GetHorses { get; set; }
         public GetAllClassesOfExhibitor GetAllClassesOfExhibitor { get; set; }
-
+        public GetAllClassesForExhibitor GetAllClassesForExhibitor { get; set; }
+        public GetClassesForExhibitor GetClassesForExhibitor { get; set; }
     }
    
     public class Response<T> : BaseResponse
