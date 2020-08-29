@@ -222,20 +222,7 @@ namespace AAYHS.API.Controllers
             _mainResponse =  _classService.GetResultOfClass(classRequest);
             _jsonString = Mapper.Convert<GetResult>(_mainResponse);
             return new OkObjectResult(_jsonString);
-        }
-        /// <summary>
-        /// This api used to search the class
-        /// </summary>
-        /// <param name="searchRequest"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [Authorize]
-        public IActionResult SearchClass(SearchRequest searchRequest)
-        {
-            _mainResponse = _classService.SearchClass(searchRequest);
-            _jsonString = Mapper.Convert<GetAllClasses>(_mainResponse);
-            return new OkObjectResult(_jsonString);
-        }
+        }        
         /// <summary>
         /// This api used to update class exhibitor scratch
         /// </summary>

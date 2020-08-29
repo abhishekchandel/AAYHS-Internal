@@ -13,8 +13,7 @@ namespace AAYHS.Service.IService
         MainResponse GetAllHorses(HorseRequest horseRequest);
         MainResponse GetHorse(int HorseId);
         MainResponse RemoveHorse(int HorseId, string actionBy);
-        MainResponse AddUpdateHorse(HorseAddRequest horseAddRequest, string actionBy);
-        MainResponse SearchHorse(SearchRequest searchRequest);
+        MainResponse AddUpdateHorse(HorseAddRequest horseAddRequest, string actionBy);       
         MainResponse LinkedExhibitors(HorseExhibitorRequest horseExhibitorRequest);
         MainResponse GetGroups();
     }

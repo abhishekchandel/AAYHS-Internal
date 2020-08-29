@@ -10,8 +10,7 @@ namespace AAYHS.Repository.IRepository
 {
     public interface IHorseRepository: IGenericRepository<Horses>
     {
-        GetAllHorses GetAllHorses(HorseRequest horseRequest);       
-        GetAllHorses SearchHorse(SearchRequest searchRequest);
+        GetAllHorses GetAllHorses(HorseRequest horseRequest);              
         GetAllLinkedExhibitors LinkedExhibitors(HorseExhibitorRequest horseExhibitorRequest);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AAYHS.Core.DTOs.Request;
 using AAYHS.Core.DTOs.Response;
+using AAYHS.Core.DTOs.Response.Common;
 using AAYHS.Data.DBContext;
 using AAYHS.Data.DBEntities;
 using AAYHS.Repository.IRepository;
@@ -123,60 +124,7 @@ namespace AAYHS.Repository.Repository
             }
             return exhibitorListResponses;
         }
-
-        public ExhibitorListResponse SearchExhibitor(SearchRequest searchRequest)
-        {
-            IEnumerable<ExhibitorResponse> exhibitorResponses = null;
-            ExhibitorListResponse exhibitorListResponses = new ExhibitorListResponse();
-
-            exhibitorResponses=(from exhibitor in _context.Exhibitors
-                                where exhibitor.IsActive == true && exhibitor.IsDeleted == false
-                                 && ((searchRequest.SearchTerm != string.Empty ? Convert.ToString(exhibitor.ExhibitorId).Contains(searchRequest.SearchTerm) : (1 == 1))
-                                   || (searchRequest.SearchTerm != string.Empty ? exhibitor.FirstName.Contains(searchRequest.SearchTerm) : (1 == 1))
-                                   || (searchRequest.SearchTerm != string.Empty ? exhibitor.LastName.Contains(searchRequest.SearchTerm) : (1 == 1)))
-                                select new ExhibitorResponse
-                                {
-                                    ExhibitorId = exhibitor.ExhibitorId,
-                                    GroupId = exhibitor.GroupId,
-                                    AddressId = exhibitor.AddressId,
-                                    FirstName = exhibitor.FirstName,
-                                    LastName = exhibitor.LastName,
-                                    BackNumber = exhibitor.BackNumber,
-                                    BirthYear = exhibitor.BirthYear,
-                                    IsNSBAMember = exhibitor.IsNSBAMember,
-                                    IsDoctorNote = exhibitor.IsDoctorNote,
-                                    QTYProgram = exhibitor.QTYProgram,
-                                    PrimaryEmail = exhibitor.PrimaryEmail,
-                                    SecondaryEmail = exhibitor.SecondaryEmail,
-                                    Phone = exhibitor.Phone,
-                                }).ToList();
-
-            if (exhibitorResponses.Count() > 0)
-            {
-                var propertyInfo = typeof(SponsorResponse).GetProperty(searchRequest.OrderBy);
-                if (searchRequest.OrderByDescending == true)
-                {
-                    exhibitorResponses = exhibitorResponses.OrderByDescending(s => s.GetType().GetProperty(searchRequest.OrderBy).GetValue(s)).ToList();
-                }
-                else
-                {
-                    exhibitorResponses = exhibitorResponses.AsEnumerable().OrderBy(s => propertyInfo.GetValue(s, null)).ToList();
-                }
-                exhibitorListResponses.TotalRecords = exhibitorResponses.Count();
-                if (searchRequest.AllRecords == true)
-                {
-                    exhibitorResponses = exhibitorResponses.ToList();
-                }
-                else
-                {
-                    exhibitorResponses = exhibitorResponses.Skip((searchRequest.Page - 1) * searchRequest.Limit).Take(searchRequest.Limit).ToList();
-                }
-            }
-
-            exhibitorListResponses.exhibitorResponses = exhibitorResponses.ToList();
-            return exhibitorListResponses;
-        }
-
+       
         public ExhibitorHorsesResponse GetExhibitorHorses(int exhibitorId)
         {
             IEnumerable<ExhibitorHorses> exhibitorHorses = null;
@@ -202,7 +150,31 @@ namespace AAYHS.Repository.Repository
             }
             return exhibitorHorsesResponse;
         }
-        
-        
+
+        public GetAllClassesOfExhibitor GetAllClassesOfExhibitor(int exhibitorId)
+        {
+            IEnumerable<GetClassesOfExhibitor> getClassesOfExhibitor = null;
+            GetAllClassesOfExhibitor getAllClassesOfExhibitor = new GetAllClassesOfExhibitor();
+
+            getClassesOfExhibitor = (from exhibitorClass in _context.ExhibitorClass
+                             join classes in _context.Classes on exhibitorClass.ClassId equals classes.ClassId
+                             where exhibitorClass.IsActive == true && exhibitorClass.IsDeleted == false
+                             && exhibitorClass.ExhibitorId == exhibitorId
+                             select new GetClassesOfExhibitor
+                             { 
+                               ClassId= classes.ClassId,
+                               ClassNumber=classes.ClassNumber,
+                               Name=classes.Name,
+                               AgeGroup=classes.AgeGroup,
+                               Entries= classes != null ? _context.ExhibitorClass.Where(x => x.ClassId == classes.ClassId && x.IsActive == true && x.IsDeleted == false).Select(x => x.ExhibitorClassId).Count() : 0,
+                               Scratch= exhibitorClass.IsScratch
+                             });
+            if (getClassesOfExhibitor.Count()>0)
+            {
+                getAllClassesOfExhibitor.getClassesOfExhibitors = getClassesOfExhibitor.ToList();
+                getAllClassesOfExhibitor.TotalRecords = getClassesOfExhibitor.Count();
+            }
+            return getAllClassesOfExhibitor;
+        }
     }
 }

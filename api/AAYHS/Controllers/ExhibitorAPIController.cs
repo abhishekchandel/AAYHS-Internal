@@ -83,20 +83,7 @@ namespace AAYHS.API.Controllers
             _mainResponse = _exhibitorService.DeleteExhibitor(exhibitorId, actionBy);
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
-        }
-        /// <summary>
-        /// This API used to search exhibitor by id and name
-        /// </summary>
-        /// <param name="filterRequest"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public ActionResult SearchExhibitor(SearchRequest searchRequest)
-        {
-
-            _mainResponse = _exhibitorService.SearchExhibitor(searchRequest);
-            _jsonString = Mapper.Convert<ExhibitorListResponse>(_mainResponse);
-            return new OkObjectResult(_jsonString);
-        }
+        }        
         /// <summary>
         /// This API used to get exhibitor horses
         /// </summary>
@@ -128,9 +115,9 @@ namespace AAYHS.API.Controllers
         /// <param name="exhibitorId"></param>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult GetAllHorses()
+        public ActionResult GetAllHorses(int exhibitorId)
         {
-            _mainResponse = _exhibitorService.GetAllHorses();
+            _mainResponse = _exhibitorService.GetAllHorses(exhibitorId);
             _jsonString = Mapper.Convert<GetExhibitorHorsesList>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
@@ -157,6 +144,18 @@ namespace AAYHS.API.Controllers
             string actionBy = User.Identity.Name;
             _mainResponse = _exhibitorService.AddExhibitorHorse(addExhibitorHorseRequest, actionBy);
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to get all the classes of a exhibitor
+        /// </summary>
+        /// <param name="exhibitorId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetAllClassesOfExhibitor(int exhibitorId)
+        {
+            _mainResponse = _exhibitorService.GetAllClassesOfExhibitor(exhibitorId);
+            _jsonString = Mapper.Convert<GetAllClassesOfExhibitor>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
     }

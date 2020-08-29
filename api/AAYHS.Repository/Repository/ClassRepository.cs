@@ -329,47 +329,6 @@ namespace AAYHS.Repository.Repository
                                
             }
             return getResult;
-        }
-        public GetAllClasses SearchClass(SearchRequest searchRequest)
-        {
-            IEnumerable<ClassResponse> data;
-            GetAllClasses getAllClasses = new GetAllClasses();
-
-            data = (from classes in _ObjContext.Classes
-                    where classes.IsActive==true && classes.IsDeleted==false &&((searchRequest.SearchTerm != string.Empty ? classes.ClassNumber.Contains(searchRequest.SearchTerm) : (1 == 1))
-                    || (searchRequest.SearchTerm != string.Empty ? classes.Name.Contains(searchRequest.SearchTerm) : (1 == 1)))
-                    select new ClassResponse
-                    {
-                        ClassId = classes.ClassId,
-                        ClassNumber = classes.ClassNumber,
-                        Name = classes.Name,
-                        Entries = classes != null ? _ObjContext.ExhibitorClass.Where(x => x.ClassId == classes.ClassId && x.IsDeleted==false).Select(x => x.ExhibitorClassId).Count() : 0,
-                        AgeGroup = classes.AgeGroup
-                    });
-
-            if (data.Count() != 0)
-            {
-                if (searchRequest.OrderByDescending == true)
-                {
-                    data = data.OrderByDescending(x => x.GetType().GetProperty(searchRequest.OrderBy).GetValue(x));
-                }
-                else
-                {
-                    data = data.OrderBy(x => x.GetType().GetProperty(searchRequest.OrderBy).GetValue(x));
-                }
-                getAllClasses.TotalRecords = data.Count();
-                if (searchRequest.AllRecords)
-                {
-                    getAllClasses.classesResponse = data.ToList();
-                }
-                else
-                {
-                    getAllClasses.classesResponse = data.Skip((searchRequest.Page - 1) * searchRequest.Limit).Take(searchRequest.Limit).ToList();
-
-                }
-       
-            }
-            return getAllClasses;
-        }
+        }      
     }
 }
