@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { HeaderComponent } from 'src/app/shared/layout/header/header.component';
+import { GlobalService } from '../../../../core/services/global.service'
 
 @Component({
   selector: 'app-layout',
@@ -12,12 +13,15 @@ export class LayoutComponent implements OnInit {
 
   title: string;
   searchText: string;
-  constructor(private router: Router) {
+  constructor(private router: Router, private globalService: GlobalService) {
     router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.title = this.getTitle(router.routerState, router.routerState.root).join('-');
-        if(this.appHeader) this.appHeader.clearInput();
+        if(this.appHeader) {
+          this.globalService.searchTerm.next(null)
+          this.appHeader.clearInput();
       }
+    }
     });
   }
 

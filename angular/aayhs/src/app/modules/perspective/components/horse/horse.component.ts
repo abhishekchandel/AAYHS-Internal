@@ -67,6 +67,7 @@ export class HorseComponent implements OnInit {
 
   ngOnInit(): void {
     this.data.searchTerm.subscribe((searchTerm: string) => {
+      debugger;
       this.baseRequest.SearchTerm = searchTerm;
       this.getAllHorses();
     });
@@ -284,6 +285,19 @@ print() {
             margin-bottom:0 !important; 
             padding-bottom:0 !important;   
         }
+        .dataDesc.gridTable {
+          background-color: transparent !important;
+      }
+      .dataDesc.gridTable:before {
+        display:none !important; 
+      }
+      #gridTableDescPrint tbody tr td {
+        display: block !important;
+        background-color: transparent !important;
+        border:none;
+        padding:5px 0px;  
+        text-align:left;
+    }
           table thead tr th {
             background-color: #a0b8f9;
             font-family: "Roboto-Medium" ,sans-serif;
@@ -360,7 +374,7 @@ print() {
 }
 .pdfdataTable {
   position: absolute;
-  top: 50px;
+  top: 90px;
   width: 98%;
   left:0;
   margin: 0 1%;
