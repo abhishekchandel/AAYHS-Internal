@@ -163,15 +163,16 @@ export class HorseComponent implements OnInit {
   resetForm() {
     this.horseInfo.Name = null;
     this.horseInfo.HorseId = null;
-    this.horseInfo.HorseTypeId = 2002;
     this.horseInfo.GroupId = null;
     this.horseInfo.JumpHeightId= null;
     this.horseInfo.NSBAIndicator=false;
     this.linkedExhibitors = null;
-    this.horseInfoForm.resetForm();
+     this.horseInfoForm.resetForm({ horseTypeId:2002});
     // this.tabGroup.selectedIndex = 0;
     this.selectedRowIndex = null;
-    this.linkedExhibitors = null
+    this.linkedExhibitors = null;
+    this.horseInfo.HorseTypeId = 2002;
+
   }
 
   highlight(id, i) {

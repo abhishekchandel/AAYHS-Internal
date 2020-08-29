@@ -86,10 +86,10 @@
 												<label>Horse Type <span>*</span></label>
 												<select #horseTypeId="ngModel" name="horseTypeId" required
 													[(ngModel)]="horseInfo.HorseTypeId" class="form-control">
-													<option [ngValue]="null">
+													<!-- <option [ngValue]="null">
 														Select Horse Type
-													</option>
-													<option *ngFor="let height of horseType"
+													</option> -->
+													<option  *ngFor="let height of horseType"
 														[value]="height.GlobalCodeId">
 														{{height.CodeName}}
 													</option>
@@ -105,7 +105,7 @@
 													<option [ngValue]="null">
 														Select Jump Height
 													</option>
-													<option *ngFor="let height of jumpHeight"
+													<option  *ngFor="let height of jumpHeight"
 														[value]="height.GlobalCodeId">
 														{{height.CodeName}}
 													</option>

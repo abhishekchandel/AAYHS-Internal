@@ -1,7 +1,7 @@
 export interface HorseInfoModel
 {
     Name:string;
-    HorseTypeId:number;
+    HorseTypeId:any;
     HorseId:number;
     NSBAIndicator:boolean;
     GroupId:number,
