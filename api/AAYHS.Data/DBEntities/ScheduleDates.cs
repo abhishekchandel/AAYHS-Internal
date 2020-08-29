@@ -13,7 +13,9 @@ namespace AAYHS.Data.DBEntities
         [Key]
         public int ScheduleDateId { get; set; }
         public int ClassId { get; set; }
-        public DateTime Date { get; set; }
-        public TimeSpan Time { get; set; }
+        public DateTime? Date { get; set; }
+        public TimeSpan? Time { get; set; }
     }
+
+  
 }

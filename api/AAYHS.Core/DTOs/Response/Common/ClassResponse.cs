@@ -14,8 +14,8 @@ namespace AAYHS.Core.DTOs.Response.Common
         public string Location { get; set; }
         public string AgeGroup { get; set; }
         public int Entries { get; set; }
-        public DateTime ScheduleDate { get; set; }
-        public TimeSpan SchedulTime { get; set; }
+        public DateTime? ScheduleDate { get; set; }
+        public TimeSpan? SchedulTime { get; set; }
         public int SplitNumber { get; set; }
         public bool ChampionShipIndicator { get; set; }
         public List<GetClassSplit> getClassSplit { get; set; }
