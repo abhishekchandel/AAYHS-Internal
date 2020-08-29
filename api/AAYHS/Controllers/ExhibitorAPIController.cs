@@ -158,5 +158,55 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<GetAllClassesOfExhibitor>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
+        /// <summary>
+        /// This api used to remove the exhibitor from class
+        /// </summary>
+        /// <param name="exhibitorClassId"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        public ActionResult RemoveExhibitorFromClass(int exhibitorClassId)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _exhibitorService.RemoveExhibitorFromClass(exhibitorClassId, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to get all classes
+        /// </summary>
+        /// <param name="exhibitorId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetAllClasses(int exhibitorId)
+        {
+            _mainResponse = _exhibitorService.GetAllClasses(exhibitorId);
+            _jsonString = Mapper.Convert<GetAllClassesForExhibitor>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to get class detail
+        /// </summary>
+        /// <param name="classId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetClassDetail(int classId)
+        {
+            _mainResponse = _exhibitorService.GetClassDetail(classId);
+            _jsonString = Mapper.Convert<GetClassesForExhibitor>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to add exhibitor to a class
+        /// </summary>
+        /// <param name="addExhibitorToClass"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult AddExhibitorToClass(AddExhibitorToClass addExhibitorToClass)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _exhibitorService.AddExhibitorToClass(addExhibitorToClass, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
     }
 }

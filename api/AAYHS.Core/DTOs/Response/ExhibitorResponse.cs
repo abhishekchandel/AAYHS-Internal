@@ -55,7 +55,7 @@ namespace AAYHS.Core.DTOs.Response
     }
     public class GetClassesOfExhibitor
     {
-        public int ClassId { get; set; }
+        public int ExhibitorClassId { get; set; }
         public string ClassNumber { get; set; }
         public string Name { get; set; }
         public string AgeGroup { get; set; }
@@ -67,5 +67,17 @@ namespace AAYHS.Core.DTOs.Response
         public List<GetClassesOfExhibitor> getClassesOfExhibitors { get; set; }
 
         public int TotalRecords { get; set; }
+    }
+    public class GetClassesForExhibitor
+    {
+        public int ClassId { get; set; }
+        public string ClassNumber { get; set; }
+        public string Name { get; set; }
+        public string AgeGroup { get; set; }
+        public int Entries { get; set; }
+    }
+    public class GetAllClassesForExhibitor
+    {
+        public List<GetClassesForExhibitor> getClassesForExhibitor { get; set; }
     }
 }
