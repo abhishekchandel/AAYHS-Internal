@@ -83,6 +83,7 @@ export class ClassComponent implements OnInit {
   place: number = null;
   editBackNumber: number = null
   showEditInfo = false
+  resultExhibitorId:number=null
   exhibitorInfo = {
     ExhibitorId: null,
     ExhibitorName: null,
@@ -523,6 +524,7 @@ export class ClassComponent implements OnInit {
     this.loading=true;
     this.classService.getExhibitorDetails(exhibitordetailRequest).subscribe(response => {
       this.editExhibitorInfo = response.Data;
+      this.resultExhibitorId=this.editExhibitorInfo.ExhibitorId;
       this.showEditInfo = true;
       this.loading=false;
     }, error => {
@@ -560,10 +562,11 @@ export class ClassComponent implements OnInit {
     this.loading = true;
     var addClassResult = {
       ClassId: this.classInfo.ClassId,
-      ExhibitorId: this.editExhibitorInfo.ExhibitorId,
+      ExhibitorId: this.resultExhibitorId,
       Place: this.place,
       ResultId: resultId
     }
+    debugger;
     this.classService.updateResult(addClassResult).subscribe(response => {
       this.loading = false;
       this.getClassResult(this.classInfo.ClassId);
@@ -976,7 +979,8 @@ table.pdfTable tbody tr td{
     this.updatemode = true;
     this.updateRowIndex = index;
     this.place = data.Place;
-    this.editBackNumber = data.BackNumber
+    this.editBackNumber = data.BackNumber,
+    this.resultExhibitorId =data.ExhibitorId
   }
 
   cancelEdit() {
@@ -984,7 +988,8 @@ table.pdfTable tbody tr td{
     this.updateRowIndex = -1;
     this.showEditInfo = false;
     this.place = null;
-    this.editBackNumber = null
+    this.editBackNumber = null;
+    this.resultExhibitorId=null
   }
 
   downloadExcel() {
@@ -1058,8 +1063,8 @@ table.pdfTable tbody tr td{
       cell.fill = {
         type: 'pattern',
         pattern: 'solid',
-        fgColor: { argb: '#a0b8f9' },
-        bgColor: { argb: '#a0b8f9' }
+        fgColor: { argb: '#eeeeee' },
+        bgColor: { argb: '#eeeeee' }
       }
       cell.font = {
         bold: true,

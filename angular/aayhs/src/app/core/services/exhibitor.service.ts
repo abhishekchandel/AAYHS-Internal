@@ -38,4 +38,13 @@ export class ExhibitorService {
   createUpdateExhibitor(data){
     return this.http.post<any>(`${this.api}ExhibitorAPI/AddUpdateExhibitor`,data);
   }
+
+  getExhibitorHorses(id:number){
+    return this.http.get<any>(`${this.api}ExhibitorAPI/GetExhibitorHorses?exhibitorId=${id}`)
+    }
+  
+    deleteExhibitorHorse(id:number){
+      return this.http.delete<any>(`${this.api}ExhibitorAPI/DeleteExhibitorHorse?exhibitorId=${id}`);
+  
+    }
 }

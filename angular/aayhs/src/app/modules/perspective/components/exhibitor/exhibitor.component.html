@@ -230,37 +230,16 @@
                                 </thead>
                                 <perfect-scrollbar class="nicescrollBar-2">
                                     <tbody>
-                                        <tr>
-                                            <td>Zips Elegant Steps</td>
-                                            <td>Hourse</td>
-                                            <td>2246</td>
-                                            <td><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Pretty Boy</td>
-                                            <td>Pony</td>
-                                            <td>2250</td>
-                                            <td><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Dixie</td>
-                                            <td>Mini</td>
-                                            <td>2254</td>
-                                            <td><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>All Cashed Out</td>
+                                        
+                                        <tr *ngFor="let horse of exhibitorHorses;let i=index">
+                                            <td>{{horse.HorseName}}</td>
+                                            <td>{{horse.HorseType}}</td>
+                                            <td>{{horse.BackNumber}}</td>
                                             <td>
-                                                <select class="dynDataSeclect">
-                                                    <option value="null">Select Horse Type</option> 
-                                                    <option value="null">Horse</option> 
-                                                    <option value="null">Mini</option>  
-                                                    <option value="null">Pony</option>                                                                                                 
-                                                </select>
+                                            <button class="icon" (click)="confirmRemoveExhibitorHorse(horse.ExhibitorHorseId)"><span></span> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
                                             </td>
-                                            <td>2256</td>
-                                            <td><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>                                            
                                         </tr>
+                                       
                                         <tr>                                            
                                             <td>
                                                 <select class="dynDataSeclect">

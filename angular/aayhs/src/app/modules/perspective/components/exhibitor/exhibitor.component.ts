@@ -36,6 +36,7 @@ export class ExhibitorComponent implements OnInit {
   zipCodesResponse:any;
   groups:any;
   years=[]
+  exhibitorHorses:any;
 
   baseRequest: BaseRecordFilterRequest = {
     Page: 1,
@@ -326,4 +327,46 @@ setYears(){
    this.years.push(i)
 }
 }
+
+getExhibitorHorses(id){
+  this.loading = true;
+  this.exhibitorService.getExhibitorHorses(id).subscribe(response => {
+   this.exhibitorHorses=response.Data.exhibitorHorses;
+    this.loading = false;
+  }, error => {
+    this.loading = false;
+    this.exhibitorHorses = null;
+  }
+  )
+}
+
+deleteExhibitorHorse(id){
+  this.loading = true;
+    this.exhibitorService.deleteExhibitorHorse(id).subscribe(response => {
+      this.loading = false;
+      this.getExhibitorHorses(this.exhibitorInfo.ExhibitorId);
+      this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
+    }, error => {
+      this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
+      this.loading = false;
+
+    })
+}
+
+confirmRemoveExhibitorHorse(data): void {
+  const message = `Are you sure you want to remove the horse?`;
+  const dialogData = new ConfirmDialogModel("Confirm Action", message);
+  const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    maxWidth: "400px",
+    data: dialogData
+  });
+  dialogRef.afterClosed().subscribe(dialogResult => {
+    this.result = dialogResult;
+    if (this.result) {
+      this.deleteExhibitorHorse(data)
+    }
+  });
+
+}
+
 }
