@@ -72,46 +72,7 @@ namespace AAYHS.Repository.Repository
 
             }
             return getAllHorses;
-        }       
-        public GetAllHorses SearchHorse(SearchRequest searchRequest)
-        {
-            IEnumerable<HorseResponse> data;
-            GetAllHorses getAllHorses = new GetAllHorses();
-
-            data = (from horse in _ObjContext.Horses                   
-                    where horse.IsActive == true && horse.IsDeleted == false && ((searchRequest.SearchTerm != string.Empty ? Convert.ToString(horse.HorseId).Contains(searchRequest.SearchTerm) : (1 == 1))
-                    || (searchRequest.SearchTerm != string.Empty ? horse.Name.Contains(searchRequest.SearchTerm) : (1 == 1)))
-                    select new HorseResponse
-                    {
-                        HorseId=horse.HorseId,
-                        Name=horse.Name,
-                        HorseType=_ObjContext.GlobalCodes.Where(x=>x.GlobalCodeId==horse.HorseTypeId).Select(x=>x.CodeName).FirstOrDefault()                      
-                    });
-
-            if (data.Count() != 0)
-            {
-                if (searchRequest.OrderByDescending == true)
-                {
-                    data = data.OrderByDescending(x => x.GetType().GetProperty(searchRequest.OrderBy).GetValue(x));
-                }
-                else
-                {
-                    data = data.OrderBy(x => x.GetType().GetProperty(searchRequest.OrderBy).GetValue(x));
-                }
-                getAllHorses.TotalRecords = data.Count();
-                if (searchRequest.AllRecords)
-                {
-                    getAllHorses.horsesResponse = data.ToList();
-                }
-                else
-                {
-                    getAllHorses.horsesResponse = data.Skip((searchRequest.Page - 1) * searchRequest.Limit).Take(searchRequest.Limit).ToList();
-
-                }
-
-            }
-            return getAllHorses;
-        }
+        }              
         public GetAllLinkedExhibitors LinkedExhibitors(HorseExhibitorRequest horseExhibitorRequest)
         {
             IEnumerable<GetLinkedExhibitors> data;

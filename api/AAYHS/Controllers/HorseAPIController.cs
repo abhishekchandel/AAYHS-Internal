@@ -85,20 +85,7 @@ namespace AAYHS.API.Controllers
             _mainResponse = _horseService.AddUpdateHorse(horseAddRequest, actionBy);
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
-        }
-        /// <summary>
-        /// This api used to search the horse
-        /// </summary>
-        /// <param name="horseAddRequest"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [Authorize]
-        public IActionResult SearchHorse(SearchRequest searchRequest)
-        {           
-            _mainResponse = _horseService.SearchHorse(searchRequest);
-            _jsonString = Mapper.Convert<GetAllHorses>(_mainResponse);
-            return new OkObjectResult(_jsonString);
-        }
+        }        
         /// <summary>
         /// This api used to get exhibitor linked with horse
         /// </summary>

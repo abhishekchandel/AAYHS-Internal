@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AAYHS.Core.DTOs.Response
 {
-   public class ExhibitorResponse
+    public class ExhibitorResponse
     {
         public int ExhibitorId { get; set; }
         public int GroupId { get; set; }
@@ -27,7 +27,7 @@ namespace AAYHS.Core.DTOs.Response
 
     }
     public class ExhibitorListResponse
-    {   
+    {
         public List<ExhibitorResponse> exhibitorResponses { get; set; }
         public int TotalRecords { get; set; }
     }
@@ -51,7 +51,21 @@ namespace AAYHS.Core.DTOs.Response
     }
     public class GetExhibitorHorsesList
     {
-        public List<GetHorses> getHorses { get; set; }       
+        public List<GetHorses> getHorses { get; set; }
     }
+    public class GetClassesOfExhibitor
+    {
+        public int ClassId { get; set; }
+        public string ClassNumber { get; set; }
+        public string Name { get; set; }
+        public string AgeGroup { get; set; }
+        public int Entries { get; set; }
+        public bool Scratch { get; set; }
+    }
+    public class GetAllClassesOfExhibitor
+    {
+        public List<GetClassesOfExhibitor> getClassesOfExhibitors { get; set; }
 
+        public int TotalRecords { get; set; }
+    }
 }

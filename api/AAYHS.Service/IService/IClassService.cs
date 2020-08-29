@@ -22,8 +22,7 @@ namespace AAYHS.Service.IService
         MainResponse GetBackNumberForAllExhibitor(int ClassId);
         MainResponse GetResultExhibitorDetails(ResultExhibitorRequest resultExhibitorRequest);
         Task<MainResponse> AddClassResult(AddClassResultRequest addClassResultRequest, string actionBy);
-        MainResponse GetResultOfClass(ClassRequest classRequest);
-        MainResponse SearchClass(SearchRequest searchRequest);
+        MainResponse GetResultOfClass(ClassRequest classRequest);       
         MainResponse UpdateClassExhibitorScratch(ClassExhibitorScratch classExhibitorScratch, string actionBy);
         MainResponse UpdateClassResult(UpdateClassResult updateClassResult, string actionBy);
         MainResponse DeleteClassResult(int resultId, string actionBy);

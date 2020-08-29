@@ -12,12 +12,12 @@ namespace AAYHS.Service.IService
         MainResponse AddUpdateExhibitor(ExhibitorRequest request,string actionBy);
         MainResponse GetAllExhibitors(BaseRecordFilterRequest filterRequest);
         MainResponse GetExhibitorById(int exhibitorId);
-        MainResponse DeleteExhibitor(int exhibitorId, string actionBy);
-        MainResponse SearchExhibitor(SearchRequest searchRequest);
+        MainResponse DeleteExhibitor(int exhibitorId, string actionBy);     
         MainResponse GetExhibitorHorses(int exhibitorId);
         MainResponse DeleteExhibitorHorse(int exhibitorHorseId, string actionBy);
-        MainResponse GetAllHorses();
+        MainResponse GetAllHorses(int exhibitorId);
         MainResponse GetHorseDetail(int horseId);
         MainResponse AddExhibitorHorse(AddExhibitorHorseRequest addExhibitorHorseRequest, string actionBy);
+        MainResponse GetAllClassesOfExhibitor(int exhibitorId);
     }
 }

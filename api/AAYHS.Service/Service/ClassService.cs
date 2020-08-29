@@ -403,23 +403,7 @@ namespace AAYHS.Service.Service
                 _mainResponse.Success = false;
             }
             return _mainResponse;
-        }
-        public MainResponse SearchClass(SearchRequest searchRequest)
-        {
-            var search = _classRepository.SearchClass(searchRequest);
-            if (search != null && search.TotalRecords != 0)
-            {
-                _mainResponse.GetAllClasses = search;
-                _mainResponse.GetAllClasses.TotalRecords = search.TotalRecords;
-                _mainResponse.Success = true;
-            }
-            else
-            {
-                _mainResponse.Message = Constants.NO_RECORD_FOUND;
-                _mainResponse.Success = false;
-            }
-            return _mainResponse;
-        }
+        }       
         public MainResponse UpdateClassExhibitorScratch(ClassExhibitorScratch classExhibitorScratch, string actionBy)
         {
             var classExhibitor = _exhibitorClassRepositor.GetSingle(x => x.ExhibitorClassId == classExhibitorScratch.ExhibitorClassId && x.IsDeleted==false);

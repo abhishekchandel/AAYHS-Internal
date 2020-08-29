@@ -25,18 +25,21 @@ namespace AAYHS.Service.Service
         private IExhibitorRepository _exhibitorRepository;
         private IAddressRepository _addressRepository;
         private IGroupExhibitorRepository _groupExhibitorRepository;
+        private IGlobalCodeRepository _globalCodeRepository;
         private IExhibitorHorseRepository _exhibitorHorseRepository;
         private IHorseRepository _horseRepository;
         #endregion
 
         public ExhibitorService(IExhibitorRepository exhibitorRepository,IAddressRepository addressRepository,
-                                 IExhibitorHorseRepository exhibitorHorseRepository,IHorseRepository horseRepository, IGroupExhibitorRepository groupExhibitorRepository, IMapper mapper)
+                                 IExhibitorHorseRepository exhibitorHorseRepository,IHorseRepository horseRepository, 
+                                 IGroupExhibitorRepository groupExhibitorRepository,IGlobalCodeRepository globalCodeRepository,IMapper mapper)
         {
             _exhibitorRepository = exhibitorRepository;
             _addressRepository = addressRepository;
             _exhibitorHorseRepository = exhibitorHorseRepository;
             _horseRepository = horseRepository;
             _groupExhibitorRepository = groupExhibitorRepository;
+            _globalCodeRepository = globalCodeRepository;
             _mapper = mapper;
             _mainResponse = new MainResponse();
         }
@@ -86,8 +89,9 @@ namespace AAYHS.Service.Service
                     {
                         ExhibitorId = _exhibitor.ExhibitorId,
                         GroupId = request.GroupId,
-                         CreatedDate= DateTime.Now
-                };
+                        CreatedBy = actionBy,
+                        CreatedDate= DateTime.Now
+                    };
                     var _groupExhibitor = _groupExhibitorRepository.Add(groupExhibitor);
                 }
                 _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
@@ -135,6 +139,7 @@ namespace AAYHS.Service.Service
                         if (groupExhibitor != null && groupExhibitor.GroupExhibitorId > 0)
                         {
                             groupExhibitor.GroupId = request.GroupId;
+                            groupExhibitor.ModifiedBy = actionBy;
                             groupExhibitor.ModifiedDate = DateTime.Now;
                             _groupExhibitorRepository.Update(groupExhibitor);
                         }
@@ -217,24 +222,7 @@ namespace AAYHS.Service.Service
             }
             return _mainResponse;
         }
-
-        public MainResponse SearchExhibitor(SearchRequest searchRequest)
-        {
-            var exhibitorList = _exhibitorRepository.SearchExhibitor(searchRequest);
-            if (exhibitorList.exhibitorResponses != null && exhibitorList.TotalRecords > 0)
-            {
-                _mainResponse.ExhibitorListResponse = exhibitorList;
-                _mainResponse.Message = Constants.RECORD_FOUND;
-                _mainResponse.Success = true;
-            }
-            else
-            {
-                _mainResponse.Message = Constants.NO_RECORD_FOUND;
-                _mainResponse.Success = false;
-            }
-            return _mainResponse;
-        }
-
+     
         public MainResponse GetExhibitorHorses(int exhibitorId)
         {
             var exhibitorHorses = _exhibitorRepository.GetExhibitorHorses(exhibitorId);
@@ -269,14 +257,17 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
-        public MainResponse GetAllHorses()
+        public MainResponse GetAllHorses(int exhibitorId)
         {
-            var horses = _horseRepository.GetAll(x => x.IsActive == true && x.IsDeleted == false);
-            if (horses.Count>0)
+            var allHorses = _horseRepository.GetAll(x => x.IsActive == true && x.IsDeleted == false);
+            var exhibitorHorses = _exhibitorHorseRepository.GetAll(x => x.ExhibitorId == exhibitorId && x.IsActive == true && x.IsDeleted == false);
+
+            if (allHorses.Count>0)
             {
-                var allHorses=  _mapper.Map<List<GetHorses>>(horses);
+                var horses = allHorses.Where(x => exhibitorHorses.All(y => y.HorseId != x.HorseId)).ToList();
+                var _allHorses = _mapper.Map<List<GetHorses>>(horses);
                 GetExhibitorHorsesList getExhibitorHorsesList = new GetExhibitorHorsesList();
-                getExhibitorHorsesList.getHorses = allHorses;
+                getExhibitorHorsesList.getHorses = _allHorses;
                 _mainResponse.GetExhibitorHorsesList = getExhibitorHorsesList;
                 _mainResponse.Success = true;
             }
@@ -293,7 +284,9 @@ namespace AAYHS.Service.Service
             var horse = _horseRepository.GetSingle(x => x.HorseId == horseId && x.IsActive == true && x.IsDeleted == false);
             if (horse != null && horse.HorseId>0)
             {
+                var horseType= _globalCodeRepository.GetSingle(x => x.GlobalCodeId == horse.HorseTypeId);
                 var horseDetail = _mapper.Map<GetHorses>(horse);
+                horseDetail.HorseType = horseType.CodeName;
                 _mainResponse.GetHorses = horseDetail;
                 _mainResponse.Success = true;
             }
@@ -321,5 +314,23 @@ namespace AAYHS.Service.Service
             _mainResponse.Success = true;
             return _mainResponse;
         }
-  }
+
+        public MainResponse GetAllClassesOfExhibitor(int exhibitorId)
+        {
+            var exhibitorClasses = _exhibitorRepository.GetAllClassesOfExhibitor(exhibitorId);
+
+            if (exhibitorClasses != null && exhibitorClasses.TotalRecords!=0)
+            {
+                _mainResponse.GetAllClassesOfExhibitor = exhibitorClasses;
+                _mainResponse.GetAllClassesOfExhibitor.TotalRecords = exhibitorClasses.TotalRecords;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+                _mainResponse.Success = false;
+            }
+            return _mainResponse;
+        }
+    }
 }
