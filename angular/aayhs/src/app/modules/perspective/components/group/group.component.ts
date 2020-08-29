@@ -622,7 +622,8 @@ setFinancialsAmount(data){
               border-collapse: collapse;
               border-spacing: 2px;
               margin-bottom:0 !important; 
-              padding-bottom:0 !important;   
+              padding-bottom:0 !important; 
+              width:100%;   
           }
             table thead tr th {
               background-color: #a0b8f9;
@@ -707,9 +708,11 @@ setFinancialsAmount(data){
     margin-bottom: 20px !important;
     display:table;
   }
-  tfoot {
-    margin-top: 20px !important;
-}
+  .wideSpace td{
+    border:none;
+    width:33.33%;
+    text-align:left;
+  }
   
   table.pdfTable,table.pdfTable tbody,table.pdfTable tr {
     width:100%;
@@ -767,7 +770,8 @@ setFinancialsAmount(data){
               border-collapse: collapse;
               border-spacing: 2px;
               margin-bottom:0 !important; 
-              padding-bottom:0 !important;   
+              padding-bottom:0 !important; 
+              width:100%;  
           }
             table thead tr th {
               background-color: #a0b8f9;
@@ -844,7 +848,6 @@ setFinancialsAmount(data){
     width: 100%;
   }
   table.table.table-bordered.tableBodyScroll.removeSpaceTop {
-    /*margin-top: -250px !important;*/
     margin-bottom: 10px !important;
 }
   

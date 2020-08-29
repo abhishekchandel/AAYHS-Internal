@@ -283,7 +283,8 @@ print() {
             border-collapse: collapse;
             border-spacing: 2px;
             margin-bottom:0 !important; 
-            padding-bottom:0 !important;   
+            padding-bottom:0 !important; 
+            width:100%;  
         }
         .dataDesc.gridTable {
           background-color: transparent !important;

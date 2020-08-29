@@ -41,13 +41,17 @@
 	   </div>
 	</div>
 	<!---->	
-	 <div class="dataDesc gridTable">
+	 <div class="dataDesc gridTable multiCol">
 		 <table class="table table-bordered tableBodyScroll">
 			 <tbody>
 				 <tr>
 					 <td><span class="blueBox"></span><b>Exhibitor:</b> {{exhibitorInfo.ExhibitorId}}  </td>
-                     <td><span class="blueBox"></span><b>Exhibitor Name:</b> {{this.exhibitorInfo.FirstName }} {{this.exhibitorInfo.LastName}}</td>
-                     <td><span class="blueBox"></span><b>Group Name:</b>{{this.exhibitorInfo.GroupName}}</td>
+                     <td><span class="blueBox"></span><b>Exhibitor Name:</b> <span class="classNameExt">{{this.exhibitorInfo.FirstName }} {{this.exhibitorInfo.LastName}}</span>
+						<p class="toolTipText">{{this.exhibitorInfo.FirstName }} {{this.exhibitorInfo.LastName}}</p>
+                    </td>
+                     <td><span class="blueBox"></span><b>Group Name:</b> <span class="classNameExt">{{this.exhibitorInfo.GroupName}}</span>
+						  <p class="toolTipText">{{this.exhibitorInfo.GroupName}}</p>
+                    </td>
 				 </tr>
 			 </tbody>
 		 </table>

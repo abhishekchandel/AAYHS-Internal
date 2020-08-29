@@ -1628,15 +1628,36 @@ span{
 }
 .dataDesc{
     &.gridTable{
+        &.multiCol{
+            table {
+                tr{
+                    td {
+                        width: 33.33%;
+                    }
+                }
+            } 
+        }
+        &.twoCol{
+            table {
+                tr{
+                    display: table;
+                }
+            }  
+        }
         table {
             tr{
-                td {
+                display: flex;
+                td {                   
                     &:nth-child(2){
                         display: inline-flex; 
                         flex-flow: wrap;                       
                     }
+                    &:nth-child(3){
+                        display: inline-flex; 
+                        flex-flow: wrap;                       
+                    }
                     .classNameExt{
-                        max-width: 130px;
+                        max-width: 116px;
                         overflow: hidden;
                         text-overflow: ellipsis;
                         white-space: nowrap;
@@ -1808,5 +1829,15 @@ span{
     }
     .fa-edit:before {
         color: #273992;
+    }
+}
+.wideSpace{
+    display: table;
+    width: 100%;
+    margin-top: 10px;
+    tr{
+        td{
+            width: 33.33%; 
+        }
     }
 }

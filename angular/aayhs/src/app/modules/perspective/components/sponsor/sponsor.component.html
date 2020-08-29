@@ -53,12 +53,14 @@
 						  </div>
 					   </div>
 					   <!---->
-					   <div class="dataDesc gridTable">
+					   <div class="dataDesc gridTable twoCol">
 							<table class="table table-bordered tableBodyScroll">
 								<tbody>
 									<tr>
 										<td><span class="blueBox"></span><b>Sponsor ID:</b> {{sponsorInfo.SponsorId}}</td>
-										<td colspan="2"><span class="blueBox"></span><b>Sponsor Name:</b> {{sponsorInfo.SponsorName}}</td>
+										<td colspan="2"><span class="blueBox"></span><b>Sponsor Name:</b> <span class="classNameExt1">{{sponsorInfo.SponsorName}}</span>
+											<p class="toolTipText">{{sponsorInfo.SponsorName}}</p>
+										</td>
 									</tr>
 								</tbody>
 							</table>
@@ -218,7 +220,7 @@
 							   		<div class="table-responsive tableTab" id="contentscroll2">
 
 										<table id="gridTableDescPrint" style="display: none;"
-										class="table table-bordered tableBodyScroll pdfTable">
+										class="table pdfTable">
 										<tbody>
 											<tr>
 												<td><span class="blueBox"></span><b>Sponsor Id:</b>
@@ -358,7 +360,7 @@
 										<div class="table-responsive tableTab" id="tblSponsorClasses">
 
 											<table id="gridTableDescPrint1" style="display: none;"
-											class="table table-bordered tableBodyScroll pdfTable">
+											class="table pdfTable">
 											<tbody>
 												<tr>
 													<td><span class="blueBox"></span><b>Sponsor Id:</b>

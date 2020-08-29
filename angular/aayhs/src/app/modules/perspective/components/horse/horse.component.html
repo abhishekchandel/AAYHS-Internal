@@ -42,12 +42,14 @@
 		</div>
 	</div>
 	<!---->
-	<div class="dataDesc gridTable">
+	<div class="dataDesc gridTable twoCol">
 		<table class="table table-bordered tableBodyScroll">
 			<tbody>
 				<tr>
 					<td><span class="blueBox"></span><b>Horse ID:</b> {{horseInfo.HorseId}} </td>
-					<td><span class="blueBox"></span><b>Horse Name:</b> {{horseInfo.Name}}</td>
+					<td><span class="blueBox"></span><b>Horse Name:</b> <span class="classNameExt1">{{horseInfo.Name}}</span>
+						<p class="toolTipText">{{horseInfo.Name}}</p>
+					</td>
 				</tr>
 			</tbody>
 		</table>
@@ -163,7 +165,7 @@
 								<div id="print-linkedExhibitors" class="table-responsive">
 
 									<table id="gridTableDescPrint" style="display: none;"
-											class="table table-bordered tableBodyScroll pdfTable">
+											class="table pdfTable">
 											<tbody>
 												<tr>
 													<td><span class="blueBox"></span><b>Horse Name:</b>

@@ -611,7 +611,8 @@ printSponsorExhibitor() {
             border-collapse: collapse;
             border-spacing: 2px;
             margin-bottom:0 !important; 
-            padding-bottom:0 !important;   
+            padding-bottom:0 !important; 
+            width:100%;  
         }
           table thead tr th {
             background-color: #a0b8f9;
@@ -751,7 +752,8 @@ printSponsorClasses() {
             border-collapse: collapse;
             border-spacing: 2px;
             margin-bottom:0 !important; 
-            padding-bottom:0 !important;   
+            padding-bottom:0 !important; 
+            width:100%;  
         }
           table thead tr th {
             background-color: #a0b8f9;
@@ -828,7 +830,6 @@ printSponsorClasses() {
   width: 100%;
 }
 table.table.table-bordered.tableBodyScroll.removeSpaceTop {
-  margin-top: -300px !important;
   margin-bottom: 10px !important;
 }
 table.pdfTable{
