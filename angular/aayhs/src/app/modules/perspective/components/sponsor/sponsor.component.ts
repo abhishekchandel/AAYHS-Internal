@@ -689,8 +689,7 @@ printSponsorExhibitor() {
   display: block;
   width: 100%;
 }
-table.table.table-bordered.tableBodyScroll.removeSpaceTop {
-  margin-top: -300px !important;
+.table.table-bordered.tableBodyScroll.removeSpaceTop {
   margin-bottom: 10px !important;
 }
 
