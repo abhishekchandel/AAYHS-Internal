@@ -617,6 +617,7 @@ setFinancialsAmount(data){
             color-adjust: exact;  /*Firefox*/
             box-sizing: border-box;
             font-family: Roboto, "Helvetica Neue", sans-serif;
+            height:auto !important;
             }
             table {
               border-collapse: collapse;
@@ -698,15 +699,14 @@ setFinancialsAmount(data){
   .table-responsive {
     display: block;
     width: 100%;
-  }
-
-  table.table.table-bordered.tableBodyScroll.removeSpaceTop {
-    margin-top: -300px !important;
+  } 
+  .table.table-bordered.tableBodyScroll.removeSpaceTop {
     margin-bottom: 10px !important;
 }
   table.pdfTable{
     margin-bottom: 20px !important;
     display:table;
+    
   }
   .wideSpace td{
     border:none;
@@ -720,14 +720,16 @@ setFinancialsAmount(data){
     border:none;
   }
   table.pdfTable tbody tr td{
-      margin: 5px 0;
-      padding: 0px ;
+      margin: 0;
+      padding: 5px 0px !important;
       position: relative; 
       border:none;
       text-align:left;
       display:block;
       
   }
+  
+
   .print-element { display: block !important;}
   .non-print-element {display: none !important;}
    
@@ -765,6 +767,7 @@ setFinancialsAmount(data){
             color-adjust: exact;  /*Firefox*/
             box-sizing: border-box;
             font-family: Roboto, "Helvetica Neue", sans-serif;
+            height:auto !important;
             }
             table {
               border-collapse: collapse;
@@ -862,14 +865,22 @@ setFinancialsAmount(data){
     border:none;
   }
   table.pdfTable tbody tr td{
-      margin: 5px 0;
-      padding: 0px ;
+      margin: 0;
+      padding: 5px 0px !important;
       position: relative; 
       border:none;
       text-align:left;
-      display:block;
-      
+      display:block;      
   }
+
+ /* .pdfdataTable {
+    position: absolute;
+    top: 120px;
+    width: 100%;
+    left:0;
+  }*/
+
+
   .print-element { display: block !important;}
   .non-print-element {display: none !important;}
    

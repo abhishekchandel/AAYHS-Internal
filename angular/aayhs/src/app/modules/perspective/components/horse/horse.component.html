@@ -183,13 +183,15 @@
 												<th>Date of Birth</th>
 											</tr>
 										</thead>
-										<tbody>
-											<tr *ngFor="let exhibitor of linkedExhibitors | search:searchTerm">
-												<td data-label="Exhibitor ID">{{exhibitor.ExhibitorId}}</td>
-												<td data-label="Exhibitor Name">{{exhibitor.ExhibitorName}}</td>
-												<td data-label="Date of Birth">{{exhibitor.BirthYear}}</td>
-											</tr>
-										</tbody>
+										<perfect-scrollbar class="nicescrollBar-2">
+											<tbody>
+												<tr *ngFor="let exhibitor of linkedExhibitors | search:searchTerm">
+													<td data-label="Exhibitor ID">{{exhibitor.ExhibitorId}}</td>
+													<td data-label="Exhibitor Name">{{exhibitor.ExhibitorName}}</td>
+													<td data-label="Date of Birth">{{exhibitor.BirthYear}}</td>
+												</tr>
+											</tbody>
+										</perfect-scrollbar>
 									</table>
 								</div>
 							</div>

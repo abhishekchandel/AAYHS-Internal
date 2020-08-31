@@ -606,6 +606,7 @@ printSponsorExhibitor() {
           color-adjust: exact;  /*Firefox*/
           box-sizing: border-box;
           font-family: Roboto, "Helvetica Neue", sans-serif;
+          height:auto !important;
           }
           table {
             border-collapse: collapse;
@@ -704,14 +705,21 @@ table.pdfTable,table.pdfTable tbody,table.pdfTable tr {
   border:none;
 }
 table.pdfTable tbody tr td{
-    margin: 5px 0;
-    padding: 0px ;
+    margin: 0;
+   padding: 5px 0px !important;
     position: relative; 
     border:none;
     text-align:left;
     display:block;
     
 }
+/*.pdfdataTable {
+  position: absolute;
+  top: 90px;
+  width: 100%;
+  left:0;
+}*/
+
 .print-element { display: block !important;}
 .non-print-element {display: none !important;}
  
@@ -747,6 +755,7 @@ printSponsorClasses() {
           color-adjust: exact;  /*Firefox*/
           box-sizing: border-box;
           font-family: Roboto, "Helvetica Neue", sans-serif;
+          height:auto !important;
           }
           table {
             border-collapse: collapse;
@@ -843,14 +852,22 @@ table.pdfTable,table.pdfTable tbody,table.pdfTable tr {
   border:none;
 }
 table.pdfTable tbody tr td{
-    margin: 5px 0;
-    padding: 0px ;
+    margin: 0;
+    padding: 5px 0px !important;
     position: relative; 
     border:none;
     text-align:left;
     display:block;
     
 }
+/*.pdfdataTable {
+  position: absolute;
+  top: 90px;
+  width: 100%;
+  left:0;
+}*/
+
+
 .print-element { display: block !important;}
 .non-print-element {display: none !important;}
  

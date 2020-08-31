@@ -279,6 +279,7 @@ print() {
           color-adjust: exact;  /*Firefox*/
           box-sizing: border-box;
           font-family: Roboto, "Helvetica Neue", sans-serif;
+          height:auto !important;
           }
           table {
             border-collapse: collapse;
@@ -374,13 +375,15 @@ print() {
   display: block;
   width: 100%;
 }
-.pdfdataTable {
+/*.pdfdataTable {
   position: absolute;
   top: 90px;
-  width: 98%;
+  width: 100%;
   left:0;
-  margin: 0 1%;
 }
+.table.pdfTable {
+  margin-left: -5px !important;
+}*/
 
 table.pdfTable,table.pdfTable tbody,table.pdfTable tr {
   width:100%;
@@ -388,8 +391,8 @@ table.pdfTable,table.pdfTable tbody,table.pdfTable tr {
 }
 table.pdfTable tbody tr td{
     background-color: #a0b8f9;
-    margin: 30px 0;
-    padding: 0px 15px;
+    margin: 20px 0;
+    padding: 5px 0px !important;
     position: relative; 
     width:33.333%;
     display:table-cell;
