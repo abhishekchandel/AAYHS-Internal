@@ -46,5 +46,24 @@ namespace AAYHS.Service.Service
             }
             return _mainResponse;
         }
+
+        public MainResponse DeleteStallAssignment(int StallAssignmentId)
+        {
+            var stallAssign = _stallAssignmentRepository.GetSingle(x => x.StallAssignmentId == StallAssignmentId);
+            if (stallAssign != null)
+            {
+              
+                _stallAssignmentRepository.Delete(stallAssign);
+                _mainResponse.Message = Constants.RECORD_DELETE_SUCCESS;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_RECORD_EXIST_WITH_ID;
+                _mainResponse.Success = false;
+            }
+            return _mainResponse;
+        }
+
     }
 }

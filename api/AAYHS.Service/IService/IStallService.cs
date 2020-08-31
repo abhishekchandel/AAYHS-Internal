@@ -8,5 +8,6 @@ namespace AAYHS.Service.IService
     public interface IStallService
     {
         MainResponse GetAllStall();
+        MainResponse DeleteStallAssignment(int StallAssignmentId);
     }
 }

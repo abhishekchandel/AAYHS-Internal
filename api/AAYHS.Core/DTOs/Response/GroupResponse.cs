@@ -16,7 +16,19 @@ namespace AAYHS.Core.DTOs.Response
         public int ZipCodeId { get; set; }
         public int CityId { get; set; }
         public int StateId { get; set; }
+       public List<GroupStallAssignmentResponse> groupStallAssignmentResponses { get; set; }
     }
+
+    public class GroupStallAssignmentResponse
+    {
+        public int StallAssignmentId { get; set; }
+        public int StallId { get; set; }
+        public int StallAssignmentTypeId { get; set; }
+        public int GroupId { get; set; }
+        public int ExhibitorId { get; set; }
+        public string BookedByType { get; set; }
+    }
+
     public class GroupListResponse
     {
         public int TotalRecords { get; set; }

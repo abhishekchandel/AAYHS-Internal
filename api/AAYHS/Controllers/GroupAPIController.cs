@@ -89,8 +89,6 @@ namespace AAYHS.API.Controllers
             return new OkObjectResult(_jsonString);
         }
 
-
-
         /// <summary>
         /// This api used to search the Group
         /// </summary>

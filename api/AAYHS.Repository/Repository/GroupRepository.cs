@@ -63,6 +63,20 @@ namespace AAYHS.Repository.Repository
                                  ZipCodeId = data != null ? data.ZipCodeId : 0,
                                  CityId = data != null ? data.CityId : 0,
                                  StateId = data != null ? _context.Cities.Where(x => x.CityId == data.CityId).Select(y => y.StateId).FirstOrDefault() : 0,
+                                 groupStallAssignmentResponses = (from stallassign in _context.StallAssignment
+                                                                  where stallassign.GroupId == groups.GroupId
+                                                                  && stallassign.IsActive == true
+                                                                  && stallassign.IsDeleted == false
+                                                                  select new GroupStallAssignmentResponse
+                                                                  {
+                                                                      StallAssignmentId = stallassign.StallAssignmentId,
+                                                                      StallId = stallassign.StallId,
+                                                                      StallAssignmentTypeId = stallassign.StallAssignmentTypeId,
+                                                                      GroupId = stallassign.GroupId,
+                                                                      ExhibitorId = stallassign.ExhibitorId,
+                                                                      BookedByType = stallassign.BookedByType
+                                                                  }).ToList()
+
                              }).FirstOrDefault();
             _MainResponse.GroupResponse = GroupResponse;
             return _MainResponse;
