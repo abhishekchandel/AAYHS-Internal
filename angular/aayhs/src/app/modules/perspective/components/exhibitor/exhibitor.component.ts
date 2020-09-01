@@ -43,6 +43,9 @@ export class ExhibitorComponent implements OnInit {
   horseType:string=null;
   backNumberLinked:any;
   isFirstBackNumber:boolean=false;
+  exhibitorClasses:any;
+  classes:any;
+  classDetail:any;
   baseRequest: BaseRecordFilterRequest = {
     Page: 1,
     Limit: 5,
@@ -120,6 +123,8 @@ export class ExhibitorComponent implements OnInit {
     this.getExhibitorDetails(id);
     this.getExhibitorHorses(id);
     this.getAllHorses(id);
+    this.getExhibitorClasses(id);
+    this.getAllClasses(id);
   }
 
   resetForm(){
@@ -434,4 +439,110 @@ resetLinkedhorse(){
   this.linkedHorseId=null;
   this.horseType=null;
 }
+
+
+getExhibitorClasses(id){
+  return new Promise((resolve, reject) => {
+    this.loading = true;
+    this.exhibitorService.getExhibitorClasses(id).subscribe(response => {
+        this.exhibitorClasses=response.Data.getClassesOfExhibitors;
+      this.loading = false;
+    }, error => {
+      this.loading = false;
+      this.exhibitorClasses = null;  
+    }
+    )
+    resolve();
+    })
+}
+
+confirmScratch(index, isScratch, id): void {
+  const message = `Are you sure you want to make the changes?`;
+  const dialogData = new ConfirmDialogModel("Confirm Action", message);
+  const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    maxWidth: "400px",
+    data: dialogData
+  });
+  dialogRef.afterClosed().subscribe(dialogResult => {
+    this.result = dialogResult;
+    if (this.result) {
+      // this.updateScratch(id, isScratch, index);
+    }
+  });
+
+}
+
+confirmRemoveExhibitorClass(data){
+
+  const message = `Are you sure you want to remove the class?`;
+  const dialogData = new ConfirmDialogModel("Confirm Action", message);
+  const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    maxWidth: "400px",
+    data: dialogData
+  });
+  dialogRef.afterClosed().subscribe(dialogResult => {
+    this.result = dialogResult;
+    if (this.result) {
+      this.deleteExhibitorHorse(data)
+    }
+  });
+
+  
+}
+
+deleteExhibitorClass(id){
+  this.loading = true;
+  this.exhibitorService.deleteExhibitorClass(id).subscribe(response => {
+    this.loading = false;
+    this.getExhibitorClasses(this.exhibitorInfo.ExhibitorId);
+    this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
+  }, error => {
+    this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
+    this.loading = false;
+
+  })
+}
+
+getAllClasses(id){
+  this.loading = true;
+  this.exhibitorService.getAllClasses(id).subscribe(response => {
+    this.classes = response.Data.getClassesForExhibitor;
+    this.loading = false;
+  }, error => {
+    this.loading = false;
+    this.classes =null;
+  })
+}
+
+getClassDetails(id){
+  this.loading = true;
+  this.exhibitorService.getHorseDetail(Number(id)).subscribe(response => {
+   this.classDetail=response.Data;
+    this.loading = false;
+  }, error => {
+    this.loading = false;
+    this.classDetail = null;
+  }
+  )
+}
+
+addClassToExhibitor(){
+  this.loading = true;
+  var addClass = {
+    exhibitorId: this.exhibitorInfo.ExhibitorId,
+    horseId:Number(this.linkedHorseId),
+  }
+  this.exhibitorService.addExhibitorToClass(addClass).subscribe(response => {
+    this.loading = false;
+    this.horsesForm.resetForm({ horseControl: null,backNumberControl:null });
+    this.resetLinkedhorse();
+    this.getExhibitorClasses(this.exhibitorInfo.ExhibitorId);
+    this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
+
+  }, error => {
+    this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
+    this.loading = false;
+  })
+}
+
 }

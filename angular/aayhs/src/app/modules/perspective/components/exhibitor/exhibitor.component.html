@@ -400,6 +400,7 @@
             </mat-tab>
             <mat-tab  class="nav-link nav nav-tabs" label="Classes">
                 <div class="card dataEntriesTable">
+                    <form #classesForm="ngForm" (ngSubmit)="classesForm.valid && addClassToExhibitor()" class="formScroll">
                     <div class="card-body"> 
                         <div class="table-responsive" id="contentscroll2">
                             <table class="table table-bordered tableBodyScroll">
@@ -415,41 +416,24 @@
                                 </thead>
                                 <perfect-scrollbar class="nicescrollBar-2"> 
                                     <tbody>
-                                        <tr>
-                                            <td>8E</td>
-                                            <td>Poles Horse</td>
-                                            <td>13 - 15</td>
-                                            <td>10</td>
+                                        <tr *ngFor="let class of exhibitorClasses;let i=index ">
+                                            <td>{{class.ClassNumber}}</td>
+                                            <td>{{class.Name}}</td>
+                                            <td>{{class.AgeGroup}}</td>
+                                            <td>{{class.Entries}}</td>
                                             <td>
-                                                <div class="sizzerIcon">
+                                                <div class="scratchimage"
+																(click)="confirmScratch(i,!class.Scratch,class.ExhibitorClassId)">
+																<img class="non-print-element" [src]="class.Scratch===true ? 'assets/images/sizzer-icon.png' : 'assets/images/sizzer-icon-1.png'">
+																<img class="print-element" [src]="class.Scratch===true ? '../assets/images/sizzer-icon.png' : '../assets/images/sizzer-icon-1.png'">
+															</div>
+                                                <!-- <div class="sizzerIcon">
                                                     <img src="assets/images/sizzer-icon.png" alt="image" />
-                                                </div>
+                                                </div> -->
                                             </td>
-                                            <td><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>9N</td>
-                                            <td>WEstern Showmanship</td>
-                                            <td>13</td>
-                                            <td>15</td>
                                             <td>
-                                                <div class="sizzerIcon">
-                                                    <img src="assets/images/sizzer-icon.png" alt="image" />
-                                                </div>
+                                        <button type="button" class="icon" (click)="confirmRemoveExhibitorClass(class.ExhibitorClassId)"><span></span> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
                                             </td>
-                                            <td><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>10W</td>
-                                            <td>Barrels Horse</td>
-                                            <td>13 - 15</td>
-                                            <td>21</td>
-                                            <td>
-                                                <div class="sizzerIcon">
-                                                    <img src="assets/images/sizzer-icon.png" alt="image" />
-                                                </div>
-                                            </td>
-                                            <td><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
                                         </tr>
                                         <tr>
                                             <td colspan="3">
@@ -468,8 +452,8 @@
                                                 </div>
                                             </td>
                                             <td><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                        </tr>
-                                    </tbody>
+                                        </tr>                             
+                                   </tbody>
                                 </perfect-scrollbar>
                             </table>
                         </div>
@@ -477,9 +461,10 @@
                     <div class="actionBtn text-right mb-4 mt-3">
                         <button (click)='tabGroup.selectedIndex = 2' class="btn btn-red btnCss roundBtn">Previous</button>
                         <button (click)='tabGroup.selectedIndex = 4' class="btn btn-red btnCss roundBtn">Next</button>
-                        <button class="btn btn-red btnCss roundBtn">+ Class</button>
+                        <a [routerLink]="['/perspective/class']" target="_blank"> <button class="btn btn-red btnCss roundBtn">+ Class</button></a>
                         <button class="btn btn-red btnCss roundBtn">Submit</button>
                     </div>
+                </form>
                 </div>
             </mat-tab>
             <mat-tab  class="nav-link nav nav-tabs" label="Financials">
