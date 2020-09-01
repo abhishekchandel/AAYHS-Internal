@@ -77,7 +77,7 @@ export class ExhibitorService {
     }
 
     getAllClasses(id:number){
-      return this.http.get<any>(`${this.api}ExhibitorAPI/GetAllHorses?exhibitorId=${id}`);
+      return this.http.get<any>(`${this.api}ExhibitorAPI/GetAllClasses?exhibitorId=${id}`);
     }
 
     getClassDetail(id:number){

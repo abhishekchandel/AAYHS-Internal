@@ -45,7 +45,7 @@ export class ExhibitorComponent implements OnInit {
   isFirstBackNumber:boolean=false;
   exhibitorClasses:any;
   classes:any;
-  classDetail:any;
+  linkedClassId:number=null;
   baseRequest: BaseRecordFilterRequest = {
     Page: 1,
     Limit: 5,
@@ -73,7 +73,10 @@ export class ExhibitorComponent implements OnInit {
     GroupId:null,
     GroupName:null
   }
-
+  classDetails:any={
+    entries:null,
+    scratch:null
+  }
   constructor(
             public dialog: MatDialog,
             private exhibitorService: ExhibitorService,
@@ -516,12 +519,13 @@ getAllClasses(id){
 
 getClassDetails(id){
   this.loading = true;
-  this.exhibitorService.getHorseDetail(Number(id)).subscribe(response => {
-   this.classDetail=response.Data;
+  this.linkedClassId=id;
+  this.exhibitorService.getClassDetail(Number(id)).subscribe(response => {
+   this.classDetails=response.Data;
     this.loading = false;
   }, error => {
     this.loading = false;
-    this.classDetail = null;
+    this.classDetails = null;
   }
   )
 }
@@ -530,12 +534,12 @@ addClassToExhibitor(){
   this.loading = true;
   var addClass = {
     exhibitorId: this.exhibitorInfo.ExhibitorId,
-    horseId:Number(this.linkedHorseId),
+    classId:Number(this.linkedClassId),
   }
   this.exhibitorService.addExhibitorToClass(addClass).subscribe(response => {
     this.loading = false;
-    this.horsesForm.resetForm({ horseControl: null,backNumberControl:null });
-    this.resetLinkedhorse();
+    this.horsesForm.resetForm({ classControl: null });
+    this.resetLinkClass();
     this.getExhibitorClasses(this.exhibitorInfo.ExhibitorId);
     this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
 
@@ -545,4 +549,8 @@ addClassToExhibitor(){
   })
 }
 
+resetLinkClass(){
+  this.linkedClassId=null;
+  this.classDetails=null;
+}
 }

@@ -437,21 +437,31 @@
                                         </tr>
                                         <tr>
                                             <td colspan="3">
-                                                <select class="dynDataSeclect">
-                                                    <option value="null">Select</option> 
-                                                    <option value="null">8E / Poles Horse / Age:13-15</option> 
-                                                    <option value="null">9N / WEstern Showmanship / Age:13</option>  
-                                                    <option value="null">10W / Barrels Horse / Age:13-15</option>  
-                                                    <option value="null">11 / Contest Horse / Age:12 & Under </option>                                                                                                
-                                                </select> 
+                                                <select class="dynDataSeclect" name="exhibitorClass" required
+                                                [(ngModel)]="linkedClassId" (change)="getClassDetails($event.target.value)" #classControl="ngModel">
+                                                <option [ngValue]="null">
+                                                    Select Class
+                                                </option>
+                                                <option *ngFor="let class of classes"
+                                                    [value]="class.ClassId">{{class.ClassNumber}} /
+                                                    {{class.Name}} / {{class.AgeGroup}}
+                                                </option>
+                                            </select>
+                                            <span class="help-block"
+                                                *ngIf="(classesForm.submitted || classControl.touched) && classControl.invalid">Please
+                                                select class</span>
                                             </td>
-                                            <td>16</td>
+                                            <td>{{classDetails.entries}}</td>
                                             <td>
-                                                <div class="sizzerIcon">
+                                                <div class="scratchimage">
+                                                <!-- <img class="non-print-element" [src]="class.Scratch===true ? 'assets/images/sizzer-icon.png' : 'assets/images/sizzer-icon-1.png'">
+                                                <img class="print-element" [src]="class.Scratch===true ? '../assets/images/sizzer-icon.png' : '../assets/images/sizzer-icon-1.png'"> -->
+                                            </div>
+                                                <!-- <div class="sizzerIcon">
                                                     <img src="assets/images/sizzer-icon.png" alt="image" />
-                                                </div>
+                                                </div> -->
                                             </td>
-                                            <td><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+                                            <td></td>
                                         </tr>                             
                                    </tbody>
                                 </perfect-scrollbar>
