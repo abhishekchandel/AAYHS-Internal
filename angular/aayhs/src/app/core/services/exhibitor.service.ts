@@ -44,7 +44,20 @@ export class ExhibitorService {
     }
   
     deleteExhibitorHorse(id:number){
-      return this.http.delete<any>(`${this.api}ExhibitorAPI/DeleteExhibitorHorse?exhibitorId=${id}`);
+      return this.http.delete<any>(`${this.api}ExhibitorAPI/DeleteExhibitorHorse?exhibitorHorseId=${id}`);
   
+    }
+
+    getAllHorses(id:number){
+      return this.http.get<any>(`${this.api}ExhibitorAPI/GetAllHorses?exhibitorId=${id}`);
+    }
+
+    getHorseDetail(id:number){
+      return this.http.get<any>(`${this.api}ExhibitorAPI/getHorseDetail?horseId=${id}`);
+    }
+
+    addHorseToExhibitor(data){
+      return this.http.post<any>(`${this.api}ExhibitorAPI/AddExhibitorHorse`,data);
+
     }
 }

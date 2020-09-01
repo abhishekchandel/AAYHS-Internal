@@ -20,6 +20,7 @@ export class ExhibitorComponent implements OnInit {
 
   @ViewChild('tabGroup') tabGroup: MatTabGroup;
   @ViewChild('exhibitorInfoForm') exhibitorInfoForm: NgForm;
+  @ViewChild('horsesForm') horsesForm: NgForm;
 
   searchTerm:string;
   maxyear: any;
@@ -37,7 +38,11 @@ export class ExhibitorComponent implements OnInit {
   groups:any;
   years=[]
   exhibitorHorses:any;
-
+  horses:any;
+  linkedHorseId:number=null;
+  horseType:string=null;
+  backNumberLinked:any;
+  isFirstBackNumber:boolean=false;
   baseRequest: BaseRecordFilterRequest = {
     Page: 1,
     Limit: 5,
@@ -114,6 +119,7 @@ export class ExhibitorComponent implements OnInit {
     this.selectedRowIndex = i;
     this.getExhibitorDetails(id);
     this.getExhibitorHorses(id);
+    this.getAllHorses(id);
   }
 
   resetForm(){
@@ -304,7 +310,6 @@ getExhibitorDetails(id:number){
   this.exhibitorService.getExhibitorById(id).subscribe(response => {
     if(response.Data!=null)
       {
-        debugger
       this.getCities(response.Data.exhibitorResponses[0].StateId).then(res => {
         this.getZipCodes(response.Data.CityId).then(res => {
         this.exhibitorInfo = response.Data.exhibitorResponses[0];
@@ -330,15 +335,21 @@ setYears(){
 }
 
 getExhibitorHorses(id){
+  return new Promise((resolve, reject) => {
   this.loading = true;
   this.exhibitorService.getExhibitorHorses(id).subscribe(response => {
-   this.exhibitorHorses=response.Data.exhibitorHorses;
+      this.exhibitorHorses=response.Data.exhibitorHorses;
     this.loading = false;
   }, error => {
     this.loading = false;
     this.exhibitorHorses = null;
+    this.isFirstBackNumber=true
+    this.horseType=null;
+
   }
   )
+  resolve();
+  })
 }
 
 deleteExhibitorHorse(id){
@@ -370,4 +381,55 @@ confirmRemoveExhibitorHorse(data): void {
 
 }
 
+getAllHorses(id){
+  this.loading = true;
+  this.exhibitorService.getAllHorses(id).subscribe(response => {
+    this.horses = response.Data.getHorses;
+    this.loading = false;
+  }, error => {
+    this.loading = false;
+    this.groups =null;
+  })
+}
+
+addHorseToExhibitor(){
+  this.loading = true;
+  var addHorse = {
+    exhibitorId: this.exhibitorInfo.ExhibitorId,
+    horseId:Number(this.linkedHorseId),
+    backNumber: this.backNumberLinked !=null ? Number(this.backNumberLinked) : this.exhibitorInfo.BackNumber
+  }
+  this.exhibitorService.addHorseToExhibitor(addHorse).subscribe(response => {
+    this.loading = false;
+    this.getExhibitorHorses(this.exhibitorInfo.ExhibitorId);
+    this.horsesForm.resetForm({ horseControl: null,backNumberControl:null });
+    this.resetLinkedhorse();
+    this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
+
+  }, error => {
+    this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
+    this.loading = false;
+
+  })
+}
+
+getHorseType(id){
+  this.loading = true;
+  this.linkedHorseId=id;
+  this.exhibitorService.getHorseDetail(Number(id)).subscribe(response => {
+   this.horseType=response.Data.HorseType;
+    this.loading = false;
+  }, error => {
+    this.loading = false;
+    this.horseType = null;
+  }
+  )
+}
+
+resetLinkedhorse(){
+  this.backNumberLinked=null;
+  this.linkedHorseId=null;
+  this.horseType=null;
+  this.horseType=null
+}
 }

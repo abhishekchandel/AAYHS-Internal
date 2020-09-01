@@ -62,7 +62,7 @@
 
 	 <!-- Tab panes -->
 	 <div class="tab-content">
-	   <div class="tab-pane  active" id="home">
+       <div class="tab-pane  active" id="home">
 		<mat-tab-group #tabGroup>
 			<mat-tab  class="nav-link active nav nav-tabs" label="Exhibitor Info">
                 <form #exhibitorInfoForm="ngForm" name="exhibitorInfoForm" (ngSubmit)="exhibitorInfoForm.valid && addUpdateExhibitor()" novalidate>
@@ -221,6 +221,7 @@
 
             <mat-tab  class="nav-link nav nav-tabs" label="Horse">
                 <div class="card">
+                    <form #horsesForm="ngForm" (ngSubmit)="horsesForm.valid && addHorseToExhibitor()" class="formScroll">
                     <div class="card-body"> 
                         <div class="table-responsive tableTab" id="contentscroll2">
                             <table class="table table-bordered tableBodyScroll">
@@ -240,21 +241,35 @@
                                             <td>{{horse.HorseType}}</td>
                                             <td>{{horse.BackNumber}}</td>
                                             <td>
-                                            <button class="icon" (click)="confirmRemoveExhibitorHorse(horse.ExhibitorHorseId)"><span></span> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                            <button type="button" class="icon" (click)="confirmRemoveExhibitorHorse(horse.ExhibitorHorseId)"><span></span> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
                                             </td>
                                         </tr>
                                        
                                         <tr>                                            
                                             <td>
-                                                <select class="dynDataSeclect">
-                                                    <option value="null">Select Horse</option> 
-                                                    <option value="null">Big Red</option> 
-                                                    <option value="null">Best In Show</option>  
-                                                    <option value="null">Pony Billy</option>                                                                                                 
-                                                </select>
+                                                <select class="dynDataSeclect" name="horse" required
+																[(ngModel)]="linkedHorseId" (change)="getHorseType($event.target.value)" #horseControl="ngModel">
+																<option [ngValue]="null">
+																	Select Horse
+																</option>
+																<option *ngFor="let horse of horses"
+																	[value]="horse.HorseId">{{horse.HorseId}} -
+																	{{horse.Name}}
+																</option>
+															</select>
+															<span class="help-block"
+																*ngIf="(horsesForm.submitted || horseControl.touched) && horseControl.invalid">Please
+																select horse</span>
                                             </td>
                                             <td></td>
-                                            <td></td>
+                                            <td>
+                                                <input [hidden]="(!isFirstBackNumber) && (linkedHorseId) " appOnlynumber  type="text" class="form-control" name="backNumberControl" #backNumberControl="ngModel" [(ngModel)]="backNumberLinked" placeholder="Back Number" />                                               
+                                                <!-- <span class="help-block"
+																*ngIf="(horsesForm.submitted || backNumberControl.touched) && backNumberControl.invalid">Please
+                                                enter back number</span> -->
+                                                <span *ngIf="(isFirstBackNumber) && (linkedHorseId)"> {{exhibitorInfo.BackNumber}}</span>
+                                            </td>
+
                                             <td></td>                                            
                                         </tr>
                                     </tbody> 
@@ -283,11 +298,12 @@
                         
                     </div>
                     <div class="actionBtn text-right mb-4 mt-3">
-                        <button class="btn btn-red btnCss roundBtn">Previous</button>
-                        <button class="btn btn-red btnCss roundBtn">Next</button>
-                        <button class="btn btn-red btnCss roundBtn">+ Hourse</button>
-                        <button class="btn btn-red btnCss roundBtn">Submit</button>
+                        <button (click)='tabGroup.selectedIndex = 0' class="btn btn-red btnCss roundBtn">Previous</button>
+                        <button (click)='tabGroup.selectedIndex = 2' class="btn btn-red btnCss roundBtn">Next</button>
+                        <a [routerLink]="['/perspective/horse']" target="_blank"><button type="button" class="btn btn-red btnCss roundBtn">+ Hourse</button></a>
+                        <button type="submit"class="btn btn-red btnCss roundBtn">Submit</button>
                     </div>
+                </form>
                 </div>
             </mat-tab>
             <mat-tab  class="nav-link nav nav-tabs" label="Sponsors">
@@ -371,10 +387,10 @@
                             </table>
                         </div>
                         <div class="actionBtn text-right mb-4 mt-3">
-                            <button class="btn btn-red btnCss roundBtn">Previous</button>
-                            <button class="btn btn-red btnCss roundBtn">Next</button>
+                            <button (click)='tabGroup.selectedIndex = 1' class="btn btn-red btnCss roundBtn">Previous</button>
+                            <button (click)='tabGroup.selectedIndex = 3' class="btn btn-red btnCss roundBtn">Next</button>
                             <button class="btn btn-red btnCss roundBtn">+ Sponsors</button>
-                            <button class="btn btn-red btnCss roundBtn">Submit</button> 
+                            <button class="btn btn-red btnCss roundBtn">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -456,8 +472,8 @@
                         </div>
                     </div>
                     <div class="actionBtn text-right mb-4 mt-3">
-                        <button class="btn btn-red btnCss roundBtn">Previous</button>
-                        <button class="btn btn-red btnCss roundBtn">Next</button>
+                        <button (click)='tabGroup.selectedIndex = 2' class="btn btn-red btnCss roundBtn">Previous</button>
+                        <button (click)='tabGroup.selectedIndex = 4' class="btn btn-red btnCss roundBtn">Next</button>
                         <button class="btn btn-red btnCss roundBtn">+ Class</button>
                         <button class="btn btn-red btnCss roundBtn">Submit</button>
                     </div>
@@ -582,8 +598,8 @@
                         </div>
                         
                         <div class=" text-right mt-4 ftButtonSection">
-                            <button class="btn btn-red btnCss roundBtn">Previous</button>
-                            <button class="btn btn-red btnCss roundBtn">Next</button>                            
+                            <button (click)='tabGroup.selectedIndex = 3' class="btn btn-red btnCss roundBtn">Previous</button>
+                            <button (click)='tabGroup.selectedIndex = 5' class="btn btn-red btnCss roundBtn">Next</button>                            
                         </div>
                     </div>
                 </div>
@@ -650,7 +666,7 @@
                         </div>
                     </div>
                     <div class="actionBtn text-right mb-3">
-                        <button (click)='tabGroup.selectedIndex = 2' class="btn btn-red btnCss roundBtn">Next</button>
+                        <button (click)='tabGroup.selectedIndex = 6' class="btn btn-red btnCss roundBtn">Next</button>
                         <button class="btn btn-red btnCss roundBtn">Submit</button>
                     </div>
                 </div>

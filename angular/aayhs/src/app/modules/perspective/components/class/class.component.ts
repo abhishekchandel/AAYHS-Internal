@@ -392,12 +392,14 @@ export class ClassComponent implements OnInit {
   }
 
   getExhibitorHorses(id) {
+    this.loading = true;
     this.classService.getExhibitorHorses(id).subscribe(response => {
       this.exhibitorsHorsesResponse = response.Data.getExhibitorHorses;
       this.exhibitorId = id
-
+      this.loading = false;
     }, error => {
       this.exhibitorsHorsesResponse = null;
+      this.loading = false;
     })
 
   }
