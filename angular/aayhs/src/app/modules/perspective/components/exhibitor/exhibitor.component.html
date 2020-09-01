@@ -261,13 +261,16 @@
 																*ngIf="(horsesForm.submitted || horseControl.touched) && horseControl.invalid">Please
 																select horse</span>
                                             </td>
-                                            <td></td>
+                                            <td>{{horseType}}</td>
                                             <td>
-                                                <input [hidden]="(!isFirstBackNumber) && (linkedHorseId) " appOnlynumber  type="text" class="form-control" name="backNumberControl" #backNumberControl="ngModel" [(ngModel)]="backNumberLinked" placeholder="Back Number" />                                               
-                                                <!-- <span class="help-block"
-																*ngIf="(horsesForm.submitted || backNumberControl.touched) && backNumberControl.invalid">Please
-                                                enter back number</span> -->
-                                                <span *ngIf="(isFirstBackNumber) && (linkedHorseId)"> {{exhibitorInfo.BackNumber}}</span>
+                                                <span *ngIf="(!isFirstBackNumber && horseType)">
+                                                <input appOnlynumber  type="text" [required]="horseType" class="form-control" name="backNumberControl" #backNumberControl="ngModel" [(ngModel)]="backNumberLinked" placeholder="Back Number" />                                               
+                                                <span class="help-block"
+												*ngIf="(horsesForm.submitted || backNumberControl.touched) && backNumberControl.invalid">Please
+                                                enter back number
+                                                 </span>
+                                                </span>
+                                                <span *ngIf="(isFirstBackNumber && horseType)"> {{exhibitorInfo.BackNumber}}</span>
                                             </td>
 
                                             <td></td>                                            

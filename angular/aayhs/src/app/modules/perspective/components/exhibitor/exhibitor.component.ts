@@ -339,6 +339,7 @@ getExhibitorHorses(id){
   this.loading = true;
   this.exhibitorService.getExhibitorHorses(id).subscribe(response => {
       this.exhibitorHorses=response.Data.exhibitorHorses;
+      this.isFirstBackNumber=false
     this.loading = false;
   }, error => {
     this.loading = false;
@@ -356,6 +357,8 @@ deleteExhibitorHorse(id){
   this.loading = true;
     this.exhibitorService.deleteExhibitorHorse(id).subscribe(response => {
       this.loading = false;
+      this.horsesForm.resetForm({ horseControl: null,backNumberControl:null });
+      this.horseType=null;
       this.getExhibitorHorses(this.exhibitorInfo.ExhibitorId);
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
     }, error => {
@@ -388,7 +391,7 @@ getAllHorses(id){
     this.loading = false;
   }, error => {
     this.loading = false;
-    this.groups =null;
+    this.horses =null;
   })
 }
 
@@ -401,9 +404,9 @@ addHorseToExhibitor(){
   }
   this.exhibitorService.addHorseToExhibitor(addHorse).subscribe(response => {
     this.loading = false;
-    this.getExhibitorHorses(this.exhibitorInfo.ExhibitorId);
     this.horsesForm.resetForm({ horseControl: null,backNumberControl:null });
     this.resetLinkedhorse();
+    this.getExhibitorHorses(this.exhibitorInfo.ExhibitorId);
     this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
 
   }, error => {
@@ -430,6 +433,5 @@ resetLinkedhorse(){
   this.backNumberLinked=null;
   this.linkedHorseId=null;
   this.horseType=null;
-  this.horseType=null
 }
 }
