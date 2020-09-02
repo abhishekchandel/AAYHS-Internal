@@ -394,11 +394,10 @@ namespace AAYHS.Service.Service
             var classDetail = _classRepository.GetSingle(x => x.ClassId == classId && x.IsActive == true && x.IsDeleted == false);
             if (classDetail != null && classDetail.ClassId > 0)
             {
-                var entries = _exhibitorClassRepository.GetAll(x => x.ClassId == classId && x.IsActive == true && x.IsDeleted == false);
-                var isScratch = _exhibitorClassRepository.GetSingle(x => x.ClassId == classId && x.ExhibitorId == exhibitorId && x.IsActive == true && x.IsDeleted == false);
+                var entries = _exhibitorClassRepository.GetAll(x => x.ClassId == classId && x.IsActive == true && x.IsDeleted == false);               
                 var _class = _mapper.Map<GetClassesForExhibitor>(classDetail);
                 _class.Entries = entries.Count();
-                _class.IsScratch = isScratch.IsScratch;
+                _class.IsScratch = false;
                 _mainResponse.GetClassesForExhibitor = _class;
                 _mainResponse.Success = true;
             }
