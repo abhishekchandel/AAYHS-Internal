@@ -188,7 +188,8 @@ namespace AAYHS.Repository.Repository
                                        select new GetSponsorsOfExhibitor 
                                        { 
                                          SponsorExhibitorId=sponsorExhibitor.SponsorExhibitorId,
-                                         Email=sponsor.Email,
+                                         Sponspor= sponsor.SponsorName,
+                                         Email =sponsor.Email,
                                          Amount=sponsor.AmountReceived
                                                                                
                                        });
