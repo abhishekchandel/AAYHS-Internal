@@ -35,4 +35,9 @@ namespace AAYHS.Core.DTOs.Request
         public int ExhibitorId { get; set; }
         public int ClassId { get; set; }
     }
+    public class UpdateScratch
+    {
+        public int exhibitorClassId { get; set; }
+        public bool IsScratch { get; set; }
+    }
 }

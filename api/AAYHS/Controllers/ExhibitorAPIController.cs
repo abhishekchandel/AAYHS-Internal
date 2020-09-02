@@ -196,6 +196,19 @@ namespace AAYHS.API.Controllers
             return new OkObjectResult(_jsonString);
         }
         /// <summary>
+        /// This api used to update exhibitor class scratch
+        /// </summary>
+        /// <param name="updateScratch"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult UpdateScratch(UpdateScratch updateScratch)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _exhibitorService.UpdateScratch(updateScratch, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
         /// This api used to add exhibitor to a class
         /// </summary>
         /// <param name="addExhibitorToClass"></param>

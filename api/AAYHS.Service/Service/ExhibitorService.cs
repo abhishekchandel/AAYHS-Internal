@@ -409,6 +409,29 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
+        public MainResponse UpdateScratch(UpdateScratch updateScratch,string actionBy)
+        {
+            var exhibitorClass = _exhibitorClassRepository.GetSingle(x => x.ExhibitorClassId == updateScratch.exhibitorClassId && x.IsActive == true
+                                                          &&  x.IsDeleted == false);
+
+            if (exhibitorClass!=null && exhibitorClass.ExhibitorClassId>0)
+            {
+                exhibitorClass.IsScratch = updateScratch.IsScratch;
+                exhibitorClass.ModifiedBy = actionBy;
+                exhibitorClass.ModifiedDate = DateTime.Now;
+                _exhibitorClassRepository.Update(exhibitorClass);
+
+                _mainResponse.Message = Constants.CLASS_EXHIBITOR_SCRATCH;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+                _mainResponse.Success = false;
+            }
+            return _mainResponse;
+        }
+
         public MainResponse AddExhibitorToClass(AddExhibitorToClass addExhibitorToClass, string actionBy)
         {
             var exhibitor = new ExhibitorClass
@@ -464,5 +487,6 @@ namespace AAYHS.Service.Service
             }
             return _mainResponse;
         }
+
   }
 }
