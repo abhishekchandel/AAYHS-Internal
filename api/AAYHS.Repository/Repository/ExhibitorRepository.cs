@@ -176,5 +176,28 @@ namespace AAYHS.Repository.Repository
             }
             return getAllClassesOfExhibitor;
         }
+
+        public GetAllSponsorsOfExhibitor GetAllSponsorsOfExhibitor(int exhibitorId)
+        {
+            IEnumerable<GetSponsorsOfExhibitor> getSponsorsOfExhibitors = null;
+            GetAllSponsorsOfExhibitor getAllSponsorsOfExhibitor = new GetAllSponsorsOfExhibitor();
+
+            getSponsorsOfExhibitors = (from sponsorExhibitor in _context.SponsorExhibitor
+                                       join sponsor in _context.Sponsors on sponsorExhibitor.SponsorId equals sponsor.SponsorId
+                                       where sponsorExhibitor.ExhibitorId == exhibitorId
+                                       select new GetSponsorsOfExhibitor 
+                                       { 
+                                         SponsorExhibitorId=sponsorExhibitor.SponsorExhibitorId,
+                                         Email=sponsor.Email,
+                                         Amount=sponsor.AmountReceived
+                                                                               
+                                       });
+            if (getSponsorsOfExhibitors.Count()!=0)
+            {
+                getAllSponsorsOfExhibitor.getSponsorsOfExhibitors = getSponsorsOfExhibitors.ToList();
+                getAllSponsorsOfExhibitor.TotalRecords = getSponsorsOfExhibitors.Count();
+            }
+            return getAllSponsorsOfExhibitor;
+        }
     }
 }

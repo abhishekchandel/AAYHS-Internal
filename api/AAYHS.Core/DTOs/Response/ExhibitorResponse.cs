@@ -75,9 +75,24 @@ namespace AAYHS.Core.DTOs.Response
         public string Name { get; set; }
         public string AgeGroup { get; set; }
         public int Entries { get; set; }
+        public bool IsScratch { get; set; }
     }
     public class GetAllClassesForExhibitor
     {
         public List<GetClassesForExhibitor> getClassesForExhibitor { get; set; }
+    }
+    public class GetSponsorsOfExhibitor
+    {
+        public int SponsorExhibitorId { get; set; }
+        public string Sponspor { get; set; }
+        public string Email { get; set; }
+        public float Amount { get; set; }
+        public int AdNumber { get; set; }
+        public string AdSize { get; set; }
+    }
+    public class GetAllSponsorsOfExhibitor
+    {
+        public List<GetSponsorsOfExhibitor> getSponsorsOfExhibitors { get; set; }
+        public int TotalRecords { get; set; }
     }
 }

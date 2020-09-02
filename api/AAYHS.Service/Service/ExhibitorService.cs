@@ -28,6 +28,7 @@ namespace AAYHS.Service.Service
         private IGlobalCodeRepository _globalCodeRepository;
         private IExhibitorClassRepository _exhibitorClassRepository;
         private IClassRepository _classRepository;
+        private ISponsorExhibitorRepository _sponsorExhibitorRepository;
         private IExhibitorHorseRepository _exhibitorHorseRepository;
         private IHorseRepository _horseRepository;
         #endregion
@@ -35,7 +36,8 @@ namespace AAYHS.Service.Service
         public ExhibitorService(IExhibitorRepository exhibitorRepository,IAddressRepository addressRepository,
                                  IExhibitorHorseRepository exhibitorHorseRepository,IHorseRepository horseRepository, 
                                  IGroupExhibitorRepository groupExhibitorRepository,IGlobalCodeRepository globalCodeRepository,
-                                 IExhibitorClassRepository exhibitorClassRepository, IClassRepository classRepository,IMapper mapper)
+                                 IExhibitorClassRepository exhibitorClassRepository, IClassRepository classRepository,
+                                 ISponsorExhibitorRepository sponsorExhibitorRepository,IMapper mapper)
         {
             _exhibitorRepository = exhibitorRepository;
             _addressRepository = addressRepository;
@@ -45,6 +47,7 @@ namespace AAYHS.Service.Service
             _globalCodeRepository = globalCodeRepository;
             _exhibitorClassRepository = exhibitorClassRepository;
             _classRepository = classRepository;
+            _sponsorExhibitorRepository = sponsorExhibitorRepository;
             _mapper = mapper;
             _mainResponse = new MainResponse();
         }
@@ -386,14 +389,16 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
-        public MainResponse GetClassDetail(int classId)
+        public MainResponse GetClassDetail(int classId, int exhibitorId)
         {
             var classDetail = _classRepository.GetSingle(x => x.ClassId == classId && x.IsActive == true && x.IsDeleted == false);
             if (classDetail != null && classDetail.ClassId > 0)
             {
                 var entries = _exhibitorClassRepository.GetAll(x => x.ClassId == classId && x.IsActive == true && x.IsDeleted == false);
+                var isScratch = _exhibitorClassRepository.GetSingle(x => x.ClassId == classId && x.ExhibitorId == exhibitorId && x.IsActive == true && x.IsDeleted == false);
                 var _class = _mapper.Map<GetClassesForExhibitor>(classDetail);
                 _class.Entries = entries.Count();
+                _class.IsScratch = isScratch.IsScratch;
                 _mainResponse.GetClassesForExhibitor = _class;
                 _mainResponse.Success = true;
             }
@@ -420,5 +425,45 @@ namespace AAYHS.Service.Service
             _mainResponse.Success = true;
             return _mainResponse;
         }
-    }
+
+        public MainResponse GetAllSponsorsOfExhibitor(int exhibitorId)
+        {
+            var allsponsor = _exhibitorRepository.GetAllSponsorsOfExhibitor(exhibitorId);
+
+            if (allsponsor.getSponsorsOfExhibitors!=null && allsponsor.TotalRecords>0 )
+            {
+                _mainResponse.GetAllSponsorsOfExhibitor = allsponsor;
+                _mainResponse.GetAllSponsorsOfExhibitor.TotalRecords = allsponsor.TotalRecords;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+                _mainResponse.Success = false;
+            }
+            return _mainResponse;
+        }
+
+        public MainResponse RemoveSponsorFromExhibitor(int sponsorExhibitorId,string actionBy)
+        {
+            var sponsor = _sponsorExhibitorRepository.GetSingle(x => x.SponsorExhibitorId == sponsorExhibitorId && x.IsActive==true && x.IsDeleted==false);
+
+            if (sponsor!=null)
+            {
+                sponsor.IsDeleted = true;
+                sponsor.DeletedBy = actionBy;
+                sponsor.DeletedDate = DateTime.Now;
+
+                _sponsorExhibitorRepository.Update(sponsor);
+                _mainResponse.Message = Constants.EXHIBITOR_SPONSOR_REMOVED;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+                _mainResponse.Success = false;
+            }
+            return _mainResponse;
+        }
+  }
 }

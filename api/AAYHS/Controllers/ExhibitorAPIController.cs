@@ -189,9 +189,9 @@ namespace AAYHS.API.Controllers
         /// <param name="classId"></param>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult GetClassDetail(int classId)
+        public ActionResult GetClassDetail(int classId, int exhibitorId)
         {
-            _mainResponse = _exhibitorService.GetClassDetail(classId);
+            _mainResponse = _exhibitorService.GetClassDetail(classId, exhibitorId);
             _jsonString = Mapper.Convert<GetClassesForExhibitor>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
@@ -205,6 +205,31 @@ namespace AAYHS.API.Controllers
         {
             string actionBy = User.Identity.Name;
             _mainResponse = _exhibitorService.AddExhibitorToClass(addExhibitorToClass, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to get all sponsors of exhibitor
+        /// </summary>
+        /// <param name="exhibitorId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetAllSponsorsOfExhibitor(int exhibitorId)
+        {
+            _mainResponse = _exhibitorService.GetAllSponsorsOfExhibitor(exhibitorId);
+            _jsonString = Mapper.Convert<GetAllSponsorsOfExhibitor>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to removed the sponsor of a exhibitor
+        /// </summary>
+        /// <param name="sponsorExhibitorId"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        public ActionResult RemoveSponsorFromExhibitor(int sponsorExhibitorId)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _exhibitorService.RemoveSponsorFromExhibitor(sponsorExhibitorId, actionBy);
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }

@@ -64,6 +64,7 @@ namespace AAYHS.Core.DTOs.Response
         public GetAllClassesOfExhibitor GetAllClassesOfExhibitor { get; set; }
         public GetAllClassesForExhibitor GetAllClassesForExhibitor { get; set; }
         public GetClassesForExhibitor GetClassesForExhibitor { get; set; }
+        public GetAllSponsorsOfExhibitor GetAllSponsorsOfExhibitor { get; set; }
     }
    
     public class Response<T> : BaseResponse
