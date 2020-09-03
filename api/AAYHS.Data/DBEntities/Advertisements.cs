@@ -14,7 +14,7 @@ namespace AAYHS.Data.DBEntities
         public int AdvertisementId { get; set; }
         public int AdvertisementTypeId { get; set; }
         public int AdvertisementSizeId { get; set; }
-        public int AdvertisementNumberId { get; set; }
+        public int AdvertisementNumber { get; set; }
         public string Name { get; set; }
         public string Comments { get; set; }
        

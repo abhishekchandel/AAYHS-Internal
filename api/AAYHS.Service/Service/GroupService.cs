@@ -84,7 +84,7 @@ namespace AAYHS.Service.Service
                     foreach (var item in request.groupStallAssignmentRequests)
                     {
                         stallAssignment = new StallAssignment();
-                        stallAssignment.StallId = item.StallId;
+                        stallAssignment.StallId = item.SelectedStallId;
                         stallAssignment.StallAssignmentTypeId = item.StallAssignmentTypeId;
                         stallAssignment.GroupId = Data.GroupId;
                         stallAssignment.ExhibitorId = 0;
@@ -137,7 +137,7 @@ namespace AAYHS.Service.Service
                         foreach (var item in request.groupStallAssignmentRequests)
                         {
                             stallAssignment = new StallAssignment();
-                            stallAssignment.StallId = item.StallId;
+                            stallAssignment.StallId = item.SelectedStallId;
                             stallAssignment.StallAssignmentTypeId = item.StallAssignmentTypeId;
                             stallAssignment.GroupId =Group.GroupId;
                             stallAssignment.ExhibitorId =0;

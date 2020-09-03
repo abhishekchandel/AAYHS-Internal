@@ -12,64 +12,77 @@ export class AssignStallModalComponent implements OnInit {
   assignmentType:""
   dataToReturn:any;
   stallTypes:any;
-  stallAssignmentTypeId:number;
+  StallAssignmentTypeId:number;
   constructor(
     private groupService: GroupService,
     public dialogRef: MatDialogRef<AssignStallModalComponent>,
     public dialog: MatDialog,@Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
-    this.showAssign=this.data.assigned;
+    
+    this.showAssign=this.data.Assigned;
    this.getAllStallTypes();
 
   }
 
   assignStall(){
+    
     this.dataToReturn={
-      selectedStallId:this.data.selectedStallId,
-      status:"Assign",
+      SelectedStallId:this.data.SelectedStallId,
+      Status:"Assign",
       BookedByType:'Group',
-      ExhibitorId: 0,
-      GroupId:this.data.GroupId,
       StallAssignmentId: this.data.StallAssignmentId,
-      StallAssignmentTypeId: this.stallAssignmentTypeId,
+      StallAssignmentTypeId: this.StallAssignmentTypeId,
       StallMovedTo: 0,
     }
+    this.dialogRef.close({
+      submitted: true,
+      data: this.dataToReturn
+    });
   }
 
 
   unAssignStall(){
+    
     this.dataToReturn={
-      selectedStallId:this.data.selectedStallId,
-      status:"Unssign",
+      SelectedStallId:this.data.SelectedStallId,
+      Status:"Unassign",
       BookedByType:'Group',
-      ExhibitorId: 0,
-      GroupId:this.data.GroupId,
       StallAssignmentId: this.data.StallAssignmentId,
-      StallAssignmentTypeId: this.stallAssignmentTypeId,
+      StallAssignmentTypeId: this.StallAssignmentTypeId,
       StallMovedTo: 0,
     }
+    this.dialogRef.close({
+      submitted: true,
+      data: this.dataToReturn
+    });
   }
 
 
   moveStall(){
+    
     this.dataToReturn={
-      selectedStallId:this.data.selectedStallId,
-      status:"Move",
+      SelectedStallId:this.data.SelectedStallId,
+      Status:"Move",
       BookedByType:'Group',
-      ExhibitorId: 0,
-      GroupId:this.data.GroupId,
       StallAssignmentId: this.data.StallAssignmentId,
-      StallAssignmentTypeId: this.stallAssignmentTypeId,
+      StallAssignmentTypeId: this.StallAssignmentTypeId,
       StallMovedTo: 0,
     }
+    this.dialogRef.close({
+      submitted: true,
+      data: this.dataToReturn
+    });
   }
- 
-
+  
   onDismiss(): void {
-    // Close the dialog, return false
-    this.dialogRef.close(false);
+    this.dialogRef.close({
+      submitted: false,
+      data: null
+    });
   }
+
+ 
 
   getAllStallTypes() {
    
@@ -91,6 +104,7 @@ export class AssignStallModalComponent implements OnInit {
   })
   }
   setStallType(id){
-    this.stallAssignmentTypeId=Number(id);
+    
+    this.StallAssignmentTypeId=Number(id);
   }
 }

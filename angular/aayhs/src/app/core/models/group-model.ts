@@ -10,7 +10,7 @@ export interface GroupInformationViewModel
     ZipCodeId:number;
     AmountReceived :any;
     GroupId:number;
-
+    groupStallAssignmentRequests:any;
 }
 export interface BaseResponse{
     Success:boolean,

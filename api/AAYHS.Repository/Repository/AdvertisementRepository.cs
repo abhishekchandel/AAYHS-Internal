@@ -43,7 +43,7 @@ namespace AAYHS.Repository.Repository
                                     AdvertisementId = ad.AdvertisementId,
                                     AdvertisementTypeId = ad.AdvertisementTypeId,
                                     AdvertisementSizeId = ad.AdvertisementSizeId,
-                                    AdvertisementNumberId = ad.AdvertisementNumberId,
+                                    AdvertisementNumber = ad.AdvertisementNumber,
                                     Name = ad.Name,
                                     Comments = ad.Comments,
                                 }).ToList();

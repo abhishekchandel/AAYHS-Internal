@@ -1,7 +1,7 @@
-import { Component, OnInit,Inject } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { StallService } from '../../../../core/services/stall.service';
-import {AssignStallModalComponent} from '../../../../shared/ui/modals/assign-stall-modal/assign-stall-modal.component'
-import { MatDialogRef,MatDialogConfig,MatDialog , MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { AssignStallModalComponent } from '../../../../shared/ui/modals/assign-stall-modal/assign-stall-modal.component'
+import { MatDialogRef, MatDialogConfig, MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 
 @Component({
@@ -11,117 +11,150 @@ import { MatDialogRef,MatDialogConfig,MatDialog , MAT_DIALOG_DATA} from '@angula
 })
 export class StallComponent implements OnInit {
   loading = false;
-  stallResponse:any
-  chunkedData :any
-  allAssignedStalls:any;
-  groupAssignedStalls:any;
+  stallResponse: any
+  chunkedData: any
+  allAssignedStalls: any;
+  groupAssignedStalls: any;
+tempDataArray:any=[];
+
+
+
 
   constructor(
     private stallService: StallService,
     public dialogRef: MatDialogRef<StallComponent>,
-    public dialog: MatDialog,@Inject(MAT_DIALOG_DATA) public data: any) { }
+    public dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
-  
-    this.groupAssignedStalls=this.data;
+
+    this.groupAssignedStalls = this.data;
     this.getAllAssignedStalls();
   }
 
   getAllAssignedStalls() {
     return new Promise((resolve, reject) => {
-    this.loading = true;
-    this.allAssignedStalls=null;
-    this.stallService.getAllAssignedStalls().subscribe(response => {
-      if(response.Data!=null && response.Data.TotalRecords>0)
-      {
+      this.loading = true;
+      this.allAssignedStalls = null;
+      this.stallService.getAllAssignedStalls().subscribe(response => {
+        if (response.Data != null && response.Data.TotalRecords > 0) {
 
-     this.allAssignedStalls = response.Data.stallResponses;
-     if(this.allAssignedStalls!=null && this.allAssignedStalls!=undefined && this.allAssignedStalls.length>0)
-     {
+          this.allAssignedStalls = response.Data.stallResponses;
+          if (this.allAssignedStalls != null && this.allAssignedStalls != undefined && this.allAssignedStalls.length > 0) {
 
-     this.allAssignedStalls.forEach(data => {
-     var id=String('stall_'+ data.StallId);
-      var element = document.getElementById(id);
-      debugger
-      element.classList.add("bookedstall");
+            this.allAssignedStalls.forEach(data => {
+              var s_id = String('stall_' + data.StallId);
+              var element = document.getElementById(s_id);
+              
+              if (element != null && element != undefined) {
+                if (this.groupAssignedStalls != null
+                  && this.groupAssignedStalls != undefined
+                  && this.groupAssignedStalls.length > 0) {
+
+                  var assigendstall = this.groupAssignedStalls.filter((x) => { return x.StallId == data.StallId });
+                  if (assigendstall != null && assigendstall.length > 0) {
+                    element.classList.add("bookedgroupstall");
+                  }
+                  else {
+                    element.classList.add("bookedstall");
+                  }
+                }
+                else {
+                  element.classList.add("bookedstall");
+                }
+              }
+            });
+          }
+
+          this.loading = false;
+        }
+
+      }, error => {
+        this.loading = false;
+      })
+      resolve();
     });
-    }
+  }
 
-    this.loading = false;
-    }
-      
-    }, error => {
-      this.loading = false;
-    })
-    resolve();
-  });
-}
 
- 
 
-  chunk(arr,size){
+  chunk(arr, size) {
     var newArr = [];
-    for (var i=0; i<arr.length; i+=size) {
-      newArr.push(arr.slice(i, i+size));
+    for (var i = 0; i < arr.length; i += size) {
+      newArr.push(arr.slice(i, i + size));
     }
-    return newArr; 
+    return newArr;
   }
 
   assignStall(stallId) {
-    debugger
-    var check=this.groupAssignedStalls.filter((x) => { return x.StallId ==   stallId});
-    var data:any;
-if(check!=null && check !=undefined)
-{
-data={
-  selectedStallId:stallId,
-  assigned:true,
-  BookedByType:check.BookedByType,
-  ExhibitorId: check.ExhibitorId,
-  GroupId: check.GroupId,
-  StallAssignmentId: check.StallAssignmentId,
-  StallAssignmentTypeId: check.StallAssignmentTypeId,
- }
-}
-else{
-  data={
-    selectedStallId:stallId,
-    assigned:false,
-    BookedByType:'Group',
-    ExhibitorId: 0,
-    GroupId: 0,
-    StallAssignmentId: 0,
-    StallAssignmentTypeId: 0,
+    if (this.groupAssignedStalls != null && this.groupAssignedStalls != undefined) {
+      var check = this.groupAssignedStalls.filter((x) => { return x.StallId == stallId });
+      var data: any;
+      if (check != null && check != undefined && check.length > 0) {
+        data = {
+          SelectedStallId: stallId,
+          Assigned: true,
+          BookedByType: check[0].BookedByType,
+          StallAssignmentId: check[0].StallAssignmentId,
+          StallAssignmentTypeId: check[0].StallAssignmentTypeId,
+        }
+      }
+      else {
+        data = {
+          SelectedStallId: stallId,
+          Assigned: false,
+          BookedByType: 'Group',
+          StallAssignmentId: 0,
+          StallAssignmentTypeId: 0,
 
-  }
-}
+        }
+      }
+    }
+    else {
+      data = {
+        SelectedStallId: stallId,
+        Assigned: false,
+        BookedByType: 'Group',
+        StallAssignmentId: 0,
+        StallAssignmentTypeId: 0,
+      }
+    }
 
     let config = new MatDialogConfig();
     config = {
-    position: {
-      top: '10px',
-      right: '10px'
-    },
-    height: '98%',
-    width: '100vw',
-    maxWidth: '100vw',
+      position: {
+        top: '10px',
+        right: '10px'
+      },
+      height: '98%',
+      width: '100vw',
+      maxWidth: '100vw',
       maxHeight: '100vh',
-    panelClass: 'full-screen-modal',
-    data:data
-  };
+      panelClass: 'full-screen-modal',
+      data: data
+    };
 
     const dialogRef = this.dialog.open(AssignStallModalComponent, config);
 
     dialogRef.afterClosed().subscribe(dialogResult => {
+      
       const result: any = dialogResult;
       if (result && result.submitted == true) {
-       
+      this.tempDataArray.push(result.data);
       }
     });
   }
 
   onDismiss(): void {
-    // Close the dialog, return false
-    this.dialogRef.close(false);
+    this.dialogRef.close({
+      submitted: false,
+      data: null
+    });
+  }
+  
+  onSubmit(): void {
+    this.dialogRef.close({
+      submitted: true,
+      data: this.tempDataArray
+    });
   }
 }

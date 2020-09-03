@@ -22,12 +22,12 @@
 
                 <div class="text-center col-sm-12 mb-3">
                     <button type="button" class="btn btn-default roundBtn" (click)="assignStall()" *ngIf="showAssign==false">Assign</button>
-                    <button type="button" class="btn btn-default roundBtn" (click)="unAssignStall()" *ngIf="showAssign==true">UnAssign</button>
+                    <button type="button" class="btn btn-default roundBtn" (click)="unAssignStall()" *ngIf="showAssign==true">Unassign</button>
                 </div>
             </div>
         </div>
         <div class="modal-footer text-center">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-default" (click)="onDismiss()" data-dismiss="modal">Cancel</button>
         </div>
         </div>
 

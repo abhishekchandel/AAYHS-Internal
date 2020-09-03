@@ -98,11 +98,11 @@ UpdatedFinancialAmount:number=null;
     ZipCodeId: null,
     AmountReceived: '0.00',
     GroupId: 0,
-   
+    groupStallAssignmentRequests:null
 
   }
 
-  
+  StallAssignmentRequestsData:any;
 groupStallAssignmentResponses :any;
 
   constructor(private groupService: GroupService,
@@ -202,9 +202,10 @@ groupStallAssignmentResponses :any;
     
     this.loading=true;
     this.groupInfo.AmountReceived=Number(this.groupInfo.AmountReceived==null ?0:this.groupInfo.AmountReceived);
+    this.groupInfo.groupStallAssignmentRequests=this.StallAssignmentRequestsData;
     this.groupService.addUpdateGroup(this.groupInfo).subscribe(response=>{
      this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
-    
+     
         // this.baseRequest.Page= 1;
         // this.baseRequest.Limit= 5;
         // this.baseRequest.OrderBy= 'GroupId';
@@ -490,7 +491,7 @@ groupStallAssignmentResponses :any;
   }
 
   resetForm() {
-    ;
+    
     this.groupInfo.GroupName = null;
     this.groupInfo.ContactName = null;
     this.groupInfo.Phone = null;
@@ -506,6 +507,7 @@ groupStallAssignmentResponses :any;
     this.selectedGroupId=0;
     this.selectedRowIndex =-1;
     this.FeeTypes=null;
+    this.groupStallAssignmentResponses=null;
   }
 
   getNext(event) {
@@ -594,7 +596,7 @@ groupStallAssignmentResponses :any;
     dialogRef.afterClosed().subscribe(dialogResult => {
       const result: any = dialogResult;
       if (result && result.submitted == true) {
-       
+       this.StallAssignmentRequestsData=result.data;
       }
     });
   }

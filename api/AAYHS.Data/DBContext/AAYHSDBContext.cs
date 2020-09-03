@@ -31,9 +31,7 @@ namespace AAYHS.Data.DBContext
         public virtual DbSet<ClassSplits> ClassSplits { get; set; }
         public virtual DbSet<AAYHSContact> AAYHSContact { get; set; }
         public virtual DbSet<Addresses> Addresses { get; set; }
-        public virtual DbSet<AdvertisementNumbers> AdvertisementNumbers { get; set; }
         public virtual DbSet<Advertisements> Advertisements { get; set; }
-        public virtual DbSet<AdvertisementSizes> AdvertisementSizes { get; set; }
         public virtual DbSet<Cities> Cities { get; set; }
         public virtual DbSet<ClassSponsors> ClassSponsor { get; set; }
         public virtual DbSet<ExhibitorHorse> ExhibitorHorse { get; set; }

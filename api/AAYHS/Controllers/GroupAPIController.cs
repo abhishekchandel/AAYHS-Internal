@@ -70,9 +70,6 @@ namespace AAYHS.API.Controllers
             return new OkObjectResult(_jsonString);
         }
 
-
-
-
         /// <summary>
         /// This API is used to delete existing Group.
         /// </summary>
