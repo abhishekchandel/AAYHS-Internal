@@ -101,6 +101,10 @@ UpdatedFinancialAmount:number=null;
    
 
   }
+
+  
+groupStallAssignmentResponses :any;
+
   constructor(private groupService: GroupService,
     private dialog: MatDialog,
     private snackBar: MatSnackbarComponent,
@@ -139,13 +143,14 @@ UpdatedFinancialAmount:number=null;
 
   getGroupDetails = (id: number, selectedRowIndex) => {
     this.loading = true;
+    
     this.groupService.getGroup(id).subscribe(response => {
       if(response.Data!=null)
       {
-      
       this.getCities(response.Data.StateId).then(res => {
         this.getZipCodes(response.Data.CityId).then(res => {
-         this.groupInfo = response.Data;
+          this.groupInfo = response.Data;
+          this.groupStallAssignmentResponses = response.Data.groupStallAssignmentResponses;
          this.selectedRowIndex= selectedRowIndex;
          this.groupInfo.AmountReceived=Number(this.groupInfo.AmountReceived.toFixed(2));
        });
@@ -234,7 +239,7 @@ UpdatedFinancialAmount:number=null;
       this.groupFinancialsRequest.FeeTypeId=this.FinancialsFeeTypeId;
       this.groupFinancialsRequest.TimeFrameId=this.FinancialsTimeFrameTypeId;
       this.groupFinancialsRequest.Amount=this.FinancialsAmount;
-debugger
+
       this.groupService.addUpdateGroupFinancials(this.groupFinancialsRequest).subscribe(response=>{
         this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
         this.GetGroupFinancials(this.selectedGroupId);
@@ -269,7 +274,7 @@ debugger
     this.loading = true;
     this.zipCodesResponse=null;
     this.groupService.getZipCodes(Number(id)).subscribe(response => {
-      debugger
+      
         this.zipCodesResponse = response.Data.ZipCode;
         this.loading = false;
     }, error => {
@@ -321,7 +326,7 @@ debugger
   }
 
   editFinancialsAmount(e, index, GroupFinancialId,Amount){
-    debugger
+    
     this.updatemode=true;
     this.updateRowIndex=index;
     this.UpdatedFinancialAmount=Number(Amount);
@@ -335,7 +340,7 @@ debugger
   }
   
   updateGroupFinancialsAmount(e, index, GroupFinancialId,timeframename){
-    debugger
+    
     this.loading=true;
     this.updateRowIndex=index;
     this.updateGroupFinancialsRequest.GroupFinancialId=GroupFinancialId;
@@ -354,16 +359,16 @@ debugger
      })
     }
 
-setFinancialsFeeType(id){
-  this.FinancialsFeeTypeId=Number(id);
-}
-setFinancialsTimeFrameType(id){
-    this.FinancialsTimeFrameTypeId=Number(id);
-}
-
-setFinancialsAmount(data){
-  this.FinancialsAmount=Number(data);
-}
+  setFinancialsFeeType(id){
+    this.FinancialsFeeTypeId=Number(id);
+  }
+  setFinancialsTimeFrameType(id){
+      this.FinancialsTimeFrameTypeId=Number(id);
+  }
+  
+  setFinancialsAmount(data){
+    this.FinancialsAmount=Number(data);
+  }
 
 
 
@@ -443,7 +448,7 @@ setFinancialsAmount(data){
   }
   
   deleteGroupExhibitor(GroupExhibitorid,index) {
-    debugger
+    
     this.loading = true;
     this.groupService.deleteGroupExhibitors(GroupExhibitorid).subscribe(response => {
       
@@ -464,7 +469,7 @@ setFinancialsAmount(data){
   }
 
   deleteGroupFinancials(GroupFinancialId,index) {
-    debugger
+    
     this.loading = true;
     this.groupService.deleteGroupFinancials(GroupFinancialId).subscribe(response => {
       
@@ -485,7 +490,7 @@ setFinancialsAmount(data){
   }
 
   resetForm() {
-    debugger;
+    ;
     this.groupInfo.GroupName = null;
     this.groupInfo.ContactName = null;
     this.groupInfo.Phone = null;
@@ -569,10 +574,6 @@ setFinancialsAmount(data){
     }
 
   openStallDiagram() {
-    var data = {
-      
-    }
-
     let config = new MatDialogConfig();
   config = {
     position: {
@@ -584,10 +585,12 @@ setFinancialsAmount(data){
     maxWidth: '100vw',
       maxHeight: '100vh',
     panelClass: 'full-screen-modal',
+    data:this.groupStallAssignmentResponses
   };
 
-    const dialogRef = this.dialog.open(StallComponent, config);
-
+    const dialogRef = this.dialog.open(StallComponent, config,
+  
+    );
     dialogRef.afterClosed().subscribe(dialogResult => {
       const result: any = dialogResult;
       if (result && result.submitted == true) {

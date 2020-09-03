@@ -134,7 +134,7 @@ namespace AAYHS
             services.AddTransient<IHorseService, HorseService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IGroupService, GroupService>();
-            services.AddTransient<IStallService, StallService>();
+            services.AddTransient<IStallAssignmentService, StallAssignmentService>();
             services.AddTransient<IAdvertisementService, AdvertisementService>();
 
 
@@ -166,7 +166,7 @@ namespace AAYHS
             services.AddTransient<IGroupRepository, GroupRepository>();
             services.AddTransient<IGroupExhibitorRepository, GroupExhibitorRepository>();
             services.AddTransient<IGroupFinancialRepository, GroupFinancialRepository>();
-            services.AddTransient<IStallRepository, StallRepository>();
+            //services.AddTransient<IStallRepository, StallRepository>();
             services.AddTransient<IAdvertisementRepository, AdvertisementRepository>();
             services.AddTransient<IExhibitorHorseRepository, ExhibitorHorseRepository>();
             services.AddTransient<IZipCodeRepository, ZipCodeRepository>();

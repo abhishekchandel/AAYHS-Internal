@@ -10,16 +10,19 @@
         <div class="modal-body text-center">
             <h6 class="mb-4"><b>Assign to: </b>Grace Hopper</h6>
             <div class="stallControll">
-                <div class="dwnFile">
-                    <input type="radio" name="radio">
-                    <span class="checkmark">Tack Stall</span>
+              
+                <div class="dwnFile" *ngFor="let item of stallTypes;let i=index">
+                    <input type="radio" name="radio" 
+                    [value]="item.GlobalCodeId"
+                     checked="stalltypeId==item.GlobalCodeId?'checked':''"
+                    name="item.CodeName"
+                    (change)="setStallType($event.target.value)">
+                    <span class="checkmark">{{item.CodeName}} </span>
                 </div>
-                <div class="dwnFile">
-                    <input type="radio" name="radio">
-                    <span class="checkmark">Horse Stall </span>
-                </div>
+
                 <div class="text-center col-sm-12 mb-3">
-                    <button type="button" class="btn btn-default roundBtn">Assign</button>
+                    <button type="button" class="btn btn-default roundBtn" (click)="assignStall()" *ngIf="showAssign==false">Assign</button>
+                    <button type="button" class="btn btn-default roundBtn" (click)="unAssignStall()" *ngIf="showAssign==true">UnAssign</button>
                 </div>
             </div>
         </div>

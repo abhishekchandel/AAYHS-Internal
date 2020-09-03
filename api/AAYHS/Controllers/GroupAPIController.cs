@@ -19,12 +19,11 @@ namespace AAYHS.API.Controllers
     {
         private readonly IGroupService _GroupService;
         private MainResponse _mainResponse;
-        private IStallService _StallService;
+       
         private string _jsonString = string.Empty;
-        public GroupAPIController(IGroupService GroupService,IStallService StallService)
+        public GroupAPIController(IGroupService GroupService)
         {
             _GroupService = GroupService;
-            _StallService = StallService;
             _mainResponse = new MainResponse();
         }
 
@@ -42,8 +41,6 @@ namespace AAYHS.API.Controllers
             return new OkObjectResult(_jsonString);
         }
 
-
-   
 
         /// <summary>
         /// This API is used to get  Group by Group id.
@@ -190,18 +187,7 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<GetAllGroupFinacials>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
-        /// <summary>
-        /// This api used to get all stall
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        //[Authorize]   
-        public IActionResult GetAllStall()
-        {
-            _mainResponse = _StallService.GetAllStall();
-            _jsonString = Mapper.Convert<GetAllStall>(_mainResponse);
-            return new OkObjectResult(_jsonString);
-        }
+       
         /// <summary>
         /// This api used to get group statement
         /// </summary>

@@ -12,27 +12,24 @@ using System.Text;
 
 namespace AAYHS.Service.Service
 {
-    public class StallService: IStallService
+    public class StallAssignmentService: IStallAssignmentService
     {       
         #region private
         private MainResponse _mainResponse;
         private IMapper _mapper;
-        private IStallRepository _stallRepository;
         private IStallAssignmentRepository _stallAssignmentRepository;
-        private StallService _stallService;
         #endregion
 
-        public StallService(IMapper Mapper,IStallRepository stallRepository,IStallAssignmentRepository stallAssignmentRepository)
+        public StallAssignmentService(IMapper Mapper,IStallAssignmentRepository stallAssignmentRepository)
         {
             _mapper = Mapper;
-            _stallRepository = stallRepository;
             _stallAssignmentRepository = stallAssignmentRepository;
             _mainResponse = new MainResponse();
         }
 
-        public MainResponse GetAllStall()
+        public MainResponse GetAllAssignedStalls()
         {
-            var getAllStall = _stallRepository.GetAllStall();
+            var getAllStall = _stallAssignmentRepository.GetAllAssignedStalls();
             if (getAllStall!=null && getAllStall.TotalRecords!=0)
             {
                 _mainResponse.GetAllStall = getAllStall;
@@ -47,7 +44,7 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
-        public MainResponse DeleteStallAssignment(int StallAssignmentId)
+        public MainResponse DeleteAssignedStall(int StallAssignmentId)
         {
             var stallAssign = _stallAssignmentRepository.GetSingle(x => x.StallAssignmentId == StallAssignmentId);
             if (stallAssign != null)

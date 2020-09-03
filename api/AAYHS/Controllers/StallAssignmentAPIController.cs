@@ -19,13 +19,35 @@ namespace AAYHS.API.Controllers
     public class StallAssignmentAPIController : Controller
     {
         #region readonly
-        private readonly IStallService _stallService;
+        private readonly IStallAssignmentService _stallAssignmentService;
         private MainResponse _mainResponse;
         #endregion
 
         #region private
         private string _jsonString = string.Empty;
         #endregion
+
+        public StallAssignmentAPIController(IStallAssignmentService stallAssignmentService)
+        {
+            _stallAssignmentService = stallAssignmentService;
+            _mainResponse = new MainResponse();
+        }
+
+
+        /// <summary>
+        /// This api used to get all stall
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        //[Authorize]   
+        public IActionResult GetAllAssignedStalls()
+        {
+            _mainResponse = _stallAssignmentService.GetAllAssignedStalls();
+            _jsonString = Mapper.Convert<GetAllStall>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+
+       
         /// <summary>
         /// This api used to delete Stall Assignment
         /// </summary>
@@ -33,12 +55,13 @@ namespace AAYHS.API.Controllers
         /// <returns></returns>
         [HttpDelete]
         [Authorize]
-        public  IActionResult DeleteStallAssignment(int StallAssignmentId)
+        public  IActionResult DeleteAssignedStall(int StallAssignmentId)
         {
             string actionBy = User.Identity.Name;
-            _mainResponse =  _stallService.DeleteStallAssignment(StallAssignmentId);
+            _mainResponse = _stallAssignmentService.DeleteAssignedStall(StallAssignmentId);
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
+
     }
 }

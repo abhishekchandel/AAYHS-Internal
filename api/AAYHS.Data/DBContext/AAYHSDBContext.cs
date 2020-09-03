@@ -43,7 +43,7 @@ namespace AAYHS.Data.DBContext
         public virtual DbSet<RefundDetail> RefundDetail { get; set; }
         public virtual DbSet<Result> Result { get; set; }
         public virtual DbSet<SponsorPaymentDetail> SponsorPaymentDetail { get; set; }
-        public virtual DbSet<Stall> Stall { get; set; }
+      //  public virtual DbSet<Stall> Stall { get; set; }
         public virtual DbSet<StallAssignment> StallAssignment { get; set; }
         public virtual DbSet<States> States { get; set; }
         public virtual DbSet<User> User { get; set; }
