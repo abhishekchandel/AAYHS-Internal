@@ -84,6 +84,7 @@ namespace AAYHS.Core.DTOs.Response
     public class GetSponsorsOfExhibitor
     {
         public int SponsorExhibitorId { get; set; }
+        public int SponsorId { get; set; }
         public string Sponsor { get; set; }
         public string ContactName { get; set; }
         public string Phone { get; set; }

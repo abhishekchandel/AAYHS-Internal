@@ -512,6 +512,24 @@ namespace AAYHS.Service.Service
             }
             return _mainResponse;
         }
+
+        public MainResponse GetSponsorDetail(int sponsorId)
+        {
+            var sponsor= _sponsorRepository.GetSingle(x => x.SponsorId == sponsorId && x.IsActive == true && x.IsDeleted == false);
+
+            if (sponsor!=null && sponsor.SponsorId>0)
+            {
+                var sponsorDetail= _mapper.Map<GetSponsorForExhibitor>(sponsor);
+                _mainResponse.GetSponsorForExhibitor = sponsorDetail;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_RECORD_EXIST_WITH_ID;
+                _mainResponse.Success = false;
+            }
+            return _mainResponse;
+        }
       
         public MainResponse AddSponsorForExhibitor(AddSponsorForExhibitor addSponsorForExhibitor, string actionBy)
         {

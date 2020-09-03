@@ -193,6 +193,7 @@ namespace AAYHS.Repository.Repository
                                        select new GetSponsorsOfExhibitor 
                                        { 
                                          SponsorExhibitorId=sponsorExhibitor.SponsorExhibitorId,
+                                         SponsorId=sponsor.SponsorId,
                                          Sponsor= sponsor.SponsorName,
                                          ContactName=sponsor.ContactName,
                                          Phone=sponsor.Phone,

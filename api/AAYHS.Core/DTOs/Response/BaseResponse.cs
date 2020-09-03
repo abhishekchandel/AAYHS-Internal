@@ -67,6 +67,7 @@ namespace AAYHS.Core.DTOs.Response
         public GetAllSponsorsOfExhibitor GetAllSponsorsOfExhibitor { get; set; }
         public GetAllSponsorForExhibitor GetAllSponsorForExhibitor { get; set; }
         public GetSponsorDetailedInfo GetSponsorDetailedInfo { get; set; }
+        public GetSponsorForExhibitor GetSponsorForExhibitor { get; set; }
 
     }
    
