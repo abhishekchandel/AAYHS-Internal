@@ -188,7 +188,7 @@ namespace AAYHS.Repository.Repository
                                        select new GetSponsorsOfExhibitor 
                                        { 
                                          SponsorExhibitorId=sponsorExhibitor.SponsorExhibitorId,
-                                         Sponspor= sponsor.SponsorName,
+                                         Sponsor= sponsor.SponsorName,
                                          Email =sponsor.Email,
                                          Amount=sponsor.AmountReceived
                                                                                
@@ -199,6 +199,28 @@ namespace AAYHS.Repository.Repository
                 getAllSponsorsOfExhibitor.TotalRecords = getSponsorsOfExhibitors.Count();
             }
             return getAllSponsorsOfExhibitor;
+        }
+
+        public GetSponsorDetailedInfo GetSponsorDetailedInfo(int sponsorId)
+        {
+            IEnumerable<GetSponsorDetailedInfo> data = null;
+            GetSponsorDetailedInfo getSponsorDetailedInfo = new GetSponsorDetailedInfo();
+            data =(from sponsor in _context.Sponsors
+                                     join address in _context.Addresses on sponsor.AddressId equals address.AddressId
+                                     join city in _context.Cities on address.CityId equals city.CityId
+                                     join state in _context.States on city.StateId equals state.StateId
+                                     where sponsor.IsActive==true && sponsor.IsDeleted==false &&
+                                     sponsor.SponsorId==sponsorId
+                                     select new GetSponsorDetailedInfo 
+                                     { 
+                                       ContactName=sponsor.ContactName,
+                                       Phone=sponsor.Phone,
+                                       Address=address.Address,
+                                       City=city.Name,
+                                       State=state.Name
+                                     });
+            getSponsorDetailedInfo = data.First();
+            return getSponsorDetailedInfo;
         }
     }
 }

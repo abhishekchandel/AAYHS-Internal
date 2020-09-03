@@ -40,4 +40,9 @@ namespace AAYHS.Core.DTOs.Request
         public int exhibitorClassId { get; set; }
         public bool IsScratch { get; set; }
     }
+    public class AddSponsorForExhibitor
+    {
+        public int ExhibitorId { get; set; }
+        public int SponsorId { get; set; }
+    }
 }

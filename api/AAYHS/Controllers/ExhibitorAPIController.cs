@@ -246,5 +246,42 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
+        /// <summary>
+        /// This api used to get all sponsor which is not linked with exhibitor
+        /// </summary>
+        /// <param name="exhibitorId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetAllSponsor(int exhibitorId)
+        {
+            _mainResponse = _exhibitorService.GetAllSponsor(exhibitorId);
+            _jsonString = Mapper.Convert<GetAllSponsorForExhibitor>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to add sponsor for a exhibitor
+        /// </summary>
+        /// <param name="addSponsorForExhibitor"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult AddSponsorForExhibitor(AddSponsorForExhibitor addSponsorForExhibitor)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _exhibitorService.AddSponsorForExhibitor(addSponsorForExhibitor, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to get sponsor full detail
+        /// </summary>
+        /// <param name="sponsorId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetSponsorDetailedInfo(int sponsorId)
+        {
+            _mainResponse = _exhibitorService.GetSponsorDetailedInfo(sponsorId);
+            _jsonString = Mapper.Convert<GetSponsorDetailedInfo>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
     }
 }

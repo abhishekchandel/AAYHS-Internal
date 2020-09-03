@@ -37,6 +37,8 @@ namespace AAYHS.Core.AutoMapper
             CreateMap<GroupFinancials, GetGroupFinacials>();
             CreateMap<Horses, GetHorses>();
             CreateMap<Classes, GetClassesForExhibitor>();
+            CreateMap<Sponsors, GetSponsorForExhibitor>();
+
 
         }
     }
