@@ -186,9 +186,9 @@ namespace AAYHS.Repository.Repository
                                        join sponsor in _context.Sponsors on sponsorExhibitor.SponsorId equals sponsor.SponsorId
                                        join address in _context.Addresses on sponsor.AddressId equals address.AddressId
                                        join city in _context.Cities on address.CityId equals city.CityId
-                                       join state in _context.States on city.StateId equals state.StateId
-                                       join zipcode in _context.ZipCodes on address.ZipCodeId equals zipcode.ZipCodeId
+                                       join state in _context.States on city.StateId equals state.StateId                                    
                                        where sponsorExhibitor.IsActive==true && sponsorExhibitor.IsDeleted==false &&
+                                       sponsor.IsActive==true && sponsor.IsDeleted==false &&
                                        sponsorExhibitor.ExhibitorId == exhibitorId
                                        select new GetSponsorsOfExhibitor 
                                        { 
@@ -198,8 +198,7 @@ namespace AAYHS.Repository.Repository
                                          Phone=sponsor.Phone,
                                          Address=address.Address,
                                          City=city.Name,
-                                         State=state.Name,
-                                         Zipcode= zipcode.Number,
+                                         State=state.Name,                                       
                                          Email =sponsor.Email,
                                          Amount=sponsor.AmountReceived
                                                                                
