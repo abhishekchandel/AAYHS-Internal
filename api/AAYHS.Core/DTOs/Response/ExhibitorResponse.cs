@@ -85,6 +85,12 @@ namespace AAYHS.Core.DTOs.Response
     {
         public int SponsorExhibitorId { get; set; }
         public string Sponsor { get; set; }
+        public string ContactName { get; set; }
+        public string Phone { get; set; }
+        public string Address { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public int Zipcode { get; set; }
         public string Email { get; set; }
         public float Amount { get; set; }
         public int AdNumber { get; set; }
@@ -98,7 +104,9 @@ namespace AAYHS.Core.DTOs.Response
     public class GetSponsorForExhibitor
     {
         public int SponsorId { get; set; }
-        public string SponsorName { get; set; }       
+        public string SponsorName { get; set; }
+        public string Email { get; set; }
+        public float AmountReceived { get; set; }
     }
     public class GetAllSponsorForExhibitor
     {

@@ -184,12 +184,22 @@ namespace AAYHS.Repository.Repository
 
             getSponsorsOfExhibitors = (from sponsorExhibitor in _context.SponsorExhibitor
                                        join sponsor in _context.Sponsors on sponsorExhibitor.SponsorId equals sponsor.SponsorId
+                                       join address in _context.Addresses on sponsor.AddressId equals address.AddressId
+                                       join city in _context.Cities on address.CityId equals city.CityId
+                                       join state in _context.States on city.StateId equals state.StateId
+                                       join zipcode in _context.ZipCodes on address.ZipCodeId equals zipcode.ZipCodeId
                                        where sponsorExhibitor.IsActive==true && sponsorExhibitor.IsDeleted==false &&
                                        sponsorExhibitor.ExhibitorId == exhibitorId
                                        select new GetSponsorsOfExhibitor 
                                        { 
                                          SponsorExhibitorId=sponsorExhibitor.SponsorExhibitorId,
                                          Sponsor= sponsor.SponsorName,
+                                         ContactName=sponsor.ContactName,
+                                         Phone=sponsor.Phone,
+                                         Address=address.Address,
+                                         City=city.Name,
+                                         State=state.Name,
+                                         Zipcode= zipcode.Number,
                                          Email =sponsor.Email,
                                          Amount=sponsor.AmountReceived
                                                                                
@@ -201,30 +211,6 @@ namespace AAYHS.Repository.Repository
             }
             return getAllSponsorsOfExhibitor;
         }
-
-        public GetSponsorDetailedInfo GetSponsorDetailedInfo(int sponsorExhibitorId)
-        {
-            IEnumerable<GetSponsorDetailedInfo> data = null;
-            GetSponsorDetailedInfo getSponsorDetailedInfo = new GetSponsorDetailedInfo();
-
-            data = (from sponsorExibitor in _context.SponsorExhibitor
-                    join sponsor in _context.Sponsors on sponsorExibitor.SponsorId equals sponsor.SponsorId
-                    join address in _context.Addresses on sponsor.AddressId equals address.AddressId
-                    join city in _context.Cities on address.CityId equals city.CityId
-                    join state in _context.States on city.StateId equals state.StateId
-                    where sponsorExibitor.IsActive == true && sponsorExibitor.IsDeleted == false 
-                    && sponsor.IsActive==true && sponsor.IsDeleted==false &&
-                    sponsorExibitor.SponsorExhibitorId == sponsorExhibitorId
-                    select new GetSponsorDetailedInfo
-                    {
-                        ContactName = sponsor.ContactName,
-                        Phone = sponsor.Phone,
-                        Address = address.Address,
-                        City = city.Name,
-                        State = state.Name
-                    });
-            getSponsorDetailedInfo = data.First();
-            return getSponsorDetailedInfo;
-        }
+     
     }
 }

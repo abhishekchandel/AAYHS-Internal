@@ -27,7 +27,6 @@ namespace AAYHS.Service.IService
         MainResponse GetAllSponsorsOfExhibitor(int exhibitorId);
         MainResponse RemoveSponsorFromExhibitor(int sponsorExhibitorId, string actionBy);
         MainResponse GetAllSponsor(int exhibitorId);
-        MainResponse AddSponsorForExhibitor(AddSponsorForExhibitor addSponsorForExhibitor, string actionBy);
-        MainResponse GetSponsorDetailedInfo(int sponsorId);
+        MainResponse AddSponsorForExhibitor(AddSponsorForExhibitor addSponsorForExhibitor, string actionBy);      
     }
 }

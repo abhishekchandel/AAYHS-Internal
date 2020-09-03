@@ -512,7 +512,7 @@ namespace AAYHS.Service.Service
             }
             return _mainResponse;
         }
-
+      
         public MainResponse AddSponsorForExhibitor(AddSponsorForExhibitor addSponsorForExhibitor, string actionBy)
         {
             var sponsor = new SponsorExhibitor
@@ -528,22 +528,6 @@ namespace AAYHS.Service.Service
             _mainResponse.Success = true;
             return _mainResponse;
         }
-
-        public MainResponse GetSponsorDetailedInfo(int sponsorId)
-        {
-            var sponsorInfo = _exhibitorRepository.GetSponsorDetailedInfo(sponsorId);
-
-            if (sponsorInfo!=null)
-            {
-                _mainResponse.GetSponsorDetailedInfo = sponsorInfo;
-                _mainResponse.Success = true;
-            }
-            else
-            {
-                _mainResponse.Message = Constants.NO_RECORD_EXIST_WITH_ID;
-                _mainResponse.Success = false;
-            }
-            return _mainResponse;
-        }
+       
   }
 }
