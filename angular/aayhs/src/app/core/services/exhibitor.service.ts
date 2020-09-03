@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BaseUrl } from '../../config/url-config';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -80,11 +80,41 @@ export class ExhibitorService {
       return this.http.get<any>(`${this.api}ExhibitorAPI/GetAllClasses?exhibitorId=${id}`);
     }
 
-    getClassDetail(id:number){
-      return this.http.get<any>(`${this.api}ExhibitorAPI/GetClassDetail?classId=${id}`);
+    getClassDetail(classId,exhibitorId){
+      let params = new HttpParams();
+      params = params.append('classId', classId);
+      params = params.append('exhibitorId',exhibitorId);
+
+      return this.http.get<any>(`${this.api}ExhibitorAPI/GetClassDetail`, { params: params });
     }
 
     addExhibitorToClass(data){
       return this.http.post<any>(`${this.api}ExhibitorAPI/AddExhibitorToClass`,data);
+    }
+
+
+    //exhibitor sponsor
+    getExhibitorSponsors(id:number){
+      return this.http.get<any>(`${this.api}ExhibitorAPI/GetAllSponsorsOfExhibitor?exhibitorId=${id}`)
+    }
+
+    deleteExhibitorSponsor(id:number){
+      return this.http.delete<any>(`${this.api}ExhibitorAPI/RemoveSponsorFromExhibitor?sponsorExhibitorId=${id}`);
+    }
+
+    getAllSponsors(id:number){
+      return this.http.get<any>(`${this.api}ExhibitorAPI/GetAllSponsor?exhibitorId=${id}`);
+    }
+
+    addSponsorToExhibitor(data){
+      return this.http.post<any>(`${this.api}ExhibitorAPI/AddSponsorForExhibitor`,data);
+    }
+
+    getSponsorInfo(id:number){
+      return this.http.get<any>(`${this.api}ExhibitorAPI/GetSponsorDetailedInfo?sponsorId=${id}`);
+    }
+
+    updateScratch(data){
+      return this.http.post<any>(`${this.api}ExhibitorAPI/UpdateScratch`,data);
     }
 }

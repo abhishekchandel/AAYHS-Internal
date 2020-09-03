@@ -311,6 +311,7 @@
             </mat-tab>
             <mat-tab  class="nav-link nav nav-tabs" label="Sponsors">
                 <div class="card dataEntriesTable">
+                    <form #sponsorsForm="ngForm" (ngSubmit)="sponsorsForm.valid && addSponsorToExhibitor()" class="formScroll">
                     <div class="card-body">
                         <div class="table-responsive tableTab" id="contentscroll2">
                             <table class="table table-bordered tableBodyScroll">
@@ -326,41 +327,48 @@
                                     </tr>	
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>Soqpa</td>
-                                        <td><div class="icon"><i class="fa fa-external-link" aria-hidden="true"></i></div></td>
-                                        <td>soqpa@yahoo.com</td>
-                                        <td>$100</td>
-                                        <td>106</td>
-                                        <td>Eighth Page</td>
-                                        <td><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                    </tr>
-                                    <tr>
-                                        <td>OH Valley Reign</td>
-                                        <td><div class="icon"><i class="fa fa-external-link" aria-hidden="true"></i></div></td>
-                                        <td>ovalley@aol.com</td>
-                                        <td>$50</td>
-                                        <td>107</td>
-                                        <td>Front InsideCover</td>
-                                        <td><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Northwest Exports</td>
-                                        <td><div class="icon"><i class="fa fa-external-link" aria-hidden="true"></i></div></td>
-                                        <td>gpa@smithex.com</td>
-                                        <td>#230</td>
-                                        <td>800</td>
-                                        <td>Bank Outside</td>
-                                        <td><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                    </tr>
-                                    <tr>
-                                        <td>MH Equiptment</td>
-                                        <td><div class="icon"><i class="fa fa-external-link" aria-hidden="true"></i></div></td>
-                                        <td>gpa@smithex.com</td>
-                                        <td>#100</td>
-                                        <td>36</td>
+                                    <tr *ngFor="let sponsor of exhibitorSponsors;let i=index ">
+                                        <td>{{sponsor.Sponsor}}</td>
                                         <td>
-                                            <select class="dynDataSeclect">
+                                        <button type="button" class="icon" (click)="showSponsorInfo(sponsor.SponsorExhibitorId)"><span></span> <i class="fa fa-external-link" aria-hidden="true"></i></button>
+                                        </td>
+                                        <td>{{sponsor.Email}}</td>
+                                        <td>{{sponsor.Amount}}</td>
+                                        <td>{{sponsor.AdNumber}}</td>
+                                        <td>{{sponsor.AdSize}}</td>
+                                        <td>
+                                            <button type="button" class="icon" (click)="confirmRemoveExhibitorSponsor(sponsor.SponsorExhibitorId)"><span></span> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                        </td>
+                                    </tr>                                  
+                                    <tr>
+                                        <td>
+                                            <select class="dynDataSeclect" name="exhibitorSponsor" required
+                                            [(ngModel)]="linkedSponsorId" (change)="getSponsorDetails($event.target.value)" #sponsorControl="ngModel">
+                                            <option [ngValue]="null">
+                                                Select sponsor
+                                            </option>
+                                            <option *ngFor="let sponsor of sponsors"
+                                                [value]="sponsor.SponsorId">{{sponsor.SponsorName}}
+                                            </option>
+                                        </select>
+                                        <span class="help-block"
+                                            *ngIf="(sponsorsForm.submitted || sponsorControl.touched) && sponsorControl.invalid">Please
+                                            select sponsor</span>
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>
+                                            <span *ngIf="(linkedSponsorId)">
+                                                <input appOnlynumber  type="text" [required]="linkedSponsorId" class="form-control" name="addNumberControl" #addNumberControl="ngModel" [(ngModel)]="addnumber" placeholder="Add Number" />                                               
+                                                <span class="help-block"
+												*ngIf="(sponsorsForm.submitted || addNumberControl.touched) && addNumberControl.invalid">Please
+                                                enter add number
+                                                 </span>
+                                                </span>   
+                                        </td>
+                                        <td>
+                                            <select *ngIf="(linkedSponsorId)" class="dynDataSeclect">
                                                 <option value="null">Select</option> 
                                                 <option value="null">Half Page</option> 
                                                 <option value="null">Full Page</option>  
@@ -368,22 +376,6 @@
                                                 <option value="null">Last Page</option>                                                                                                
                                             </select>
                                         </td>
-                                        <td><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <select class="dynDataSeclect">
-                                                <option value="null">Select</option> 
-                                                <option value="null">SoVisual</option> 
-                                                <option value="null">Red-G-Ware</option>  
-                                                <option value="null">Abigail Roberts</option>                                                                                                 
-                                            </select>
-                                        </td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
                                         <td></td>
                                     </tr>
                                 </tbody> 
@@ -396,6 +388,7 @@
                             <button class="btn btn-red btnCss roundBtn">Submit</button>
                         </div>
                     </div>
+                </form>
                 </div>
             </mat-tab>
             <mat-tab  class="nav-link nav nav-tabs" label="Classes">
@@ -423,7 +416,7 @@
                                             <td>{{class.Entries}}</td>
                                             <td>
                                                 <div class="scratchimage"
-																(click)="confirmScratch(i,!class.Scratch,class.ExhibitorClassId)">
+																(click)="confirmScratch(!class.Scratch,class.ExhibitorClassId)">
 																<img class="non-print-element" [src]="class.Scratch===true ? 'assets/images/sizzer-icon.png' : 'assets/images/sizzer-icon-1.png'">
 																<img class="print-element" [src]="class.Scratch===true ? '../assets/images/sizzer-icon.png' : '../assets/images/sizzer-icon-1.png'">
 															</div>
@@ -451,11 +444,10 @@
                                                 *ngIf="(classesForm.submitted || classControl.touched) && classControl.invalid">Please
                                                 select class</span>
                                             </td>
-                                            <td>{{classDetails.entries}}</td>
+                                            <td>{{classDetails.Entries}}</td>
                                             <td>
-                                                <div class="scratchimage">
-                                                <!-- <img class="non-print-element" [src]="class.Scratch===true ? 'assets/images/sizzer-icon.png' : 'assets/images/sizzer-icon-1.png'">
-                                                <img class="print-element" [src]="class.Scratch===true ? '../assets/images/sizzer-icon.png' : '../assets/images/sizzer-icon-1.png'"> -->
+                                                <div *ngIf="showScratch" class="scratchimage">
+                                                <img   src="/assets/images/sizzer-icon-1.png">
                                             </div>
                                                 <!-- <div class="sizzerIcon">
                                                     <img src="assets/images/sizzer-icon.png" alt="image" />
@@ -471,8 +463,8 @@
                     <div class="actionBtn text-right mb-4 mt-3">
                         <button (click)='tabGroup.selectedIndex = 2' class="btn btn-red btnCss roundBtn">Previous</button>
                         <button (click)='tabGroup.selectedIndex = 4' class="btn btn-red btnCss roundBtn">Next</button>
-                        <a [routerLink]="['/perspective/class']" target="_blank"> <button class="btn btn-red btnCss roundBtn">+ Class</button></a>
-                        <button class="btn btn-red btnCss roundBtn">Submit</button>
+                        <a [routerLink]="['/perspective/class']" target="_blank"> <button type="button" class="btn btn-red btnCss roundBtn">+ Class</button></a>
+                        <button type="submit"class="btn btn-red btnCss roundBtn">Submit</button>
                     </div>
                 </form>
                 </div>

@@ -8,7 +8,7 @@ import { MatSnackbarComponent } from '../../../../shared/ui/mat-snackbar/mat-sna
 import {ExhibitorInfoModel} from '../../../../core/models/exhibitor-model'
 import { MatTabGroup } from '@angular/material/tabs'
 import {GlobalService} from '../../../../core/services/global.service'
-
+import { SponsorInfoModalComponent} from '../../../../shared/ui/modals/sponsor-info-modal/sponsor-info-modal.component'
 import { NgForm } from '@angular/forms';
 
 @Component({
@@ -21,6 +21,7 @@ export class ExhibitorComponent implements OnInit {
   @ViewChild('tabGroup') tabGroup: MatTabGroup;
   @ViewChild('exhibitorInfoForm') exhibitorInfoForm: NgForm;
   @ViewChild('horsesForm') horsesForm: NgForm;
+  @ViewChild('classesForm') classesForm: NgForm;
 
   searchTerm:string;
   maxyear: any;
@@ -46,6 +47,12 @@ export class ExhibitorComponent implements OnInit {
   exhibitorClasses:any;
   classes:any;
   linkedClassId:number=null;
+  exhibitorSponsors:any;
+  showScratch:boolean=false;
+  sponsors:any;
+  linkedSponsorId:number=null;
+  addnumber:number=null;
+  addType:string=null;
   baseRequest: BaseRecordFilterRequest = {
     Page: 1,
     Limit: 5,
@@ -72,11 +79,16 @@ export class ExhibitorComponent implements OnInit {
     IsDoctorNote:false,
     GroupId:null,
     GroupName:null
-  }
+  };
   classDetails:any={
-    entries:null,
-    scratch:null
-  }
+    Entries:null,
+    IsScratch:null
+  };
+  sponsorDetails:any={
+  Email:null,
+  Amount:null,
+
+  };
   constructor(
             public dialog: MatDialog,
             private exhibitorService: ExhibitorService,
@@ -128,6 +140,8 @@ export class ExhibitorComponent implements OnInit {
     this.getAllHorses(id);
     this.getExhibitorClasses(id);
     this.getAllClasses(id);
+    this.getExhibitorSponsors(id);
+    this.getAllSponsors(id);
   }
 
   resetForm(){
@@ -368,6 +382,7 @@ deleteExhibitorHorse(id){
       this.horsesForm.resetForm({ horseControl: null,backNumberControl:null });
       this.horseType=null;
       this.getExhibitorHorses(this.exhibitorInfo.ExhibitorId);
+      this.getAllHorses(this.exhibitorInfo.ExhibitorId);
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
     }, error => {
       this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
@@ -415,6 +430,7 @@ addHorseToExhibitor(){
     this.horsesForm.resetForm({ horseControl: null,backNumberControl:null });
     this.resetLinkedhorse();
     this.getExhibitorHorses(this.exhibitorInfo.ExhibitorId);
+    this.getAllHorses(this.exhibitorInfo.ExhibitorId);
     this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
 
   }, error => {
@@ -459,7 +475,7 @@ getExhibitorClasses(id){
     })
 }
 
-confirmScratch(index, isScratch, id): void {
+confirmScratch( isScratch, id): void {
   const message = `Are you sure you want to make the changes?`;
   const dialogData = new ConfirmDialogModel("Confirm Action", message);
   const dialogRef = this.dialog.open(ConfirmDialogComponent, {
@@ -469,10 +485,27 @@ confirmScratch(index, isScratch, id): void {
   dialogRef.afterClosed().subscribe(dialogResult => {
     this.result = dialogResult;
     if (this.result) {
-      // this.updateScratch(id, isScratch, index);
+     this.updateScratch(id, isScratch);
     }
   });
 
+}
+
+updateScratch(id, isScratch){
+  var exhibitorScratch = {
+    ExhibitorClassId: id,
+    IsScratch: isScratch
+  }
+  this.loading = true;
+  this.exhibitorService.updateScratch(exhibitorScratch).subscribe(response => {
+    this.loading = false;
+    this.getExhibitorClasses(this.exhibitorInfo.ExhibitorId)
+    this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
+  }, error => {
+    this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
+    this.loading = false;
+
+  })
 }
 
 confirmRemoveExhibitorClass(data){
@@ -486,7 +519,7 @@ confirmRemoveExhibitorClass(data){
   dialogRef.afterClosed().subscribe(dialogResult => {
     this.result = dialogResult;
     if (this.result) {
-      this.deleteExhibitorHorse(data)
+      this.deleteExhibitorClass(data)
     }
   });
 
@@ -498,6 +531,7 @@ deleteExhibitorClass(id){
   this.exhibitorService.deleteExhibitorClass(id).subscribe(response => {
     this.loading = false;
     this.getExhibitorClasses(this.exhibitorInfo.ExhibitorId);
+    this.getAllClasses(this.exhibitorInfo.ExhibitorId);
     this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
   }, error => {
     this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
@@ -520,8 +554,9 @@ getAllClasses(id){
 getClassDetails(id){
   this.loading = true;
   this.linkedClassId=id;
-  this.exhibitorService.getClassDetail(Number(id)).subscribe(response => {
+  this.exhibitorService.getClassDetail(Number(id),this.exhibitorInfo.ExhibitorId).subscribe(response => {
    this.classDetails=response.Data;
+   this.showScratch=true;
     this.loading = false;
   }, error => {
     this.loading = false;
@@ -538,9 +573,10 @@ addClassToExhibitor(){
   }
   this.exhibitorService.addExhibitorToClass(addClass).subscribe(response => {
     this.loading = false;
-    this.horsesForm.resetForm({ classControl: null });
     this.resetLinkClass();
+    this.classesForm.resetForm({ classControl: null });
     this.getExhibitorClasses(this.exhibitorInfo.ExhibitorId);
+    this.getAllClasses(this.exhibitorInfo.ExhibitorId);
     this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
 
   }, error => {
@@ -551,6 +587,108 @@ addClassToExhibitor(){
 
 resetLinkClass(){
   this.linkedClassId=null;
-  this.classDetails=null;
+  this.classDetails.Entries=null;
+  this.classDetails.IsScratch=null;
+  this.showScratch=false;
+}
+
+getExhibitorSponsors(id){
+  return new Promise((resolve, reject) => {
+    this.loading = true;
+    this.exhibitorService.getExhibitorSponsors(id).subscribe(response => {
+        this.exhibitorSponsors=response.Data.getSponsorsOfExhibitors;
+      this.loading = false;
+    }, error => {
+      this.loading = false;
+      this.exhibitorSponsors = null;  
+    }
+    )
+    resolve();
+    })
+}
+
+confirmRemoveExhibitorSponsor(data){
+
+  const message = `Are you sure you want to remove the sponsor?`;
+  const dialogData = new ConfirmDialogModel("Confirm Action", message);
+  const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    maxWidth: "400px",
+    data: dialogData
+  });
+  dialogRef.afterClosed().subscribe(dialogResult => {
+    this.result = dialogResult;
+    if (this.result) {
+      this.deleteExhibitorSponsor(data)
+    }
+  });
+
+  
+}
+
+deleteExhibitorSponsor(id){
+  this.loading = true;
+  this.exhibitorService.deleteExhibitorSponsor(id).subscribe(response => {
+    this.loading = false;
+    this.getExhibitorSponsors(this.exhibitorInfo.ExhibitorId);
+    this.getAllSponsors(this.exhibitorInfo.ExhibitorId);
+    this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
+  }, error => {
+    this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
+    this.loading = false;
+
+  })
+}
+
+getAllSponsors(id){
+  this.loading = true;
+  this.exhibitorService.getAllSponsors(id).subscribe(response => {
+    this.sponsors = response.Data.getSponsorForExhibitors;
+    this.loading = false;
+  }, error => {
+    this.loading = false;
+    this.sponsors =null;
+  })
+}
+
+addSponsorToExhibitor(){
+  this.loading = true;
+  var addSponsor = {
+    exhibitorId: this.exhibitorInfo.ExhibitorId,
+    sponsorId:Number(this.linkedClassId),
+  }
+  this.exhibitorService.addSponsorToExhibitor(addSponsor).subscribe(response => {
+    this.loading = false;
+    this.resetLinkClass();
+    this.classesForm.resetForm({ classControl: null });
+    this.getExhibitorSponsors(this.exhibitorInfo.ExhibitorId);
+    this.getAllSponsors(this.exhibitorInfo.ExhibitorId);
+    this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
+
+  }, error => {
+    this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
+    this.loading = false;
+  })
+}
+
+getSponsorDetails(id){
+  this.loading = true;
+  this.linkedSponsorId=id;
+  this.exhibitorService.getClassDetail(Number(id),this.exhibitorInfo.ExhibitorId).subscribe(response => {
+   this.sponsorDetails=response.Data;
+   this.showScratch=true;
+    this.loading = false;
+  }, error => {
+    this.loading = false;
+    this.sponsorDetails = null;
+  }
+  )
+}
+
+showSponsorInfo(id){
+  const dialogRef = this.dialog.open(SponsorInfoModalComponent, {
+    maxWidth: "400px",
+  });
+  dialogRef.afterClosed().subscribe(dialogResult => {    
+  });
 }
 }
