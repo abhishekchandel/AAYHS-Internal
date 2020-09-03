@@ -20,6 +20,7 @@ export class ExhibitorComponent implements OnInit {
 
   @ViewChild('tabGroup') tabGroup: MatTabGroup;
   @ViewChild('exhibitorInfoForm') exhibitorInfoForm: NgForm;
+  @ViewChild('horsesForm') horsesForm: NgForm;
 
   searchTerm:string;
   maxyear: any;
@@ -37,7 +38,14 @@ export class ExhibitorComponent implements OnInit {
   groups:any;
   years=[]
   exhibitorHorses:any;
-
+  horses:any;
+  linkedHorseId:number=null;
+  horseType:string=null;
+  backNumberLinked:any;
+  isFirstBackNumber:boolean=false;
+  exhibitorClasses:any;
+  classes:any;
+  linkedClassId:number=null;
   baseRequest: BaseRecordFilterRequest = {
     Page: 1,
     Limit: 5,
@@ -65,7 +73,10 @@ export class ExhibitorComponent implements OnInit {
     GroupId:null,
     GroupName:null
   }
-
+  classDetails:any={
+    entries:null,
+    scratch:null
+  }
   constructor(
             public dialog: MatDialog,
             private exhibitorService: ExhibitorService,
@@ -114,6 +125,9 @@ export class ExhibitorComponent implements OnInit {
     this.selectedRowIndex = i;
     this.getExhibitorDetails(id);
     this.getExhibitorHorses(id);
+    this.getAllHorses(id);
+    this.getExhibitorClasses(id);
+    this.getAllClasses(id);
   }
 
   resetForm(){
@@ -304,7 +318,6 @@ getExhibitorDetails(id:number){
   this.exhibitorService.getExhibitorById(id).subscribe(response => {
     if(response.Data!=null)
       {
-        debugger
       this.getCities(response.Data.exhibitorResponses[0].StateId).then(res => {
         this.getZipCodes(response.Data.CityId).then(res => {
         this.exhibitorInfo = response.Data.exhibitorResponses[0];
@@ -330,21 +343,30 @@ setYears(){
 }
 
 getExhibitorHorses(id){
+  return new Promise((resolve, reject) => {
   this.loading = true;
   this.exhibitorService.getExhibitorHorses(id).subscribe(response => {
-   this.exhibitorHorses=response.Data.exhibitorHorses;
+      this.exhibitorHorses=response.Data.exhibitorHorses;
+      this.isFirstBackNumber=false
     this.loading = false;
   }, error => {
     this.loading = false;
     this.exhibitorHorses = null;
+    this.isFirstBackNumber=true
+    this.horseType=null;
+
   }
   )
+  resolve();
+  })
 }
 
 deleteExhibitorHorse(id){
   this.loading = true;
     this.exhibitorService.deleteExhibitorHorse(id).subscribe(response => {
       this.loading = false;
+      this.horsesForm.resetForm({ horseControl: null,backNumberControl:null });
+      this.horseType=null;
       this.getExhibitorHorses(this.exhibitorInfo.ExhibitorId);
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
     }, error => {
@@ -370,4 +392,165 @@ confirmRemoveExhibitorHorse(data): void {
 
 }
 
+getAllHorses(id){
+  this.loading = true;
+  this.exhibitorService.getAllHorses(id).subscribe(response => {
+    this.horses = response.Data.getHorses;
+    this.loading = false;
+  }, error => {
+    this.loading = false;
+    this.horses =null;
+  })
+}
+
+addHorseToExhibitor(){
+  this.loading = true;
+  var addHorse = {
+    exhibitorId: this.exhibitorInfo.ExhibitorId,
+    horseId:Number(this.linkedHorseId),
+    backNumber: this.backNumberLinked !=null ? Number(this.backNumberLinked) : this.exhibitorInfo.BackNumber
+  }
+  this.exhibitorService.addHorseToExhibitor(addHorse).subscribe(response => {
+    this.loading = false;
+    this.horsesForm.resetForm({ horseControl: null,backNumberControl:null });
+    this.resetLinkedhorse();
+    this.getExhibitorHorses(this.exhibitorInfo.ExhibitorId);
+    this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
+
+  }, error => {
+    this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
+    this.loading = false;
+
+  })
+}
+
+getHorseType(id){
+  this.loading = true;
+  this.linkedHorseId=id;
+  this.exhibitorService.getHorseDetail(Number(id)).subscribe(response => {
+   this.horseType=response.Data.HorseType;
+    this.loading = false;
+  }, error => {
+    this.loading = false;
+    this.horseType = null;
+  }
+  )
+}
+
+resetLinkedhorse(){
+  this.backNumberLinked=null;
+  this.linkedHorseId=null;
+  this.horseType=null;
+}
+
+
+getExhibitorClasses(id){
+  return new Promise((resolve, reject) => {
+    this.loading = true;
+    this.exhibitorService.getExhibitorClasses(id).subscribe(response => {
+        this.exhibitorClasses=response.Data.getClassesOfExhibitors;
+      this.loading = false;
+    }, error => {
+      this.loading = false;
+      this.exhibitorClasses = null;  
+    }
+    )
+    resolve();
+    })
+}
+
+confirmScratch(index, isScratch, id): void {
+  const message = `Are you sure you want to make the changes?`;
+  const dialogData = new ConfirmDialogModel("Confirm Action", message);
+  const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    maxWidth: "400px",
+    data: dialogData
+  });
+  dialogRef.afterClosed().subscribe(dialogResult => {
+    this.result = dialogResult;
+    if (this.result) {
+      // this.updateScratch(id, isScratch, index);
+    }
+  });
+
+}
+
+confirmRemoveExhibitorClass(data){
+
+  const message = `Are you sure you want to remove the class?`;
+  const dialogData = new ConfirmDialogModel("Confirm Action", message);
+  const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    maxWidth: "400px",
+    data: dialogData
+  });
+  dialogRef.afterClosed().subscribe(dialogResult => {
+    this.result = dialogResult;
+    if (this.result) {
+      this.deleteExhibitorHorse(data)
+    }
+  });
+
+  
+}
+
+deleteExhibitorClass(id){
+  this.loading = true;
+  this.exhibitorService.deleteExhibitorClass(id).subscribe(response => {
+    this.loading = false;
+    this.getExhibitorClasses(this.exhibitorInfo.ExhibitorId);
+    this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
+  }, error => {
+    this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
+    this.loading = false;
+
+  })
+}
+
+getAllClasses(id){
+  this.loading = true;
+  this.exhibitorService.getAllClasses(id).subscribe(response => {
+    this.classes = response.Data.getClassesForExhibitor;
+    this.loading = false;
+  }, error => {
+    this.loading = false;
+    this.classes =null;
+  })
+}
+
+getClassDetails(id){
+  this.loading = true;
+  this.linkedClassId=id;
+  this.exhibitorService.getClassDetail(Number(id)).subscribe(response => {
+   this.classDetails=response.Data;
+    this.loading = false;
+  }, error => {
+    this.loading = false;
+    this.classDetails = null;
+  }
+  )
+}
+
+addClassToExhibitor(){
+  this.loading = true;
+  var addClass = {
+    exhibitorId: this.exhibitorInfo.ExhibitorId,
+    classId:Number(this.linkedClassId),
+  }
+  this.exhibitorService.addExhibitorToClass(addClass).subscribe(response => {
+    this.loading = false;
+    this.horsesForm.resetForm({ classControl: null });
+    this.resetLinkClass();
+    this.getExhibitorClasses(this.exhibitorInfo.ExhibitorId);
+    this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
+
+  }, error => {
+    this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
+    this.loading = false;
+  })
+}
+
+resetLinkClass(){
+  this.linkedClassId=null;
+  this.classDetails=null;
+}
 }

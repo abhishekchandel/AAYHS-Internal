@@ -21,7 +21,13 @@ namespace AAYHS.Service.IService
         MainResponse GetAllClassesOfExhibitor(int exhibitorId);
         MainResponse RemoveExhibitorFromClass(int exhibitorClassId, string actionBy);
         MainResponse GetAllClasses(int exhibitorId);
-        MainResponse GetClassDetail(int classId);
+        MainResponse GetClassDetail(int classId, int exhibitorId);
+        MainResponse UpdateScratch(UpdateScratch updateScratch, string actionBy);
         MainResponse AddExhibitorToClass(AddExhibitorToClass addExhibitorToClass, string actionBy);
+        MainResponse GetAllSponsorsOfExhibitor(int exhibitorId);
+        MainResponse RemoveSponsorFromExhibitor(int sponsorExhibitorId, string actionBy);
+        MainResponse GetAllSponsor(int exhibitorId);
+        MainResponse AddSponsorForExhibitor(AddSponsorForExhibitor addSponsorForExhibitor, string actionBy);
+        MainResponse GetSponsorDetailedInfo(int sponsorId);
     }
 }

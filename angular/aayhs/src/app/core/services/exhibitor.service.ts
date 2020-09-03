@@ -10,6 +10,8 @@ export class ExhibitorService {
   api = BaseUrl.baseApiUrl;
   constructor(private http: HttpClient) { }
 
+  // exhibitor info
+
   getAllExhibitors(data){
     return this.http.post<any>(`${this.api}ExhibitorAPI/GetAllExhibitors`,data);
   }
@@ -39,12 +41,50 @@ export class ExhibitorService {
     return this.http.post<any>(`${this.api}ExhibitorAPI/AddUpdateExhibitor`,data);
   }
 
-  getExhibitorHorses(id:number){
+
+  // exhibitor horses
+
+    getExhibitorHorses(id:number){
     return this.http.get<any>(`${this.api}ExhibitorAPI/GetExhibitorHorses?exhibitorId=${id}`)
     }
   
     deleteExhibitorHorse(id:number){
-      return this.http.delete<any>(`${this.api}ExhibitorAPI/DeleteExhibitorHorse?exhibitorId=${id}`);
+      return this.http.delete<any>(`${this.api}ExhibitorAPI/DeleteExhibitorHorse?exhibitorHorseId=${id}`);
   
+    }
+
+    getAllHorses(id:number){
+      return this.http.get<any>(`${this.api}ExhibitorAPI/GetAllHorses?exhibitorId=${id}`);
+    }
+
+    getHorseDetail(id:number){
+      return this.http.get<any>(`${this.api}ExhibitorAPI/GetHorseDetail?horseId=${id}`);
+    }
+
+    addHorseToExhibitor(data){
+      return this.http.post<any>(`${this.api}ExhibitorAPI/AddExhibitorHorse`,data);
+    }
+
+
+    // exhibitor classes
+    
+    getExhibitorClasses(id:number){
+      return this.http.get<any>(`${this.api}ExhibitorAPI/GetAllClassesOfExhibitor?exhibitorId=${id}`)
+    }
+
+    deleteExhibitorClass(id:number){
+      return this.http.delete<any>(`${this.api}ExhibitorAPI/RemoveExhibitorFromClass?exhibitorClassId=${id}`);
+    }
+
+    getAllClasses(id:number){
+      return this.http.get<any>(`${this.api}ExhibitorAPI/GetAllClasses?exhibitorId=${id}`);
+    }
+
+    getClassDetail(id:number){
+      return this.http.get<any>(`${this.api}ExhibitorAPI/GetClassDetail?classId=${id}`);
+    }
+
+    addExhibitorToClass(data){
+      return this.http.post<any>(`${this.api}ExhibitorAPI/AddExhibitorToClass`,data);
     }
 }

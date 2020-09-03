@@ -189,10 +189,23 @@ namespace AAYHS.API.Controllers
         /// <param name="classId"></param>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult GetClassDetail(int classId)
+        public ActionResult GetClassDetail(int classId, int exhibitorId)
         {
-            _mainResponse = _exhibitorService.GetClassDetail(classId);
+            _mainResponse = _exhibitorService.GetClassDetail(classId, exhibitorId);
             _jsonString = Mapper.Convert<GetClassesForExhibitor>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to update exhibitor class scratch
+        /// </summary>
+        /// <param name="updateScratch"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult UpdateScratch(UpdateScratch updateScratch)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _exhibitorService.UpdateScratch(updateScratch, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
         /// <summary>
@@ -206,6 +219,68 @@ namespace AAYHS.API.Controllers
             string actionBy = User.Identity.Name;
             _mainResponse = _exhibitorService.AddExhibitorToClass(addExhibitorToClass, actionBy);
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to get all sponsors of exhibitor
+        /// </summary>
+        /// <param name="exhibitorId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetAllSponsorsOfExhibitor(int exhibitorId)
+        {
+            _mainResponse = _exhibitorService.GetAllSponsorsOfExhibitor(exhibitorId);
+            _jsonString = Mapper.Convert<GetAllSponsorsOfExhibitor>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to removed the sponsor of a exhibitor
+        /// </summary>
+        /// <param name="sponsorExhibitorId"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        public ActionResult RemoveSponsorFromExhibitor(int sponsorExhibitorId)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _exhibitorService.RemoveSponsorFromExhibitor(sponsorExhibitorId, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to get all sponsor which is not linked with exhibitor
+        /// </summary>
+        /// <param name="exhibitorId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetAllSponsor(int exhibitorId)
+        {
+            _mainResponse = _exhibitorService.GetAllSponsor(exhibitorId);
+            _jsonString = Mapper.Convert<GetAllSponsorForExhibitor>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to add sponsor for a exhibitor
+        /// </summary>
+        /// <param name="addSponsorForExhibitor"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult AddSponsorForExhibitor(AddSponsorForExhibitor addSponsorForExhibitor)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _exhibitorService.AddSponsorForExhibitor(addSponsorForExhibitor, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to get sponsor full detail
+        /// </summary>
+        /// <param name="sponsorId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetSponsorDetailedInfo(int sponsorId)
+        {
+            _mainResponse = _exhibitorService.GetSponsorDetailedInfo(sponsorId);
+            _jsonString = Mapper.Convert<GetSponsorDetailedInfo>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
     }

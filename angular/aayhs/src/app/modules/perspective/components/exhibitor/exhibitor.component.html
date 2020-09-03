@@ -62,7 +62,7 @@
 
 	 <!-- Tab panes -->
 	 <div class="tab-content">
-	   <div class="tab-pane  active" id="home">
+       <div class="tab-pane  active" id="home">
 		<mat-tab-group #tabGroup>
 			<mat-tab  class="nav-link active nav nav-tabs" label="Exhibitor Info">
                 <form #exhibitorInfoForm="ngForm" name="exhibitorInfoForm" (ngSubmit)="exhibitorInfoForm.valid && addUpdateExhibitor()" novalidate>
@@ -221,6 +221,7 @@
 
             <mat-tab  class="nav-link nav nav-tabs" label="Horse">
                 <div class="card">
+                    <form #horsesForm="ngForm" (ngSubmit)="horsesForm.valid && addHorseToExhibitor()" class="formScroll">
                     <div class="card-body"> 
                         <div class="table-responsive tableTab" id="contentscroll2">
                             <table class="table table-bordered tableBodyScroll">
@@ -240,21 +241,38 @@
                                             <td>{{horse.HorseType}}</td>
                                             <td>{{horse.BackNumber}}</td>
                                             <td>
-                                            <button class="icon" (click)="confirmRemoveExhibitorHorse(horse.ExhibitorHorseId)"><span></span> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                            <button type="button" class="icon" (click)="confirmRemoveExhibitorHorse(horse.ExhibitorHorseId)"><span></span> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
                                             </td>
                                         </tr>
                                        
                                         <tr>                                            
                                             <td>
-                                                <select class="dynDataSeclect">
-                                                    <option value="null">Select Horse</option> 
-                                                    <option value="null">Big Red</option> 
-                                                    <option value="null">Best In Show</option>  
-                                                    <option value="null">Pony Billy</option>                                                                                                 
-                                                </select>
+                                                <select class="dynDataSeclect" name="horse" required
+																[(ngModel)]="linkedHorseId" (change)="getHorseType($event.target.value)" #horseControl="ngModel">
+																<option [ngValue]="null">
+																	Select Horse
+																</option>
+																<option *ngFor="let horse of horses"
+																	[value]="horse.HorseId">{{horse.HorseId}} -
+																	{{horse.Name}}
+																</option>
+															</select>
+															<span class="help-block"
+																*ngIf="(horsesForm.submitted || horseControl.touched) && horseControl.invalid">Please
+																select horse</span>
                                             </td>
-                                            <td></td>
-                                            <td></td>
+                                            <td>{{horseType}}</td>
+                                            <td>
+                                                <span *ngIf="(!isFirstBackNumber && horseType)">
+                                                <input appOnlynumber  type="text" [required]="horseType" class="form-control" name="backNumberControl" #backNumberControl="ngModel" [(ngModel)]="backNumberLinked" placeholder="Back Number" />                                               
+                                                <span class="help-block"
+												*ngIf="(horsesForm.submitted || backNumberControl.touched) && backNumberControl.invalid">Please
+                                                enter back number
+                                                 </span>
+                                                </span>
+                                                <span *ngIf="(isFirstBackNumber && horseType)"> {{exhibitorInfo.BackNumber}}</span>
+                                            </td>
+
                                             <td></td>                                            
                                         </tr>
                                     </tbody> 
@@ -283,11 +301,12 @@
                         
                     </div>
                     <div class="actionBtn text-right mb-4 mt-3">
-                        <button class="btn btn-red btnCss roundBtn">Previous</button>
-                        <button class="btn btn-red btnCss roundBtn">Next</button>
-                        <button class="btn btn-red btnCss roundBtn">+ Hourse</button>
-                        <button class="btn btn-red btnCss roundBtn">Submit</button>
+                        <button (click)='tabGroup.selectedIndex = 0' class="btn btn-red btnCss roundBtn">Previous</button>
+                        <button (click)='tabGroup.selectedIndex = 2' class="btn btn-red btnCss roundBtn">Next</button>
+                        <a [routerLink]="['/perspective/horse']" target="_blank"><button type="button" class="btn btn-red btnCss roundBtn">+ Hourse</button></a>
+                        <button type="submit"class="btn btn-red btnCss roundBtn">Submit</button>
                     </div>
+                </form>
                 </div>
             </mat-tab>
             <mat-tab  class="nav-link nav nav-tabs" label="Sponsors">
@@ -371,16 +390,17 @@
                             </table>
                         </div>
                         <div class="actionBtn text-right mb-4 mt-3">
-                            <button class="btn btn-red btnCss roundBtn">Previous</button>
-                            <button class="btn btn-red btnCss roundBtn">Next</button>
+                            <button (click)='tabGroup.selectedIndex = 1' class="btn btn-red btnCss roundBtn">Previous</button>
+                            <button (click)='tabGroup.selectedIndex = 3' class="btn btn-red btnCss roundBtn">Next</button>
                             <button class="btn btn-red btnCss roundBtn">+ Sponsors</button>
-                            <button class="btn btn-red btnCss roundBtn">Submit</button> 
+                            <button class="btn btn-red btnCss roundBtn">Submit</button>
                         </div>
                     </div>
                 </div>
             </mat-tab>
             <mat-tab  class="nav-link nav nav-tabs" label="Classes">
                 <div class="card dataEntriesTable">
+                    <form #classesForm="ngForm" (ngSubmit)="classesForm.valid && addClassToExhibitor()" class="formScroll">
                     <div class="card-body"> 
                         <div class="table-responsive" id="contentscroll2">
                             <table class="table table-bordered tableBodyScroll">
@@ -396,71 +416,65 @@
                                 </thead>
                                 <perfect-scrollbar class="nicescrollBar-2"> 
                                     <tbody>
-                                        <tr>
-                                            <td>8E</td>
-                                            <td>Poles Horse</td>
-                                            <td>13 - 15</td>
-                                            <td>10</td>
+                                        <tr *ngFor="let class of exhibitorClasses;let i=index ">
+                                            <td>{{class.ClassNumber}}</td>
+                                            <td>{{class.Name}}</td>
+                                            <td>{{class.AgeGroup}}</td>
+                                            <td>{{class.Entries}}</td>
                                             <td>
-                                                <div class="sizzerIcon">
+                                                <div class="scratchimage"
+																(click)="confirmScratch(i,!class.Scratch,class.ExhibitorClassId)">
+																<img class="non-print-element" [src]="class.Scratch===true ? 'assets/images/sizzer-icon.png' : 'assets/images/sizzer-icon-1.png'">
+																<img class="print-element" [src]="class.Scratch===true ? '../assets/images/sizzer-icon.png' : '../assets/images/sizzer-icon-1.png'">
+															</div>
+                                                <!-- <div class="sizzerIcon">
                                                     <img src="assets/images/sizzer-icon.png" alt="image" />
-                                                </div>
+                                                </div> -->
                                             </td>
-                                            <td><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>9N</td>
-                                            <td>WEstern Showmanship</td>
-                                            <td>13</td>
-                                            <td>15</td>
                                             <td>
-                                                <div class="sizzerIcon">
-                                                    <img src="assets/images/sizzer-icon.png" alt="image" />
-                                                </div>
+                                        <button type="button" class="icon" (click)="confirmRemoveExhibitorClass(class.ExhibitorClassId)"><span></span> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
                                             </td>
-                                            <td><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>10W</td>
-                                            <td>Barrels Horse</td>
-                                            <td>13 - 15</td>
-                                            <td>21</td>
-                                            <td>
-                                                <div class="sizzerIcon">
-                                                    <img src="assets/images/sizzer-icon.png" alt="image" />
-                                                </div>
-                                            </td>
-                                            <td><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
                                         </tr>
                                         <tr>
                                             <td colspan="3">
-                                                <select class="dynDataSeclect">
-                                                    <option value="null">Select</option> 
-                                                    <option value="null">8E / Poles Horse / Age:13-15</option> 
-                                                    <option value="null">9N / WEstern Showmanship / Age:13</option>  
-                                                    <option value="null">10W / Barrels Horse / Age:13-15</option>  
-                                                    <option value="null">11 / Contest Horse / Age:12 & Under </option>                                                                                                
-                                                </select> 
+                                                <select class="dynDataSeclect" name="exhibitorClass" required
+                                                [(ngModel)]="linkedClassId" (change)="getClassDetails($event.target.value)" #classControl="ngModel">
+                                                <option [ngValue]="null">
+                                                    Select Class
+                                                </option>
+                                                <option *ngFor="let class of classes"
+                                                    [value]="class.ClassId">{{class.ClassNumber}} /
+                                                    {{class.Name}} / {{class.AgeGroup}}
+                                                </option>
+                                            </select>
+                                            <span class="help-block"
+                                                *ngIf="(classesForm.submitted || classControl.touched) && classControl.invalid">Please
+                                                select class</span>
                                             </td>
-                                            <td>16</td>
+                                            <td>{{classDetails.entries}}</td>
                                             <td>
-                                                <div class="sizzerIcon">
+                                                <div class="scratchimage">
+                                                <!-- <img class="non-print-element" [src]="class.Scratch===true ? 'assets/images/sizzer-icon.png' : 'assets/images/sizzer-icon-1.png'">
+                                                <img class="print-element" [src]="class.Scratch===true ? '../assets/images/sizzer-icon.png' : '../assets/images/sizzer-icon-1.png'"> -->
+                                            </div>
+                                                <!-- <div class="sizzerIcon">
                                                     <img src="assets/images/sizzer-icon.png" alt="image" />
-                                                </div>
+                                                </div> -->
                                             </td>
-                                            <td><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                        </tr>
-                                    </tbody>
+                                            <td></td>
+                                        </tr>                             
+                                   </tbody>
                                 </perfect-scrollbar>
                             </table>
                         </div>
                     </div>
                     <div class="actionBtn text-right mb-4 mt-3">
-                        <button class="btn btn-red btnCss roundBtn">Previous</button>
-                        <button class="btn btn-red btnCss roundBtn">Next</button>
-                        <button class="btn btn-red btnCss roundBtn">+ Class</button>
+                        <button (click)='tabGroup.selectedIndex = 2' class="btn btn-red btnCss roundBtn">Previous</button>
+                        <button (click)='tabGroup.selectedIndex = 4' class="btn btn-red btnCss roundBtn">Next</button>
+                        <a [routerLink]="['/perspective/class']" target="_blank"> <button class="btn btn-red btnCss roundBtn">+ Class</button></a>
                         <button class="btn btn-red btnCss roundBtn">Submit</button>
                     </div>
+                </form>
                 </div>
             </mat-tab>
             <mat-tab  class="nav-link nav nav-tabs" label="Financials">
@@ -582,8 +596,8 @@
                         </div>
                         
                         <div class=" text-right mt-4 ftButtonSection">
-                            <button class="btn btn-red btnCss roundBtn">Previous</button>
-                            <button class="btn btn-red btnCss roundBtn">Next</button>                            
+                            <button (click)='tabGroup.selectedIndex = 3' class="btn btn-red btnCss roundBtn">Previous</button>
+                            <button (click)='tabGroup.selectedIndex = 5' class="btn btn-red btnCss roundBtn">Next</button>                            
                         </div>
                     </div>
                 </div>
@@ -650,7 +664,7 @@
                         </div>
                     </div>
                     <div class="actionBtn text-right mb-3">
-                        <button (click)='tabGroup.selectedIndex = 2' class="btn btn-red btnCss roundBtn">Next</button>
+                        <button (click)='tabGroup.selectedIndex = 6' class="btn btn-red btnCss roundBtn">Next</button>
                         <button class="btn btn-red btnCss roundBtn">Submit</button>
                     </div>
                 </div>
