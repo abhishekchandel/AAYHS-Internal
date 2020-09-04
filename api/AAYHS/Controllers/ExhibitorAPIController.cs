@@ -276,7 +276,7 @@ namespace AAYHS.API.Controllers
         /// <param name="addSponsorForExhibitor"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult AddSponsorForExhibitor(AddSponsorForExhibitor addSponsorForExhibitor)
+        public ActionResult AddUpdateSponsorForExhibitor(AddSponsorForExhibitor addSponsorForExhibitor)
         {
             string actionBy = User.Identity.Name;
             _mainResponse = _exhibitorService.AddSponsorForExhibitor(addSponsorForExhibitor, actionBy);

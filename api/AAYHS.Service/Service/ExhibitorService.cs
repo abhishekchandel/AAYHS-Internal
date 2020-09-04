@@ -530,17 +530,43 @@ namespace AAYHS.Service.Service
       
         public MainResponse AddSponsorForExhibitor(AddSponsorForExhibitor addSponsorForExhibitor, string actionBy)
         {
-            var sponsor = new SponsorExhibitor
+            if (addSponsorForExhibitor.SponsorExhibitorId==0)
             {
-                ExhibitorId = addSponsorForExhibitor.ExhibitorId,
-                SponsorId = addSponsorForExhibitor.SponsorId,
-                CreatedBy = actionBy,
-                CreatedDate=DateTime.Now
-            };
-
-            _sponsorExhibitorRepository.Add(sponsor);
-            _mainResponse.Message = Constants.EXHIBITOR_SPONSOR_ADDED;
-            _mainResponse.Success = true;
+                var sponsor = new SponsorExhibitor
+                {
+                    ExhibitorId = addSponsorForExhibitor.ExhibitorId,
+                    SponsorId = addSponsorForExhibitor.SponsorId,
+                    SponsorTypeId = addSponsorForExhibitor.SponsorTypeId,
+                    TypeId = addSponsorForExhibitor.TypeId,
+                    CreatedBy = actionBy,
+                    CreatedDate = DateTime.Now
+                };
+                _sponsorExhibitorRepository.Add(sponsor);
+                _mainResponse.Message = Constants.EXHIBITOR_SPONSOR_ADDED;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                var sponsor = _sponsorExhibitorRepository.GetSingle(x => x.SponsorExhibitorId == addSponsorForExhibitor.SponsorExhibitorId && x.IsActive == true
+                                                                    && x.IsDeleted == false);
+                if (sponsor!=null && sponsor.SponsorExhibitorId>0)
+                {
+                    sponsor.SponsorId = addSponsorForExhibitor.SponsorId;
+                    sponsor.ExhibitorId = addSponsorForExhibitor.ExhibitorId;
+                    sponsor.SponsorTypeId = addSponsorForExhibitor.SponsorTypeId;
+                    sponsor.TypeId = addSponsorForExhibitor.TypeId;
+                    sponsor.ModifiedDate = DateTime.Now;
+                    _sponsorExhibitorRepository.Update(sponsor);
+                    _mainResponse.Message = Constants.EXHIBITOR_SPONSOR_UPDATED;
+                    _mainResponse.Success = true;
+                }
+                else
+                {
+                    _mainResponse.Message = Constants.NO_RECORD_EXIST_WITH_ID;
+                    _mainResponse.Success = false;
+                }
+            }
+                 
             return _mainResponse;
         }
        

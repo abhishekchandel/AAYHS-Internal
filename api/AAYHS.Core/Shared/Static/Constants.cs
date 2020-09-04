@@ -54,5 +54,6 @@ namespace AAYHS.Core.Shared.Static
         public const string EXHIBITOR_HORSE_ADDED = "Exhibitor horse added successfully";
         public const string EXHIBITOR_SPONSOR_REMOVED= "Exhibitor sponsor removed successfully";
         public const string EXHIBITOR_SPONSOR_ADDED= "Exhibitor sponsor added successfully";
+        public const string EXHIBITOR_SPONSOR_UPDATED= "Exhibitor sponsor updated successfully";
     }
 }

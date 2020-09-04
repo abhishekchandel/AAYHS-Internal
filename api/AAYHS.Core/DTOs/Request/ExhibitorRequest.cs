@@ -42,7 +42,10 @@ namespace AAYHS.Core.DTOs.Request
     }
     public class AddSponsorForExhibitor
     {
+        public int SponsorExhibitorId { get; set; }
         public int ExhibitorId { get; set; }
         public int SponsorId { get; set; }
+        public int SponsorTypeId { get; set; }
+        public string TypeId { get; set; }
     }
 }

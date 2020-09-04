@@ -94,8 +94,8 @@ namespace AAYHS.Core.DTOs.Response
         public int Zipcode { get; set; }
         public string Email { get; set; }
         public float Amount { get; set; }
-        public int AdNumber { get; set; }
-        public string AdSize { get; set; }
+        public int SponsorTypeId { get; set; }
+        public string IdNumber { get; set; }
     }
     public class GetAllSponsorsOfExhibitor
     {
@@ -126,5 +126,25 @@ namespace AAYHS.Core.DTOs.Response
         public string City { get; set; }
         public string State { get; set; }
         public string Zipcode { get; set; }
+    }
+    public class GetExhibitorFinancials
+    {
+        public ExhibitorFeesBilled exhibitorFeesBilled { get; set; }
+        public List<ExhibitorMoneyRecived> exhibitorMoneyReciveds { get; set; }
+    }
+    public class ExhibitorFeesBilled
+    {
+        public decimal HorseStallFeeAmount { get; set; }
+        public decimal TackStallFeeAmount { get; set; }
+        public decimal AdditionalProgramsAmount { get; set; }
+        public decimal ClassEntryAmount { get; set; }
+        public decimal Total { get; set; }
+
+    }
+    public class ExhibitorMoneyRecived
+    {
+        public DateTime Date { get; set; }
+        public decimal Amount { get; set; }
+        public decimal Total { get; set; }
     }
 }

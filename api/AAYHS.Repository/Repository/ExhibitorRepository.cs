@@ -1,6 +1,7 @@
 ﻿using AAYHS.Core.DTOs.Request;
 using AAYHS.Core.DTOs.Response;
 using AAYHS.Core.DTOs.Response.Common;
+using AAYHS.Core.Enums;
 using AAYHS.Data.DBContext;
 using AAYHS.Data.DBEntities;
 using AAYHS.Repository.IRepository;
@@ -24,12 +25,13 @@ namespace AAYHS.Repository.Repository
 
         #region public
         public AAYHSDBContext _context;
+        private IGlobalCodeRepository _globalCodeRepository;
         #endregion
 
-        public ExhibitorRepository(AAYHSDBContext ObjContext, IMapper Mapper) : base(ObjContext)
+        public ExhibitorRepository(AAYHSDBContext ObjContext,IMapper Mapper) : base(ObjContext)
         {
             _mainResponse = new MainResponse();
-            _context = ObjContext;
+            _context = ObjContext;         
             _Mapper = Mapper;
         }
 
@@ -199,8 +201,11 @@ namespace AAYHS.Repository.Repository
                                          City=city.Name,
                                          State=state.Name,                                       
                                          Email =sponsor.Email,
-                                         Amount=sponsor.AmountReceived
-                                                                               
+                                         Amount=sponsor.AmountReceived,
+                                         SponsorTypeId=sponsorExhibitor.SponsorTypeId,
+                                         IdNumber = sponsorExhibitor.SponsorTypeId == (int)SponsorTypes.Class ? Convert.ToString(_context.Classes.Where(x => x.ClassId == Convert.ToInt32(sponsorExhibitor.TypeId)).Select(x => x.ClassNumber).FirstOrDefault())
+                                       : (sponsorExhibitor.SponsorTypeId == (int)SponsorTypes.Add ? sponsorExhibitor.TypeId
+                                       : Convert.ToString(0)),
                                        });
             if (getSponsorsOfExhibitors.Count()!=0)
             {
@@ -237,6 +242,78 @@ namespace AAYHS.Repository.Repository
 
             getSponsorForExhibitor = data.FirstOrDefault();
             return getSponsorForExhibitor;
+        }
+
+        public GetExhibitorFinancials GetExhibitorFinancials(int exhibitorId)
+        {
+            GetExhibitorFinancials getExhibitorFinancials = new GetExhibitorFinancials();
+
+            var stallCodes = (from gcc in _context.GlobalCodeCategories
+                         join gc in _context.GlobalCodes on gcc.GlobalCodeCategoryId equals gc.CategoryId
+                         where gcc.CategoryName == "StallType" && gc.IsDeleted == false && gc.IsActive == true
+                         select new
+                         {
+                             gc.GlobalCodeId,
+                             gc.CodeName
+
+                         }).ToList();
+            int horseStallTypeId = stallCodes.Where(x => x.CodeName == "HorseStall").Select(x => x.GlobalCodeId).FirstOrDefault();
+            int tackStallTypeId= stallCodes.Where(x => x.CodeName == "TackStall").Select(x => x.GlobalCodeId).FirstOrDefault();
+
+            var horseStall = _context.StallAssignment.Where(x => x.ExhibitorId == exhibitorId && x.StallAssignmentTypeId==horseStallTypeId 
+                                                    && x.IsActive == true && x.IsDeleted == false).ToList();
+
+            var tackStall= _context.StallAssignment.Where(x => x.ExhibitorId == exhibitorId && x.StallAssignmentTypeId == tackStallTypeId
+                                                     && x.IsActive == true && x.IsDeleted == false).ToList();
+
+            var classes = _context.ExhibitorClass.Where(x => x.ExhibitorId == exhibitorId
+                                                     && x.IsActive == true && x.IsDeleted == false).ToList();
+
+            int additionalPrograme = _context.Exhibitors.Where(x => x.ExhibitorId == exhibitorId && x.IsActive == true && x.IsDeleted == false
+                                                        ).Select(x => x.QTYProgram).FirstOrDefault();
+
+            var feeCodes = (from gcc in _context.GlobalCodeCategories
+                              join gc in _context.GlobalCodes on gcc.GlobalCodeCategoryId equals gc.CategoryId
+                              where gcc.CategoryName == "FeeType" && gc.IsDeleted == false && gc.IsActive == true
+                              select new
+                              {
+                                  gc.GlobalCodeId,
+                                  gc.CodeName
+
+                              }).ToList();
+            int horseStallFeeId = feeCodes.Where(x => x.CodeName == "Stall").Select(x => x.GlobalCodeId).FirstOrDefault();
+            int tackStallFeeId= feeCodes.Where(x => x.CodeName == "Tack").Select(x => x.GlobalCodeId).FirstOrDefault();
+            int additionalProgramsFeeId= feeCodes.Where(x => x.CodeName == "Additional Programs").Select(x => x.GlobalCodeId).FirstOrDefault();
+            int classEntryId= feeCodes.Where(x => x.CodeName == "Class Entry").Select(x => x.GlobalCodeId).FirstOrDefault();
+
+            int yearlyMaintainenceId = _context.YearlyMaintainence.Where(x => x.Year.Year == DateTime.Now.Year && x.IsActive==true && 
+                                               x.IsDeleted==false).Select(x => x.YearlyMaintainenceId).FirstOrDefault();
+
+            decimal horseStallFee = _context.YearlyMaintainenceFee.Where(x => x.FeeTypeId == horseStallFeeId && x.YearlyMaintainenceId == yearlyMaintainenceId).Select
+                              (x => x.Amount).FirstOrDefault();
+
+
+            decimal tackStallFee= _context.YearlyMaintainenceFee.Where(x => x.FeeTypeId == tackStallFeeId && x.YearlyMaintainenceId == yearlyMaintainenceId).Select
+                              (x => x.Amount).FirstOrDefault();
+
+            decimal additionalProgramsFee= _context.YearlyMaintainenceFee.Where(x => x.FeeTypeId == additionalProgramsFeeId && x.YearlyMaintainenceId == yearlyMaintainenceId).Select
+                              (x => x.Amount).FirstOrDefault();
+
+            decimal classEntryFee = _context.YearlyMaintainenceFee.Where(x => x.FeeTypeId == classEntryId && x.YearlyMaintainenceId == yearlyMaintainenceId).Select
+                              (x => x.Amount).FirstOrDefault();
+            
+            decimal horseStallAmount = horseStallFee * horseStall.Count();
+            decimal tackStallAmount = tackStallFee * tackStall.Count();
+            decimal additionalAmount = additionalProgramsFee * additionalPrograme;
+            decimal classAmount = classEntryFee * classes.Count();
+
+            getExhibitorFinancials.exhibitorFeesBilled.HorseStallFeeAmount = horseStallAmount;
+            getExhibitorFinancials.exhibitorFeesBilled.TackStallFeeAmount = tackStallAmount;
+            getExhibitorFinancials.exhibitorFeesBilled.AdditionalProgramsAmount = additionalAmount;
+            getExhibitorFinancials.exhibitorFeesBilled.ClassEntryAmount = classAmount;
+            getExhibitorFinancials.exhibitorFeesBilled.Total = horseStallAmount+ tackStallAmount+ additionalAmount+ classAmount;
+
+            return getExhibitorFinancials;
         }
     }
 }
