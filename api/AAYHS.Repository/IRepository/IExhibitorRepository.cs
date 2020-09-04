@@ -13,6 +13,7 @@ namespace AAYHS.Repository.IRepository
         ExhibitorListResponse GetExhibitorById(int exhibitorId);        
         ExhibitorHorsesResponse GetExhibitorHorses(int exhibitorId);
         GetAllClassesOfExhibitor GetAllClassesOfExhibitor(int exhibitorId);
-        GetAllSponsorsOfExhibitor GetAllSponsorsOfExhibitor(int exhibitorId);       
+        GetAllSponsorsOfExhibitor GetAllSponsorsOfExhibitor(int exhibitorId);
+        GetSponsorForExhibitor GetSponsorDetail(int sponsorId);
    }
 }

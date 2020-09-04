@@ -15,7 +15,7 @@ namespace AAYHS.Core.DTOs.Request
         public int BirthYear { get; set; }
         public bool IsNSBAMember { get; set; }
         public bool IsDoctorNote { get; set; }
-        public string QTYProgram { get; set; }
+        public int QTYProgram { get; set; }
         public string PrimaryEmail { get; set; }
         public string SecondaryEmail { get; set; }
         public string Phone { get; set; }
