@@ -13,13 +13,16 @@ export class AssignStallModalComponent implements OnInit {
   dataToReturn:any;
   stallTypes:any;
   StallAssignmentTypeId:number;
+  StallNumber:number;
+  GroupName:string;
   constructor(
     private groupService: GroupService,
     public dialogRef: MatDialogRef<AssignStallModalComponent>,
     public dialog: MatDialog,@Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
-    
+    this.StallNumber=this.data.SelectedStallId;
+    this.GroupName=this.data.GroupName;
     this.showAssign=this.data.Assigned;
    this.getAllStallTypes();
 

@@ -27,6 +27,7 @@ namespace AAYHS.Core.DTOs.Response
         public int GroupId { get; set; }
         public int ExhibitorId { get; set; }
         public string BookedByType { get; set; }
+        public string GroupName { get; set; }
     }
 
     public class GroupListResponse

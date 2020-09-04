@@ -102,7 +102,7 @@ UpdatedFinancialAmount:number=null;
 
   }
 
-  StallAssignmentRequestsData:any;
+  StallAssignmentRequestsData:any=[];
 groupStallAssignmentResponses :any;
 
   constructor(private groupService: GroupService,
@@ -151,6 +151,21 @@ groupStallAssignmentResponses :any;
         this.getZipCodes(response.Data.CityId).then(res => {
           this.groupInfo = response.Data;
           this.groupStallAssignmentResponses = response.Data.groupStallAssignmentResponses;
+          // if(this.groupStallAssignmentResponses !=null && this.groupStallAssignmentResponses!=undefined)
+          // {
+          //   this.groupStallAssignmentResponses.forEach(dt => {
+
+          //     var groupstallData={
+          //     SelectedStallId:dt.StallId,
+          //     Status:"assign",
+          //     BookedByType:'Group',
+          //     StallAssignmentId: dt.StallAssignmentId,
+          //     StallAssignmentTypeId: dt.StallAssignmentTypeId,
+          //     StallMovedTo: 0,
+          //     }
+          //     this.StallAssignmentRequestsData.push(groupstallData);
+          //   });
+          // }
          this.selectedRowIndex= selectedRowIndex;
          this.groupInfo.AmountReceived=Number(this.groupInfo.AmountReceived.toFixed(2));
        });
@@ -587,16 +602,33 @@ groupStallAssignmentResponses :any;
     maxWidth: '100vw',
       maxHeight: '100vh',
     panelClass: 'full-screen-modal',
-    data:this.groupStallAssignmentResponses
+    data:this.groupStallAssignmentResponses,
   };
-
+  
     const dialogRef = this.dialog.open(StallComponent, config,
   
     );
     dialogRef.afterClosed().subscribe(dialogResult => {
       const result: any = dialogResult;
       if (result && result.submitted == true) {
+
        this.StallAssignmentRequestsData=result.data;
+
+      //  if(result.data !=null && result.data!=undefined)
+      //  {
+      //   result.data.forEach(dt => {
+      //      var groupstallData={
+      //      SelectedStallId:dt.SelectedStallId,
+      //      Status:dt.Status,
+      //      BookedByType:dt.BookedByType,
+      //      StallAssignmentId: dt.StallAssignmentId,
+      //      StallAssignmentTypeId: dt.StallAssignmentTypeId,
+      //      StallMovedTo: dt.StallMovedTo,
+      //      }
+      //      this.StallAssignmentRequestsData.push(groupstallData);
+      //    });
+      //  }
+
       }
     });
   }

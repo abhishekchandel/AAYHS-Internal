@@ -96,6 +96,7 @@ export class StallComponent implements OnInit {
           BookedByType: check[0].BookedByType,
           StallAssignmentId: check[0].StallAssignmentId,
           StallAssignmentTypeId: check[0].StallAssignmentTypeId,
+          GroupName:check[0].GroupName
         }
       }
       else {
@@ -105,7 +106,7 @@ export class StallComponent implements OnInit {
           BookedByType: 'Group',
           StallAssignmentId: 0,
           StallAssignmentTypeId: 0,
-
+          GroupName:''
         }
       }
     }
@@ -116,6 +117,7 @@ export class StallComponent implements OnInit {
         BookedByType: 'Group',
         StallAssignmentId: 0,
         StallAssignmentTypeId: 0,
+        GroupName:''
       }
     }
 
@@ -142,12 +144,13 @@ export class StallComponent implements OnInit {
         this.tempDataArray.push(result.data);
         var s_id = String('stall_' + result.data.SelectedStallId);
         var element = document.getElementById(s_id);
-        if (result.data.Status == "Assigned") {
+        debugger
+        if (result.data.Status == "Assign") {
           if (element != null && element != undefined) {
             element.classList.add("bookedgroupstall");
           }
         }
-        if (result.data.Status == "Unassigned") {
+        if (result.data.Status == "Unassign") {
           if (element != null && element != undefined) {
             element.classList.add("unassignedgroupstall");
           }
