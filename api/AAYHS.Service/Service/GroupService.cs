@@ -78,7 +78,7 @@ namespace AAYHS.Service.Service
                     IsDeleted = false,
                 };
                 var Data= _GroupRepository.Add(Group);
-                if(Data!=null && Data.GroupId>0 && request.groupStallAssignmentRequests!=null && request.groupStallAssignmentRequests.Count>0)
+                if (Data != null && Data.GroupId > 0 && request.groupStallAssignmentRequests != null && request.groupStallAssignmentRequests.Count > 0)
                 {
                     StallAssignment stallAssignment;
                     foreach (var item in request.groupStallAssignmentRequests)
@@ -93,6 +93,7 @@ namespace AAYHS.Service.Service
                         stallAssignment.IsDeleted = false;
                         stallAssignment.CreatedDate = DateTime.Now;
                         _stallAssignmentRepository.Add(stallAssignment);
+
                     }
                 }
                 _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
@@ -123,30 +124,45 @@ namespace AAYHS.Service.Service
                         address.ModifiedDate = DateTime.Now;
                         _AddressRepository.Update(address);
                     }
-                    var assignments = _stallAssignmentRepository.GetAll(x=>x.GroupId==request.GroupId && x.IsActive==true && x.IsDeleted==false);
-                   if(assignments!=null && assignments.Count>0)
-                    {
-                        foreach(var assignment in assignments)
-                        {
-                            _stallAssignmentRepository.Delete(assignment);
-                        }
-                    }
                     if (request.groupStallAssignmentRequests != null && request.groupStallAssignmentRequests.Count > 0)
                     {
-                        StallAssignment stallAssignment;
-                        foreach (var item in request.groupStallAssignmentRequests)
+                        foreach(var assignment in request.groupStallAssignmentRequests)
                         {
-                            stallAssignment = new StallAssignment();
-                            stallAssignment.StallId = item.SelectedStallId;
-                            stallAssignment.StallAssignmentTypeId = item.StallAssignmentTypeId;
-                            stallAssignment.GroupId =Group.GroupId;
-                            stallAssignment.ExhibitorId =0;
-                            stallAssignment.BookedByType = "Group";
-                            stallAssignment.IsActive = true;
-                            stallAssignment.IsDeleted = false;
-                            stallAssignment.CreatedDate = DateTime.Now;
-                            _stallAssignmentRepository.Add(stallAssignment);
+                            if(assignment.Status=="Assign")
+                            {
+                                StallAssignment stallAssignment = new StallAssignment();
+                                stallAssignment.StallId = assignment.SelectedStallId;
+                                stallAssignment.StallAssignmentTypeId = assignment.StallAssignmentTypeId;
+                                stallAssignment.GroupId = Group.GroupId;
+                                stallAssignment.ExhibitorId = 0;
+                                stallAssignment.BookedByType = "Group";
+                                stallAssignment.IsActive = true;
+                                stallAssignment.IsDeleted = false;
+                                stallAssignment.CreatedDate = DateTime.Now;
+                                _stallAssignmentRepository.Add(stallAssignment);
+                            }
+
+                            if (assignment.Status == "Unassign")
+                            {
+                                var data = _stallAssignmentRepository.GetSingle(x => x.StallAssignmentId == assignment.StallAssignmentId && x.IsActive == true && x.IsDeleted == false);
+                                if(data!=null)
+                                {
+                                    _stallAssignmentRepository.Delete(data);
+                                }
+                            }
+
+                            if (assignment.Status == "Move")
+                            {
+                                var data = _stallAssignmentRepository.GetSingle(x => x.StallAssignmentId == assignment.StallAssignmentId && x.IsActive == true && x.IsDeleted == false);
+                                if (data != null)
+                                {
+                                    data.StallId = assignment.StallMovedTo;
+                                    data.ModifiedDate = DateTime.Now;
+                                    _stallAssignmentRepository.Update(data);
+                                }
+                            }
                         }
+
                     }
 
                     _mainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;

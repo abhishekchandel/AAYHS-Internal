@@ -15,7 +15,7 @@ export class StallComponent implements OnInit {
   chunkedData: any
   allAssignedStalls: any;
   groupAssignedStalls: any;
-tempDataArray:any=[];
+  tempDataArray: any = [];
 
 
 
@@ -44,7 +44,7 @@ tempDataArray:any=[];
             this.allAssignedStalls.forEach(data => {
               var s_id = String('stall_' + data.StallId);
               var element = document.getElementById(s_id);
-              
+
               if (element != null && element != undefined) {
                 if (this.groupAssignedStalls != null
                   && this.groupAssignedStalls != undefined
@@ -136,10 +136,34 @@ tempDataArray:any=[];
     const dialogRef = this.dialog.open(AssignStallModalComponent, config);
 
     dialogRef.afterClosed().subscribe(dialogResult => {
-      
+
       const result: any = dialogResult;
       if (result && result.submitted == true) {
-      this.tempDataArray.push(result.data);
+        this.tempDataArray.push(result.data);
+        var s_id = String('stall_' + result.data.SelectedStallId);
+        var element = document.getElementById(s_id);
+        if (result.data.Status == "Assigned") {
+          if (element != null && element != undefined) {
+            element.classList.add("bookedgroupstall");
+          }
+        }
+        if (result.data.Status == "Unassigned") {
+          if (element != null && element != undefined) {
+            element.classList.add("unassignedgroupstall");
+          }
+        }
+        if (result.data.Status == "Move") {
+          if (element != null && element != undefined) {
+            element.classList.add("unassignedgroupstall");
+          }
+          var movedstall_id = String('stall_' + result.data.StallMovedTo);
+          var movedtoelement = document.getElementById(movedstall_id);
+
+          if (movedtoelement != null && movedtoelement != undefined) {
+            movedtoelement.classList.add("bookedgroupstall");
+          }
+
+        }
       }
     });
   }
@@ -150,7 +174,7 @@ tempDataArray:any=[];
       data: null
     });
   }
-  
+
   onSubmit(): void {
     this.dialogRef.close({
       submitted: true,

@@ -82,8 +82,6 @@ export class AssignStallModalComponent implements OnInit {
     });
   }
 
- 
-
   getAllStallTypes() {
    
     this.stallTypes=null;
@@ -103,6 +101,7 @@ export class AssignStallModalComponent implements OnInit {
      
   })
   }
+
   setStallType(id){
     
     this.StallAssignmentTypeId=Number(id);
