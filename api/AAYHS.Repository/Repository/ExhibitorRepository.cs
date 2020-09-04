@@ -42,7 +42,6 @@ namespace AAYHS.Repository.Repository
                                   select new ExhibitorResponse
                                   {
                                       ExhibitorId = exhibitor.ExhibitorId,
-                                      GroupId = exhibitor.GroupId,
                                       AddressId = exhibitor.AddressId,
                                       FirstName = exhibitor.FirstName,
                                       LastName = exhibitor.LastName,
@@ -99,8 +98,7 @@ namespace AAYHS.Repository.Repository
                                   select new ExhibitorResponse 
                                   { 
                                     ExhibitorId=exhibitor.ExhibitorId,
-                                    GroupId= exhibitor != null ? _context.Groups.Where(x => x.GroupId == exhibitor.GroupId && x.IsActive == true && x.IsDeleted == false).Select(y => y.GroupId).FirstOrDefault() : 0,
-                                    GroupName=exhibitor!=null?_context.Groups.Where(x=>x.GroupId==exhibitor.GroupId && x.IsActive==true && x.IsDeleted==false).Select(y=>y.GroupName).FirstOrDefault():"",
+                                    GroupId= exhibitor != null ? _context.GroupExhibitors.Where(x => x.ExhibitorId == exhibitorId && x.IsActive == true && x.IsDeleted == false).Select(y => y.GroupId).FirstOrDefault() : 0,                                    
                                     BackNumber=exhibitor.BackNumber,
                                     FirstName=exhibitor.FirstName,
                                     LastName=exhibitor.LastName,
@@ -193,6 +191,7 @@ namespace AAYHS.Repository.Repository
                                        select new GetSponsorsOfExhibitor 
                                        { 
                                          SponsorExhibitorId=sponsorExhibitor.SponsorExhibitorId,
+                                         SponsorId=sponsor.SponsorId,
                                          Sponsor= sponsor.SponsorName,
                                          ContactName=sponsor.ContactName,
                                          Phone=sponsor.Phone,
@@ -211,5 +210,33 @@ namespace AAYHS.Repository.Repository
             return getAllSponsorsOfExhibitor;
         }
      
+        public GetSponsorForExhibitor GetSponsorDetail(int sponsorId)
+        {
+            IEnumerable<GetSponsorForExhibitor> data = null;
+            GetSponsorForExhibitor getSponsorForExhibitor = new GetSponsorForExhibitor();
+
+            data= (from sponsor in _context.Sponsors                  
+                   join address in _context.Addresses on sponsor.AddressId equals address.AddressId
+                   join city in _context.Cities on address.CityId equals city.CityId
+                   join state in _context.States on city.StateId equals state.StateId
+                   where sponsor.IsActive == true && sponsor.IsDeleted == false &&
+                   sponsor.SponsorId == sponsorId
+                   select new GetSponsorForExhibitor
+                   {                      
+                       SponsorId = sponsor.SponsorId,
+                       SponsorName = sponsor.SponsorName,
+                       ContactName = sponsor.ContactName,
+                       Phone = sponsor.Phone,
+                       Address = address.Address,
+                       City = city.Name,
+                       State = state.Name,
+                       Email = sponsor.Email,
+                       AmountReceived = sponsor.AmountReceived
+
+                   });
+
+            getSponsorForExhibitor = data.FirstOrDefault();
+            return getSponsorForExhibitor;
+        }
     }
 }

@@ -259,6 +259,18 @@ namespace AAYHS.API.Controllers
             return new OkObjectResult(_jsonString);
         }
         /// <summary>
+        /// This api used tp get selected sponsor detail
+        /// </summary>
+        /// <param name="sponsorId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetSponsorDetail(int sponsorId)
+        {
+            _mainResponse = _exhibitorService.GetSponsorDetail(sponsorId);
+            _jsonString = Mapper.Convert<GetSponsorForExhibitor>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
         /// This api used to add sponsor for a exhibitor
         /// </summary>
         /// <param name="addSponsorForExhibitor"></param>

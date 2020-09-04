@@ -15,7 +15,7 @@ namespace AAYHS.Core.DTOs.Response
         public int BirthYear { get; set; }
         public bool IsNSBAMember { get; set; }
         public bool IsDoctorNote { get; set; }
-        public string QTYProgram { get; set; }
+        public int QTYProgram { get; set; }
         public string PrimaryEmail { get; set; }
         public string SecondaryEmail { get; set; }
         public string Phone { get; set; }
@@ -84,6 +84,7 @@ namespace AAYHS.Core.DTOs.Response
     public class GetSponsorsOfExhibitor
     {
         public int SponsorExhibitorId { get; set; }
+        public int SponsorId { get; set; }
         public string Sponsor { get; set; }
         public string ContactName { get; set; }
         public string Phone { get; set; }
@@ -105,6 +106,11 @@ namespace AAYHS.Core.DTOs.Response
     {
         public int SponsorId { get; set; }
         public string SponsorName { get; set; }
+        public string ContactName { get; set; }
+        public string Phone { get; set; }
+        public string Address { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
         public string Email { get; set; }
         public float AmountReceived { get; set; }
     }

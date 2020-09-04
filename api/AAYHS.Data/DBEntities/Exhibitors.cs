@@ -11,8 +11,7 @@ namespace AAYHS.Data.DBEntities
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int ExhibitorId { get; set; }
-        public int GroupId { get; set; }
+        public int ExhibitorId { get; set; }        
         public int AddressId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -20,7 +19,7 @@ namespace AAYHS.Data.DBEntities
         public int BirthYear { get; set; }
         public bool IsNSBAMember { get; set; }
         public bool IsDoctorNote { get; set; }
-        public string QTYProgram { get; set; }
+        public int QTYProgram { get; set; }
         public string PrimaryEmail { get; set; }
         public string SecondaryEmail { get; set; }
         public string Phone { get; set; }

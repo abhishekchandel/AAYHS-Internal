@@ -75,8 +75,7 @@ namespace AAYHS.Service.Service
                 };
                 var _address = _addressRepository.Add(address);
                 var exhibitor = new Exhibitors
-                {
-                    GroupId=request.GroupId,
+                {                   
                     AddressId= _address.AddressId,
                     FirstName=request.FirstName,
                     LastName=request.LastName,
@@ -95,7 +94,7 @@ namespace AAYHS.Service.Service
                 };
                
                 var _exhibitor= _exhibitorRepository.Add(exhibitor);
-                if (request.GroupId != null && request.GroupId > 0)
+                if (request.GroupId > 0)
                 {
                     var groupExhibitor = new GroupExhibitors
                     {
@@ -117,8 +116,7 @@ namespace AAYHS.Service.Service
                 var exhibitor = _exhibitorRepository.GetSingle(x => x.ExhibitorId == request.ExhibitorId && x.IsActive == true && x.IsDeleted == false);
                
                 if (exhibitor!=null && exhibitor.ExhibitorId>0)
-                {
-                    exhibitor.GroupId = request.GroupId;
+                {                  
                     exhibitor.FirstName = request.FirstName;
                     exhibitor.LastName = request.LastName;
                     exhibitor.BackNumber = request.BackNumber;
@@ -147,7 +145,7 @@ namespace AAYHS.Service.Service
                         _addressRepository.Update(address);
                     }
 
-                    if (request.GroupId != null && request.GroupId > 0)
+                    if (request.GroupId > 0)
                     {
                         var groupExhibitor = _groupExhibitorRepository.GetSingle(x => x.ExhibitorId == exhibitor.ExhibitorId);
                         if (groupExhibitor != null && groupExhibitor.GroupExhibitorId > 0)
@@ -508,6 +506,23 @@ namespace AAYHS.Service.Service
             else
             {
                 _mainResponse.Message = Constants.NO_RECORD_FOUND;
+                _mainResponse.Success = false;
+            }
+            return _mainResponse;
+        }
+
+        public MainResponse GetSponsorDetail(int sponsorId)
+        {
+            var sponsor= _exhibitorRepository.GetSponsorDetail(sponsorId);
+
+            if (sponsor!=null && sponsor.SponsorId>0)
+            {              
+                _mainResponse.GetSponsorForExhibitor = sponsor;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_RECORD_EXIST_WITH_ID;
                 _mainResponse.Success = false;
             }
             return _mainResponse;
