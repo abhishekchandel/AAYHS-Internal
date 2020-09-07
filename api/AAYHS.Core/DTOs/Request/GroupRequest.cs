@@ -25,10 +25,6 @@ namespace AAYHS.Core.DTOs.Request
         public int StallAssignmentId { get; set; }
         public int SelectedStallId { get; set; }
         public int StallAssignmentTypeId { get; set; }
-        public string BookedByType { get; set; }
-        public int StallMovedTo { get; set; }
-        public string Status { get; set; }
-
     }
     public class AddGroupFinancialRequest
     {

@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.Reflection.Metadata;
+using AAYHS.Core.Shared.Static;
 
 namespace AAYHS.Repository.Repository
 {
@@ -48,5 +50,21 @@ namespace AAYHS.Repository.Repository
             getAllStall.TotalRecords = stall.Count();
             return getAllStall;
         }
+
+        public MainResponse RemoveAllGroupAssignedStalls(int GroupId)
+        {
+            
+         var list=   _ObjContext.StallAssignment.Where(x => x.GroupId == GroupId).ToList();
+            if (list.Count > 0)
+            {
+                _ObjContext.StallAssignment.RemoveRange(list);
+                _ObjContext.SaveChanges();
+                _MainResponse.Success = true;
+                _MainResponse.Message = Constants.RECORD_DELETE_SUCCESS;
+            }
+            return _MainResponse;
+        }
+
+
     }
 }

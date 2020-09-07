@@ -103,7 +103,7 @@ UpdatedFinancialAmount:number=null;
   }
 
   StallAssignmentRequestsData:any=[];
-groupStallAssignmentResponses :any;
+groupStallAssignmentResponses :any=[];
 
   constructor(private groupService: GroupService,
     private dialog: MatDialog,
@@ -151,21 +151,6 @@ groupStallAssignmentResponses :any;
         this.getZipCodes(response.Data.CityId).then(res => {
           this.groupInfo = response.Data;
           this.groupStallAssignmentResponses = response.Data.groupStallAssignmentResponses;
-          // if(this.groupStallAssignmentResponses !=null && this.groupStallAssignmentResponses!=undefined)
-          // {
-          //   this.groupStallAssignmentResponses.forEach(dt => {
-
-          //     var groupstallData={
-          //     SelectedStallId:dt.StallId,
-          //     Status:"assign",
-          //     BookedByType:'Group',
-          //     StallAssignmentId: dt.StallAssignmentId,
-          //     StallAssignmentTypeId: dt.StallAssignmentTypeId,
-          //     StallMovedTo: 0,
-          //     }
-          //     this.StallAssignmentRequestsData.push(groupstallData);
-          //   });
-          // }
          this.selectedRowIndex= selectedRowIndex;
          this.groupInfo.AmountReceived=Number(this.groupInfo.AmountReceived.toFixed(2));
        });
@@ -217,16 +202,23 @@ groupStallAssignmentResponses :any;
     
     this.loading=true;
     this.groupInfo.AmountReceived=Number(this.groupInfo.AmountReceived==null ?0:this.groupInfo.AmountReceived);
+    this.StallAssignmentRequestsData=[];
+  if(this.groupStallAssignmentResponses.length>0)
+       {
+        this.groupStallAssignmentResponses.forEach(resp => {
+           var groupstallData={
+           SelectedStallId:resp.StallId,
+           StallAssignmentId: resp.StallAssignmentId,
+           StallAssignmentTypeId: resp.StallAssignmentTypeId,
+           }
+           this.StallAssignmentRequestsData.push(groupstallData);
+         });
+       }
+
     this.groupInfo.groupStallAssignmentRequests=this.StallAssignmentRequestsData;
     this.groupService.addUpdateGroup(this.groupInfo).subscribe(response=>{
-     this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
+    this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
      
-        // this.baseRequest.Page= 1;
-        // this.baseRequest.Limit= 5;
-        // this.baseRequest.OrderBy= 'GroupId';
-        // this.baseRequest.OrderByDescending= true;
-        // this.baseRequest.AllRecords= false;
-
        this.getAllGroups().then(res =>{ 
         if(response.Data.NewId !=null && response.Data.NewId>0)
         {
@@ -609,26 +601,10 @@ groupStallAssignmentResponses :any;
   
     );
     dialogRef.afterClosed().subscribe(dialogResult => {
+      debugger;
       const result: any = dialogResult;
       if (result && result.submitted == true) {
-
-       this.StallAssignmentRequestsData=result.data;
-
-      //  if(result.data !=null && result.data!=undefined)
-      //  {
-      //   result.data.forEach(dt => {
-      //      var groupstallData={
-      //      SelectedStallId:dt.SelectedStallId,
-      //      Status:dt.Status,
-      //      BookedByType:dt.BookedByType,
-      //      StallAssignmentId: dt.StallAssignmentId,
-      //      StallAssignmentTypeId: dt.StallAssignmentTypeId,
-      //      StallMovedTo: dt.StallMovedTo,
-      //      }
-      //      this.StallAssignmentRequestsData.push(groupstallData);
-      //    });
-      //  }
-
+        this.groupStallAssignmentResponses=result.data;
       }
     });
   }

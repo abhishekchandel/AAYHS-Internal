@@ -13,9 +13,8 @@ export class StallComponent implements OnInit {
   loading = false;
   stallResponse: any
   chunkedData: any
-  allAssignedStalls: any;
-  groupAssignedStalls: any;
-  tempDataArray: any = [];
+  allAssignedStalls: any=[];
+  groupAssignedStalls: any = [];
 
 
 
@@ -39,6 +38,15 @@ export class StallComponent implements OnInit {
         if (response.Data != null && response.Data.TotalRecords > 0) {
 
           this.allAssignedStalls = response.Data.stallResponses;
+
+          this.groupAssignedStalls.forEach(groupstall => {
+            var stall = this.allAssignedStalls.filter((x) => { return x.StallId == groupstall.StallId });
+            if(stall==null || stall.length<=0)
+            {
+            this.allAssignedStalls.push(groupstall);
+            }
+          });
+
           if (this.allAssignedStalls != null && this.allAssignedStalls != undefined && this.allAssignedStalls.length > 0) {
 
             this.allAssignedStalls.forEach(data => {
@@ -46,20 +54,22 @@ export class StallComponent implements OnInit {
               var element = document.getElementById(s_id);
 
               if (element != null && element != undefined) {
-                if (this.groupAssignedStalls != null
-                  && this.groupAssignedStalls != undefined
-                  && this.groupAssignedStalls.length > 0) {
+                if (this.groupAssignedStalls.length > 0) {
 
                   var assigendstall = this.groupAssignedStalls.filter((x) => { return x.StallId == data.StallId });
                   if (assigendstall != null && assigendstall.length > 0) {
                     element.classList.add("bookedgroupstall");
+                    element.classList.remove("bookedstall");
                   }
                   else {
                     element.classList.add("bookedstall");
+                    element.classList.remove("bookedgroupstall");
+
                   }
                 }
                 else {
                   element.classList.add("bookedstall");
+                  element.classList.remove("bookedgroupstall");
                 }
               }
             });
@@ -93,20 +103,20 @@ export class StallComponent implements OnInit {
         data = {
           SelectedStallId: stallId,
           Assigned: true,
-          BookedByType: check[0].BookedByType,
+        
           StallAssignmentId: check[0].StallAssignmentId,
           StallAssignmentTypeId: check[0].StallAssignmentTypeId,
-          GroupName:check[0].GroupName
+          AssignedToName: check[0].GroupName
         }
       }
       else {
         data = {
           SelectedStallId: stallId,
           Assigned: false,
-          BookedByType: 'Group',
+         
           StallAssignmentId: 0,
           StallAssignmentTypeId: 0,
-          GroupName:''
+          AssignedToName: ''
         }
       }
     }
@@ -114,10 +124,9 @@ export class StallComponent implements OnInit {
       data = {
         SelectedStallId: stallId,
         Assigned: false,
-        BookedByType: 'Group',
         StallAssignmentId: 0,
         StallAssignmentTypeId: 0,
-        GroupName:''
+        AssignedToName: ''
       }
     }
 
@@ -138,35 +147,93 @@ export class StallComponent implements OnInit {
     const dialogRef = this.dialog.open(AssignStallModalComponent, config);
 
     dialogRef.afterClosed().subscribe(dialogResult => {
-
       const result: any = dialogResult;
       if (result && result.submitted == true) {
-        this.tempDataArray.push(result.data);
+
         var s_id = String('stall_' + result.data.SelectedStallId);
         var element = document.getElementById(s_id);
-        debugger
+        
+
+
         if (result.data.Status == "Assign") {
+
+          var newGroupStallData = {
+            StallAssignmentId: result.data.StallAssignmentId,
+            StallId: result.data.SelectedStallId,
+            StallAssignmentTypeId: result.data.StallAssignmentTypeId,
+            GroupId: 0,
+            ExhibitorId: 0,
+            GroupName: ""
+          }
+          this.groupAssignedStalls.push(newGroupStallData);
+
+
           if (element != null && element != undefined) {
             element.classList.add("bookedgroupstall");
+            element.classList.remove("unassignedgroupstall");
+            
           }
         }
+
+
+
         if (result.data.Status == "Unassign") {
+       
+          if(this.groupAssignedStalls.length>0)
+          {
+            var resp=this.groupAssignedStalls.filter((x) => { return x.StallId == result.data.SelectedStallId });
+            if(resp!=null)
+            {
+              this.groupAssignedStalls.splice(resp[0],1);
+            }
+          }
+        
           if (element != null && element != undefined) {
             element.classList.add("unassignedgroupstall");
+            element.classList.remove("bookedgroupstall");
           }
         }
+
+
+
         if (result.data.Status == "Move") {
+
           if (element != null && element != undefined) {
             element.classList.add("unassignedgroupstall");
+            element.classList.remove("bookedgroupstall");
           }
           var movedstall_id = String('stall_' + result.data.StallMovedTo);
           var movedtoelement = document.getElementById(movedstall_id);
 
           if (movedtoelement != null && movedtoelement != undefined) {
             movedtoelement.classList.add("bookedgroupstall");
+            movedtoelement.classList.remove("unassignedgroupstall");
           }
 
+
+           if(this.groupAssignedStalls.length>0)
+            {
+              var resp=this.groupAssignedStalls.filter((x) => { return x.StallId == result.data.SelectedStallId });
+              if(resp!=null)
+              {
+                this.groupAssignedStalls.splice(resp[0],1);
+              }
+            }
+
+
+          var newGroupStallData = {
+            StallAssignmentId: result.data.StallAssignmentId,
+            StallId: result.data.StallMovedTo,
+            StallAssignmentTypeId: result.data.StallAssignmentTypeId,
+            GroupId: 0,
+            ExhibitorId: 0,
+            GroupName: ""
+          }
+          this.groupAssignedStalls.push(newGroupStallData);
+
         }
+
+        
       }
     });
   }
@@ -181,7 +248,7 @@ export class StallComponent implements OnInit {
   onSubmit(): void {
     this.dialogRef.close({
       submitted: true,
-      data: this.tempDataArray
+      data: this.groupAssignedStalls
     });
   }
 }
