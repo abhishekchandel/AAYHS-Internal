@@ -152,7 +152,7 @@
 
                                 <div class="form-group">
                                     <label>Quantity Programs </label>	
-                                    <input #quantityPrograms="ngModel" name="quantityPrograms" [(ngModel)]="exhibitorInfo.QTYProgram" type="text" class="form-control" placeholder="Quantity Programs"/>
+                                    <input #quantityPrograms="ngModel" appOnlynumber name="quantityPrograms" [(ngModel)]="exhibitorInfo.QTYProgram" type="text" class="form-control" placeholder="Quantity Programs"/>
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -330,7 +330,7 @@
                                     <tr *ngFor="let sponsor of exhibitorSponsors;let i=index ">
                                         <td>{{sponsor.Sponsor}}</td>
                                         <td>
-                                        <button type="button" class="icon" (click)="showSponsorInfo(sponsor.SponsorExhibitorId)"><span></span> <i class="fa fa-external-link" aria-hidden="true"></i></button>
+                                        <button type="button" class="icon" (click)="showSponsorInfo(sponsor,false)"><span></span> <i class="fa fa-external-link" aria-hidden="true"></i></button>
                                         </td>
                                         <td>{{sponsor.Email}}</td>
                                         <td>{{sponsor.Amount}}</td>
@@ -355,9 +355,11 @@
                                             *ngIf="(sponsorsForm.submitted || sponsorControl.touched) && sponsorControl.invalid">Please
                                             select sponsor</span>
                                         </td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td>
+                                        <button *ngIf="linkedSponsorId" type="button" class="icon" (click)="showSponsorInfo('',true)"><span></span> <i class="fa fa-external-link" aria-hidden="true"></i></button>    
+                                        </td>
+                                        <td>{{sponsorDetails.Email}}</td>
+                                        <td>{{sponsorDetails.AmountReceived}}</td>
                                         <td>
                                             <span *ngIf="(linkedSponsorId)">
                                                 <input appOnlynumber  type="text" [required]="linkedSponsorId" class="form-control" name="addNumberControl" #addNumberControl="ngModel" [(ngModel)]="addnumber" placeholder="Add Number" />                                               
