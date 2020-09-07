@@ -13,7 +13,9 @@ namespace AAYHS.Core.DTOs.Response
         public string LastName { get; set; }
         public int BirthYear { get; set; }
         public int SponsorTypeId { get; set; }
+        public int AdTypeId { get; set; }
         public string SponsorTypeName { get; set; }
+        public string AdTypeName { get; set; }
         public string IdNumber { get; set; }
 
     }

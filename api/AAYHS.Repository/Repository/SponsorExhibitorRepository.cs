@@ -44,18 +44,21 @@ namespace AAYHS.Repository.Repository
                         && sponsorexhibitor.IsActive == true && sponsorexhibitor.IsDeleted == false
                         && exhibitor.IsActive == true && exhibitor.IsDeleted == false
                                          select new SponsorExhibitorResponse
-                        {
-                            SponsorExhibitorId = sponsorexhibitor.SponsorExhibitorId,
-                            SponsorId = sponsorexhibitor.SponsorId,
-                            ExhibitorId = exhibitor.ExhibitorId,
-                            FirstName = exhibitor.FirstName,
-                            LastName = exhibitor.LastName,
-                            BirthYear = exhibitor.BirthYear,
-                            SponsorTypeId = sponsorexhibitor.SponsorTypeId,
-                            IdNumber =sponsorexhibitor.SponsorTypeId== (int)SponsorTypes.Class?Convert.ToString(_context.Classes.Where(x=>x.ClassId==Convert.ToInt32(sponsorexhibitor.TypeId)).Select(x=>x.ClassNumber).FirstOrDefault())
-                                       :(sponsorexhibitor.SponsorTypeId == (int)SponsorTypes.Add? sponsorexhibitor.TypeId
+                                         {
+                                             SponsorExhibitorId = sponsorexhibitor.SponsorExhibitorId,
+                                             SponsorId = sponsorexhibitor.SponsorId,
+                                             ExhibitorId = exhibitor.ExhibitorId,
+                                             FirstName = exhibitor.FirstName,
+                                             LastName = exhibitor.LastName,
+                                             BirthYear = exhibitor.BirthYear,
+                                             SponsorTypeId = sponsorexhibitor.SponsorTypeId,
+                                             AdTypeId = sponsorexhibitor.AdTypeId,
+                                             SponsorTypeName = (from code in _context.GlobalCodes where code.GlobalCodeId == sponsorexhibitor.SponsorTypeId select code.CodeName).FirstOrDefault(),
+                                             AdTypeName = (from code1 in _context.GlobalCodes where code1.GlobalCodeId == sponsorexhibitor.AdTypeId select code1.CodeName).FirstOrDefault(),
+                                             IdNumber = sponsorexhibitor.SponsorTypeId == (int)SponsorTypes.Class ? Convert.ToString(_context.Classes.Where(x => x.ClassId == Convert.ToInt32(sponsorexhibitor.TypeId)).Select(x => x.ClassNumber).FirstOrDefault())
+                                       : (sponsorexhibitor.SponsorTypeId == (int)SponsorTypes.Add ? sponsorexhibitor.TypeId
                                        : Convert.ToString(0)),
-                        }).ToList();
+                                         }).ToList();
             sponsorExhibitorListResponses.SponsorExhibitorResponses = sponsorExhibitorResponses.ToList();
             _mainResponse.SponsorExhibitorListResponse = sponsorExhibitorListResponses;
             _mainResponse.SponsorExhibitorListResponse.UnassignedSponsorExhibitor = GetUnassignedSponsorExhibitorBySponsorId(sponsorExhibitorResponses.ToList());

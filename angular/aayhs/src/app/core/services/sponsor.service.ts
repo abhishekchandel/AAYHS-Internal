@@ -27,7 +27,7 @@ export class SponsorService {
     return this.http.post<any>(`${this.api}SponsorAPI/GetAllSponsors`,data);
   }
   
-  getAllSponsorTypes(type:string){
+  getAllTypes(type:string){
     return this.http.get<any>(`${this.api}CommonAPI/GetGlobalCode?categoryName=${type}`);
   }
   deleteSponsor(id:number){

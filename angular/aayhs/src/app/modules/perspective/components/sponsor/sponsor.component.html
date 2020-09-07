@@ -239,6 +239,7 @@
 												<th>Exhibitor ID</th> 
 												<th>Exhibitor Name</th> 
 												<th>Sponsor Type</th> 
+												<th>Ad Type</th> 
 												<th>ID Number</th> 
 												<th>Birth Year</th>
 												<th class="non-print-element">Remove</th> 
@@ -249,10 +250,8 @@
                                                 <tr *ngFor="let list of sponsorsExhibitorsList;let i = index">
                                                     <td data-label="Exhibitor ID">{{list.ExhibitorId}}</td>
                                                     <td data-label="Exhibitor Name">{{list.FirstName}} {{list.LastName}}</td>
-                                                    <td data-label="Sponsor Type" *ngIf="list.SponsorTypeId==1">Ad</td>
-                                                    <td data-label="Sponsor Type" *ngIf="list.SponsorTypeId==2">Class</td>
-                                                    <td data-label="Sponsor Type" *ngIf="list.SponsorTypeId==3">Cooler</td>
-                                                    <td data-label="Sponsor Type" *ngIf="list.SponsorTypeId==4">Patron</td>
+                                                    <td data-label="Sponsor Type">{{list.SponsorTypeName}}</td>
+                                                    <td data-label="Ad Type">{{list.AdTypeName}}</td>
                                                     <td data-label="ID Number">{{list.IdNumber}}</td>
                                                     <td data-label="Birth Year">{{list.BirthYear}}</td>
 													<td data-label="Remove"
@@ -298,7 +297,7 @@
 													</span>
 												</td>
 
-												<td *ngIf="sponsortypeId==2" data-label="Type"  colspan="2">
+												<td *ngIf="sponsortypeId==2" data-label="Type">
 													<select  class="dynDataSeclect" name="type" [required]="sponsortypeId==2" [(ngModel)]="typeId"
 													#typeControl="ngModel" (change)="setType($event.target.value)" >
 														<option   disabled="true" [ngValue]="null" class="selectDropdown">Select</option>
@@ -313,7 +312,7 @@
 												</span>
 											  </td>
 
-											  <td *ngIf="sponsortypeId==1" data-label="Type"  colspan="2">
+											  <td *ngIf="sponsortypeId==1" data-label="Type">
                                                 
 												<input type="text" class="form-control whitebg" placeholder="Ad Number"
 												name="typeId" required="sponsortypeId==1"[(ngModel)]="typeId"
@@ -326,7 +325,24 @@
 											</td> 
 
                                                    
-                                                    <td ></td>
+											<td *ngIf="sponsortypeId==1" data-label="Type">
+
+												<select  class="dynDataSeclect" name="type" [required]="sponsortypeId==1" [(ngModel)]="adTypeId"
+												#typeControl="ngModel" (change)="setAdType($event.target.value)" >
+													<option   disabled="true" [ngValue]="null" class="selectDropdown">Select Ad Type</option>
+													<option   class="selectDropdown"
+													[value]="item.GlobalCodeId"
+													 *ngFor="let item of AdTypes">
+													 {{item.CodeName}}</option>
+												</select>
+
+											  <span class="help-block"
+												*ngIf="(sponsorExhibitorForm.submitted || typeControl.touched) && typeControl.invalid">Please
+												select class
+											</span>
+
+											</td> 
+
 												</tr>
 												
                                             </tbody>

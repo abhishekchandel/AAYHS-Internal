@@ -63,11 +63,13 @@ export class SponsorComponent implements OnInit {
   UnassignedSponsorExhibitor:any
   UnassignedSponsorClasses:any
   //advertisementsList:any
-  SponsorTypes:any
+  SponsorTypes:any;
+  AdTypes:any;
   selectedSponsorId:number=0;
 
   exhibitorId: number = null;
   sponsortypeId:number=null;
+  adTypeId:number=null;
   typeId:string=null;
   sponsorClassId:number=null;
   showAds=false;
@@ -79,6 +81,7 @@ export class SponsorComponent implements OnInit {
     SponsorId:null,
     ExhibitorId:null,
     SponsorTypeId:null,
+    AdTypeId:null,
     TypeId:null
   }
   sponsorClassRequest: any={
@@ -136,10 +139,24 @@ export class SponsorComponent implements OnInit {
   getAllSponsorTypes() {
     this.loading = true;
     this.SponsorTypes=null;
-    this.sponsorService.getAllSponsorTypes('SponsorTypes').subscribe(response => {
+    this.sponsorService.getAllTypes('SponsorTypes').subscribe(response => {
       if(response.Data!=null && response.Data.totalRecords>0)
       {
      this.SponsorTypes = response.Data.globalCodeResponse;
+      }
+      this.loading = false;
+    }, error => {
+      this.loading = false;
+    })
+  }
+
+  getAllAdTypes() {
+    this.loading = true;
+    this.AdTypes=null;
+    this.sponsorService.getAllTypes('AdTypes').subscribe(response => {
+      if(response.Data!=null && response.Data.totalRecords>0)
+      {
+     this.AdTypes = response.Data.globalCodeResponse;
       }
       this.loading = false;
     }, error => {
@@ -243,6 +260,7 @@ export class SponsorComponent implements OnInit {
     this.sponsorExhibitorRequest.SponsorId=this.selectedSponsorId;
     this.sponsorExhibitorRequest.ExhibitorId=this.exhibitorId;
     this.sponsorExhibitorRequest.SponsorTypeId=this.sponsortypeId;
+    this.sponsorExhibitorRequest.AdTypeId=this.adTypeId;
     this.sponsorExhibitorRequest.TypeId=this.typeId!=null ?this.typeId:"";
     
     this.sponsorService.AddUpdateSponsorExhibitor(this.sponsorExhibitorRequest).subscribe(response=>{
@@ -278,6 +296,12 @@ export class SponsorComponent implements OnInit {
   setSponsorExhibitor(id){
     this.exhibitorId=Number(id);
   }
+
+  setAdType(id){
+    debugger
+    this.adTypeId=Number(id);
+  }
+
 
   setSponsorType(id){
     
@@ -504,6 +528,7 @@ export class SponsorComponent implements OnInit {
     this.getSponsorDetails(selectedSponsorId,this.selectedRowIndex);
     this.GetSponsorExhibitorBySponsorId(selectedSponsorId);
     this.getAllSponsorTypes();
+    this.getAllAdTypes();
     this.exhibitorId = null;
     this.sponsortypeId=null;
     this.sponsorClassId=null;
