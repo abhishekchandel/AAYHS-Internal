@@ -1867,5 +1867,8 @@ span{
     .form-group {
         margin-bottom: 0;
         text-align: left;
+        label {
+            min-width: 170px;
+        }
     }
 }

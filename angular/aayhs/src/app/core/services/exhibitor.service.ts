@@ -92,6 +92,10 @@ export class ExhibitorService {
       return this.http.post<any>(`${this.api}ExhibitorAPI/AddExhibitorToClass`,data);
     }
 
+    updateScratch(data){
+      return this.http.post<any>(`${this.api}ExhibitorAPI/UpdateScratch`,data);
+    }
+
 
     //exhibitor sponsor
     getExhibitorSponsors(id:number){
@@ -110,11 +114,9 @@ export class ExhibitorService {
       return this.http.post<any>(`${this.api}ExhibitorAPI/AddSponsorForExhibitor`,data);
     }
 
-    getSponsorInfo(id:number){
-      return this.http.get<any>(`${this.api}ExhibitorAPI/GetSponsorDetailedInfo?sponsorId=${id}`);
+    getSponsordetails(id:number){
+      return this.http.get<any>(`${this.api}ExhibitorAPI/GetSponsorDetail?sponsorId=${id}`);
     }
 
-    updateScratch(data){
-      return this.http.post<any>(`${this.api}ExhibitorAPI/UpdateScratch`,data);
-    }
+   
 }

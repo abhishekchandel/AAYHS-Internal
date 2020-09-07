@@ -7,7 +7,7 @@ export interface ExhibitorInfoModel
     StateId:number;
     CityId:number;
     ZipCodeId:number
-    QTYProgram:string;
+    QTYProgram:number;
     BirthYear:number;
     Phone:string
     PrimaryEmail:string;

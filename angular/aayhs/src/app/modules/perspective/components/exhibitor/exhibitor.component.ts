@@ -86,8 +86,14 @@ export class ExhibitorComponent implements OnInit {
   };
   sponsorDetails:any={
   Email:null,
-  Amount:null,
-
+  AmountReceived:null,
+  SponsorId:null,
+  SponsorName:null,
+  ContactName:null,
+  Phone:null,
+  Address:null,
+  City:null,
+  State:null,
   };
   constructor(
             public dialog: MatDialog,
@@ -272,6 +278,7 @@ addUpdateExhibitor(){
   this.exhibitorInfo.IsNSBAMember=this.exhibitorInfo.IsNSBAMember !=null ? this.exhibitorInfo.IsNSBAMember :false
   this.exhibitorInfo.IsDoctorNote=this.exhibitorInfo.IsDoctorNote !=null ? this.exhibitorInfo.IsDoctorNote :false
   this.exhibitorInfo.BirthYear=this.exhibitorInfo.BirthYear !=null ? Number(this.exhibitorInfo.BirthYear) :0
+  this.exhibitorInfo.QTYProgram=this.exhibitorInfo.QTYProgram !=null ? Number(this.exhibitorInfo.QTYProgram) :0
 
   this.exhibitorService.createUpdateExhibitor(this.exhibitorInfo).subscribe(response => {
     this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
@@ -339,7 +346,9 @@ getExhibitorDetails(id:number){
     });
   }
 
-    this.exhibitorInfo.GroupId=this.exhibitorInfo.GroupId >0 ? Number(this.exhibitorInfo.GroupId) :null
+    this.exhibitorInfo.GroupId=this.exhibitorInfo.GroupId >0 ? Number(this.exhibitorInfo.GroupId) :null;
+    this.exhibitorInfo.QTYProgram=this.exhibitorInfo.QTYProgram >0 ? Number(this.exhibitorInfo.QTYProgram) :null
+
     this.loading = false;
   }, error => {
     this.loading = false;
@@ -673,9 +682,8 @@ addSponsorToExhibitor(){
 getSponsorDetails(id){
   this.loading = true;
   this.linkedSponsorId=id;
-  this.exhibitorService.getClassDetail(Number(id),this.exhibitorInfo.ExhibitorId).subscribe(response => {
+  this.exhibitorService.getSponsordetails(Number(id)).subscribe(response => {
    this.sponsorDetails=response.Data;
-   this.showScratch=true;
     this.loading = false;
   }, error => {
     this.loading = false;
@@ -684,9 +692,44 @@ getSponsorDetails(id){
   )
 }
 
-showSponsorInfo(id){
+showSponsorInfo(sponsor,isNew){
+  var data;
+
+  if(isNew)
+  {
+    data = {
+      sponsorName: this.sponsorDetails.SponsorName,
+      contactName: this.sponsorDetails.ContactName,
+      phone: this.sponsorDetails.Phone,
+      email: this.sponsorDetails.Email,
+      address: this.sponsorDetails.Address,
+      amount: this.sponsorDetails.AmountReceived,
+      state: this.sponsorDetails.State,
+      city: this.sponsorDetails.City,
+      zipcode: this.sponsorDetails.Zipcode,
+      sponsorId: this.sponsorDetails.SponsorId,
+  
+    }
+  }
+  else{
+    data = {
+      sponsorName: sponsor.Sponsor,
+      contactName: sponsor.ContactName,
+      phone: sponsor.Phone,
+      email: sponsor.Email,
+      address: sponsor.Address,
+      amount: sponsor.Amount,
+      state: sponsor.State,
+      city: sponsor.City,
+      zipcode: sponsor.Zipcode,
+      sponsorId: sponsor.SponsorId,
+  
+    }
+  }
+   
   const dialogRef = this.dialog.open(SponsorInfoModalComponent, {
     maxWidth: "400px",
+    data
   });
   dialogRef.afterClosed().subscribe(dialogResult => {    
   });
