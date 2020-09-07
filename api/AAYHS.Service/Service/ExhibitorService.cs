@@ -569,6 +569,12 @@ namespace AAYHS.Service.Service
                  
             return _mainResponse;
         }
-       
+
+        public MainResponse GetExhibitorFinancials(int exhibitorId)
+        {
+            var exhibitorFinancials = _exhibitorRepository.GetExhibitorFinancials(exhibitorId);
+            _mainResponse.GetExhibitorFinancials = exhibitorFinancials;
+            return _mainResponse;
+        }
   }
 }
