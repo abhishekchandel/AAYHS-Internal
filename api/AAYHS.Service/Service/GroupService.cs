@@ -126,10 +126,12 @@ namespace AAYHS.Service.Service
                     }
                     if (request.groupStallAssignmentRequests != null && request.groupStallAssignmentRequests.Count > 0)
                     {
-                        foreach(var assignment in request.groupStallAssignmentRequests)
+                        
+                        var stalls = _stallAssignmentRepository.RemoveAllGroupAssignedStalls(Group.GroupId);
+                        foreach (var assignment in request.groupStallAssignmentRequests)
                         {
-                            if(assignment.Status=="Assign")
-                            {
+                            //if(assignment.Status=="Assign")
+                            //{
                                 StallAssignment stallAssignment = new StallAssignment();
                                 stallAssignment.StallId = assignment.SelectedStallId;
                                 stallAssignment.StallAssignmentTypeId = assignment.StallAssignmentTypeId;
@@ -140,27 +142,27 @@ namespace AAYHS.Service.Service
                                 stallAssignment.IsDeleted = false;
                                 stallAssignment.CreatedDate = DateTime.Now;
                                 _stallAssignmentRepository.Add(stallAssignment);
-                            }
+                            //}
 
-                            if (assignment.Status == "Unassign")
-                            {
-                                var data = _stallAssignmentRepository.GetSingle(x => x.StallAssignmentId == assignment.StallAssignmentId && x.IsActive == true && x.IsDeleted == false);
-                                if(data!=null)
-                                {
-                                    _stallAssignmentRepository.Delete(data);
-                                }
-                            }
+                            //if (assignment.Status == "Unassign")
+                            //{
+                            //    var data = _stallAssignmentRepository.GetSingle(x => x.StallAssignmentId == assignment.StallAssignmentId && x.IsActive == true && x.IsDeleted == false);
+                            //    if(data!=null)
+                            //    {
+                            //        _stallAssignmentRepository.Delete(data);
+                            //    }
+                            //}
 
-                            if (assignment.Status == "Move")
-                            {
-                                var data = _stallAssignmentRepository.GetSingle(x => x.StallAssignmentId == assignment.StallAssignmentId && x.IsActive == true && x.IsDeleted == false);
-                                if (data != null)
-                                {
-                                    data.StallId = assignment.StallMovedTo;
-                                    data.ModifiedDate = DateTime.Now;
-                                    _stallAssignmentRepository.Update(data);
-                                }
-                            }
+                            //if (assignment.Status == "Move")
+                            //{
+                            //    var data = _stallAssignmentRepository.GetSingle(x => x.StallAssignmentId == assignment.StallAssignmentId && x.IsActive == true && x.IsDeleted == false);
+                            //    if (data != null)
+                            //    {
+                            //        data.StallId = assignment.StallMovedTo;
+                            //        data.ModifiedDate = DateTime.Now;
+                            //        _stallAssignmentRepository.Update(data);
+                            //    }
+                            //}
                         }
 
                     }

@@ -8,11 +8,15 @@
             <h4 class="modal-title">Confirm Action</h4>
         </div>
         <div class="modal-body text-center">
-
+            <div class="text-center col-sm-12 mb-3">
+                <button type="button" class="btn btn-default  roundBtn2"  *ngIf="showAssign==false" (click)="toggleMove(false)">Assign</button>
+                <button type="button" class="btn btn-default  roundBtn2"  *ngIf="showAssign==true" (click)="toggleMove(false)">Unassign</button>
+                <button type="button" class="btn btn-default  roundBtn2"  *ngIf="showAssign==true" (click)="toggleMove(true)">Move</button>
+            </div>
             <h6 class="mb-4"><b>Stall Number: </b>{{StallNumber}}</h6>
-            <h6 class="mb-4"  *ngIf="showAssign==true"><b>Assign to: </b>{{GroupName}}</h6>
+            <h6 class="mb-4"  *ngIf="showAssign==true"><b>Assign to: </b>{{AssignedToName}}</h6>
             <div class="stallControll">
-             
+               <div *ngIf="showMove==false">
                 <div class="dwnFile" *ngFor="let item of stallTypes;let i=index">
                     <input type="radio" name="radio" 
                     [value]="item.GlobalCodeId"
@@ -21,10 +25,25 @@
                     (change)="setStallType($event.target.value)">
                     <span class="checkmark">{{item.CodeName}}</span>
                 </div>
+            </div>
+            
+                <div *ngIf="showMove==true">
+                    <input type="number" name="stallMovedTo" placeholder="Stall Number"
+                    #stallMovedTo="ngModel" name="stallMovedTo"
+                    [(ngModel)]="StallMovedTo" (change)="setMoveToStall($event.target.value)"
+                    required="showMove==true">
+                   
+                    <span class="help-block" 
+                    *ngIf="stallMovedTo.errors?.required &&
+                    stallMovedTo.touched">
+                    Stall Number is required</span>
+
+                </div>
 
                 <div class="text-center col-sm-12 mb-3">
-                    <button type="button" class="btn btn-default roundBtn" (click)="assignStall()" *ngIf="showAssign==false">Assign</button>
-                    <button type="button" class="btn btn-default roundBtn" (click)="unAssignStall()" *ngIf="showAssign==true">Unassign</button>
+                    <button type="button" class="btn btn-default roundBtn" (click)="assignStall()" *ngIf="showAssign==false  && showMove==false">Assign</button>
+                    <button type="button" class="btn btn-default roundBtn" (click)="unAssignStall()" *ngIf="showAssign==true && showMove==false">Unassign</button>
+                    <button type="button" class="btn btn-default roundBtn" (click)="moveStall()" *ngIf="showAssign==true && showMove==true">Move</button>
                 </div>
             </div>
         </div>

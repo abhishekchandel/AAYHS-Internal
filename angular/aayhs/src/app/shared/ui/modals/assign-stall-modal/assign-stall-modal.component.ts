@@ -9,12 +9,14 @@ import { GroupService } from '../../../../core/services/group.service';
 })
 export class AssignStallModalComponent implements OnInit {
   showAssign:boolean;
+  showMove:boolean=false;
   assignmentType:""
   dataToReturn:any;
   stallTypes:any;
   StallAssignmentTypeId:number;
+  StallMovedTo:number=0;
   StallNumber:number;
-  GroupName:string;
+  AssignedToName:string;
   constructor(
     private groupService: GroupService,
     public dialogRef: MatDialogRef<AssignStallModalComponent>,
@@ -22,7 +24,7 @@ export class AssignStallModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.StallNumber=this.data.SelectedStallId;
-    this.GroupName=this.data.GroupName;
+    this.AssignedToName=this.data.AssignedToName;
     this.showAssign=this.data.Assigned;
    this.getAllStallTypes();
 
@@ -33,7 +35,6 @@ export class AssignStallModalComponent implements OnInit {
     this.dataToReturn={
       SelectedStallId:this.data.SelectedStallId,
       Status:"Assign",
-      BookedByType:'Group',
       StallAssignmentId: this.data.StallAssignmentId,
       StallAssignmentTypeId: this.StallAssignmentTypeId,
       StallMovedTo: 0,
@@ -50,7 +51,6 @@ export class AssignStallModalComponent implements OnInit {
     this.dataToReturn={
       SelectedStallId:this.data.SelectedStallId,
       Status:"Unassign",
-      BookedByType:'Group',
       StallAssignmentId: this.data.StallAssignmentId,
       StallAssignmentTypeId: this.StallAssignmentTypeId,
       StallMovedTo: 0,
@@ -67,17 +67,19 @@ export class AssignStallModalComponent implements OnInit {
     this.dataToReturn={
       SelectedStallId:this.data.SelectedStallId,
       Status:"Move",
-      BookedByType:'Group',
       StallAssignmentId: this.data.StallAssignmentId,
       StallAssignmentTypeId: this.StallAssignmentTypeId,
-      StallMovedTo: 0,
+      StallMovedTo: this.StallMovedTo,
     }
     this.dialogRef.close({
       submitted: true,
       data: this.dataToReturn
     });
   }
-  
+  toggleMove(check:boolean){
+    this.showMove=check;
+  }
+
   onDismiss(): void {
     this.dialogRef.close({
       submitted: false,
@@ -108,5 +110,9 @@ export class AssignStallModalComponent implements OnInit {
   setStallType(id){
     
     this.StallAssignmentTypeId=Number(id);
+  }
+  setMoveToStall(id){
+    
+    this.StallMovedTo=Number(id);
   }
 }
