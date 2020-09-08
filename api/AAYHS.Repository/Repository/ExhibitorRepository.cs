@@ -246,6 +246,7 @@ namespace AAYHS.Repository.Repository
 
         public GetExhibitorFinancials GetExhibitorFinancials(int exhibitorId)
         {
+            IEnumerable<ExhibitorMoneyReceived> data = null;
             GetExhibitorFinancials getExhibitorFinancials = new GetExhibitorFinancials();
 
             var stallCodes = (from gcc in _context.GlobalCodeCategories
@@ -312,6 +313,19 @@ namespace AAYHS.Repository.Repository
             getExhibitorFinancials.exhibitorFeesBilled.AdditionalProgramsAmount = additionalAmount;
             getExhibitorFinancials.exhibitorFeesBilled.ClassEntryAmount = classAmount;
             getExhibitorFinancials.exhibitorFeesBilled.Total = horseStallAmount+ tackStallAmount+ additionalAmount+ classAmount;
+
+
+            data = (from exhibitorpayment in _context.ExhibitorPaymentDetails
+                    where exhibitorpayment.IsActive == true && exhibitorpayment.IsDeleted == false
+                    && exhibitorpayment.ExhibitorId == exhibitorId
+                    select new ExhibitorMoneyReceived
+                    {
+                        Date = exhibitorpayment.PayDate,
+                        Amount = exhibitorpayment.Amount,
+                        Total = _context.ExhibitorPaymentDetails.Where(x => x.ExhibitorId == exhibitorId && x.IsActive == true && x.IsDeleted == false).Select(x => x.Amount).Sum()
+                    });
+
+            getExhibitorFinancials.exhibitorMoneyReceived = data.ToList();
 
             return getExhibitorFinancials;
         }

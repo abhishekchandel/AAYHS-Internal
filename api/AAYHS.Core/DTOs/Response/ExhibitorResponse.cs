@@ -130,7 +130,7 @@ namespace AAYHS.Core.DTOs.Response
     public class GetExhibitorFinancials
     {
         public ExhibitorFeesBilled exhibitorFeesBilled { get; set; }
-        public List<ExhibitorMoneyRecived> exhibitorMoneyReciveds { get; set; }
+        public List<ExhibitorMoneyReceived> exhibitorMoneyReceived { get; set; }
     }
     public class ExhibitorFeesBilled
     {
@@ -141,7 +141,7 @@ namespace AAYHS.Core.DTOs.Response
         public decimal Total { get; set; }
 
     }
-    public class ExhibitorMoneyRecived
+    public class ExhibitorMoneyReceived
     {
         public DateTime Date { get; set; }
         public decimal Amount { get; set; }

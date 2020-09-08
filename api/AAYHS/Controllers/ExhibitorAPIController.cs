@@ -282,6 +282,18 @@ namespace AAYHS.API.Controllers
             _mainResponse = _exhibitorService.AddSponsorForExhibitor(addSponsorForExhibitor, actionBy);
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
-        }       
+        }
+        /// <summary>
+        /// This api used to get exhibitor financials
+        /// </summary>
+        /// <param name="sponsorId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetExhibitorFinancials(int exhibitorId)
+        {
+            _mainResponse = _exhibitorService.GetExhibitorFinancials(exhibitorId);
+            _jsonString = Mapper.Convert<GetExhibitorFinancials>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
     }
 }

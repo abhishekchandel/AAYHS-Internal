@@ -20,5 +20,6 @@ namespace AAYHS.Data.DBEntities
         public string CheckNumber { get; set; }
         [Column(TypeName = "varchar(500)")]
         public string Description { get; set; }
+        public DateTime PayDate { get; set; }
     }
 }
