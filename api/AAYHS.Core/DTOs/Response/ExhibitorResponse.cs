@@ -129,22 +129,21 @@ namespace AAYHS.Core.DTOs.Response
     }
     public class GetExhibitorFinancials
     {
-        public ExhibitorFeesBilled exhibitorFeesBilled { get; set; }
+        public List<ExhibitorFeesBilled> exhibitorFeesBilled { get; set; }
+        public decimal FeeBilledTotal { get; set; }
         public List<ExhibitorMoneyReceived> exhibitorMoneyReceived { get; set; }
+        public decimal MoneyReceivedTotal { get; set; }
     }
     public class ExhibitorFeesBilled
     {
-        public decimal HorseStallFeeAmount { get; set; }
-        public decimal TackStallFeeAmount { get; set; }
-        public decimal AdditionalProgramsAmount { get; set; }
-        public decimal ClassEntryAmount { get; set; }
-        public decimal Total { get; set; }
+        public int Qty { get; set; }
+        public string FeeType { get; set; }
+        public decimal Amount { get; set; }
 
     }
     public class ExhibitorMoneyReceived
     {
         public DateTime Date { get; set; }
-        public decimal Amount { get; set; }
-        public decimal Total { get; set; }
+        public decimal Amount { get; set; }       
     }
 }

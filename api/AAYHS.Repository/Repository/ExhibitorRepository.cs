@@ -248,7 +248,7 @@ namespace AAYHS.Repository.Repository
         {
             IEnumerable<ExhibitorMoneyReceived> data = null;
             GetExhibitorFinancials getExhibitorFinancials = new GetExhibitorFinancials();
-            ExhibitorFeesBilled exhibitorFeesBilled = new ExhibitorFeesBilled();
+           
 
             var stallCodes = (from gcc in _context.GlobalCodeCategories
                          join gc in _context.GlobalCodes on gcc.GlobalCodeCategoryId equals gc.CategoryId
@@ -285,7 +285,7 @@ namespace AAYHS.Repository.Repository
                               }).ToList();
             int horseStallFeeId = feeCodes.Where(x => x.CodeName == "Stall").Select(x => x.GlobalCodeId).FirstOrDefault();
             int tackStallFeeId= feeCodes.Where(x => x.CodeName == "Tack").Select(x => x.GlobalCodeId).FirstOrDefault();
-            int additionalProgramsFeeId= feeCodes.Where(x => x.CodeName == "Additional Programs").Select(x => x.GlobalCodeId).FirstOrDefault();
+            int additionalProgramsFeeId= feeCodes.Where(x => x.CodeName == "Additional Program").Select(x => x.GlobalCodeId).FirstOrDefault();
             int classEntryId= feeCodes.Where(x => x.CodeName == "Class Entry").Select(x => x.GlobalCodeId).FirstOrDefault();
 
             int yearlyMaintainenceId = _context.YearlyMaintainence.Where(x => x.Year.Year == DateTime.Now.Year && x.IsActive==true && 
@@ -309,13 +309,26 @@ namespace AAYHS.Repository.Repository
             decimal additionalAmount = additionalProgramsFee * additionalPrograme;
             decimal classAmount = classEntryFee * classes.Count();
 
-            exhibitorFeesBilled.HorseStallFeeAmount = horseStallAmount;
-            exhibitorFeesBilled.TackStallFeeAmount = tackStallAmount;
-            exhibitorFeesBilled.AdditionalProgramsAmount = additionalAmount;
-            exhibitorFeesBilled.ClassEntryAmount = classAmount;
-            exhibitorFeesBilled.Total = horseStallAmount+ tackStallAmount+ additionalAmount+ classAmount;
+            string[] feetype = { "Stall", "Tack", "Additional Programs", "Class Entry" };
+            decimal[] amount = { horseStallAmount, tackStallAmount, additionalAmount, classAmount };
+            int[] qty = { horseStall.Count(), tackStall.Count(), additionalPrograme, classes.Count() };
 
-            getExhibitorFinancials.exhibitorFeesBilled = exhibitorFeesBilled;
+            List<ExhibitorFeesBilled> exhibitorFeesBilleds = new List<ExhibitorFeesBilled>();
+            for (int i = 0; i < feetype.Count(); i++)
+            {
+                if (qty[i]!=0)
+                {
+                    ExhibitorFeesBilled exhibitorFeesBilled = new ExhibitorFeesBilled();
+                    exhibitorFeesBilled.Qty = qty[i];
+                    exhibitorFeesBilled.FeeType = feetype[i];
+                    exhibitorFeesBilled.Amount = amount[i];
+                    exhibitorFeesBilleds.Add(exhibitorFeesBilled);
+                }
+                
+            }
+            
+            getExhibitorFinancials.exhibitorFeesBilled = exhibitorFeesBilleds;
+            getExhibitorFinancials.FeeBilledTotal = horseStallAmount + tackStallAmount + additionalAmount + classAmount;
 
             data = (from exhibitorpayment in _context.ExhibitorPaymentDetails
                     where exhibitorpayment.IsActive == true && exhibitorpayment.IsDeleted == false
@@ -324,11 +337,10 @@ namespace AAYHS.Repository.Repository
                     {
                         Date = exhibitorpayment.PayDate,
                         Amount = exhibitorpayment.Amount,
-                        Total = _context.ExhibitorPaymentDetails.Where(x => x.ExhibitorId == exhibitorId && x.IsActive == true && x.IsDeleted == false).Select(x => x.Amount).Sum()
                     });
 
             getExhibitorFinancials.exhibitorMoneyReceived = data.ToList();
-
+            getExhibitorFinancials.MoneyReceivedTotal = _context.ExhibitorPaymentDetails.Where(x => x.ExhibitorId == exhibitorId && x.IsActive == true && x.IsDeleted == false).Select(x => x.Amount).Sum();
             return getExhibitorFinancials;
         }
     }
