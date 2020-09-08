@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { StallService } from '../../../../core/services/stall.service';
 import { AssignStallModalComponent } from '../../../../shared/ui/modals/assign-stall-modal/assign-stall-modal.component'
 import { MatDialogRef, MatDialogConfig, MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
-
+import { MatSnackbarComponent } from '../../../../shared/ui/mat-snackbar/mat-snackbar.component';
 
 @Component({
   selector: 'app-stall',
@@ -13,20 +13,29 @@ export class StallComponent implements OnInit {
   loading = false;
   stallResponse: any
   chunkedData: any
-  allAssignedStalls: any=[];
+  allAssignedStalls: any = [];
   groupAssignedStalls: any = [];
+  StallTypes: any = [];
 
 
 
 
   constructor(
     private stallService: StallService,
+    private snackBar: MatSnackbarComponent,
     public dialogRef: MatDialogRef<StallComponent>,
     public dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
+    debugger
+    if (this.data != null && this.data != undefined) {
 
-    this.groupAssignedStalls = this.data;
+      this.groupAssignedStalls = this.data.groupStallAssignment != null
+        && this.data.groupStallAssignment != undefined ? this.data.groupStallAssignment : [];
+
+      this.StallTypes = this.data.StallTypes != null
+        && this.data.StallTypes != undefined ? this.data.StallTypes : [];
+    }
     this.getAllAssignedStalls();
   }
 
@@ -36,18 +45,18 @@ export class StallComponent implements OnInit {
       this.allAssignedStalls = null;
       this.stallService.getAllAssignedStalls().subscribe(response => {
         if (response.Data != null && response.Data.TotalRecords > 0) {
-
+          debugger
           this.allAssignedStalls = response.Data.stallResponses;
+          if (this.groupAssignedStalls != null) {
+            this.groupAssignedStalls.forEach(groupstall => {
+              var stall = this.allAssignedStalls.filter((x) => { return x.StallId == groupstall.StallId });
+              if (stall == null || stall.length <= 0) {
+                this.allAssignedStalls.push(groupstall);
+              }
+            });
+          }
 
-          this.groupAssignedStalls.forEach(groupstall => {
-            var stall = this.allAssignedStalls.filter((x) => { return x.StallId == groupstall.StallId });
-            if(stall==null || stall.length<=0)
-            {
-            this.allAssignedStalls.push(groupstall);
-            }
-          });
 
-          
           if (this.allAssignedStalls != null && this.allAssignedStalls != undefined && this.allAssignedStalls.length > 0) {
 
             this.allAssignedStalls.forEach(data => {
@@ -97,6 +106,20 @@ export class StallComponent implements OnInit {
   }
 
   assignStall(stallId) {
+    var checkassigned = this.groupAssignedStalls.filter((x) => { return x.StallId == stallId });
+
+    if (checkassigned == null || checkassigned == undefined || checkassigned.length <= 0) {
+      var checknonassigned = this.allAssignedStalls.filter((x) => { return x.StallId == stallId });
+      if (checknonassigned != null && checknonassigned != undefined && checknonassigned.length > 0) {
+        var nameandtype ='Already assigned to '+ checknonassigned[0].BookedByName + '--' + checknonassigned[0].BookedByType;
+        this.snackBar.openSnackBar(nameandtype, 'Close', 'red-snackbar');
+        return;
+      }
+    }
+
+
+
+
     if (this.groupAssignedStalls != null && this.groupAssignedStalls != undefined) {
       var check = this.groupAssignedStalls.filter((x) => { return x.StallId == stallId });
       var data: any;
@@ -104,7 +127,7 @@ export class StallComponent implements OnInit {
         data = {
           SelectedStallId: stallId,
           Assigned: true,
-        
+
           StallAssignmentId: check[0].StallAssignmentId,
           StallAssignmentTypeId: check[0].StallAssignmentTypeId,
           AssignedToName: check[0].GroupName
@@ -114,7 +137,7 @@ export class StallComponent implements OnInit {
         data = {
           SelectedStallId: stallId,
           Assigned: false,
-         
+
           StallAssignmentId: 0,
           StallAssignmentTypeId: 0,
           AssignedToName: ''
@@ -142,7 +165,7 @@ export class StallComponent implements OnInit {
       maxWidth: '100vw',
       maxHeight: '100vh',
       panelClass: 'full-screen-modal',
-      data: data
+      data: { modalData: data, StallTypes: this.StallTypes }
     };
 
     const dialogRef = this.dialog.open(AssignStallModalComponent, config);
@@ -153,7 +176,7 @@ export class StallComponent implements OnInit {
 
         var s_id = String('stall_' + result.data.SelectedStallId);
         var element = document.getElementById(s_id);
-        
+
 
 
         if (result.data.Status == "Assign") {
@@ -172,23 +195,18 @@ export class StallComponent implements OnInit {
           if (element != null && element != undefined) {
             element.classList.add("bookedgroupstall");
             element.classList.remove("unassignedgroupstall");
-            
+
           }
         }
 
 
 
         if (result.data.Status == "Unassign") {
-       
-          if(this.groupAssignedStalls.length>0)
-          {
-            var resp=this.groupAssignedStalls.filter((x) => { return x.StallId == result.data.SelectedStallId });
-            if(resp!=null)
-            {
-              this.groupAssignedStalls.splice(resp[0],1);
-            }
+
+          if (this.groupAssignedStalls != null && this.groupAssignedStalls.length > 0) {
+            this.groupAssignedStalls = this.groupAssignedStalls.filter(x => x.StallId != result.data.SelectedStallId);
           }
-        
+
           if (element != null && element != undefined) {
             element.classList.add("unassignedgroupstall");
             element.classList.remove("bookedgroupstall");
@@ -198,6 +216,21 @@ export class StallComponent implements OnInit {
 
 
         if (result.data.Status == "Move") {
+
+          if (this.groupAssignedStalls != null && this.groupAssignedStalls.length > 0) {
+            this.groupAssignedStalls = this.groupAssignedStalls.filter(x => x.StallId != result.data.SelectedStallId);
+          }
+
+          var newGroupStallData = {
+            StallAssignmentId: result.data.StallAssignmentId,
+            StallId: result.data.StallMovedTo,
+            StallAssignmentTypeId: result.data.StallAssignmentTypeId,
+            GroupId: 0,
+            ExhibitorId: 0,
+            GroupName: ""
+          }
+          this.groupAssignedStalls.push(newGroupStallData);
+
 
           if (element != null && element != undefined) {
             element.classList.add("unassignedgroupstall");
@@ -210,31 +243,7 @@ export class StallComponent implements OnInit {
             movedtoelement.classList.add("bookedgroupstall");
             movedtoelement.classList.remove("unassignedgroupstall");
           }
-
-
-           if(this.groupAssignedStalls.length>0)
-            {
-              var resp=this.groupAssignedStalls.filter((x) => { return x.StallId == result.data.SelectedStallId });
-              if(resp!=null)
-              {
-                this.groupAssignedStalls.splice(resp[0],1);
-              }
-            }
-
-
-          var newGroupStallData = {
-            StallAssignmentId: result.data.StallAssignmentId,
-            StallId: result.data.StallMovedTo,
-            StallAssignmentTypeId: result.data.StallAssignmentTypeId,
-            GroupId: 0,
-            ExhibitorId: 0,
-            GroupName: ""
-          }
-          this.groupAssignedStalls.push(newGroupStallData);
-
         }
-
-        
       }
     });
   }

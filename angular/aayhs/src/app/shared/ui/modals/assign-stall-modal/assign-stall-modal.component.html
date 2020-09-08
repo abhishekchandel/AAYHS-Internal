@@ -27,15 +27,15 @@
                 </div>
             </div>
             
-                <div *ngIf="showMove==true">
-                    <input type="number" name="stallMovedTo" placeholder="Stall Number"
+                <div *ngIf="showMove==true" class="moveField">
+                    <input type="number" name="stallMovedTo" placeholder="Stall Number" class="form-control"
                     #stallMovedTo="ngModel" name="stallMovedTo"
                     [(ngModel)]="StallMovedTo" (change)="setMoveToStall($event.target.value)"
                     required="showMove==true">
                    
-                    <span class="help-block" 
-                    *ngIf="stallMovedTo.errors?.required &&
-                    stallMovedTo.touched">
+                    <span class="help-block errorMessageText" 
+                    *ngIf="stallMovedTo.errors?.required &&  stallMovedTo.touched"
+                    >
                     Stall Number is required</span>
 
                 </div>

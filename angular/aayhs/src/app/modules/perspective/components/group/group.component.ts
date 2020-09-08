@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { BaseRecordFilterRequest } from 'src/app/core/models/base-record-filter-request-model';
 import { MatSnackbarComponent } from '../../../../shared/ui/mat-snackbar/mat-snackbar.component'
-import { MatDialog,MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { GroupService } from 'src/app/core/services/group.service';
-import { ConfirmDialogComponent, ConfirmDialogModel } from'../../../../shared/ui/modals/confirmation-modal/confirm-dialog.component';
+import { ConfirmDialogComponent, ConfirmDialogModel } from '../../../../shared/ui/modals/confirmation-modal/confirm-dialog.component';
 
 
 
@@ -39,39 +39,39 @@ export class GroupComponent implements OnInit {
     OrderBy: 'GroupId',
     OrderByDescending: true,
     AllRecords: false,
-    SearchTerm:null
+    SearchTerm: null
 
   }
   currentDate = new Date();
   cutOffDate = new Date();
   groupsList: any;
   groupExhibitorsList: any;
-  groupFinancialsList:any;
-  groupFinancialsTotals:any;
+  groupFinancialsList: any;
+  groupFinancialsTotals: any;
 
-  PreTotal:number=0;
-  PostTotal:number=0;
-  PrePostTotal:number=0;
+  PreTotal: number = 0;
+  PostTotal: number = 0;
+  PrePostTotal: number = 0;
 
-  FeeTypes:any;
-  TimeFrameTypes:any;
-  groupFinancialsRequest: any={
+  FeeTypes: any;
+  TimeFrameTypes: any;
+  groupFinancialsRequest: any = {
     GroupFinancialId: 0,
-    GroupId:0,
-    FeeTypeId:0,
-    TimeFrameId:0,
-    Amount:0,
+    GroupId: 0,
+    FeeTypeId: 0,
+    TimeFrameId: 0,
+    Amount: 0,
   }
 
-  updateGroupFinancialsRequest: any={
+  updateGroupFinancialsRequest: any = {
     GroupFinancialId: 0,
-    Amount:0,
+    Amount: 0,
   }
 
-FinancialsFeeTypeId:number=null;
-FinancialsTimeFrameTypeId:number=null;
-FinancialsAmount:number=null;
-UpdatedFinancialAmount:number=null;
+  FinancialsFeeTypeId: number = null;
+  FinancialsTimeFrameTypeId: number = null;
+  FinancialsAmount: number = null;
+  UpdatedFinancialAmount: number = null;
 
   enablePagination: boolean = true;
   sortColumn: string = "";
@@ -79,14 +79,14 @@ UpdatedFinancialAmount:number=null;
   loading = true;
 
   selectedRowIndex: any;
-  selectedGroupId=0;
+  selectedGroupId = 0;
   citiesResponse: any;
   statesResponse: any;
   zipCodesResponse: any;
   result: string = '';
   totalItems: number = 0;
-  updatemode=false;
-  updateRowIndex=-1;
+  updatemode = false;
+  updateRowIndex = -1;
   groupInfo: GroupInformationViewModel = {
     GroupName: null,
     ContactName: null,
@@ -98,12 +98,15 @@ UpdatedFinancialAmount:number=null;
     ZipCodeId: null,
     AmountReceived: '0.00',
     GroupId: 0,
-    groupStallAssignmentRequests:null
+    groupStallAssignmentRequests: null
 
   }
 
-  StallAssignmentRequestsData:any=[];
-groupStallAssignmentResponses :any=[];
+  StallAssignmentRequestsData: any = [];
+  groupStallAssignmentResponses: any = [];
+  StallTypes: any = [];
+  horsestalllength: number = 0;
+  tackstalllength: number = 0;
 
   constructor(private groupService: GroupService,
     private dialog: MatDialog,
@@ -117,45 +120,59 @@ groupStallAssignmentResponses :any=[];
     });
     this.getAllStates();
     this.getAllTimeFrameTypes();
+    this.getAllStallTypes();
   }
 
   getAllGroups() {
     return new Promise((resolve, reject) => {
-    this.loading = true;
-    this.groupsList=null;
-    this.groupService.getAllGroups(this.baseRequest).subscribe(response => {
-      if(response.Data!=null && response.Data.TotalRecords>0)
-      {
-     this.groupsList = response.Data.groupResponses;
-     this.totalItems = response.Data.TotalRecords;
-     //this.resetForm();
-      }
-      this.loading = false;
-    }, error => {
-     
-      this.loading = false;
-    })
-    resolve();
-  });
+      this.loading = true;
+      this.groupsList = null;
+      this.groupService.getAllGroups(this.baseRequest).subscribe(response => {
+        if (response.Data != null && response.Data.TotalRecords > 0) {
+          this.groupsList = response.Data.groupResponses;
+          this.totalItems = response.Data.TotalRecords;
+          //this.resetForm();
+        }
+        this.loading = false;
+      }, error => {
+
+        this.loading = false;
+      })
+      resolve();
+    });
   }
 
 
 
   getGroupDetails = (id: number, selectedRowIndex) => {
     this.loading = true;
-    
+
     this.groupService.getGroup(id).subscribe(response => {
-      if(response.Data!=null)
-      {
-      this.getCities(response.Data.StateId).then(res => {
-        this.getZipCodes(response.Data.CityId).then(res => {
-          this.groupInfo = response.Data;
-          this.groupStallAssignmentResponses = response.Data.groupStallAssignmentResponses;
-         this.selectedRowIndex= selectedRowIndex;
-         this.groupInfo.AmountReceived=Number(this.groupInfo.AmountReceived.toFixed(2));
-       });
-      });
-      
+      if (response.Data != null) {
+        this.getCities(response.Data.StateId).then(res => {
+          this.getZipCodes(response.Data.CityId).then(res => {
+            this.groupInfo = response.Data;
+            debugger
+            this.groupStallAssignmentResponses = response.Data.groupStallAssignmentResponses;
+
+            var horseStalltype = this.StallTypes.filter(x => x.CodeName == "HorseStall");
+            var tackStalltype = this.StallTypes.filter(x => x.CodeName == "TackStall");
+            if (this.groupStallAssignmentResponses != null && this.groupStallAssignmentResponses.length > 0) {
+              this.horsestalllength = this.groupStallAssignmentResponses.filter(x => x.StallAssignmentTypeId
+                == horseStalltype[0].GlobalCodeId).length;
+              this.tackstalllength = this.groupStallAssignmentResponses.filter(x => x.StallAssignmentTypeId
+                == tackStalltype[0].GlobalCodeId).length;
+            }
+            else {
+              this.horsestalllength = 0;
+              this.tackstalllength = 0;
+            }
+
+            this.selectedRowIndex = selectedRowIndex;
+            this.groupInfo.AmountReceived = Number(this.groupInfo.AmountReceived.toFixed(2));
+          });
+        });
+
       }
       this.loading = false;
     }, error => {
@@ -165,167 +182,173 @@ groupStallAssignmentResponses :any=[];
 
   GetGroupExhibitors(GroupId: number) {
     this.loading = true;
-    this.groupExhibitorsList=null;
+    this.groupExhibitorsList = null;
     this.groupService.getGroupExhibitors(GroupId).subscribe(response => {
-      if(response.Data!=null && response.Data.TotalRecords>0)
-      {
-     this.groupExhibitorsList = response.Data.getGroupExhibitors;
+      if (response.Data != null && response.Data.TotalRecords > 0) {
+        this.groupExhibitorsList = response.Data.getGroupExhibitors;
       }
       this.loading = false;
     }, error => {
-     
+
       this.loading = false;
     })
   }
 
   GetGroupFinancials(GroupId: number) {
-     this.loading = true;
-     this.groupFinancialsList=null;
-     this.groupFinancialsTotals=null;
-     this.groupService.getAllGroupFinancials(GroupId).subscribe(response => {
-       if(response.Data!=null && response.Data.TotalRecords>0)
-       {
-      this.groupFinancialsList = response.Data.getGroupFinacials;
-      this.groupFinancialsTotals=response.Data.getGroupFinacialsTotals;
-      this.PreTotal=Number(this.groupFinancialsTotals.PreTotal.toFixed(2));
-      this.PostTotal=Number(this.groupFinancialsTotals.PostTotal.toFixed(2));
-      this.PrePostTotal=Number(this.groupFinancialsTotals.PrePostTotal.toFixed(2));
-       }
-       this.loading = false;
-     }, error => {
-      
-       this.loading = false;
-     })
-   }
+    this.loading = true;
+    this.groupFinancialsList = null;
+    this.groupFinancialsTotals = null;
+    this.groupService.getAllGroupFinancials(GroupId).subscribe(response => {
+      if (response.Data != null && response.Data.TotalRecords > 0) {
+        this.groupFinancialsList = response.Data.getGroupFinacials;
+        this.groupFinancialsTotals = response.Data.getGroupFinacialsTotals;
+        this.PreTotal = Number(this.groupFinancialsTotals.PreTotal.toFixed(2));
+        this.PostTotal = Number(this.groupFinancialsTotals.PostTotal.toFixed(2));
+        this.PrePostTotal = Number(this.groupFinancialsTotals.PrePostTotal.toFixed(2));
+      }
+      this.loading = false;
+    }, error => {
 
-  AddUpdateGroup=(group)=>{
-    
-    this.loading=true;
-    this.groupInfo.AmountReceived=Number(this.groupInfo.AmountReceived==null ?0:this.groupInfo.AmountReceived);
-    this.StallAssignmentRequestsData=[];
-  if(this.groupStallAssignmentResponses.length>0)
-       {
-        this.groupStallAssignmentResponses.forEach(resp => {
-           var groupstallData={
-           SelectedStallId:resp.StallId,
-           StallAssignmentId: resp.StallAssignmentId,
-           StallAssignmentTypeId: resp.StallAssignmentTypeId,
-           }
-           this.StallAssignmentRequestsData.push(groupstallData);
-         });
-       }
-
-    this.groupInfo.groupStallAssignmentRequests=this.StallAssignmentRequestsData;
-    this.groupService.addUpdateGroup(this.groupInfo).subscribe(response=>{
-    this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
-     
-       this.getAllGroups().then(res =>{ 
-        if(response.Data.NewId !=null && response.Data.NewId>0)
-        {
-          if(this.groupInfo.GroupId>0)
-        {
-          this.highlight(response.Data.NewId,this.selectedRowIndex);
-        }
-        else{
-          this.highlight(response.Data.NewId,0);
-        }
-        }
-      });
-    
-    }, error=>{
-       this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
-       this.loading = false;
+      this.loading = false;
     })
-    
+  }
+
+  AddUpdateGroup = (group) => {
+
+    this.loading = true;
+    this.groupInfo.AmountReceived = Number(this.groupInfo.AmountReceived == null ? 0 : this.groupInfo.AmountReceived);
+    this.StallAssignmentRequestsData = [];
+    if (this.groupStallAssignmentResponses.length > 0) {
+      this.groupStallAssignmentResponses.forEach(resp => {
+        var groupstallData = {
+          SelectedStallId: resp.StallId,
+          StallAssignmentId: resp.StallAssignmentId,
+          StallAssignmentTypeId: resp.StallAssignmentTypeId,
+        }
+        this.StallAssignmentRequestsData.push(groupstallData);
+      });
     }
 
-  AddUpdateGroupFinancials(){
-    
-      this.loading=true;
-      this.groupFinancialsRequest.GroupFinancialId=0;
-      this.groupFinancialsRequest.GroupId=this.selectedGroupId;
-      this.groupFinancialsRequest.FeeTypeId=this.FinancialsFeeTypeId;
-      this.groupFinancialsRequest.TimeFrameId=this.FinancialsTimeFrameTypeId;
-      this.groupFinancialsRequest.Amount=this.FinancialsAmount;
+    this.groupInfo.groupStallAssignmentRequests = this.StallAssignmentRequestsData;
+    this.groupService.addUpdateGroup(this.groupInfo).subscribe(response => {
+      this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
 
-      this.groupService.addUpdateGroupFinancials(this.groupFinancialsRequest).subscribe(response=>{
-        this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
-        this.GetGroupFinancials(this.selectedGroupId);
-       // this.FinancialsTimeFrameTypeId = null;
-        this.FinancialsAmount=null;
-        this.FinancialsFeeTypeId=null;
-        this.groupFinancialForm.resetForm({FinancialsAmount:null,FinancialsFeeTypeId:null});
+      this.getAllGroups().then(res => {
+        if (response.Data.NewId != null && response.Data.NewId > 0) {
+          if (this.groupInfo.GroupId > 0) {
+            this.highlight(response.Data.NewId, this.selectedRowIndex);
+          }
+          else {
+            this.highlight(response.Data.NewId, 0);
+          }
+        }
+      });
 
-       }, error=>{
-          this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
-          this.loading = false;
-       })
-      
-      }
-    
+    }, error => {
+      this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
+      this.loading = false;
+    })
+
+  }
+
+  AddUpdateGroupFinancials() {
+
+    this.loading = true;
+    this.groupFinancialsRequest.GroupFinancialId = 0;
+    this.groupFinancialsRequest.GroupId = this.selectedGroupId;
+    this.groupFinancialsRequest.FeeTypeId = this.FinancialsFeeTypeId;
+    this.groupFinancialsRequest.TimeFrameId = this.FinancialsTimeFrameTypeId;
+    this.groupFinancialsRequest.Amount = this.FinancialsAmount;
+
+    this.groupService.addUpdateGroupFinancials(this.groupFinancialsRequest).subscribe(response => {
+      this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
+      this.GetGroupFinancials(this.selectedGroupId);
+      // this.FinancialsTimeFrameTypeId = null;
+      this.FinancialsAmount = null;
+      this.FinancialsFeeTypeId = null;
+      this.groupFinancialForm.resetForm({ FinancialsAmount: null, FinancialsFeeTypeId: null });
+
+    }, error => {
+      this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
+      this.loading = false;
+    })
+
+  }
+
   getCities(id: number) {
     return new Promise((resolve, reject) => {
       this.loading = true;
-      this.citiesResponse=null;
+      this.citiesResponse = null;
       this.groupService.getCities(Number(id)).subscribe(response => {
-          this.citiesResponse = response.Data.City;
-          this.loading = false;
+        this.citiesResponse = response.Data.City;
+        this.loading = false;
       }, error => {
         this.loading = false;
       })
-        resolve();
+      resolve();
     });
- }
+  }
 
- getZipCodes(id: number) {
-  return new Promise((resolve, reject) => {
-    this.loading = true;
-    this.zipCodesResponse=null;
-    this.groupService.getZipCodes(Number(id)).subscribe(response => {
-      
+  getZipCodes(id: number) {
+    return new Promise((resolve, reject) => {
+      this.loading = true;
+      this.zipCodesResponse = null;
+      this.groupService.getZipCodes(Number(id)).subscribe(response => {
+
         this.zipCodesResponse = response.Data.ZipCode;
         this.loading = false;
+      }, error => {
+        this.loading = false;
+      })
+      resolve();
+    });
+  }
+
+  getAllStates() {
+
+    this.loading = true;
+    this.groupService.getAllStates().subscribe(response => {
+      this.statesResponse = response.Data.State;
+      this.loading = false;
     }, error => {
       this.loading = false;
     })
-      resolve();
-  });
-}
 
-  getAllStates() {
-    
-      this.loading = true;
-      this.groupService.getAllStates().subscribe(response => {
-          this.statesResponse = response.Data.State;
-          this.loading = false;
-      }, error => {
-        this.loading = false;
-      })
-     
   }
-  
+
   getAllFeeTypes() {
     this.loading = true;
-    this.FeeTypes=null;
+    this.FeeTypes = null;
     this.groupService.getGlobalCodes('FeeType').subscribe(response => {
-      if(response.Data!=null && response.Data.totalRecords>0)
-      {
-     this.FeeTypes = response.Data.globalCodeResponse;
+      if (response.Data != null && response.Data.totalRecords > 0) {
+        this.FeeTypes = response.Data.globalCodeResponse;
       }
       this.loading = false;
     }, error => {
       this.loading = false;
     })
   }
+
+  getAllStallTypes() {
+
+    this.StallTypes = [];
+    this.groupService.getGlobalCodes('StallType').subscribe(response => {
+      if (response.Data != null && response.Data.totalRecords > 0) {
+        this.StallTypes = response.Data.globalCodeResponse;
+      }
+    }, error => {
+
+    })
+  }
+
 
   getAllTimeFrameTypes() {
     this.loading = true;
-    this.TimeFrameTypes=null;
+    this.TimeFrameTypes = null;
     this.groupService.getGlobalCodes('TimeFrameType').subscribe(response => {
-      if(response.Data!=null && response.Data.totalRecords>0)
-      {
-     this.TimeFrameTypes = response.Data.globalCodeResponse;
-     this.setFinancialsTimeFrameType(this.TimeFrameTypes[0].GlobalCodeId);
+      if (response.Data != null && response.Data.totalRecords > 0) {
+        this.TimeFrameTypes = response.Data.globalCodeResponse;
+        this.setFinancialsTimeFrameType(this.TimeFrameTypes[0].GlobalCodeId);
       }
       this.loading = false;
     }, error => {
@@ -333,49 +356,49 @@ groupStallAssignmentResponses :any=[];
     })
   }
 
-  editFinancialsAmount(e, index, GroupFinancialId,Amount){
-    
-    this.updatemode=true;
-    this.updateRowIndex=index;
-    this.UpdatedFinancialAmount=Number(Amount);
-  }
-  setUpdatedFinancialAmount(data){
-    this.UpdatedFinancialAmount=Number(data);
-  }
-  cancelUpdateFinancialsAmount(e, index, GroupFinancialId){
-    this.updatemode=false;
-    this.updateRowIndex=index;
-  }
-  
-  updateGroupFinancialsAmount(e, index, GroupFinancialId,timeframename){
-    
-    this.loading=true;
-    this.updateRowIndex=index;
-    this.updateGroupFinancialsRequest.GroupFinancialId=GroupFinancialId;
-    this.updateGroupFinancialsRequest.Amount=this.UpdatedFinancialAmount;
-    
+  editFinancialsAmount(e, index, GroupFinancialId, Amount) {
 
-     this.groupService.UpdateGroupFinancialsAmount(this.updateGroupFinancialsRequest).subscribe(response=>{
+    this.updatemode = true;
+    this.updateRowIndex = index;
+    this.UpdatedFinancialAmount = Number(Amount);
+  }
+  setUpdatedFinancialAmount(data) {
+    this.UpdatedFinancialAmount = Number(data);
+  }
+  cancelUpdateFinancialsAmount(e, index, GroupFinancialId) {
+    this.updatemode = false;
+    this.updateRowIndex = index;
+  }
+
+  updateGroupFinancialsAmount(e, index, GroupFinancialId, timeframename) {
+
+    this.loading = true;
+    this.updateRowIndex = index;
+    this.updateGroupFinancialsRequest.GroupFinancialId = GroupFinancialId;
+    this.updateGroupFinancialsRequest.Amount = this.UpdatedFinancialAmount;
+
+
+    this.groupService.UpdateGroupFinancialsAmount(this.updateGroupFinancialsRequest).subscribe(response => {
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
       this.loading = false;
-      this.updatemode=false;
+      this.updatemode = false;
       this.GetGroupFinancials(this.selectedGroupId);
-     }, error=>{
-        this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
-        this.loading = false;
-        this.updatemode=false;
-     })
-    }
+    }, error => {
+      this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
+      this.loading = false;
+      this.updatemode = false;
+    })
+  }
 
-  setFinancialsFeeType(id){
-    this.FinancialsFeeTypeId=Number(id);
+  setFinancialsFeeType(id) {
+    this.FinancialsFeeTypeId = Number(id);
   }
-  setFinancialsTimeFrameType(id){
-      this.FinancialsTimeFrameTypeId=Number(id);
+  setFinancialsTimeFrameType(id) {
+    this.FinancialsTimeFrameTypeId = Number(id);
   }
-  
-  setFinancialsAmount(data){
-    this.FinancialsAmount=Number(data);
+
+  setFinancialsAmount(data) {
+    this.FinancialsAmount = Number(data);
   }
 
 
@@ -391,7 +414,7 @@ groupStallAssignmentResponses :any=[];
     });
     dialogRef.afterClosed().subscribe(dialogResult => {
       this.result = dialogResult;
-      if (this.result){ this.deleteGroup(Groupid,index) }
+      if (this.result) { this.deleteGroup(Groupid, index) }
     });
   }
 
@@ -405,7 +428,7 @@ groupStallAssignmentResponses :any=[];
     });
     dialogRef.afterClosed().subscribe(dialogResult => {
       this.result = dialogResult;
-      if (this.result){ this.deleteGroupExhibitor(GroupExhibitorid,index) }
+      if (this.result) { this.deleteGroupExhibitor(GroupExhibitorid, index) }
     });
   }
 
@@ -419,7 +442,7 @@ groupStallAssignmentResponses :any=[];
     });
     dialogRef.afterClosed().subscribe(dialogResult => {
       this.result = dialogResult;
-      if (this.result){ this.deleteGroupFinancials(GroupFinancialId,index) }
+      if (this.result) { this.deleteGroupFinancials(GroupFinancialId, index) }
     });
   }
 
@@ -427,94 +450,91 @@ groupStallAssignmentResponses :any=[];
 
 
   //delete record
-  deleteGroup(Groupid,index) {
+  deleteGroup(Groupid, index) {
     this.loading = true;
     this.groupService.deleteGroup(Groupid).subscribe(response => {
-      
-      if(response.Success==true)
-      {
-     
-        this.groupsList.splice(index, 1);
-        this.totalItems=this.totalItems-1;
 
-        if(this.selectedGroupId==Groupid){
-          this.selectedGroupId=0;
+      if (response.Success == true) {
+
+        this.groupsList.splice(index, 1);
+        this.totalItems = this.totalItems - 1;
+
+        if (this.selectedGroupId == Groupid) {
+          this.selectedGroupId = 0;
           this.resetForm();
         }
         this.loading = false;
         this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
       }
-      else{
+      else {
         this.loading = false;
         this.snackBar.openSnackBar(response.Message, 'Close', 'red-snackbar');
-       
+
       }
     }, error => {
       this.loading = false;
     })
-   
-  }
-  
-  deleteGroupExhibitor(GroupExhibitorid,index) {
-    
-    this.loading = true;
-    this.groupService.deleteGroupExhibitors(GroupExhibitorid).subscribe(response => {
-      
-      if(response.Success==true)
-      {
-       this.GetGroupExhibitors(this.selectedGroupId)
-        this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
-      }
-      else{
-        this.loading = false;
-        this.snackBar.openSnackBar(response.Message, 'Close', 'red-snackbar');
-       
-      }
-    }, error => {
-      this.loading = false;
-    })
-   
+
   }
 
-  deleteGroupFinancials(GroupFinancialId,index) {
-    
+  deleteGroupExhibitor(GroupExhibitorid, index) {
+
     this.loading = true;
-    this.groupService.deleteGroupFinancials(GroupFinancialId).subscribe(response => {
-      
-      if(response.Success==true)
-      {
-       this.GetGroupFinancials(this.selectedGroupId)
+    this.groupService.deleteGroupExhibitors(GroupExhibitorid).subscribe(response => {
+
+      if (response.Success == true) {
+        this.GetGroupExhibitors(this.selectedGroupId)
         this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
       }
-      else{
+      else {
         this.loading = false;
         this.snackBar.openSnackBar(response.Message, 'Close', 'red-snackbar');
-       
+
       }
     }, error => {
       this.loading = false;
     })
-   
+
+  }
+
+  deleteGroupFinancials(GroupFinancialId, index) {
+
+    this.loading = true;
+    this.groupService.deleteGroupFinancials(GroupFinancialId).subscribe(response => {
+
+      if (response.Success == true) {
+        this.GetGroupFinancials(this.selectedGroupId)
+        this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
+      }
+      else {
+        this.loading = false;
+        this.snackBar.openSnackBar(response.Message, 'Close', 'red-snackbar');
+
+      }
+    }, error => {
+      this.loading = false;
+    })
+
   }
 
   resetForm() {
-    
+
     this.groupInfo.GroupName = null;
     this.groupInfo.ContactName = null;
     this.groupInfo.Phone = null;
     this.groupInfo.Email = null;
     this.groupInfo.Address = null;
     this.groupInfo.CityId = null;
-    this.groupInfo.StateId= null;
+    this.groupInfo.StateId = null;
     this.groupInfo.ZipCodeId = null;
     this.groupInfo.AmountReceived = 0;
     this.groupInfo.GroupId = 0;
     this.tabGroup.selectedIndex = 0
     this.groupInfoForm.resetForm();
-    this.selectedGroupId=0;
-    this.selectedRowIndex =-1;
-    this.FeeTypes=null;
-    this.groupStallAssignmentResponses=null;
+    this.selectedGroupId = 0;
+    this.selectedRowIndex = -1;
+    this.FeeTypes = null;
+    this.groupStallAssignmentResponses = [];
   }
 
   getNext(event) {
@@ -524,34 +544,33 @@ groupStallAssignmentResponses :any=[];
 
   getAllGroupsForPagination() {
     return new Promise((resolve, reject) => {
-    this.loading = true;
-    this.groupsList=null;
-    this.groupService.getAllGroups(this.baseRequest).subscribe(response => {
-      if(response.Data!=null && response.Data.TotalRecords>0)
-      {
-     this.groupsList = response.Data.groupResponses;
-     this.totalItems = response.Data.TotalRecords;
-     this.resetForm();
-      }
-      this.loading = false;
-    }, error => {
-     
-      this.loading = false;
-    })
-    resolve();
-  });
+      this.loading = true;
+      this.groupsList = null;
+      this.groupService.getAllGroups(this.baseRequest).subscribe(response => {
+        if (response.Data != null && response.Data.TotalRecords > 0) {
+          this.groupsList = response.Data.groupResponses;
+          this.totalItems = response.Data.TotalRecords;
+          this.resetForm();
+        }
+        this.loading = false;
+      }, error => {
+
+        this.loading = false;
+      })
+      resolve();
+    });
   }
-  
-  
+
+
   highlight(selectedGroupId, i) {
-    
+
     this.selectedRowIndex = i;
-    this.selectedGroupId=selectedGroupId;
-    this.getGroupDetails(selectedGroupId,i);
+    this.selectedGroupId = selectedGroupId;
+    this.getGroupDetails(selectedGroupId, i);
     this.GetGroupExhibitors(selectedGroupId);
     this.GetGroupFinancials(selectedGroupId);
     this.getAllFeeTypes();
-    this.groupFinancialForm.resetForm({FinancialsAmount:null,FinancialsFeeTypeId:null});
+    this.groupFinancialForm.resetForm({ FinancialsAmount: null, FinancialsFeeTypeId: null });
   }
 
 
@@ -572,48 +591,62 @@ groupStallAssignmentResponses :any=[];
   }
 
   getStateName(e) {
-    this.groupInfo.StateId =Number( e.target.options[e.target.selectedIndex].value)
+    this.groupInfo.StateId = Number(e.target.options[e.target.selectedIndex].value)
   }
 
   getCityName(e) {
-  this.groupInfo.CityId = Number(e.target.options[e.target.selectedIndex].value)
+    this.groupInfo.CityId = Number(e.target.options[e.target.selectedIndex].value)
   }
   getZipNumber(e) {
     this.groupInfo.ZipCodeId = Number(e.target.options[e.target.selectedIndex].value)
-    }
+  }
 
   openStallDiagram() {
     let config = new MatDialogConfig();
-  config = {
-    position: {
-      top: '10px',
-      right: '10px'
-    },
-    height: '98%',
-    width: '100vw',
-    maxWidth: '100vw',
+    config = {
+      position: {
+        top: '10px',
+        right: '10px'
+      },
+      height: '98%',
+      width: '100vw',
+      maxWidth: '100vw',
       maxHeight: '100vh',
-    panelClass: 'full-screen-modal',
-    data:this.groupStallAssignmentResponses,
-  };
-  
+      panelClass: 'full-screen-modal',
+      data: { groupStallAssignment: this.groupStallAssignmentResponses, StallTypes: this.StallTypes },
+
+    };
+
     const dialogRef = this.dialog.open(StallComponent, config,
-  
+
     );
     dialogRef.afterClosed().subscribe(dialogResult => {
       debugger;
       const result: any = dialogResult;
       if (result && result.submitted == true) {
-        this.groupStallAssignmentResponses=result.data;
+        this.groupStallAssignmentResponses = result.data;
+
+        var horseStalltype = this.StallTypes.filter(x => x.CodeName == "HorseStall");
+        var tackStalltype = this.StallTypes.filter(x => x.CodeName == "TackStall");
+        if (this.groupStallAssignmentResponses != null && this.groupStallAssignmentResponses.length > 0) {
+          this.horsestalllength = this.groupStallAssignmentResponses.filter(x => x.StallAssignmentTypeId
+            == horseStalltype[0].GlobalCodeId).length;
+          this.tackstalllength = this.groupStallAssignmentResponses.filter(x => x.StallAssignmentTypeId
+            == tackStalltype[0].GlobalCodeId).length;
+        }
+        else {
+          this.horsestalllength = 0;
+          this.tackstalllength = 0;
+        }
       }
     });
   }
 
   printGroupFinancials() {
-    let printContents, popupWin, printbutton,hideRow,gridTableDesc;
-    hideRow=document.getElementById('groupFinancialsentry').hidden=true;
+    let printContents, popupWin, printbutton, hideRow, gridTableDesc;
+    hideRow = document.getElementById('groupFinancialsentry').hidden = true;
     printbutton = document.getElementById('inputprintbutton').style.display = "none";
-    gridTableDesc=document.getElementById('gridTableDescPrint').style.display = "block";
+    gridTableDesc = document.getElementById('gridTableDescPrint').style.display = "block";
 
     printContents = document.getElementById('print-entries').innerHTML;
     popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
@@ -752,19 +785,19 @@ groupStallAssignmentResponses :any=[];
       </html>`
     );
 
-    hideRow=document.getElementById('groupFinancialsentry').hidden=false;
+    hideRow = document.getElementById('groupFinancialsentry').hidden = false;
     printbutton = document.getElementById('inputprintbutton').style.display = "inline-block";
-    gridTableDesc=document.getElementById('gridTableDescPrint').style.display = "none";
+    gridTableDesc = document.getElementById('gridTableDescPrint').style.display = "none";
     popupWin.document.close();
   }
 
 
 
   printGroupExhibitor() {
-    let printContents, popupWin, printbutton,hideRow,gridTableDesc;
-   
+    let printContents, popupWin, printbutton, hideRow, gridTableDesc;
+
     printbutton = document.getElementById('inputprintbutton').style.display = "none";
-    gridTableDesc=document.getElementById('gridTableDescPrint').style.display = "block";
+    gridTableDesc = document.getElementById('gridTableDescPrint').style.display = "block";
     printContents = document.getElementById('contentscroll2').innerHTML;
     popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
     popupWin.document.open();
@@ -903,7 +936,7 @@ groupStallAssignmentResponses :any=[];
       </html>`
     );
     printbutton = document.getElementById('inputprintbutton').style.display = "inline-block";
-    gridTableDesc=document.getElementById('gridTableDescPrint').style.display = "none";
+    gridTableDesc = document.getElementById('gridTableDescPrint').style.display = "none";
     popupWin.document.close();
   }
 

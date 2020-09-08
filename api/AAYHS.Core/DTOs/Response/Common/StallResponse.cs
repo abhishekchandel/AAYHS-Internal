@@ -12,6 +12,7 @@ namespace AAYHS.Core.DTOs.Response.Common
         public int GroupId { get; set; }
         public int ExhibitorId { get; set; }
         public string BookedByType { get; set; }
+        public string BookedByName { get; set; }
     }
     public class GetAllStall
     {

@@ -226,7 +226,7 @@
                                                 <div class="form-group">
                                                     <label>Horse Stall Quantity</label>
                                                     <div class="uantityField stallQuantity">
-                                                        <input type="text" class="form-control" placeholder="3" />
+                                                        <input type="text" class="form-control"  [value]="horsestalllength"/>
                                                         <button type="button" (click)="openStallDiagram()"
                                                             class="btn btn-red btnCss roundBtn whitebg">Stall</button>
                                                     </div>
@@ -235,7 +235,7 @@
                                                 <div class="form-group mb-0">
                                                     <label>Track Stall Quantity</label>
                                                     <div class="uantityField stallQuantity">
-                                                        <input type="text" class="form-control" placeholder="2" />
+                                                        <input type="text" class="form-control"  [value]="tackstalllength" />
                                                         <button type="button" (click)="openStallDiagram()"
                                                             class="btn btn-red btnCss roundBtn whitebg">Tack Stall</button>
                                                     </div>
@@ -369,7 +369,7 @@
                                                             {{list.Amount}}</td>
                                                         <td data-label="Amount"
                                                             *ngIf="updatemode==true && updateRowIndex==i">
-                                                            <input type="text" class="form-control whitebg"
+                                                            <input type="number" class="form-control whitebg"
                                                                 placeholder="Amount" name="updateamount" required
                                                                 [(ngModel)]="list.Amount"
                                                                 #groupUpdatedAmountControl="ngModel"
@@ -445,7 +445,7 @@
 
                                                         <td data-label="Amount">
 
-                                                            <input type="text" class="form-control whitebg"
+                                                            <input type="number" class="form-control whitebg"
                                                                 placeholder="Amount" name="horsefeeamount" required
                                                                 [(ngModel)]="FinancialsAmount"
                                                                 #groupAmountControl="ngModel"

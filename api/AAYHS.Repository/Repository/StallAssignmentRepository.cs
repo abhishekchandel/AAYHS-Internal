@@ -42,7 +42,12 @@ namespace AAYHS.Repository.Repository
                              StallAssignmentTypeId = stallAssign.StallAssignmentTypeId,
                              GroupId = stallAssign.GroupId,
                              ExhibitorId = stallAssign.ExhibitorId,
-                             BookedByType = stallAssign.BookedByType
+                             BookedByType = stallAssign.BookedByType,
+                             BookedByName= stallAssign.BookedByType=="Group"? 
+                             (from grp in _ObjContext.Groups where grp.GroupId == stallAssign.GroupId 
+                              select grp.GroupName).FirstOrDefault():
+                             (from exb in _ObjContext.Exhibitors where exb.ExhibitorId == stallAssign.ExhibitorId 
+                              select exb.FirstName + ' '+ exb.FirstName).FirstOrDefault()
 
                          }).ToList();
 

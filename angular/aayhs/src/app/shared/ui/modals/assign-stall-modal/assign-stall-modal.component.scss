@@ -1,0 +1,39 @@
+.stallControll {
+    .ng-star-inserted {
+        display: flex;
+        width: 100%;
+        text-align: left;
+        &.roundBtn {
+            width: 120px;
+            margin: 0 auto;
+            text-align: center;
+            justify-content: center;
+            &:hover{
+                color:#fff;
+            }
+        }
+        .dwnFile {
+            .checkmark {
+                padding: 5px 0 4px 50px;
+            }
+        }
+    }
+}
+.moveField{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    flex-direction: column ;
+    text-align: center !important;
+    input{
+        max-width: 200px;
+        padding: 11px 10px;
+        text-align: center;
+        margin: 0 auto 10px;
+    }
+}
+.roundBtn2 {
+    &:hover{
+        color:#fff;
+    }
+}
