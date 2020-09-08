@@ -47,6 +47,7 @@ export class StallComponent implements OnInit {
             }
           });
 
+          
           if (this.allAssignedStalls != null && this.allAssignedStalls != undefined && this.allAssignedStalls.length > 0) {
 
             this.allAssignedStalls.forEach(data => {
