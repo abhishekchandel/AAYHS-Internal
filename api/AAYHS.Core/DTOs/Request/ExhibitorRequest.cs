@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -47,5 +48,11 @@ namespace AAYHS.Core.DTOs.Request
         public int SponsorId { get; set; }
         public int SponsorTypeId { get; set; }
         public string TypeId { get; set; }
+    }
+    public class DocumentUploadRequest
+    {
+        public int Exhibitor { get; set; }
+        public int DocumentType { get; set; }
+        public List<IFormFile> Documents { get; set; }
     }
 }

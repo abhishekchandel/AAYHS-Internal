@@ -21,5 +21,9 @@
     <ProjectReference Include="..\AAYHS.Service\AAYHS.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Resources\Documents\" />
+  </ItemGroup>
+
 
 </Project>

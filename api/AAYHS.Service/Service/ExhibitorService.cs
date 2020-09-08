@@ -6,8 +6,10 @@ using AAYHS.Data.DBEntities;
 using AAYHS.Repository.IRepository;
 using AAYHS.Service.IService;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -30,6 +32,7 @@ namespace AAYHS.Service.Service
         private IClassRepository _classRepository;
         private ISponsorExhibitorRepository _sponsorExhibitorRepository;
         private ISponsorRepository _sponsorRepository;
+        private IScanRepository _scanRepository;
         private IExhibitorHorseRepository _exhibitorHorseRepository;
         private IHorseRepository _horseRepository;
         #endregion
@@ -38,7 +41,8 @@ namespace AAYHS.Service.Service
                                  IExhibitorHorseRepository exhibitorHorseRepository,IHorseRepository horseRepository, 
                                  IGroupExhibitorRepository groupExhibitorRepository,IGlobalCodeRepository globalCodeRepository,
                                  IExhibitorClassRepository exhibitorClassRepository, IClassRepository classRepository,
-                                 ISponsorExhibitorRepository sponsorExhibitorRepository,ISponsorRepository sponsorRepository,IMapper mapper)
+                                 ISponsorExhibitorRepository sponsorExhibitorRepository,ISponsorRepository sponsorRepository,
+                                 IScanRepository scanRepository,IMapper mapper)
         {
             _exhibitorRepository = exhibitorRepository;
             _addressRepository = addressRepository;
@@ -50,6 +54,7 @@ namespace AAYHS.Service.Service
             _classRepository = classRepository;
             _sponsorExhibitorRepository = sponsorExhibitorRepository;
             _sponsorRepository = sponsorRepository;
+            _scanRepository = scanRepository;
             _mapper = mapper;
             _mainResponse = new MainResponse();
         }
@@ -574,6 +579,53 @@ namespace AAYHS.Service.Service
         {
             var exhibitorFinancials = _exhibitorRepository.GetExhibitorFinancials(exhibitorId);
             _mainResponse.GetExhibitorFinancials = exhibitorFinancials;
+            return _mainResponse;
+        }
+
+        public MainResponse UplaodDocumentFile(DocumentUploadRequest documentUploadRequest,string actionBy)
+        {
+            string uniqueFileName = null;
+            string path = null;
+            if (documentUploadRequest.Documents!=null)
+            {
+                foreach (IFormFile file in documentUploadRequest.Documents)
+                {
+
+                    string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+
+                    
+                    uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+
+                    var FilePath = Path.Combine(uploadsFolder, "Resources", "Documents");
+                    path = Path.Combine(FilePath, uniqueFileName);
+
+                    string filePath = Path.Combine(FilePath, uniqueFileName);
+
+
+                    file.CopyTo(new FileStream(filePath, FileMode.Create));
+
+
+                    path = path.Replace(uploadsFolder, "").Replace("\\", "/");
+
+                    var scans = new Scans
+                    {
+                        ExhibitorId = documentUploadRequest.Exhibitor,
+                        DocumentType = documentUploadRequest.DocumentType,
+                        DocumentPath = path,
+                        CreatedBy = actionBy,
+                        CreatedDate = DateTime.Now
+                    };
+                    _scanRepository.Add(scans);
+                }
+               
+                _mainResponse.Message = Constants.DOCUMENT_UPLOAD;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_DOCUMENT_FOUND;
+                _mainResponse.Success = false;
+            }
             return _mainResponse;
         }
   }

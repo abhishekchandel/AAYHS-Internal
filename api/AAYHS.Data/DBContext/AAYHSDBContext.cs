@@ -51,6 +51,7 @@ namespace AAYHS.Data.DBContext
         public virtual DbSet<GroupExhibitors> GroupExhibitors { get; set; }
         public virtual DbSet<GroupFinancials> GroupFinancials { get; set; }
         public virtual DbSet<ZipCodes> ZipCodes { get; set; }
+        public virtual DbSet<Scans> Scans { get; set; }
 
     }
 
