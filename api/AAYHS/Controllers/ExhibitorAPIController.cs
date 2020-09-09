@@ -301,7 +301,7 @@ namespace AAYHS.API.Controllers
         /// <param name="documentUploadRequest"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult UplaodDocumentFile([FromForm]DocumentUploadRequest documentUploadRequest)
+        public ActionResult UploadDocumentFile([FromForm]DocumentUploadRequest documentUploadRequest)
         {
             string actionBy = User.Identity.Name;
             _mainResponse = _exhibitorService.UplaodDocumentFile(documentUploadRequest, actionBy);

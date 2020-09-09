@@ -582,7 +582,7 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
-        public MainResponse UplaodDocumentFile(DocumentUploadRequest documentUploadRequest,string actionBy)
+        public MainResponse UploadDocumentFile(DocumentUploadRequest documentUploadRequest,string actionBy)
         {
             string uniqueFileName = null;
             string path = null;
