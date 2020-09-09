@@ -304,7 +304,7 @@ namespace AAYHS.API.Controllers
         public ActionResult UploadDocumentFile([FromForm]DocumentUploadRequest documentUploadRequest)
         {
             string actionBy = User.Identity.Name;
-            _mainResponse = _exhibitorService.UplaodDocumentFile(documentUploadRequest, actionBy);
+            _mainResponse = _exhibitorService.UploadDocumentFile(documentUploadRequest, actionBy);
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
