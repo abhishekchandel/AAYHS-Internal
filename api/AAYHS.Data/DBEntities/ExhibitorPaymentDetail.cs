@@ -12,7 +12,7 @@ namespace AAYHS.Data.DBEntities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public int ExhibitorPaymentId { get; set; }
-        public int FeeId { get; set; }
+        public int FeeTypeId { get; set; }
         public int ExhibitorId { get; set; }
         public decimal Amount { get; set; }
         public int TimeFrameTypeId { get; set; }

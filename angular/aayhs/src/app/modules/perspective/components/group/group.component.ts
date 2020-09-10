@@ -107,6 +107,7 @@ export class GroupComponent implements OnInit {
   StallTypes: any = [];
   horsestalllength: number = 0;
   tackstalllength: number = 0;
+  UnassignedStallNumbers:any=[];
 
   constructor(private groupService: GroupService,
     private dialog: MatDialog,
@@ -146,7 +147,7 @@ export class GroupComponent implements OnInit {
 
   getGroupDetails = (id: number, selectedRowIndex) => {
     this.loading = true;
-
+    this.UnassignedStallNumbers=[];
     this.groupService.getGroup(id).subscribe(response => {
       if (response.Data != null) {
         this.getCities(response.Data.StateId).then(res => {
@@ -535,6 +536,8 @@ export class GroupComponent implements OnInit {
     this.selectedRowIndex = -1;
     this.FeeTypes = null;
     this.groupStallAssignmentResponses = [];
+    this.horsestalllength=0;
+    this.tackstalllength=0;
   }
 
   getNext(event) {
@@ -613,7 +616,9 @@ export class GroupComponent implements OnInit {
       maxWidth: '100vw',
       maxHeight: '100vh',
       panelClass: 'full-screen-modal',
-      data: { groupStallAssignment: this.groupStallAssignmentResponses, StallTypes: this.StallTypes },
+      data: { groupStallAssignment: this.groupStallAssignmentResponses, 
+        StallTypes: this.StallTypes ,
+        unassignedStallNumbers:this.UnassignedStallNumbers},
 
     };
 
@@ -624,7 +629,9 @@ export class GroupComponent implements OnInit {
       debugger;
       const result: any = dialogResult;
       if (result && result.submitted == true) {
-        this.groupStallAssignmentResponses = result.data;
+        this.groupStallAssignmentResponses=[];
+        this.groupStallAssignmentResponses = result.data.groupAssignedStalls;
+        this.UnassignedStallNumbers=result.data.unassignedStallNumbers;
 
         var horseStalltype = this.StallTypes.filter(x => x.CodeName == "HorseStall");
         var tackStalltype = this.StallTypes.filter(x => x.CodeName == "TackStall");

@@ -182,7 +182,7 @@ namespace AAYHS.Repository.Repository
                     from horses2 in horses1.DefaultIfEmpty()
                     join paymentdetails in _ObjContext.ExhibitorPaymentDetails on exhibitorclasses.ExhibitorId equals paymentdetails.ExhibitorId into paymentdetails1
                     from paymentdetails2 in paymentdetails1.DefaultIfEmpty()
-                    join f in _ObjContext.Fees on paymentdetails2.FeeId equals f.FeeId into f1
+                    join f in _ObjContext.Fees on paymentdetails2.FeeTypeId equals f.FeeId into f1
                     from f2 in f1.DefaultIfEmpty()
                     where exhibitorclasses.IsDeleted == false && exhibitors2.IsDeleted == false && exhibitorclasses.IsActive == true && exhibitors2.IsActive == true &&
                     horses2.IsDeleted==false && horses2.IsActive==true &&
@@ -248,7 +248,7 @@ namespace AAYHS.Repository.Repository
                              from exhibitorsClass2 in exhibitorsClass1.DefaultIfEmpty()
                              join paymentdetails in _ObjContext.ExhibitorPaymentDetails on exhibitorsClass2.ExhibitorId equals paymentdetails.ExhibitorId into paymentdetails1
                              from paymentdetails2 in paymentdetails1.DefaultIfEmpty()
-                             join f in _ObjContext.Fees on paymentdetails2.FeeId equals f.FeeId into f1
+                             join f in _ObjContext.Fees on paymentdetails2.FeeTypeId equals f.FeeId into f1
                              from f2 in f1.DefaultIfEmpty()
                              where exhibitors.IsActive == true && exhibitors.IsDeleted == false &&
                              exhibitors.BackNumber == resultExhibitorRequest.BackNumber && exhibitorsClass2.ClassId == resultExhibitorRequest.ClassId
@@ -286,7 +286,7 @@ namespace AAYHS.Repository.Repository
                     from state2 in state1.DefaultIfEmpty()                       
                     join paymentdetails in _ObjContext.ExhibitorPaymentDetails on exhibitor2.ExhibitorId equals paymentdetails.ExhibitorId into paymentdetails1
                     from paymentdetails2 in paymentdetails1.DefaultIfEmpty()
-                    join f in _ObjContext.Fees on paymentdetails2.FeeId equals f.FeeId into f1
+                    join f in _ObjContext.Fees on paymentdetails2.FeeTypeId equals f.FeeId into f1
                     from f2  in f1.DefaultIfEmpty()
                     where result.IsActive == true && result.IsDeleted == false && exhibitor2.IsActive == true && exhibitor2.IsDeleted == false
                     && exhibitorsClass2.IsDeleted==false && addresses2.IsDeleted == false && city2.IsDeleted == false && state2.IsDeleted == false                   

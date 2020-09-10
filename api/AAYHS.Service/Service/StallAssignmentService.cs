@@ -39,7 +39,7 @@ namespace AAYHS.Service.Service
             else
             {
                 _mainResponse.Message = Constants.NO_RECORD_FOUND;
-                _mainResponse.Success = false;
+                _mainResponse.Success = true;
             }
             return _mainResponse;
         }

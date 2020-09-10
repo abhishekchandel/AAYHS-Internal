@@ -93,13 +93,20 @@ border-radius: 10px;
     }
     .bookedstall{
       background-color: #e61919 !important;
-      // pointer-events: none;
+      pointer-events: none;
     }
+    
     .bookedgroupstall{
       background-color: #2e19e6 !important;
     }
+
     .unassignedgroupstall{
       background-color: #fff !important;
+    }
+
+    .clstackstall{
+      background-color: #7b1124 !important;
+      color: #fff !important;
     }
   
 
