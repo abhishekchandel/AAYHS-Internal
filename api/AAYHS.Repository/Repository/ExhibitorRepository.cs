@@ -364,5 +364,26 @@ namespace AAYHS.Repository.Repository
             }
             return getAllUploadedDocuments;
         }
+
+        public GetAllFees GetAllFees()
+        {
+            IEnumerable<GetFees> data = null;
+            GetAllFees getAllFees = new GetAllFees();
+
+            int yearlyId = _context.YearlyMaintainence.Where(x => x.Year.Year == DateTime.Now.Year && x.IsActive == true && x.IsDeleted == false).Select(x => x.YearlyMaintainenceId).FirstOrDefault();
+
+            data = (from yFee in _context.YearlyMaintainenceFee
+                    where yFee.YearlyMaintainenceId == yearlyId && yFee.IsActive == true && yFee.IsDeleted == false
+                    select new GetFees 
+                    { 
+                      FeeTypeId=yFee.FeeTypeId,
+                      FeeType=_context.GlobalCodes.Where(x=>x.GlobalCodeId==yFee.FeeTypeId).Select(x=>x.CodeName).FirstOrDefault(),
+                      Amount=yFee.Amount                    
+                    });
+            getAllFees.getFees = data.ToList();
+            return getAllFees;
+        }
+
+       
     }
 }

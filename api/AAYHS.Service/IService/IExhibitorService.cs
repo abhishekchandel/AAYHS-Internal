@@ -32,5 +32,6 @@ namespace AAYHS.Service.IService
         MainResponse GetExhibitorFinancials(int exhibitorId);
         MainResponse UploadDocumentFile(DocumentUploadRequest documentUploadRequest, string actionBy);
         MainResponse GetUploadedDocuments(int exhibitorId);
+        MainResponse GetFees();
    }
 }

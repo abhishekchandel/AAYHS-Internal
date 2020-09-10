@@ -116,7 +116,7 @@ namespace AAYHS.Core.DTOs.Response
     }
     public class GetAllSponsorForExhibitor
     {
-        public List<GetSponsorForExhibitor> getSponsorForExhibitors { get; set; }     
+        public List<GetSponsorForExhibitor> getSponsorForExhibitors { get; set; }
     }
     public class GetSponsorDetailedInfo
     {
@@ -144,7 +144,7 @@ namespace AAYHS.Core.DTOs.Response
     public class ExhibitorMoneyReceived
     {
         public DateTime Date { get; set; }
-        public decimal Amount { get; set; }       
+        public decimal Amount { get; set; }
     }
 
     public class GetUploadedDocuments
@@ -158,4 +158,15 @@ namespace AAYHS.Core.DTOs.Response
     {
         public List<GetUploadedDocuments> getUploadedDocuments { get; set; }
     }
+    public class GetFees
+    {
+        public int FeeTypeId { get; set; }
+        public string FeeType { get; set; }
+        public decimal Amount { get; set; }
+    }
+    public class GetAllFees
+    {
+        public List<GetFees> getFees { get; set; }
+    }
+    
 }

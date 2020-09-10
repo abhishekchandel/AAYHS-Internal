@@ -645,5 +645,22 @@ namespace AAYHS.Service.Service
             }
             return _mainResponse;
         }
+
+        public MainResponse GetFees()
+        {
+            var fees = _exhibitorRepository.GetAllFees();
+
+            if (fees.getFees!=null && fees.getFees.Count()>0)
+            {
+                _mainResponse.GetAllFees = fees;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+                _mainResponse.Success = false;
+            }
+            return _mainResponse;
+        }
   }
 }
