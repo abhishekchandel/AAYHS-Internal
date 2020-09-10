@@ -300,12 +300,35 @@ namespace AAYHS.API.Controllers
         /// </summary>
         /// <param name="documentUploadRequest"></param>
         /// <returns></returns>
-        [HttpPost]
-        public ActionResult UplaodDocumentFile([FromForm]DocumentUploadRequest documentUploadRequest)
+        [HttpPut]
+        public ActionResult UploadDocumentFile([FromForm]DocumentUploadRequest documentUploadRequest)
         {
             string actionBy = User.Identity.Name;
-            _mainResponse = _exhibitorService.UplaodDocumentFile(documentUploadRequest, actionBy);
+            _mainResponse = _exhibitorService.UploadDocumentFile(documentUploadRequest, actionBy);
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to get uploaded document
+        /// </summary>
+        /// <param name="exhibitorId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetUploadedDocuments(int exhibitorId)
+        {
+            _mainResponse = _exhibitorService.GetUploadedDocuments(exhibitorId);
+            _jsonString = Mapper.Convert<GetAllUploadedDocuments>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to get all fees
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetFees()
+        {
+            _mainResponse = _exhibitorService.GetFees();
+            _jsonString = Mapper.Convert<GetAllFees>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
     }

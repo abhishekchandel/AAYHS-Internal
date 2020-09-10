@@ -30,6 +30,8 @@ namespace AAYHS.Service.IService
         MainResponse GetSponsorDetail(int sponsorId);
         MainResponse AddSponsorForExhibitor(AddSponsorForExhibitor addSponsorForExhibitor, string actionBy);
         MainResponse GetExhibitorFinancials(int exhibitorId);
-        MainResponse UplaodDocumentFile(DocumentUploadRequest documentUploadRequest, string actionBy);
+        MainResponse UploadDocumentFile(DocumentUploadRequest documentUploadRequest, string actionBy);
+        MainResponse GetUploadedDocuments(int exhibitorId);
+        MainResponse GetFees();
    }
 }

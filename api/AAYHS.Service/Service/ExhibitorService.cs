@@ -582,7 +582,7 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
-        public MainResponse UplaodDocumentFile(DocumentUploadRequest documentUploadRequest,string actionBy)
+        public MainResponse UploadDocumentFile(DocumentUploadRequest documentUploadRequest,string actionBy)
         {
             string uniqueFileName = null;
             string path = null;
@@ -624,6 +624,40 @@ namespace AAYHS.Service.Service
             else
             {
                 _mainResponse.Message = Constants.NO_DOCUMENT_FOUND;
+                _mainResponse.Success = false;
+            }
+            return _mainResponse;
+        }
+
+        public MainResponse GetUploadedDocuments(int exhibitorId)
+        {
+            var documents = _exhibitorRepository.GetUploadedDocuments(exhibitorId);
+
+            if (documents.getUploadedDocuments!=null && documents.getUploadedDocuments.Count()>0)
+            {
+                _mainResponse.GetAllUploadedDocuments = documents;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_DOCUMENT_FOUND;
+                _mainResponse.Success = false;
+            }
+            return _mainResponse;
+        }
+
+        public MainResponse GetFees()
+        {
+            var fees = _exhibitorRepository.GetAllFees();
+
+            if (fees.getFees!=null && fees.getFees.Count()>0)
+            {
+                _mainResponse.GetAllFees = fees;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
                 _mainResponse.Success = false;
             }
             return _mainResponse;
