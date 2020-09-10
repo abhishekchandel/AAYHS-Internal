@@ -13,8 +13,10 @@ namespace AAYHS.Data.DBEntities
         [Key]
         public int YearlyMaintainenceFeeId { get; set; }
         public int YearlyMaintainenceId { get; set; }
-        public int TimeFrameTypeId { get; set; }
-        public int FeeTypeId { get; set; }
-        public decimal Amount { get; set; }       
+        public string TimeFrameType{ get; set; }
+        public int FeeTypeId { get; set; }   
+        public decimal PreEntryFee { get; set; }
+        public decimal PostEntryFee { get; set; }
+        public decimal Amount { get; set; }
     }
 }

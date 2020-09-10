@@ -50,12 +50,15 @@ namespace AAYHS.Core.Shared.Static
         public const string RESULT_UPDATED = "Result updated successfully";
         public const string RESULT_DELETED= "Result deleted successfully";
         public const string CLASS_EXIST= "This class name already exist with this age group";
+        public const string CLASS_NUMBER_EXIST= "This class number already exist";
         public const string HORSE_EXIST= "This horse name already exist";
         public const string EXHIBITOR_HORSE_ADDED = "Exhibitor horse added successfully";
         public const string EXHIBITOR_SPONSOR_REMOVED= "Exhibitor sponsor removed successfully";
         public const string EXHIBITOR_SPONSOR_ADDED= "Exhibitor sponsor added successfully";
         public const string EXHIBITOR_SPONSOR_UPDATED= "Exhibitor sponsor updated successfully";
         public const string DOCUMENT_UPLOAD= "Document uploaded successfully";
+        public const string DOCUMENT_DELETED= "Document deleted successfully";
         public const string NO_DOCUMENT_FOUND = "No Document Found to upload";
+        public const string FINANCIAL_TRANSACTION_DELETED = "Financial Transaction deleted successfully";
     }
 }

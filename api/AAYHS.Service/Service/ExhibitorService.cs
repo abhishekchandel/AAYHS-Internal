@@ -33,6 +33,7 @@ namespace AAYHS.Service.Service
         private ISponsorExhibitorRepository _sponsorExhibitorRepository;
         private ISponsorRepository _sponsorRepository;
         private IScanRepository _scanRepository;
+        private IExhibitorPaymentDetailRepository _exhibitorPaymentDetailRepository;
         private IExhibitorHorseRepository _exhibitorHorseRepository;
         private IHorseRepository _horseRepository;
         #endregion
@@ -42,7 +43,7 @@ namespace AAYHS.Service.Service
                                  IGroupExhibitorRepository groupExhibitorRepository,IGlobalCodeRepository globalCodeRepository,
                                  IExhibitorClassRepository exhibitorClassRepository, IClassRepository classRepository,
                                  ISponsorExhibitorRepository sponsorExhibitorRepository,ISponsorRepository sponsorRepository,
-                                 IScanRepository scanRepository,IMapper mapper)
+                                 IScanRepository scanRepository,IExhibitorPaymentDetailRepository exhibitorPaymentDetailRepository,IMapper mapper)
         {
             _exhibitorRepository = exhibitorRepository;
             _addressRepository = addressRepository;
@@ -55,6 +56,7 @@ namespace AAYHS.Service.Service
             _sponsorExhibitorRepository = sponsorExhibitorRepository;
             _sponsorRepository = sponsorRepository;
             _scanRepository = scanRepository;
+            _exhibitorPaymentDetailRepository = exhibitorPaymentDetailRepository;
             _mapper = mapper;
             _mainResponse = new MainResponse();
         }
@@ -92,6 +94,7 @@ namespace AAYHS.Service.Service
                     PrimaryEmail=request.PrimaryEmail,
                     SecondaryEmail=request.SecondaryEmail,
                     Phone=request.Phone,
+                    Date= request.Date,
                     CreatedBy = actionBy,
                     CreatedDate = DateTime.Now,
                     IsActive = true,
@@ -322,6 +325,7 @@ namespace AAYHS.Service.Service
                 ExhibitorId = addExhibitorHorseRequest.ExhibitorId,
                 HorseId=addExhibitorHorseRequest.HorseId,
                 BackNumber=addExhibitorHorseRequest.BackNumber,
+                Date=addExhibitorHorseRequest.Date,
                 CreatedDate=DateTime.Now,
                 CreatedBy= actionBy
             };
@@ -443,6 +447,7 @@ namespace AAYHS.Service.Service
             {
                 ExhibitorId = addExhibitorToClass.ExhibitorId,
                 ClassId = addExhibitorToClass.ClassId,
+                Date= addExhibitorToClass.Date,
                 CreatedBy = actionBy,
                 CreatedDate = DateTime.Now
             };
@@ -646,6 +651,34 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
+        public MainResponse DeleteUploadedDocuments(IEnumerable<DocumentDeleteRequest> documentDeleteRequest, string actionBy)
+        {
+            foreach (var file in documentDeleteRequest)
+            {
+                string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                var FilePath = Path.Combine(uploadsFolder, file.Path);
+                var fileToBeDeleted = uploadsFolder + file.Path;
+
+                if ((System.IO.File.Exists(fileToBeDeleted)))
+                {
+                    System.IO.File.Delete(fileToBeDeleted);
+                }
+
+                var resource = _scanRepository.GetSingle(x => x.ScansId == file.ScanId && x.IsActive==true);
+                if (resource != null)
+                {
+                    resource.IsDeleted = true;
+                    resource.DeletedBy = actionBy;
+                    resource.DeletedDate = DateTime.Now;
+                     _scanRepository.Update(resource);
+
+                }
+            }
+            _mainResponse.Success = true;
+            _mainResponse.Message = Constants.DOCUMENT_DELETED;
+            return _mainResponse;
+        }
+
         public MainResponse GetFees()
         {
             var fees = _exhibitorRepository.GetAllFees();
@@ -662,5 +695,72 @@ namespace AAYHS.Service.Service
             }
             return _mainResponse;
         }
+
+        public MainResponse RemoveExhibitorTransaction(int exhibitorPaymentId,string actionBy)
+        {
+            var exhibitorPayment = _exhibitorPaymentDetailRepository.GetSingle(x => x.ExhibitorPaymentId == exhibitorPaymentId && x.IsActive == true
+                                    && x.IsDeleted == false);
+
+            if (exhibitorPayment!=null && exhibitorPayment.ExhibitorPaymentId>0)
+            {
+                exhibitorPayment.IsDeleted = true;
+                exhibitorPayment.DeletedBy = actionBy;
+                exhibitorPayment.DeletedDate = DateTime.Now;
+                _exhibitorPaymentDetailRepository.Update(exhibitorPayment);
+
+                _mainResponse.Message = Constants.FINANCIAL_TRANSACTION_DELETED;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+                _mainResponse.Success = false;
+            }
+            return _mainResponse;
+        }
+
+        public MainResponse UploadFinancialDocument(FinancialDocumentRequest financialDocumentRequest)
+        {
+            string uniqueFileName = null;
+            string path = null;
+            if (financialDocumentRequest.Documents != null)
+            {
+                foreach (IFormFile file in financialDocumentRequest.Documents)
+                {
+
+                    string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+
+
+                    uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+
+                    var FilePath = Path.Combine(uploadsFolder, "Resources", "Documents");
+                    path = Path.Combine(FilePath, uniqueFileName);
+
+                    string filePath = Path.Combine(FilePath, uniqueFileName);
+
+
+                    file.CopyTo(new FileStream(filePath, FileMode.Create));
+
+
+                    path = path.Replace(uploadsFolder, "").Replace("\\", "/");
+
+                    var exhibitorPayment = new ExhibitorPaymentDetail
+                    {
+                        
+                    };
+                    _exhibitorPaymentDetailRepository.Add(exhibitorPayment);
+                }
+
+                _mainResponse.Message = Constants.DOCUMENT_UPLOAD;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_DOCUMENT_FOUND;
+                _mainResponse.Success = false;
+            }
+            return _mainResponse;
+        }
+    
   }
 }
