@@ -98,15 +98,40 @@ border-radius: 10px;
     
     .bookedgroupstall{
       background-color: #2e19e6 !important;
+      color: #fff !important;
+      
     }
 
     .unassignedgroupstall{
       background-color: #fff !important;
+      color: rgb(8, 8, 8) !important;
     }
 
     .clstackstall{
-      background-color: #7b1124 !important;
+      background-color: #7b1124;
       color: #fff !important;
+    }
+
+    .loaderWrappers {
+      background-color: rgba(0,0,0,0.5);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      left: 0;
+      height: 100%;
+      z-index: 9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .loaders {
+          border: 8px solid #f3f3f3;
+          border-radius: 50%;
+          border-top: 8px solid #a0b8f9;
+          width: 50px;
+          height: 50px;
+          -webkit-animation: spin 2s linear infinite; /* Safari */
+          animation: spin 2s linear infinite;
+        }
     }
   
 

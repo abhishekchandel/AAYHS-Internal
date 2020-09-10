@@ -11,8 +11,9 @@
                 <!-- financial transation -->
                 <div class="row">
                     <div class="col-sm-12">
-                        <mat-tab-group #tabGroup class="sponTabbing mt-4">
-                            <mat-tab class="nav-link active nav nav-tabs tab-content" label="Permanent Stall">
+                        
+                        <mat-tab-group #tabGroup class="sponTabbing mt-4" (selectedTabChange)="changeTab();">
+                            <mat-tab class="nav-link active nav nav-tabs tab-content" id="PermanentStall" label="Permanent Stall">
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="stallWrapper">
@@ -2384,7 +2385,7 @@
                                 </div>
                             </mat-tab>
 
-                            <mat-tab class="nav-link active nav nav-tabs" label="Portable Stall">
+                            <mat-tab class="nav-link active nav nav-tabs" id="PortableStall" label="Portable Stall">
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="stallWrapper">
@@ -2830,4 +2831,7 @@
 
         </div>
     </div>
+</div>
+<div class="loaderWrappers" *ngIf="loading">
+    <div class="loaders"></div>
 </div>

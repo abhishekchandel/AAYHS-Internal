@@ -29,7 +29,13 @@ export class AssignStallModalComponent implements OnInit {
     this.AssignedToName=this.data.modalData.AssignedToName;
     this.showAssign=this.data.modalData.Assigned;
     this.stallTypes=this.data.StallTypes;
-    this.setStallType(this.stallTypes[0].GlobalCodeId);
+    if(this.StallNumber==2051 || this.StallNumber==2045 || this.StallNumber==2132 || this.StallNumber==2138)
+    {
+    this.setStallType(this.stallTypes[1].GlobalCodeId);
+    }
+    else{
+      this.setStallType(this.stallTypes[0].GlobalCodeId);
+    }
   // this.getAllStallTypes();
 
   }
@@ -67,11 +73,19 @@ export class AssignStallModalComponent implements OnInit {
 
 
   moveStall(){
-    if(this.StallMovedTo==null || this.StallMovedTo==undefined || this.StallMovedTo<=0)
+    if(this.StallMovedTo==null || this.StallMovedTo==undefined)
     {
-      var error="Stall number is non negative required field";
+      var error="Stall number is required field";
       this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
+      return
     }
+    if(this.StallMovedTo <=0 || (this.StallMovedTo >1001 && this.StallMovedTo < 2027) || this.StallMovedTo > 2195 )
+    {
+      var error="Invalid Stall number";
+      this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
+      return
+    }
+
     else{
     this.dataToReturn={
       SelectedStallId:this.data.modalData.SelectedStallId,
@@ -99,25 +113,7 @@ export class AssignStallModalComponent implements OnInit {
     });
   }
 
-  // getAllStallTypes() {
-   
-  //   this.stallTypes=null;
-  //   this.groupService.getGlobalCodes('StallType').subscribe(response => {
-  //     if(response.Data!=null && response.Data.totalRecords>0)
-  //     {
-  //    this.stallTypes = response.Data.globalCodeResponse;
-  //    if(this.data.StallAssignmentTypeId>0)
-  //    {
-  //     this.setStallType(this.data.StallAssignmentTypeId);
-  //     }
-  //     else{
-  //       this.setStallType(this.stallTypes[0].GlobalCodeId);
-  //     }
-  //   }
-  // }, error => {
-     
-  // })
-  // }
+  
 
   setStallType(id){
     

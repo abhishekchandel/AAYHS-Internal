@@ -646,6 +646,9 @@ export class GroupComponent implements OnInit {
           this.tackstalllength = 0;
         }
       }
+      else{
+        this.UnassignedStallNumbers=[];
+      }
     });
   }
 
