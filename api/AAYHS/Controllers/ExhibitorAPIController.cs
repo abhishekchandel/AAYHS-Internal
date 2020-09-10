@@ -331,5 +331,18 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<GetAllFees>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
+        /// <summary>
+        /// This api used to remove the financial transaction
+        /// </summary>
+        /// <param name="exhibitorPaymentId"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        public ActionResult RemoveExhibitorTransaction(int exhibitorPaymentId)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _exhibitorService.RemoveExhibitorTransaction(exhibitorPaymentId, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
     }
 }

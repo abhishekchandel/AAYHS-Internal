@@ -57,5 +57,6 @@ namespace AAYHS.Core.Shared.Static
         public const string EXHIBITOR_SPONSOR_UPDATED= "Exhibitor sponsor updated successfully";
         public const string DOCUMENT_UPLOAD= "Document uploaded successfully";
         public const string NO_DOCUMENT_FOUND = "No Document Found to upload";
+        public const string FINANCIAL_TRANSACTION_DELETED = "Financial Transaction deleted successfully";
     }
 }

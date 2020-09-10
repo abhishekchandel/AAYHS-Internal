@@ -203,6 +203,14 @@ namespace AAYHS.Service.Service
             }
             else
             {
+                var classExist = _classRepository.GetSingle(x => x.Name == addClassRequest.Name && x.AgeGroup == addClassRequest.AgeGroup
+                                                  && x.ClassNumber == addClassRequest.ClassNumber && x.IsActive == true && x.IsDeleted == false);
+                if (classExist != null && classExist.ClassId > 0)
+                {
+                    _mainResponse.Message = Constants.CLASS_EXIST;
+                    _mainResponse.Success = false;
+                    return _mainResponse;
+                }
                 var updateClass = _classRepository.GetSingle(x => x.ClassId == addClassRequest.ClassId && x.IsActive==true && x.IsDeleted==false);
                 if (updateClass!=null)
                 {

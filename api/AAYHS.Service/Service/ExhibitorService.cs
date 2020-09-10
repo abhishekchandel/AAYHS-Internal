@@ -33,6 +33,7 @@ namespace AAYHS.Service.Service
         private ISponsorExhibitorRepository _sponsorExhibitorRepository;
         private ISponsorRepository _sponsorRepository;
         private IScanRepository _scanRepository;
+        private IExhibitorPaymentDetailRepository _exhibitorPaymentDetailRepository;
         private IExhibitorHorseRepository _exhibitorHorseRepository;
         private IHorseRepository _horseRepository;
         #endregion
@@ -42,7 +43,7 @@ namespace AAYHS.Service.Service
                                  IGroupExhibitorRepository groupExhibitorRepository,IGlobalCodeRepository globalCodeRepository,
                                  IExhibitorClassRepository exhibitorClassRepository, IClassRepository classRepository,
                                  ISponsorExhibitorRepository sponsorExhibitorRepository,ISponsorRepository sponsorRepository,
-                                 IScanRepository scanRepository,IMapper mapper)
+                                 IScanRepository scanRepository,IExhibitorPaymentDetailRepository exhibitorPaymentDetailRepository,IMapper mapper)
         {
             _exhibitorRepository = exhibitorRepository;
             _addressRepository = addressRepository;
@@ -55,6 +56,7 @@ namespace AAYHS.Service.Service
             _sponsorExhibitorRepository = sponsorExhibitorRepository;
             _sponsorRepository = sponsorRepository;
             _scanRepository = scanRepository;
+            _exhibitorPaymentDetailRepository = exhibitorPaymentDetailRepository;
             _mapper = mapper;
             _mainResponse = new MainResponse();
         }
@@ -653,6 +655,29 @@ namespace AAYHS.Service.Service
             if (fees.getFees!=null && fees.getFees.Count()>0)
             {
                 _mainResponse.GetAllFees = fees;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+                _mainResponse.Success = false;
+            }
+            return _mainResponse;
+        }
+
+        public MainResponse RemoveExhibitorTransaction(int exhibitorPaymentId,string actionBy)
+        {
+            var exhibitorPayment = _exhibitorPaymentDetailRepository.GetSingle(x => x.ExhibitorPaymentId == exhibitorPaymentId && x.IsActive == true
+                                    && x.IsDeleted == false);
+
+            if (exhibitorPayment!=null && exhibitorPayment.ExhibitorPaymentId>0)
+            {
+                exhibitorPayment.IsDeleted = true;
+                exhibitorPayment.DeletedBy = actionBy;
+                exhibitorPayment.DeletedDate = DateTime.Now;
+                _exhibitorPaymentDetailRepository.Update(exhibitorPayment);
+
+                _mainResponse.Message = Constants.FINANCIAL_TRANSACTION_DELETED;
                 _mainResponse.Success = true;
             }
             else

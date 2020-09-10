@@ -168,5 +168,18 @@ namespace AAYHS.Core.DTOs.Response
     {
         public List<GetFees> getFees { get; set; }
     }
-    
+    public class GetExhibitorTransactions
+    {
+        public int ExhibitorPaymentDetailId { get; set; }
+        public DateTime PayDate { get; set; }
+        public string TypeOfFee { get; set; }
+        public string TimeFrameType { get; set; }
+        public decimal Amount { get; set; }
+        public decimal AmountPaid { get; set; }
+        public decimal RefundAmount { get; set; }
+    }
+    public class GetAllExhibitorTransactions
+    {
+        public List<GetExhibitorTransactions> getExhibitorTransactions { get; set; }
+    }
 }

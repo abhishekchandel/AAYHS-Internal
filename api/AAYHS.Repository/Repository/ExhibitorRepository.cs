@@ -384,6 +384,27 @@ namespace AAYHS.Repository.Repository
             return getAllFees;
         }
 
-       
+        public GetAllExhibitorTransactions GetAllExhibitorTransactions(int exhibitorId)
+        {
+            IEnumerable<GetExhibitorTransactions> data = null;
+            GetAllExhibitorTransactions getAllExhibitorTransactions = new GetAllExhibitorTransactions();
+
+            int yearlyId = _context.YearlyMaintainence.Where(x => x.Year.Year == DateTime.Now.Year && x.IsActive == true && x.IsDeleted == false).Select(x => x.YearlyMaintainenceId).FirstOrDefault();
+
+            data = (from exhibitorPaymentDetail in _context.ExhibitorPaymentDetails
+                    where exhibitorPaymentDetail.ExhibitorId == exhibitorId &&
+                    exhibitorPaymentDetail.IsActive == true && exhibitorPaymentDetail.IsDeleted == false
+                    select new GetExhibitorTransactions 
+                    { 
+                      ExhibitorPaymentDetailId=exhibitorPaymentDetail.ExhibitorPaymentId,
+                      PayDate=exhibitorPaymentDetail.PayDate,
+                      TypeOfFee=_context.GlobalCodes.Where(x=>x.GlobalCodeId==exhibitorPaymentDetail.FeeTypeId).Select(x=>x.CodeName).FirstOrDefault(),
+                      Amount=_context.YearlyMaintainenceFee.Where(x=>x.YearlyMaintainenceId==yearlyId && x.IsActive==true && x.IsDeleted==false).Select(x=>x.Amount).FirstOrDefault(),
+                      AmountPaid=exhibitorPaymentDetail.Amount,
+                     
+                    });
+
+            return getAllExhibitorTransactions;
+        }
     }
 }
