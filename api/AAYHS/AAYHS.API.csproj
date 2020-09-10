@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\Resources\Documents\" />
+    <Folder Include="wwwroot\Resources\FinancialDocuments\" />
   </ItemGroup>
 
 

@@ -60,7 +60,7 @@ namespace AAYHS.Core.DTOs.Request
     }
     public class FinancialDocumentRequest
     {
-        public int Exhibitor { get; set; }
+        public int ExhibitorPaymentId { get; set; }
         public List<IFormFile> Documents { get; set; }
     }
     public class DocumentDeleteRequest

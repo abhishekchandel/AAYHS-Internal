@@ -719,7 +719,7 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
-        public MainResponse UploadFinancialDocument(FinancialDocumentRequest financialDocumentRequest)
+        public MainResponse UploadFinancialDocument(FinancialDocumentRequest financialDocumentRequest, string actionBy)
         {
             string uniqueFileName = null;
             string path = null;
@@ -733,7 +733,7 @@ namespace AAYHS.Service.Service
 
                     uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
 
-                    var FilePath = Path.Combine(uploadsFolder, "Resources", "Documents");
+                    var FilePath = Path.Combine(uploadsFolder, "Resources", "FinancialDocuments");
                     path = Path.Combine(FilePath, uniqueFileName);
 
                     string filePath = Path.Combine(FilePath, uniqueFileName);
@@ -744,11 +744,18 @@ namespace AAYHS.Service.Service
 
                     path = path.Replace(uploadsFolder, "").Replace("\\", "/");
 
-                    var exhibitorPayment = new ExhibitorPaymentDetail
+                    var exhibitorPayment = _exhibitorPaymentDetailRepository.GetSingle(x => x.ExhibitorPaymentId == financialDocumentRequest.ExhibitorPaymentId
+                                             && x.IsActive == true && x.IsDeleted == false);
+
+                    if (exhibitorPayment!=null)
                     {
-                        
-                    };
-                    _exhibitorPaymentDetailRepository.Add(exhibitorPayment);
+                        exhibitorPayment.DocumentPath = path;
+                        exhibitorPayment.ModifiedBy = actionBy;
+                        exhibitorPayment.ModifiedDate = DateTime.Now;
+
+                        _exhibitorPaymentDetailRepository.Update(exhibitorPayment);
+                    }
+                    
                 }
 
                 _mainResponse.Message = Constants.DOCUMENT_UPLOAD;
