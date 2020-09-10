@@ -146,4 +146,16 @@ namespace AAYHS.Core.DTOs.Response
         public DateTime Date { get; set; }
         public decimal Amount { get; set; }       
     }
+
+    public class GetUploadedDocuments
+    {
+        public int ScansId { get; set; }
+        public string DocumentType { get; set; }
+        public string DocumentPath { get; set; }
+    }
+
+    public class GetAllUploadedDocuments
+    {
+        public List<GetUploadedDocuments> getUploadedDocuments { get; set; }
+    }
 }

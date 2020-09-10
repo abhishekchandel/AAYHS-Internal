@@ -16,5 +16,6 @@ namespace AAYHS.Repository.IRepository
         GetAllSponsorsOfExhibitor GetAllSponsorsOfExhibitor(int exhibitorId);
         GetSponsorForExhibitor GetSponsorDetail(int sponsorId);
         GetExhibitorFinancials GetExhibitorFinancials(int exhibitorId);
+        GetAllUploadedDocuments GetUploadedDocuments(int exhibitorId);
    }
 }

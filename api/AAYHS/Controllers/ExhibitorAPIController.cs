@@ -308,5 +308,17 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
+        /// <summary>
+        /// This api used to get uploaded document
+        /// </summary>
+        /// <param name="exhibitorId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetUploadedDocuments(int exhibitorId)
+        {
+            _mainResponse = _exhibitorService.GetUploadedDocuments(exhibitorId);
+            _jsonString = Mapper.Convert<GetAllUploadedDocuments>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
     }
 }

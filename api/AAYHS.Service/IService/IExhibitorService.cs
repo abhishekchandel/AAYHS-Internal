@@ -31,5 +31,6 @@ namespace AAYHS.Service.IService
         MainResponse AddSponsorForExhibitor(AddSponsorForExhibitor addSponsorForExhibitor, string actionBy);
         MainResponse GetExhibitorFinancials(int exhibitorId);
         MainResponse UploadDocumentFile(DocumentUploadRequest documentUploadRequest, string actionBy);
+        MainResponse GetUploadedDocuments(int exhibitorId);
    }
 }

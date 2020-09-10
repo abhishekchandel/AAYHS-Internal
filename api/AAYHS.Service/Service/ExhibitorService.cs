@@ -628,5 +628,22 @@ namespace AAYHS.Service.Service
             }
             return _mainResponse;
         }
+
+        public MainResponse GetUploadedDocuments(int exhibitorId)
+        {
+            var documents = _exhibitorRepository.GetUploadedDocuments(exhibitorId);
+
+            if (documents.getUploadedDocuments!=null && documents.getUploadedDocuments.Count()>0)
+            {
+                _mainResponse.GetAllUploadedDocuments = documents;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_DOCUMENT_FOUND;
+                _mainResponse.Success = false;
+            }
+            return _mainResponse;
+        }
   }
 }

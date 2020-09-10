@@ -343,5 +343,26 @@ namespace AAYHS.Repository.Repository
             getExhibitorFinancials.MoneyReceivedTotal = _context.ExhibitorPaymentDetails.Where(x => x.ExhibitorId == exhibitorId && x.IsActive == true && x.IsDeleted == false).Select(x => x.Amount).Sum();
             return getExhibitorFinancials;
         }
+
+        public GetAllUploadedDocuments GetUploadedDocuments(int exhibitorId)
+        {
+            IEnumerable<GetUploadedDocuments> data = null;
+            GetAllUploadedDocuments getAllUploadedDocuments = new GetAllUploadedDocuments();
+
+            data = (from scan in _context.Scans
+                    where scan.ExhibitorId == exhibitorId && scan.IsActive == true && scan.IsDeleted == false
+                    select new GetUploadedDocuments
+                    {
+                        ScansId = scan.ScansId,
+                        DocumentPath = scan.DocumentPath,
+                        DocumentType = _context.GlobalCodes.Where(x => x.GlobalCodeId == scan.DocumentType && x.IsActive == true && x.IsDeleted == false).Select(x=>x.CodeName).FirstOrDefault()
+                    });
+            if (data.Count()>0)
+            {
+                getAllUploadedDocuments.getUploadedDocuments = data.ToList();
+
+            }
+            return getAllUploadedDocuments;
+        }
     }
 }
