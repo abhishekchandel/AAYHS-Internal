@@ -144,8 +144,15 @@ namespace AAYHS.Service.Service
         {
             if (addClassRequest.ClassId == 0)
             {
+                var classNumber = _classRepository.GetSingle(x => x.ClassNumber == addClassRequest.ClassNumber && x.IsActive == true && x.IsDeleted == false);
+                if (classNumber!=null && classNumber.ClassId>0)
+                {
+                    _mainResponse.Message = Constants.CLASS_NUMBER_EXIST;
+                    _mainResponse.Success = false;
+                    return _mainResponse;
+                }
                 var classExist = _classRepository.GetSingle(x => x.Name == addClassRequest.Name && x.AgeGroup == addClassRequest.AgeGroup 
-                                                  && x.ClassNumber==addClassRequest.ClassNumber && x.IsActive==true && x.IsDeleted==false);
+                                                   && x.IsActive==true && x.IsDeleted==false);
                 if (classExist!=null && classExist.ClassId>0)
                 {
                     _mainResponse.Message = Constants.CLASS_EXIST;
@@ -203,8 +210,16 @@ namespace AAYHS.Service.Service
             }
             else
             {
+                var classNumber = _classRepository.GetSingle(x => x.ClassNumber == addClassRequest.ClassNumber && x.IsActive == true && x.IsDeleted == false);
+                if (classNumber != null && classNumber.ClassId > 0)
+                {
+                    _mainResponse.Message = Constants.CLASS_NUMBER_EXIST;
+                    _mainResponse.Success = false;
+                    return _mainResponse;
+                }
+
                 var classExist = _classRepository.GetSingle(x => x.Name == addClassRequest.Name && x.AgeGroup == addClassRequest.AgeGroup
-                                                  && x.ClassNumber == addClassRequest.ClassNumber && x.IsActive == true && x.IsDeleted == false);
+                                                   && x.IsActive == true && x.IsDeleted == false);
                 if (classExist != null && classExist.ClassId > 0)
                 {
                     _mainResponse.Message = Constants.CLASS_EXIST;
@@ -268,6 +283,7 @@ namespace AAYHS.Service.Service
                 ClassId = addClassExhibitor.ClassId,
                 HorseId = addClassExhibitor.HorseId,
                 IsScratch=addClassExhibitor.Scratch,
+                Date= addClassExhibitor.Date,
                 IsActive = true,
                 CreatedBy = actionBy,
                 CreatedDate = DateTime.Now

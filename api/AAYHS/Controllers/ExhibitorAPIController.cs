@@ -321,6 +321,19 @@ namespace AAYHS.API.Controllers
             return new OkObjectResult(_jsonString);
         }
         /// <summary>
+        /// This api used to delete the uploaded document
+        /// </summary>
+        /// <param name="documentDeleteRequest"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        public ActionResult DeleteUploadedDocuments(IEnumerable<DocumentDeleteRequest> documentDeleteRequest)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _exhibitorService.DeleteUploadedDocuments(documentDeleteRequest, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
         /// This api used to get all fees
         /// </summary>
         /// <returns></returns>

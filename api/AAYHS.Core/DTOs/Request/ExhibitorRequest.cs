@@ -24,17 +24,20 @@ namespace AAYHS.Core.DTOs.Request
         public int CityId { get; set; }
         public int StateId { get; set; }
         public string Address { get; set; }
-   }
+        public DateTime Date { get; set; }
+    }
    public class AddExhibitorHorseRequest
    {
         public int ExhibitorId { get; set; }
         public int HorseId { get; set; }
         public int BackNumber { get; set; }
-   }
+        public DateTime Date { get; set; }
+    }
     public class AddExhibitorToClass
     {
         public int ExhibitorId { get; set; }
         public int ClassId { get; set; }
+        public DateTime Date { get; set; }
     }
     public class UpdateScratch
     {
@@ -54,5 +57,15 @@ namespace AAYHS.Core.DTOs.Request
         public int Exhibitor { get; set; }
         public int DocumentType { get; set; }
         public List<IFormFile> Documents { get; set; }
+    }
+    public class FinancialDocumentRequest
+    {
+        public int Exhibitor { get; set; }
+        public List<IFormFile> Documents { get; set; }
+    }
+    public class DocumentDeleteRequest
+    {
+        public int ScanId { get; set; }
+        public string Path { get; set; }
     }
 }

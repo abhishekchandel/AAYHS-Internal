@@ -16,9 +16,7 @@ namespace AAYHS.Data.DBEntities
         public DateTime Year { get; set; }
         public DateTime ShowStartDate { get; set; }
         public DateTime ShowEndDate { get; set; }
-        public DateTime PreEntryCutOffDate { get; set; }
-        public decimal PreEntryFee { get; set; }
-        public decimal PostEntryFee { get; set; }
+        public DateTime PreEntryCutOffDate { get; set; }      
         [Column(TypeName = "varchar(50)")]
         public string Location { get; set; }      
     }

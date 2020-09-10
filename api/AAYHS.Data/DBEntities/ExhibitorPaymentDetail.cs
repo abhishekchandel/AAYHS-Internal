@@ -21,5 +21,6 @@ namespace AAYHS.Data.DBEntities
         [Column(TypeName = "varchar(500)")]
         public string Description { get; set; }
         public DateTime PayDate { get; set; }
+        public string DocumentPath { get; set; }
     }
 }

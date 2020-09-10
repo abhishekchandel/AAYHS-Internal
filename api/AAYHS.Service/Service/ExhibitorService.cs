@@ -94,6 +94,7 @@ namespace AAYHS.Service.Service
                     PrimaryEmail=request.PrimaryEmail,
                     SecondaryEmail=request.SecondaryEmail,
                     Phone=request.Phone,
+                    Date= request.Date,
                     CreatedBy = actionBy,
                     CreatedDate = DateTime.Now,
                     IsActive = true,
@@ -324,6 +325,7 @@ namespace AAYHS.Service.Service
                 ExhibitorId = addExhibitorHorseRequest.ExhibitorId,
                 HorseId=addExhibitorHorseRequest.HorseId,
                 BackNumber=addExhibitorHorseRequest.BackNumber,
+                Date=addExhibitorHorseRequest.Date,
                 CreatedDate=DateTime.Now,
                 CreatedBy= actionBy
             };
@@ -445,6 +447,7 @@ namespace AAYHS.Service.Service
             {
                 ExhibitorId = addExhibitorToClass.ExhibitorId,
                 ClassId = addExhibitorToClass.ClassId,
+                Date= addExhibitorToClass.Date,
                 CreatedBy = actionBy,
                 CreatedDate = DateTime.Now
             };
@@ -648,6 +651,34 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
+        public MainResponse DeleteUploadedDocuments(IEnumerable<DocumentDeleteRequest> documentDeleteRequest, string actionBy)
+        {
+            foreach (var file in documentDeleteRequest)
+            {
+                string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                var FilePath = Path.Combine(uploadsFolder, file.Path);
+                var fileToBeDeleted = uploadsFolder + file.Path;
+
+                if ((System.IO.File.Exists(fileToBeDeleted)))
+                {
+                    System.IO.File.Delete(fileToBeDeleted);
+                }
+
+                var resource = _scanRepository.GetSingle(x => x.ScansId == file.ScanId && x.IsActive==true);
+                if (resource != null)
+                {
+                    resource.IsDeleted = true;
+                    resource.DeletedBy = actionBy;
+                    resource.DeletedDate = DateTime.Now;
+                     _scanRepository.Update(resource);
+
+                }
+            }
+            _mainResponse.Success = true;
+            _mainResponse.Message = Constants.DOCUMENT_DELETED;
+            return _mainResponse;
+        }
+
         public MainResponse GetFees()
         {
             var fees = _exhibitorRepository.GetAllFees();
@@ -687,5 +718,49 @@ namespace AAYHS.Service.Service
             }
             return _mainResponse;
         }
+
+        public MainResponse UploadFinancialDocument(FinancialDocumentRequest financialDocumentRequest)
+        {
+            string uniqueFileName = null;
+            string path = null;
+            if (financialDocumentRequest.Documents != null)
+            {
+                foreach (IFormFile file in financialDocumentRequest.Documents)
+                {
+
+                    string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+
+
+                    uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+
+                    var FilePath = Path.Combine(uploadsFolder, "Resources", "Documents");
+                    path = Path.Combine(FilePath, uniqueFileName);
+
+                    string filePath = Path.Combine(FilePath, uniqueFileName);
+
+
+                    file.CopyTo(new FileStream(filePath, FileMode.Create));
+
+
+                    path = path.Replace(uploadsFolder, "").Replace("\\", "/");
+
+                    var exhibitorPayment = new ExhibitorPaymentDetail
+                    {
+                        
+                    };
+                    _exhibitorPaymentDetailRepository.Add(exhibitorPayment);
+                }
+
+                _mainResponse.Message = Constants.DOCUMENT_UPLOAD;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_DOCUMENT_FOUND;
+                _mainResponse.Success = false;
+            }
+            return _mainResponse;
+        }
+    
   }
 }

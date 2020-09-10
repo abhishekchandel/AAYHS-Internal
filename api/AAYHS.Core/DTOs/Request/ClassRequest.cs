@@ -29,6 +29,7 @@ namespace AAYHS.Core.DTOs.Request
         public int ClassId { get; set; }     
         public int HorseId { get; set; }
         public bool Scratch { get; set; }
+        public DateTime Date { get; set; }
     }
     
     public class SplitRequest

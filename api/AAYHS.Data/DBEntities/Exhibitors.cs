@@ -23,6 +23,7 @@ namespace AAYHS.Data.DBEntities
         public string PrimaryEmail { get; set; }
         public string SecondaryEmail { get; set; }
         public string Phone { get; set; }
+        public DateTime Date { get; set; }
 
     }
 }

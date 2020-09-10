@@ -17,5 +17,6 @@ namespace AAYHS.Data.DBEntities
         public int GroupId { get; set; }       
         public int ExhibitorId { get; set; }
         public string BookedByType { get; set; }
+        public DateTime Date { get; set; }
     }
 }
