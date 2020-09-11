@@ -503,7 +503,7 @@ namespace AAYHS.Service.Service
             var allSponsors = _sponsorRepository.GetAll(x => x.IsActive == true && x.IsDeleted == false);
             var sponsors = _sponsorExhibitorRepository.GetAll(x=>x.ExhibitorId==exhibitorId && x.IsActive==true && x.IsDeleted==false);
 
-            if (sponsors.Count>0)
+            if (allSponsors.Count>0)
             {
                 var _sponsors = allSponsors.Where(x => sponsors.All(y => y.SponsorId != x.SponsorId)).ToList();
                 var _allSponsors = _mapper.Map<List<GetSponsorForExhibitor>>(_sponsors);
