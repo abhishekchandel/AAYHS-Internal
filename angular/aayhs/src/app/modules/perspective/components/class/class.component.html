@@ -199,8 +199,6 @@
 															[ngClass]="getEntriesSort('Horse')"></span></th>
 													<th (click)="sortEntriesData('BirthYear')">Birth Year <span
 															[ngClass]="getEntriesSort('BirthYear')"></span></th>
-													<th>Amount Paid</th>
-													<th>Amount Due</th>
 													<th (click)="sortEntriesData('Scratch')">Scratch <span
 															[ngClass]="getEntriesSort('Scratch')"></span></th>
 													<th class="non-print-element">Remove</th>
@@ -216,8 +214,6 @@
 
 														</td>
 														<td data-label="Birth Year">{{entry.BirthYear}}</td>
-														<td data-label="Amount Paid">{{entry.AmountPaid}}</td>
-														<td data-label="Amount Due">{{entry.AmountDue}}</td>
 														<td data-label="Scratch">
 															<div class="scratchimage"
 																(click)="confirmScratch(i,!entry.Scratch,entry.ExhibitorClassId)">
@@ -326,8 +322,6 @@
 													<th>Birth Year</th>
 													<th>Horse Name</th>
 													<th>City, St. Zip</th>
-													<th>Amount paid</th>
-													<th>Amount Due</th>
 													<th class="non-print-element">Update</th>
 													<th class="non-print-element">Remove</th>
 												</tr>
@@ -370,15 +364,6 @@
 
 														<td *ngIf="!showEditInfo || (updatemode==true && updateRowIndex!=i)" data-label="City, St. Zip">{{result.Address}}</td>
 														<td *ngIf="showEditInfo && updatemode==true && updateRowIndex==i" data-label="City, St. Zip">{{editExhibitorInfo.Address}}</td>
-
-
-														<td *ngIf="!showEditInfo || (updatemode==true && updateRowIndex!=i)" data-label="Amount paid">{{result.AmountPaid}}</td>
-														<td *ngIf="showEditInfo &&  updatemode==true && updateRowIndex==i" data-label="Amount paid">{{editExhibitorInfo.AmountPaid}}</td>
-
-
-														<td *ngIf="!showEditInfo || (updatemode==true && updateRowIndex!=i)" data-label="Amount Due">{{result.AmountDue}}</td>
-														<td *ngIf="showEditInfo && updatemode==true && updateRowIndex==i" data-label="Amount Due">{{editExhibitorInfo.AmountDue}}</td>
-
 
 														<td data-label="Update" class="non-print-element">
                                                             <button
@@ -435,8 +420,6 @@
 														<td>{{exhibitorInfo.BirthYear}}</td>
 														<td>{{exhibitorInfo.HorseName}}</td>
 														<td>{{exhibitorInfo.Address}}</td>
-														<td>{{exhibitorInfo.AmountPaid}}</td>
-														<td>{{exhibitorInfo.AmountDue}}</td>
 														<td> 
 														</td>
 														<td></td>

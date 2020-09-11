@@ -111,12 +111,51 @@ export class ExhibitorService {
     }
 
     addSponsorToExhibitor(data){
-      return this.http.post<any>(`${this.api}ExhibitorAPI/AddSponsorForExhibitor`,data);
+      return this.http.post<any>(`${this.api}ExhibitorAPI/AddUpdateSponsorForExhibitor`,data);
     }
 
     getSponsordetails(id:number){
       return this.http.get<any>(`${this.api}ExhibitorAPI/GetSponsorDetail?sponsorId=${id}`);
     }
 
-   
+   //financial
+   getbilledFeesSummary(id:number){
+    return this.http.get<any>(`${this.api}ExhibitorAPI/GetExhibitorFinancials?exhibitorId=${id}`);
+  }
+
+  addFee(data){
+    return this.http.put<any>(`${this.api}ExhibitorAPI/UploadDocumentFile`,data);
+  }
+
+  getFees(){
+    return this.http.get<any>(`${this.api}ExhibitorAPI/GetFees`);
+  }
+
+  deleteFee(id:number){
+    return this.http.delete<any>(`${this.api}ExhibitorAPI/DeleteExhibitor?exhibitorId=${id}`);
+  }
+
+  uploadFinancialDocument(data){
+    return this.http.put<any>(`${this.api}ExhibitorAPI/UploadFinancialDocument`,data);
+  }
+
+  //scan
+  uploadDocument(data){
+    return this.http.put<any>(`${this.api}ExhibitorAPI/UploadDocumentFile`,data);
+  }
+
+  getScannedDocuments(id:number){
+    return this.http.get<any>(`${this.api}ExhibitorAPI/GetUploadedDocuments?exhibitorId=${id}`);
+    
+  }
+
+  getDocumentTypes(){
+    return this.http.get<any>(`${this.api}CommonAPI/GetGlobalCode?categoryName=DocumentType`);
+
+  }
+
+  deleteDocument(data){
+    return this.http.post<any>(`${this.api}ExhibitorAPI/DeleteUploadedDocuments`,data);
+  }
+  
 }

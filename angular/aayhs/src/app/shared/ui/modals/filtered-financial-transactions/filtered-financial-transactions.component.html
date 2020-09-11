@@ -1,0 +1,73 @@
+<div id="viewDetailsCol" class="modal fade trashPopup" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <button (click)="onDismiss()" type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">View Details</h4>
+        </div>
+        <div class="modal-body text-center emailSubmit">
+             <div class="gridTable">
+                  <div class="table-responsive">
+                    <table class="table table-bordered tableBodyScroll">
+                      <thead>
+                         <tr>
+                            <th>Date</th> 
+                            <th>Pre/Post</th> 
+                            <th>Amt Charged</th>
+                            <th>Amt Received</th>
+                            <th>Refund</th>
+                            <th>Remove</th> 
+                         </tr>	
+                      </thead> 
+                      <perfect-scrollbar class="nicescrollBar-2">
+                          <tbody>
+                            <tr>
+                                <td data-label="date">03/13/20</td>
+                                <td data-label="Pre/Post">
+                                    <div class="prePostField">
+                                        <label class="radioBtn ng-star-inserted">Pre 
+                                            <input type="radio" checked="checked" name="fee.CodeName" value="2011" class="ng-star-inserted">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <label class="radioBtn ng-star-inserted">Post 
+                                            <input type="radio" name="fee.CodeName" value="2012" class="ng-star-inserted">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td data-label="Amt Charged">90.00</td>
+                                <td data-label="Amt Received">95.00</td>
+                                <td data-label="Refund">95.00</td>
+                                <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+                            </tr>
+                            <tr>
+                                <td data-label="date">03/13/20</td>
+                                <td data-label="Pre/Post">
+                                    <div class="prePostField">
+                                        <label class="radioBtn ng-star-inserted">Pre 
+                                            <input type="radio" checked="checked" name="fee.CodeName" value="2011" class="ng-star-inserted">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <label class="radioBtn ng-star-inserted">Post 
+                                            <input type="radio" name="fee.CodeName" value="2012" class="ng-star-inserted">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td data-label="Amt Charged">90.00</td>
+                                <td data-label="Amt Received">95.00</td>
+                                <td data-label="Refund">95.00</td>
+                                <td data-label="Remove"><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+                            </tr>
+                          </tbody>
+                        </perfect-scrollbar>
+                    </table> 
+                  </div>
+               </div>
+            <!--button class="btn btn-red btnCss">Submit</button-->
+        </div>
+        </div>
+
+    </div>		
+    
+</div>

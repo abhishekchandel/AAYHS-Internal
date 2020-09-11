@@ -12,11 +12,11 @@ namespace AAYHS.Data.DBEntities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public int YearlyMaintainenceFeeId { get; set; }
-        public int YearlyMaintainenceId { get; set; }
-        public string TimeFrameType{ get; set; }
+        public int YearlyMaintainenceId { get; set; }       
         public int FeeTypeId { get; set; }   
         public decimal PreEntryFee { get; set; }
         public decimal PostEntryFee { get; set; }
         public decimal Amount { get; set; }
+        public decimal RefundPercentage { get; set; }
     }
 }

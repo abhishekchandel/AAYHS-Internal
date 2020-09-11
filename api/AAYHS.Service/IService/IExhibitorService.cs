@@ -32,8 +32,10 @@ namespace AAYHS.Service.IService
         MainResponse GetExhibitorFinancials(int exhibitorId);
         MainResponse UploadDocumentFile(DocumentUploadRequest documentUploadRequest, string actionBy);
         MainResponse GetUploadedDocuments(int exhibitorId);
+        MainResponse DeleteUploadedDocuments(DocumentDeleteRequest documentDeleteRequest, string actionBy);
         MainResponse GetFees();
         MainResponse RemoveExhibitorTransaction(int exhibitorPaymentId, string actionBy);
-        MainResponse DeleteUploadedDocuments(IEnumerable<DocumentDeleteRequest> documentDeleteRequest, string actionBy);
+        MainResponse UploadFinancialDocument(FinancialDocumentRequest financialDocumentRequest, string actionBy);
+        MainResponse GetAllExhibitorTransactions(int exhibitorId);
    }
 }

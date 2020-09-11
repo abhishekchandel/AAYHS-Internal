@@ -1890,3 +1890,73 @@ span{
         }
     }
 }
+
+#emailSubmit {
+    .emailSubmit {
+    padding: 30px 15px 30px;
+    .form-control {
+    border: 1px solid #a0b8f9;
+    font-size: 0.75rem;
+    padding: 8px 15px;
+    line-height: 14px;
+    height: auto;
+    background-color: #b5cbf7;
+    color: #000;
+    }
+    }
+    }
+
+   .ftButton {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    
+        .fileUpload {
+            background-color: transparent;
+            border: none;
+            font-size: 18px;
+            position: relative;
+            cursor: pointer;
+            width: 20px;
+            display: inline-block;
+            .fa {
+                position: absolute;
+                top: 0;
+                left: 0;
+                cursor: pointer;
+            }
+            input[type="file"] {
+                width: 20px;
+                position: relative;
+                z-index: 99;
+                opacity: 0;
+                cursor: pointer;
+            }
+        }
+    }
+    .ps-content {
+        margin-bottom: 5px;
+    }
+
+    #viewDetailsCol{
+        .modal-dialog{
+                max-width: 900px;
+            .modal-body {
+                padding: 30px 15px;
+                font-size: 18px;
+                min-height: 250px;
+                    .prePostField {
+                    flex-direction: row;
+                    flex-flow: nowrap;
+                }
+                @media(max-width:991px){
+                    .table-responsive {
+                        .table {
+                            width: 900px;
+                        }
+                    }
+                }
+            }
+        }
+        
+    }

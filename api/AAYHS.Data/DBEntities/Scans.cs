@@ -14,6 +14,7 @@ namespace AAYHS.Data.DBEntities
         public int ScansId { get; set; }
         public int ExhibitorId { get; set; }
         public int DocumentType { get; set; }
+        [Column(TypeName = "varchar(5000)")]
         public string DocumentPath { get; set; }
     }
 }

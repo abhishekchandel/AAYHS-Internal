@@ -325,8 +325,8 @@ namespace AAYHS.API.Controllers
         /// </summary>
         /// <param name="documentDeleteRequest"></param>
         /// <returns></returns>
-        [HttpDelete]
-        public ActionResult DeleteUploadedDocuments(IEnumerable<DocumentDeleteRequest> documentDeleteRequest)
+        [HttpPost]
+        public ActionResult DeleteUploadedDocuments([FromBody] DocumentDeleteRequest documentDeleteRequest)
         {
             string actionBy = User.Identity.Name;
             _mainResponse = _exhibitorService.DeleteUploadedDocuments(documentDeleteRequest, actionBy);
@@ -355,6 +355,31 @@ namespace AAYHS.API.Controllers
             string actionBy = User.Identity.Name;
             _mainResponse = _exhibitorService.RemoveExhibitorTransaction(exhibitorPaymentId, actionBy);
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to upload financial document 
+        /// </summary>
+        /// <param name="documentUploadRequest"></param>
+        /// <returns></returns>
+        [HttpPut]
+        public ActionResult UploadFinancialDocument([FromForm] FinancialDocumentRequest financialDocumentRequest)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _exhibitorService.UploadFinancialDocument(financialDocumentRequest, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to get all finacial transactions
+        /// </summary>
+        /// <param name="exhibitorId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetAllExhibitorTransactions(int exhibitorId)
+        {
+            _mainResponse = _exhibitorService.GetAllExhibitorTransactions(exhibitorId);
+            _jsonString = Mapper.Convert<GetAllExhibitorTransactions>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
     }
