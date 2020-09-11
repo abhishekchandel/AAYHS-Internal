@@ -436,9 +436,9 @@ namespace AAYHS.Repository.Repository
             IEnumerable<GetExhibitorTransactions> data = null;
             GetAllExhibitorTransactions getAllExhibitorTransactions = new GetAllExhibitorTransactions();
 
-            var yearlyId = _context.YearlyMaintainence.Where(x => x.Year.Year == DateTime.Now.Year && x.IsActive == true && x.IsDeleted == false).FirstOrDefault();
+            var exhibitorSponsor =_context.SponsorExhibitor.Where(x => x.ExhibitorId == exhibitorId && x.IsActive == true && x.IsDeleted == false);
 
-            data = (from exhibitorPaymentDetail in _context.ExhibitorPaymentDetails
+            data = (from exhibitorPaymentDetail in _context.ExhibitorPaymentDetail
                     where exhibitorPaymentDetail.ExhibitorId == exhibitorId &&
                     exhibitorPaymentDetail.IsActive == true && exhibitorPaymentDetail.IsDeleted == false
                     select new GetExhibitorTransactions 
@@ -453,6 +453,14 @@ namespace AAYHS.Repository.Repository
                     });
 
             getAllExhibitorTransactions.getExhibitorTransactions = data.ToList();
+            if (exhibitorSponsor.Count()!=0)
+            {
+                getAllExhibitorTransactions.IsRefund = true;
+            }
+            else
+            {
+                getAllExhibitorTransactions.IsRefund = false;
+            }
             return getAllExhibitorTransactions;
         }
     }

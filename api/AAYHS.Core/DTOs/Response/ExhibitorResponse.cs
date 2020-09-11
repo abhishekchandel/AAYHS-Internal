@@ -185,5 +185,6 @@ namespace AAYHS.Core.DTOs.Response
     public class GetAllExhibitorTransactions
     {
         public List<GetExhibitorTransactions> getExhibitorTransactions { get; set; }
+        public bool IsRefund { get; set; }
     }
 }

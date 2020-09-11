@@ -68,4 +68,14 @@ namespace AAYHS.Core.DTOs.Request
         public int ScanId { get; set; }
         public string Path { get; set; }
     }
+    public class AddFinancialTransactionRequest
+    {
+        public int FeeTypeId { get; set; }
+        public int ExhibitorId { get; set; }
+        public decimal Amount { get; set; }
+        public string TimeFrameType { get; set; }                 
+        public DateTime PayDate { get; set; }           
+        public decimal AmountPaid { get; set; }
+        public decimal RefundAmount { get; set; }
+    }
 }

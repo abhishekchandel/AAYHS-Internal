@@ -382,5 +382,18 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<GetAllExhibitorTransactions>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
+        /// <summary>
+        /// This api used to add financial transaction
+        /// </summary>
+        /// <param name="addFinancialTransactionRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult AddFinancialTransaction(AddFinancialTransactionRequest addFinancialTransactionRequest)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _exhibitorService.AddFinancialTransaction(addFinancialTransactionRequest,actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
     }
 }

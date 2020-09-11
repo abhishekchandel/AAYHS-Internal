@@ -769,6 +769,25 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
+        public MainResponse AddFinancialTransaction(AddFinancialTransactionRequest addFinancialTransactionRequest, string actionBy)
+        {
+            var financialTransaction = new ExhibitorPaymentDetail()
+            {
+                ExhibitorId= addFinancialTransactionRequest.ExhibitorId,
+                PayDate = addFinancialTransactionRequest.PayDate,
+                FeeTypeId = addFinancialTransactionRequest.FeeTypeId,
+                TimeFrameType= addFinancialTransactionRequest.TimeFrameType,
+                Amount= addFinancialTransactionRequest.Amount,
+                AmountPaid= addFinancialTransactionRequest.AmountPaid,
+                RefundAmount= addFinancialTransactionRequest.RefundAmount,
+                CreatedBy=actionBy,
+                CreatedDate=DateTime.Now
+            };
+            _exhibitorPaymentDetailRepository.Add(financialTransaction);
+            _mainResponse.Message = Constants.FINANCIAL_TRANSACTION_ADDED;
+            _mainResponse.Success = true;
+            return _mainResponse;
+        }
 
   }
 }
