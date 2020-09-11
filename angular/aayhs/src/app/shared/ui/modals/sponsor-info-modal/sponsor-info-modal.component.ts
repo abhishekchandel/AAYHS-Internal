@@ -25,7 +25,6 @@ sponsorDetails:{
     private snackBar: MatSnackbarComponent) { }
 
   ngOnInit(): void {
-    debugger;
     this.sponsorDetails=this.data;
   }
 

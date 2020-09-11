@@ -9,14 +9,15 @@
         </div>
         <div class="modal-body text-center">
             <!-- financial transation -->
+            <form #feeForm="ngForm" (ngSubmit)="feeForm.valid && addFee()" class="formScroll">
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="dataDesc gridTable rmStrip">
                             <table class="table table-bordered tableBodyScroll">
                                 <tbody>
                                     <tr>
-                                        <td><span class="blueBox"></span><b>Exhibitor:</b> 3341  </td>
-                                        <td><span class="blueBox"></span><b>Exhibitor Name:</b> Grace Hopper</td>
+                                        <td><span class="blueBox"></span><b>Exhibitor: </b> {{exhibitorDetails.ExhibitorId}}  </td>
+                                        <td><span class="blueBox"></span><b>Exhibitor Name: </b> {{exhibitorDetails.ExhibitorName}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -45,11 +46,11 @@
                                             <td>
                                                 <div class="prePostField">
                                                     <label class="radioBtn">Pre
-                                                        <input type="radio" checked="checked" name="radio">
+                                                        <input type="radio" checked="checked" name="timeframe">
                                                         <span class="checkmark"></span>
                                                     </label>
                                                     <label class="radioBtn">Post
-                                                        <input type="radio" name="radio">
+                                                        <input type="radio" name="timeframe">
                                                         <span class="checkmark"></span>
                                                     </label>
                                                 </div>
@@ -59,112 +60,79 @@
                                             <td></td>
                                             <td>
                                                 <div class="ftButton">
-                                                    <a href="#"><i class="fa fa-qrcode" aria-hidden="true"></i></a>
+                                                    <span class="fileUpload">
+                                                        <input type="file"  name="file" (change)="uploadDocument($event)" />
+                                                        <i class="fa fa-upload" aria-hidden="true"></i>
+                                                    </span> 
                                                     <a href="#"><i class="fa fa-eye" aria-hidden="true"></i></a>
                                                 </div>
                                             </td>
-                                            <td><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td>Additional Program</td>
                                             <td>
-                                                <div class="prePostField">
+                                                <button type="button" class="icon" (click)="deleteFee(1)"><span></span> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
+
+                                            </td>
+                                        </tr>                                      
+                                        <tr>
+                                            <td>
+                                                <span *ngIf="fee.FeeType">
+                                                <mat-form-field>
+													<input matInput [matDatepicker]="scheduleDatePicker"
+														 class="form-control" [value]="date"
+														name="feeDate" 
+														(dateChange)="handleFeeDateSelection()"
+														 readonly>
+														
+													<mat-datepicker-toggle matSuffix [for]="scheduleDatePicker">
+													</mat-datepicker-toggle>
+													<mat-datepicker #scheduleDatePicker></mat-datepicker>													
+                                                </mat-form-field>
+                                            </span>
+                                            </td>
+                                            <td>
+                                                <select class="form-control" name="fee" required
+                                                [(ngModel)]="fee.FeeType" (change)="setFeeType($event)" #feeControl="ngModel">
+                                                <option [ngValue]="null">
+                                                    Select Fee
+                                                </option>
+                                                <option *ngFor="let fee of feeDetails"
+                                                    [value]="fee.FeeTypeId">{{fee.FeeType}}
+                                                </option>
+                                            </select>
+                                            <span class="help-block"
+                                                *ngIf="(feeForm.submitted || feeControl.touched) && feeControl.invalid">Please
+                                                select fee</span> 
+                                            </td>
+                                            <td>
+                                                <div *ngIf="fee.FeeType" class="prePostField">
                                                     <label class="radioBtn">Pre
-                                                        <input type="radio" checked="checked" name="radio">
+                                                        <input type="radio" checked="checked" [(ngModel)]="fee.Timeframe"  value="Pre" name="radio">
                                                         <span class="checkmark"></span>
                                                     </label>
                                                     <label class="radioBtn">Post
-                                                        <input type="radio" name="radio">
+                                                        <input type="radio" value="Post" [(ngModel)]="fee.Timeframe" name="radio">
                                                         <span class="checkmark"></span>
                                                     </label>
-                                                </div>
+                                                </div>  
                                             </td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
                                             <td>
-                                                <div class="ftButton">
-                                                    <a href="#"><i class="fa fa-qrcode" aria-hidden="true"></i></a>
-                                                    <a href="#"><i class="fa fa-eye" aria-hidden="true"></i></a>
-                                                </div>
+                                            <span *ngIf="fee.FeeType">
+                                            <input appOnlynumber #amountControl="ngModel" [(ngModel)]="fee.Amount" type="text"  class="form-control" name="amountControl"  />    
+                                        </span> 
                                             </td>
-                                            <td><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td>Stall</td>
                                             <td>
-                                                <div class="prePostField">
-                                                    <label class="radioBtn">Pre
-                                                        <input type="radio" checked="checked" name="radio">
-                                                        <span class="checkmark"></span>
-                                                    </label>
-                                                    <label class="radioBtn">Post
-                                                        <input type="radio" name="radio">
-                                                        <span class="checkmark"></span>
-                                                    </label>
-                                                </div>
+                                                <span *ngIf="fee.FeeType">
+                                           <input appOnlynumber #paidControl="ngModel" [(ngModel)]="fee.Paid" required type="text"  class="form-control" name="paid"  /> 
+                                           <span class="help-block"
+                                            *ngIf="(feeForm.submitted || paidControl.touched) && paidControl.invalid">
+                                            Please enter amount
+                                          </span>  
+                                          </span>    
                                             </td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
                                             <td>
-                                                <div class="ftButton">
-                                                    <a href="#"><i class="fa fa-qrcode" aria-hidden="true"></i></a>
-                                                    <a href="#"><i class="fa fa-eye" aria-hidden="true"></i></a>
-                                                </div>
-                                            </td>
-                                            <td><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td>Additional Program</td>
-                                            <td>
-                                                <div class="prePostField">
-                                                    <label class="radioBtn">Pre
-                                                        <input type="radio" checked="checked" name="radio">
-                                                        <span class="checkmark"></span>
-                                                    </label>
-                                                    <label class="radioBtn">Post
-                                                        <input type="radio" name="radio">
-                                                        <span class="checkmark"></span>
-                                                    </label>
-                                                </div>
+                                                {{fee.Refund}}
                                             </td>
                                             <td></td>
                                             <td></td>
-                                            <td></td>
-                                            <td>
-                                                <div class="ftButton">
-                                                    <a href="#"><i class="fa fa-qrcode" aria-hidden="true"></i></a>
-                                                    <a href="#"><i class="fa fa-eye" aria-hidden="true"></i></a>
-                                                </div>
-                                            </td>
-                                            <td><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2">
-                                                <select class="dynDataSeclect">
-                                                    <option value="null">Select</option> 
-                                                    <option value="null">Additional Program</option> 
-                                                    <option value="null">Class Entry</option>  
-                                                    <option value="null">Stall</option>  
-                                                    <option value="null">Tack</option> 
-                                                    <option value="null">Ad Sponsor Refund</option>                                                                                                
-                                                </select>
-                                            </td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td>
-                                                <div class="ftButton">
-                                                    <a href="#"><i class="fa fa-qrcode" aria-hidden="true"></i></a>
-                                                    <a href="#"><i class="fa fa-eye" aria-hidden="true"></i></a>
-                                                </div>
-                                            </td>
-                                            <td><div class="icon" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
                                         </tr>
                                                         
                                     </tbody>
@@ -172,15 +140,17 @@
                             </table>
                         </div>
                     </div>
-                </div>
-         
-
         </div>
         <div class="modal-footer text-center">
-            <button class="btn btn-red btnCss roundBtn">+ Fee</button>
-            <button class="btn btn-red btnCss roundBtn">Submit</button>
+            <!-- <button class="btn btn-red btnCss roundBtn">+ Fee</button> -->
+            <button type="submit" class="btn btn-red btnCss roundBtn">Submit</button>
         </div>
+    </form>
         </div>
 
     </div>
+</div>
+ <!----> 
+ <div class="loaderWrapper" *ngIf="loading">
+    <div class="loader"></div>
 </div>

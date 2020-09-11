@@ -10,6 +10,11 @@ import { MatTabGroup } from '@angular/material/tabs'
 import {GlobalService} from '../../../../core/services/global.service'
 import { SponsorInfoModalComponent} from '../../../../shared/ui/modals/sponsor-info-modal/sponsor-info-modal.component'
 import { NgForm } from '@angular/forms';
+import {TypesList} from '../../../../core/models/sponsor-model';
+import { SponsorService} from '../../../../core/services/sponsor.service';
+import { BaseUrl } from 'src/app/config/url-config';
+import { FilteredFinancialTransactionsComponent } from 'src/app/shared/ui/modals/filtered-financial-transactions/filtered-financial-transactions.component';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-exhibitor',
@@ -22,6 +27,8 @@ export class ExhibitorComponent implements OnInit {
   @ViewChild('exhibitorInfoForm') exhibitorInfoForm: NgForm;
   @ViewChild('horsesForm') horsesForm: NgForm;
   @ViewChild('classesForm') classesForm: NgForm;
+  @ViewChild('sponsorsForm') sponsorsForm: NgForm;
+  @ViewChild('scanForm') scanForm: NgForm;
 
   searchTerm:string;
   maxyear: any;
@@ -53,6 +60,28 @@ export class ExhibitorComponent implements OnInit {
   linkedSponsorId:number=null;
   addnumber:number=null;
   addType:string=null;
+  sponsorTypes:any
+  sponsortypeId=null;
+  showClasses=false;
+  typeList:any=[];
+  typeId:string=null;
+  showAds=false;
+  sponsorClassesList:any
+  UnassignedSponsorClasses:any
+  adTypeId:number=null;
+  feesSummary:any;
+  AdTypes:any;
+  myFiles:File;
+  documentTypeId:any;
+  pdf:any;
+  feeBilledTotal:any;
+  documentTypes:any;
+  documentId:number=null;
+  scannedDocuments:any;
+  horseDate:any;
+  classDate:any;
+  //for binding images with server url
+  filesUrl = BaseUrl.filesUrl;
   baseRequest: BaseRecordFilterRequest = {
     Page: 1,
     Limit: 5,
@@ -99,7 +128,8 @@ export class ExhibitorComponent implements OnInit {
             public dialog: MatDialog,
             private exhibitorService: ExhibitorService,
             private snackBar: MatSnackbarComponent,
-            private data: GlobalService
+            private data: GlobalService,
+            private sponsorService: SponsorService
             ) { }
 
   ngOnInit(): void {
@@ -110,11 +140,19 @@ export class ExhibitorComponent implements OnInit {
     });    this.getAllStates();
     this.getAllGroups();
     this.setYears();
+    this.getAllAdTypes();
+    this.getDocumentTypes();
   }
 
   showFinancialTransaction(){
+    debugger;
+    var data={
+      ExhibitorId:this.exhibitorInfo.ExhibitorId,
+      ExhibitorName:this.exhibitorInfo.FirstName + this.exhibitorInfo.LastName
+    }
     const dialogRef = this.dialog.open(FinancialTransactionsComponent, {
       maxWidth: "400px",
+      data
     });
     dialogRef.afterClosed().subscribe(dialogResult => {
       this.result = dialogResult;
@@ -148,6 +186,9 @@ export class ExhibitorComponent implements OnInit {
     this.getAllClasses(id);
     this.getExhibitorSponsors(id);
     this.getAllSponsors(id);
+    this.getAllSponsorTypes();
+    this.getbilledFeesSummary(id);
+    this.getScannedDocuments(id);
   }
 
   resetForm(){
@@ -432,7 +473,9 @@ addHorseToExhibitor(){
   var addHorse = {
     exhibitorId: this.exhibitorInfo.ExhibitorId,
     horseId:Number(this.linkedHorseId),
-    backNumber: this.backNumberLinked !=null ? Number(this.backNumberLinked) : this.exhibitorInfo.BackNumber
+    backNumber: this.backNumberLinked !=null ? Number(this.backNumberLinked) : this.exhibitorInfo.BackNumber,
+    isFirstBackNumber:this.isFirstBackNumber,
+    date:this.horseDate
   }
   this.exhibitorService.addHorseToExhibitor(addHorse).subscribe(response => {
     this.loading = false;
@@ -579,6 +622,7 @@ addClassToExhibitor(){
   var addClass = {
     exhibitorId: this.exhibitorInfo.ExhibitorId,
     classId:Number(this.linkedClassId),
+    date:this.classDate
   }
   this.exhibitorService.addExhibitorToClass(addClass).subscribe(response => {
     this.loading = false;
@@ -600,6 +644,7 @@ resetLinkClass(){
   this.classDetails.IsScratch=null;
   this.showScratch=false;
 }
+
 
 getExhibitorSponsors(id){
   return new Promise((resolve, reject) => {
@@ -660,15 +705,19 @@ getAllSponsors(id){
 }
 
 addSponsorToExhibitor(){
+  debugger;
   this.loading = true;
   var addSponsor = {
     exhibitorId: this.exhibitorInfo.ExhibitorId,
-    sponsorId:Number(this.linkedClassId),
+    sponsorId:Number(this.linkedSponsorId),
+    sponsorTypeId:this.sponsortypeId,
+    AdTypeId:this.adTypeId,
+    typeId:this.typeId!=null ?this.typeId:""
   }
   this.exhibitorService.addSponsorToExhibitor(addSponsor).subscribe(response => {
     this.loading = false;
-    this.resetLinkClass();
-    this.classesForm.resetForm({ classControl: null });
+    this.resetLinkSponsor();
+    this.sponsorsForm.resetForm({ addNumberControl: null ,typeControl:null,addTypeControl:null,});
     this.getExhibitorSponsors(this.exhibitorInfo.ExhibitorId);
     this.getAllSponsors(this.exhibitorInfo.ExhibitorId);
     this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
@@ -677,6 +726,22 @@ addSponsorToExhibitor(){
     this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
     this.loading = false;
   })
+}
+
+resetLinkSponsor(){
+  this.typeId=null;
+  this.adTypeId=null;
+  this.linkedSponsorId=null;
+  this.sponsortypeId=null;
+  this.sponsorDetails.Email=null,
+  this.sponsorDetails.AmountReceived=null,
+  this.sponsorDetails.SponsorId=null,
+  this.sponsorDetails.SponsorName=null,
+  this.sponsorDetails.ContactName=null,
+  this.sponsorDetails.Phone=null,
+  this.sponsorDetails.Address=null,
+  this.sponsorDetails.City=null,
+  this.sponsorDetails.State=null
 }
 
 getSponsorDetails(id){
@@ -734,4 +799,213 @@ showSponsorInfo(sponsor,isNew){
   dialogRef.afterClosed().subscribe(dialogResult => {    
   });
 }
+
+getAllSponsorTypes() {
+  this.loading = true;
+  this.sponsorTypes=null;
+  this.sponsorService.getAllTypes('SponsorTypes').subscribe(response => {
+    debugger
+    if(response.Data!=null && response.Data.totalRecords>0)
+    {
+   this.sponsorTypes = response.Data.globalCodeResponse;
+    }
+    this.loading = false;
+  }, error => {
+    this.loading = false;
+  })
+}
+
+setSponsorType(id){
+  this.sponsortypeId=Number(id);
+  this.typeList=[];
+  this.typeId=null;
+  if(this.sponsorTypes!=null && this.sponsorTypes!=undefined && this.sponsortypeId!=null&& this.sponsortypeId>0)
+  {
+  
+    var sponsorTypename=this.sponsorTypes.filter((x) => { return x.GlobalCodeId == this.sponsortypeId; });
+   
+    if(sponsorTypename[0].CodeName=="Class")
+    {
+      this.loading=true;
+      this.showClasses=true;
+      this.showAds=false;
+      
+      //get sponsor classes
+      this.sponsorService.GetSponsorClasses(Number(this.linkedSponsorId)).subscribe(response=>{ 
+        if(response.Data!=null && response.Data.TotalRecords>0)
+        {
+        this.sponsorClassesList = response.Data.sponsorClassesListResponses;
+        }
+        this.loading=false;
+      },error=>{
+        this.loading=false;
+      })
+
+  }
+    if(sponsorTypename[0].CodeName=="Ad")
+    {
+      this.showClasses=false;
+      this.showAds=true;
+    }
+  }
+}
+
+setType(value){
+  this.typeId=value;
+}
+
+getbilledFeesSummary(id){
+  this.loading = true;
+  this.exhibitorService.getbilledFeesSummary(id).subscribe(response => {
+    this.feesSummary = response.Data.exhibitorFeesBilled;
+    this.feeBilledTotal=response.Data.FeeBilledTotal
+    this.loading = false;
+  }, error => {
+    this.loading = false;
+    this.feesSummary =null;
+  })
+}
+
+getAllAdTypes() {
+  this.loading = true;
+  this.AdTypes=null;
+  this.sponsorService.getAllTypes('AdTypes').subscribe(response => {
+    if(response.Data!=null && response.Data.totalRecords>0)
+    {
+   this.AdTypes = response.Data.globalCodeResponse;
+    }
+    this.loading = false;
+  }, error => {
+    this.loading = false;
+  })
+}
+
+setAdType(id){
+  this.adTypeId=Number(id);
+}
+
+uploadDocument(){
+  if(this.exhibitorInfo.ExhibitorId==null){
+    this.snackBar.openSnackBar('Please select the exhibitor', 'Close', 'red-snackbar');
+    return false;
+  }
+   const formData :any= new FormData();
+   this.loading = true;  
+   formData.append('exhibitor',this.exhibitorInfo.ExhibitorId);
+   formData.append('documentType',this.documentId);
+   formData.append('documents', this.myFiles);
+      this.exhibitorService.uploadDocument(formData).subscribe(response => {
+       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
+       this.getScannedDocuments(this.exhibitorInfo.ExhibitorId);
+      this.scanForm.resetForm()
+      this.documentId=null;
+       this.myFiles=null 
+       this.loading = false;     
+     }
+     , error => {
+       this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
+       this.loading = false;
+
+     });
+}
+
+onFileChange($event) {
+      this.myFiles=($event.target.files[0]);
+      var reader = new FileReader();
+      const file = $event.target.files[0];
+      reader.readAsDataURL(file);
+    
+   
+}
+
+getDocumentTypes() {
+  this.loading = true;
+  this.exhibitorService.getDocumentTypes().subscribe(response => {
+    this.documentTypes = response.Data.globalCodeResponse;
+    this.loading = false;
+  }, error => {
+    this.loading = false;
+
+  }
+  )
+}
+
+setDocumentType(value){
+  this.documentId=Number(value)
+}
+
+getScannedDocuments(id){
+  this.loading = true;
+  this.exhibitorService.getScannedDocuments(id).subscribe(response => {
+    this.scannedDocuments = response.Data.getUploadedDocuments;
+    this.loading = false;
+  }, error => {
+    this.loading = false;
+    this.scannedDocuments =null;
+  })
+}
+
+viewDocument(path){
+  window.open(this.filesUrl+path.replace(/\s+/g, '%20').toLowerCase(), '_blank');
+
+}
+
+openTransactionDetails(id){
+  var data={
+    feeTypeId:id,
+    exhibitorId:this.exhibitorInfo.ExhibitorId
+  }
+  const dialogRef = this.dialog.open(FilteredFinancialTransactionsComponent, {
+    maxWidth: "400px",
+    data
+  });
+  dialogRef.afterClosed().subscribe(dialogResult => {    
+  });
+}
+
+handleHorseDate(){
+  this.horseDate = moment(this.horseDate).format('YYYY-MM-DD');
+}
+
+handleClassDate(){
+  this.classDate = moment(this.horseDate).format('YYYY-MM-DD');
+}
+
+confirmRemoveDocument(id,path): void {
+  const message = `Are you sure you want to remove the document?`;
+  const dialogData = new ConfirmDialogModel("Confirm Action", message);
+  const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    maxWidth: "400px",
+    data: dialogData
+  });
+  dialogRef.afterClosed().subscribe(dialogResult => {
+    this.result = dialogResult;
+    if (this.result) {
+      this.deleteDocument(id,path)
+    }
+  });
+}
+
+  deleteDocument(id,path){
+    this.loading = true;
+    var document={
+      scanId:id,
+      path:path
+    }
+    debugger;
+    this.exhibitorService.deleteDocument(document).subscribe(response => {
+      this.loading = false;
+      this.scanForm.resetForm();
+      this.documentId=null;
+      this.myFiles=null 
+      this.getScannedDocuments(this.exhibitorInfo.ExhibitorId);
+       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
+    }, error => {
+      this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
+      this.loading = false;
+
+    })
+  }
+
+
 }

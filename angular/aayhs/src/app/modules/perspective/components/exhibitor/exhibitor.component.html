@@ -273,7 +273,25 @@
                                                 <span *ngIf="(isFirstBackNumber && horseType)"> {{exhibitorInfo.BackNumber}}</span>
                                             </td>
 
-                                            <td></td>                                            
+                                            <td>
+                                                <span *ngIf="horseType">
+                                                <mat-form-field>
+													<input matInput [matDatepicker]="horseDatePicker"
+														 class="form-control" #horseAddDateControl="ngModel"
+														name="horseAddDateControl" [(ngModel)]="horseDate"  required
+														(dateChange)="handleHorseDate()" >
+														
+													<mat-datepicker-toggle matSuffix [for]="horseDatePicker">
+													</mat-datepicker-toggle>
+													<mat-datepicker #horseDatePicker></mat-datepicker>													
+                                                </mat-form-field> 
+                                                <span class="help-block"
+                                                *ngIf="(horsesForm.submitted || horseAddDateControl.touched) && horseAddDateControl.invalid">Date
+                                                is
+                                                required</span> 
+                                                </span>
+                                             
+                                            </td>                                            
                                         </tr>
                                     </tbody> 
                                 </perfect-scrollbar>
@@ -321,6 +339,7 @@
                                         <th>Detail Info</th> 
                                         <th>Email</th>
                                         <th>Total $ Received</th>
+                                        <th>Sponsor Type</th>
                                         <th>Ad Number</th>
                                         <th>Ad Size</th>
                                         <th>Remove</th> 
@@ -334,7 +353,8 @@
                                         </td>
                                         <td>{{sponsor.Email}}</td>
                                         <td>{{sponsor.Amount}}</td>
-                                        <td>{{sponsor.AdNumber}}</td>
+                                        <td>{{sponsor.SponsorTypeId}}</td>
+                                        <td>{{sponsor.IdNumber}}</td>
                                         <td>{{sponsor.AdSize}}</td>
                                         <td>
                                             <button type="button" class="icon" (click)="confirmRemoveExhibitorSponsor(sponsor.SponsorExhibitorId)"><span></span> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
@@ -361,22 +381,59 @@
                                         <td>{{sponsorDetails.Email}}</td>
                                         <td>{{sponsorDetails.AmountReceived}}</td>
                                         <td>
-                                            <span *ngIf="(linkedSponsorId)">
-                                                <input appOnlynumber  type="text" [required]="linkedSponsorId" class="form-control" name="addNumberControl" #addNumberControl="ngModel" [(ngModel)]="addnumber" placeholder="Add Number" />                                               
+                                            <span *ngIf="linkedSponsorId">
+                                            <select  class="dynDataSeclect" name="sponsortype" required [(ngModel)]="sponsortypeId"
+                                            #sponsorTypeControl="ngModel" (change)="setSponsorType($event.target.value)" >
+                                                <option disabled="true" [ngValue]="null" class="selectDropdown">Select Sponsor Type</option>
+                                                <option  class="selectDropdown"
+                                                [value]="item.GlobalCodeId"
+                                                 *ngFor="let item of sponsorTypes">
+                                                 {{item.CodeName}}</option>
+                                            </select>
+                                          <span class="help-block"
+                                            *ngIf="(sponsorsForm.submitted || sponsorTypeControl.touched) && sponsorTypeControl.invalid">Please
+                                            select sponsor type
+                                        </span>   
+                                    </span>
+                                        </td>
+                                        <td>
+                                            <span *ngIf="(linkedSponsorId && sponsortypeId==1)">
+                                                <input appOnlynumber  type="text" (change)="setType($event.target.value)" [required]="linkedSponsorId" class="form-control" name="addNumberControl" #addNumberControl="ngModel" [(ngModel)]="addnumber" placeholder="Add Number" />                                               
                                                 <span class="help-block"
 												*ngIf="(sponsorsForm.submitted || addNumberControl.touched) && addNumberControl.invalid">Please
                                                 enter add number
                                                  </span>
-                                                </span>   
+                                                </span>    
+                                                <span *ngIf="(linkedSponsorId && sponsortypeId==2)">
+                                                <select  class="dynDataSeclect" name="type" [required]="sponsortypeId==2" [(ngModel)]="typeId"
+													#typeControl="ngModel" (change)="setType($event.target.value)" >
+														<option   disabled="true" [ngValue]="null" class="selectDropdown">Select</option>
+														<option   class="selectDropdown"
+														[value]="item.ClassId"
+														 *ngFor="let item of sponsorClassesList">
+														 {{item.Name}}</option>
+													</select>
+												  <span class="help-block"
+													*ngIf="(sponsorsForm.submitted || typeControl.touched) && typeControl.invalid">Please
+													select class
+                                                </span>
+                                            </span>
                                         </td>
                                         <td>
-                                            <select *ngIf="(linkedSponsorId)" class="dynDataSeclect">
-                                                <option value="null">Select</option> 
-                                                <option value="null">Half Page</option> 
-                                                <option value="null">Full Page</option>  
-                                                <option value="null">Quarter Page</option>  
-                                                <option value="null">Last Page</option>                                                                                                
+                                            <span *ngIf="(linkedSponsorId && sponsortypeId==1)">
+                                            <select  class="dynDataSeclect" name="type" [required]="sponsortypeId==1" [(ngModel)]="adTypeId"
+                                            #addTypeControl="ngModel" (change)="setAdType($event.target.value)" >
+                                                <option   disabled="true" [ngValue]="null" class="selectDropdown">Select Ad Type</option>
+                                                <option   class="selectDropdown"
+                                                [value]="item.GlobalCodeId"
+                                                 *ngFor="let item of AdTypes">
+                                                 {{item.CodeName}}</option>
                                             </select>
+                                            <span class="help-block"
+                                            *ngIf="(sponsorsForm.submitted || addTypeControl.touched) && addTypeControl.invalid">Please
+                                            select add type
+                                        </span>   
+                                        </span>
                                         </td>
                                         <td></td>
                                     </tr>
@@ -455,7 +512,25 @@
                                                     <img src="assets/images/sizzer-icon.png" alt="image" />
                                                 </div> -->
                                             </td>
-                                            <td></td>
+                                            <td>
+                                                <span *ngIf="(linkedClassId)">
+                                                    <mat-form-field>
+                                                        <input matInput [matDatepicker]="classDatePicker"
+                                                             class="form-control" #classAddDateControl=ngModel
+                                                            name="classAddDateControl"  [(ngModel)]="classDate"  required
+                                                            (dateChange)="handleClassDate()" readonly>
+                                                            
+                                                        <mat-datepicker-toggle matSuffix [for]="classDatePicker">
+                                                        </mat-datepicker-toggle>
+                                                        <mat-datepicker #classDatePicker></mat-datepicker>													
+                                                    </mat-form-field>  
+                                                    <span class="help-block"
+                                                    *ngIf="(classesForm.submitted || classAddDateControl.touched) && classAddDateControl.invalid">Date 
+                                                    is
+                                                    required</span>
+                                                    </span>
+                                                  
+                                            </td>
                                         </tr>                             
                                    </tbody>
                                 </perfect-scrollbar>
@@ -499,33 +574,18 @@
                                         </thead>
                                         <perfect-scrollbar class="nicescrollBar-2">
                                             <tbody>
+                                                <tr *ngFor="let fee of feesSummary">
+                                                    <td>{{fee.Qty}}</td>
+                                                    <td>{{fee.FeeType}}</td>
+                                                    <td>
+                                                        <div class="icon"></div>
+                                                        <button type="button" class="icon" (click)="openTransactionDetails(1)"><span></span><i class="fa fa-external-link" aria-hidden="true"></i></button>
+                                                    </td>
+                                                    <td>{{fee.Amount}}</td>
+                                                </tr>                                                                                            
                                                 <tr>
-                                                    <td>1</td>
-                                                    <td>Horse Stall Free</td>
-                                                    <td><div class="icon"><i class="fa fa-external-link" aria-hidden="true"></i></div></td>
-                                                    <td>$45.00</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>Tack Stall Fee</td>
-                                                    <td><div class="icon"><i class="fa fa-external-link" aria-hidden="true"></i></div></td>
-                                                    <td>$30.00</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>Additional Programs</td>
-                                                    <td><div class="icon"><i class="fa fa-external-link" aria-hidden="true"></i></div></td>
-                                                    <td>$55.00</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3</td>
-                                                    <td>Class Entry Fee</td>
-                                                    <td><div class="icon"><i class="fa fa-external-link" aria-hidden="true"></i></div></td>
-                                                    <td>$120.00</td>
-                                                </tr>
-                                                <tr>
-                                                    <td (click)="showFinancialTransaction()" colspan="2"><button class="btn btn-red btnCss roundBtn">Summary</button></td>
-                                                    <td colspan="2"><b>TOTAL:</b> $255.00</td>
+                                                    <td (click)="showFinancialTransaction()" colspan="2"><button class="btn btn-red btnCss roundBtn">Detail</button></td>
+                                                    <td colspan="2"><b>TOTAL:</b> ${{feeBilledTotal}}</td>
                                                 </tr>
                                             </tbody>
                                         </perfect-scrollbar>
@@ -665,37 +725,63 @@
             </mat-tab>
             <mat-tab  class="nav-link nav nav-tabs" label="Scans">
                 <div class="card dataEntriesTable">
+                    <form #scanForm="ngForm" (ngSubmit)="scanForm.valid && uploadDocument()">
                     <div class="card-body">
                         <div class="table-responsive tableTab ssReports" id="contentscroll2">
+                           
+                            <div class="browseDoc row">
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <label>Choose Scans</label>	                              
+                                        <select class="form-control" name="document" required
+																[(ngModel)]="documentId" (change)="setDocumentType($event.target.value)" #documentControl="ngModel">
+																<option [ngValue]="null">
+																	Select Document
+																</option>
+																<option *ngFor="let document of documentTypes"
+																	[value]="document.GlobalCodeId">{{document.CodeName}} -
+																</option>
+															</select>
+															<span class="help-block"
+																*ngIf="(scanForm.submitted || documentControl.touched) && documentControl.invalid">Please
+																select document</span>                                              
+                                    </div>
+                                </div> 
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <label>Choose File</label>	
+                                        <div class="form-group">
+                                            <input type="file" #file="ngModel" [(ngModel)]="pdf" (change)="onFileChange($event)" class="form-control" required name="file" />
+                                            <span class="help-block"
+                                            *ngIf="file.errors?.required && file.touched || scanForm.submitted && file.invalid">File is
+                                            required</span>
+                                        </div>
+                                    </div>                                
+                                </div> 
+                            </div>
+
                             <table class="table table-bordered tableBodyScroll">
                                 <thead>
                                 <tr>
-                                    <th>Select The Document Type</th> 
+                                    <th>Document Type</th>
+                                    <th>Action</th> 
                                 </tr>	
                                 </thead> 
                                 <perfect-scrollbar class="nicescrollBar-2"> 
                                     <tbody>
-                                        <tr>
-                                            <td>Registration Papers</td>
+                                        <tr *ngFor="let document of scannedDocuments">
+                                            <td>{{document.DocumentType}}</td>
+                                            <td>
+                                                <button type="button" (click)="viewDocument(document.DocumentPath)" class="icon"><span></span><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                                <button type="button" (click)="confirmRemoveDocument(document.ScansId,document.DocumentPath)" class="icon"><span></span> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                            </td>
                                         </tr>
-                                        <tr>
-                                            <td>Exhibitor Group Information Report(#17)</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Doctor or Vet Notes</td>
-                                        </tr>
-                                        <tr>
-                                            <td>CVI</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Coggins</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Other</td>
-                                        </tr>
+                                      
                                     </tbody>
                                 </perfect-scrollbar> 
                             </table> 
+
+
                             <div class="prePostField mt-2">
                                 <div class="form-group">
                                     <label class="radioBtn">
@@ -721,14 +807,16 @@
                                         <span class="checkmark"></span>Download
                                     </label>
                                 </div>
-                            </div>                            
+                            </div>   
+                            
+                           
+
                         </div>                         
                     </div>
                     <div class="actionBtn text-right mb-3">
-                        <button class="btn btn-red btnCss roundBtn">Scan</button>
-                        <button class="btn btn-red btnCss roundBtn">Next</button>
-                        <button class="btn btn-red btnCss roundBtn">Submit</button>
+                        <button type="submit" class="btn btn-red btnCss roundBtn">Submit</button>
                     </div>
+                </form>
                 </div>
             </mat-tab>
 		</mat-tab-group>
