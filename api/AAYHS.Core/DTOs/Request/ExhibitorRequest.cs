@@ -74,7 +74,7 @@ namespace AAYHS.Core.DTOs.Request
         public int ExhibitorId { get; set; }
         public decimal Amount { get; set; }
         public string TimeFrameType { get; set; }                 
-        public DateTime PayDate { get; set; }           
+        public string PayDate { get; set; }           
         public decimal AmountPaid { get; set; }
         public decimal RefundAmount { get; set; }
     }

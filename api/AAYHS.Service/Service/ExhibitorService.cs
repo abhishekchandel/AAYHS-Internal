@@ -774,7 +774,7 @@ namespace AAYHS.Service.Service
             var financialTransaction = new ExhibitorPaymentDetail()
             {
                 ExhibitorId= addFinancialTransactionRequest.ExhibitorId,
-                PayDate = addFinancialTransactionRequest.PayDate,
+                PayDate = Convert.ToDateTime(addFinancialTransactionRequest.PayDate),
                 FeeTypeId = addFinancialTransactionRequest.FeeTypeId,
                 TimeFrameType= addFinancialTransactionRequest.TimeFrameType,
                 Amount= addFinancialTransactionRequest.Amount,
