@@ -394,18 +394,38 @@ namespace AAYHS.Repository.Repository
 
         public GetAllFees GetAllFees()
         {
+            string timeFrameType;
             IEnumerable<GetFees> data = null;
             GetAllFees getAllFees = new GetAllFees();
 
-            int yearlyId = _context.YearlyMaintainence.Where(x => x.Year.Year == DateTime.Now.Year && x.IsActive == true && x.IsDeleted == false).Select(x => x.YearlyMaintainenceId).FirstOrDefault();
-
+            var yearlyId = _context.YearlyMaintainence.Where(x => x.Year.Year == DateTime.Now.Year && x.IsActive == true && x.IsDeleted == false).FirstOrDefault();
+            if (yearlyId!=null)
+            {
+                if (DateTime.Now.Date <= yearlyId.PreEntryCutOffDate.Date)
+                {
+                    timeFrameType = "Pre";
+                }
+                else
+                {
+                    timeFrameType = "Post";
+                }
+            }
+            else
+            {
+                return getAllFees;
+            }
+           
             data = (from yFee in _context.YearlyMaintainenceFee
-                    where yFee.YearlyMaintainenceId == yearlyId && yFee.IsActive == true && yFee.IsDeleted == false
+                    where yFee.YearlyMaintainenceId == yearlyId.YearlyMaintainenceId && yFee.IsActive == true && yFee.IsDeleted == false
                     select new GetFees 
                     { 
                       FeeTypeId=yFee.FeeTypeId,
                       FeeType=_context.GlobalCodes.Where(x=>x.GlobalCodeId==yFee.FeeTypeId).Select(x=>x.CodeName).FirstOrDefault(),
-                      Amount=yFee.Amount                    
+                      TimeFrameType=timeFrameType,
+                      PreFee=yFee.PreEntryFee,
+                      PostFee=yFee.PostEntryFee,
+                      Amount=yFee.Amount,
+                      RefundPercentage=yFee.RefundPercentage
                     });
             getAllFees.getFees = data.ToList();
             return getAllFees;
@@ -416,7 +436,7 @@ namespace AAYHS.Repository.Repository
             IEnumerable<GetExhibitorTransactions> data = null;
             GetAllExhibitorTransactions getAllExhibitorTransactions = new GetAllExhibitorTransactions();
 
-            int yearlyId = _context.YearlyMaintainence.Where(x => x.Year.Year == DateTime.Now.Year && x.IsActive == true && x.IsDeleted == false).Select(x => x.YearlyMaintainenceId).FirstOrDefault();
+            var yearlyId = _context.YearlyMaintainence.Where(x => x.Year.Year == DateTime.Now.Year && x.IsActive == true && x.IsDeleted == false).FirstOrDefault();
 
             data = (from exhibitorPaymentDetail in _context.ExhibitorPaymentDetails
                     where exhibitorPaymentDetail.ExhibitorId == exhibitorId &&
@@ -426,11 +446,13 @@ namespace AAYHS.Repository.Repository
                       ExhibitorPaymentDetailId=exhibitorPaymentDetail.ExhibitorPaymentId,
                       PayDate=exhibitorPaymentDetail.PayDate,
                       TypeOfFee=_context.GlobalCodes.Where(x=>x.GlobalCodeId==exhibitorPaymentDetail.FeeTypeId).Select(x=>x.CodeName).FirstOrDefault(),
-                      Amount=_context.YearlyMaintainenceFee.Where(x=>x.YearlyMaintainenceId==yearlyId && x.IsActive==true && x.IsDeleted==false).Select(x=>x.Amount).FirstOrDefault(),
-                      AmountPaid=exhibitorPaymentDetail.Amount,
-                     
+                      TimeFrameType= exhibitorPaymentDetail.TimeFrameType,
+                      Amount =exhibitorPaymentDetail.Amount,
+                      AmountPaid=exhibitorPaymentDetail.AmountPaid,
+                      RefundAmount=exhibitorPaymentDetail.RefundAmount                    
                     });
 
+            getAllExhibitorTransactions.getExhibitorTransactions = data.ToList();
             return getAllExhibitorTransactions;
         }
     }

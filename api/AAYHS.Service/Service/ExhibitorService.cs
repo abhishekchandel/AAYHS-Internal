@@ -751,6 +751,24 @@ namespace AAYHS.Service.Service
             }
             return _mainResponse;
         }
-    
+
+        public MainResponse GetAllExhibitorTransactions(int exhibitorId)
+        {
+            var exhibitorTransactions = _exhibitorRepository.GetAllExhibitorTransactions(exhibitorId);
+
+            if (exhibitorTransactions.getExhibitorTransactions!=null && exhibitorTransactions.getExhibitorTransactions.Count!=0)
+            {
+                _mainResponse.GetAllExhibitorTransactions = exhibitorTransactions;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+                _mainResponse.Success = false;
+            }
+            return _mainResponse;
+        }
+
+
   }
 }

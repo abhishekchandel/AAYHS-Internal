@@ -370,5 +370,17 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
+        /// <summary>
+        /// This api used to get all finacial transactions
+        /// </summary>
+        /// <param name="exhibitorId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetAllExhibitorTransactions(int exhibitorId)
+        {
+            _mainResponse = _exhibitorService.GetAllExhibitorTransactions(exhibitorId);
+            _jsonString = Mapper.Convert<GetAllExhibitorTransactions>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
     }
 }

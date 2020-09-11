@@ -71,6 +71,7 @@ namespace AAYHS.Core.DTOs.Response
         public GetExhibitorFinancials GetExhibitorFinancials { get; set; }        
         public GetAllUploadedDocuments GetAllUploadedDocuments { get; set; }   
         public GetAllFees GetAllFees { get; set; }   
+        public GetAllExhibitorTransactions GetAllExhibitorTransactions { get; set; }   
         
 
     }

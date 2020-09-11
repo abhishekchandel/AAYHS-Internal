@@ -162,7 +162,11 @@ namespace AAYHS.Core.DTOs.Response
     {
         public int FeeTypeId { get; set; }
         public string FeeType { get; set; }
+        public string TimeFrameType { get; set; }
+        public decimal PreFee { get; set; }
+        public decimal PostFee { get; set; }
         public decimal Amount { get; set; }
+        public decimal RefundPercentage { get; set; }
     }
     public class GetAllFees
     {
