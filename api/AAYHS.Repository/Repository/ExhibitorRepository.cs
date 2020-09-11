@@ -336,6 +336,7 @@ namespace AAYHS.Repository.Repository
             int tackStall = preTackStall.Count() + postTackStall.Count();
             int classes = preClasses.Count + postClasses.Count();
 
+            int[] FeeTypeId = { horseStallFeeId, tackStallFeeId, additionalProgramsFeeId, classEntryId };
             string[] feetype = { "Stall", "Tack", "Additional Programs", "Class Entry" };
             decimal[] amount = { horseStallAmount, tackStallAmount, additionalAmount, classAmount };
             int[] qty = { horseStall, tackStall, additionalPrograme, classes };
@@ -346,6 +347,7 @@ namespace AAYHS.Repository.Repository
                 if (qty[i]!=0)
                 {
                     ExhibitorFeesBilled exhibitorFeesBilled = new ExhibitorFeesBilled();
+                    exhibitorFeesBilled.FeeTypeId = FeeTypeId[i];
                     exhibitorFeesBilled.Qty = qty[i];
                     exhibitorFeesBilled.FeeType = feetype[i];
                     exhibitorFeesBilled.Amount = amount[i];
@@ -449,7 +451,8 @@ namespace AAYHS.Repository.Repository
                       TimeFrameType= exhibitorPaymentDetail.TimeFrameType,
                       Amount =exhibitorPaymentDetail.Amount,
                       AmountPaid=exhibitorPaymentDetail.AmountPaid,
-                      RefundAmount=exhibitorPaymentDetail.RefundAmount                    
+                      RefundAmount=exhibitorPaymentDetail.RefundAmount,
+                      DocumentPath=exhibitorPaymentDetail.DocumentPath
                     });
 
             getAllExhibitorTransactions.getExhibitorTransactions = data.ToList();
@@ -461,6 +464,29 @@ namespace AAYHS.Repository.Repository
             {
                 getAllExhibitorTransactions.IsRefund = false;
             }
+            return getAllExhibitorTransactions;
+        }
+
+        public GetAllExhibitorTransactions GetFinancialViewDetail(ViewDetailRequest viewDetailRequest)
+        {
+            IEnumerable<GetExhibitorTransactions> data = null;
+            GetAllExhibitorTransactions getAllExhibitorTransactions = new GetAllExhibitorTransactions();
+
+            data = (from exhibitorPaymentDetail in _context.ExhibitorPaymentDetail
+                    where exhibitorPaymentDetail.ExhibitorId == viewDetailRequest.ExhibitorId &&
+                    exhibitorPaymentDetail.FeeTypeId== viewDetailRequest.FeeTypeId &&
+                    exhibitorPaymentDetail.IsActive == true && exhibitorPaymentDetail.IsDeleted == false
+                    select new GetExhibitorTransactions
+                    {
+                        ExhibitorPaymentDetailId = exhibitorPaymentDetail.ExhibitorPaymentId,
+                        PayDate = exhibitorPaymentDetail.PayDate,
+                        TypeOfFee = _context.GlobalCodes.Where(x => x.GlobalCodeId == exhibitorPaymentDetail.FeeTypeId).Select(x => x.CodeName).FirstOrDefault(),
+                        TimeFrameType = exhibitorPaymentDetail.TimeFrameType,
+                        Amount = exhibitorPaymentDetail.Amount,
+                        AmountPaid = exhibitorPaymentDetail.AmountPaid,
+                        RefundAmount = exhibitorPaymentDetail.RefundAmount
+                    });
+            getAllExhibitorTransactions.getExhibitorTransactions = data.ToList();            
             return getAllExhibitorTransactions;
         }
     }

@@ -136,6 +136,7 @@ namespace AAYHS.Core.DTOs.Response
     }
     public class ExhibitorFeesBilled
     {
+        public int FeeTypeId { get; set; }
         public int Qty { get; set; }
         public string FeeType { get; set; }
         public decimal Amount { get; set; }
@@ -181,6 +182,7 @@ namespace AAYHS.Core.DTOs.Response
         public decimal Amount { get; set; }
         public decimal AmountPaid { get; set; }
         public decimal RefundAmount { get; set; }
+        public string DocumentPath { get; set; }
     }
     public class GetAllExhibitorTransactions
     {

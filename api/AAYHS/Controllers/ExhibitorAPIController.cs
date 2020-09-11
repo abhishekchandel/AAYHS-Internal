@@ -395,5 +395,17 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
+        /// <summary>
+        /// This api used to get detail of financial
+        /// </summary>
+        /// <param name="viewDetailRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult GetFinancialViewDetail(ViewDetailRequest viewDetailRequest)
+        {
+            _mainResponse = _exhibitorService.GetFinancialViewDetail(viewDetailRequest);
+            _jsonString = Mapper.Convert<GetAllExhibitorTransactions>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
     }
 }

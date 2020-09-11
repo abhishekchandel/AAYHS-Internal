@@ -78,4 +78,9 @@ namespace AAYHS.Core.DTOs.Request
         public decimal AmountPaid { get; set; }
         public decimal RefundAmount { get; set; }
     }
+    public class ViewDetailRequest
+    {
+        public int FeeTypeId { get; set; }
+        public int ExhibitorId { get; set; }
+    }
 }

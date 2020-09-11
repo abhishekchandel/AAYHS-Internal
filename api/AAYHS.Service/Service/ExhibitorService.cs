@@ -789,5 +789,21 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
-  }
+        public MainResponse GetFinancialViewDetail(ViewDetailRequest viewDetailRequest)
+        {
+            var financialDetail = _exhibitorRepository.GetFinancialViewDetail(viewDetailRequest);
+
+            if (financialDetail.getExhibitorTransactions != null && financialDetail.getExhibitorTransactions.Count() != 0)
+            {
+                _mainResponse.GetAllExhibitorTransactions = financialDetail;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+                _mainResponse.Success = false;
+            }
+            return _mainResponse;
+        }
+    }
 }
