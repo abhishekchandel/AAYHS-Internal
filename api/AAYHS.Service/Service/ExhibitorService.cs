@@ -651,29 +651,28 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
-        public MainResponse DeleteUploadedDocuments(IEnumerable<DocumentDeleteRequest> documentDeleteRequest, string actionBy)
+        public MainResponse DeleteUploadedDocuments(DocumentDeleteRequest documentDeleteRequest, string actionBy)
         {
-            foreach (var file in documentDeleteRequest)
-            {
+            
                 string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-                var FilePath = Path.Combine(uploadsFolder, file.Path);
-                var fileToBeDeleted = uploadsFolder + file.Path;
+                var FilePath = Path.Combine(uploadsFolder, documentDeleteRequest.Path);
+                var fileToBeDeleted = uploadsFolder + documentDeleteRequest.Path;
 
                 if ((System.IO.File.Exists(fileToBeDeleted)))
                 {
                     System.IO.File.Delete(fileToBeDeleted);
                 }
 
-                var resource = _scanRepository.GetSingle(x => x.ScansId == file.ScanId && x.IsActive==true);
+                var resource = _scanRepository.GetSingle(x => x.ScansId == documentDeleteRequest.ScanId && x.IsActive == true);
                 if (resource != null)
                 {
                     resource.IsDeleted = true;
                     resource.DeletedBy = actionBy;
                     resource.DeletedDate = DateTime.Now;
-                     _scanRepository.Update(resource);
+                    _scanRepository.Update(resource);
 
                 }
-            }
+            
             _mainResponse.Success = true;
             _mainResponse.Message = Constants.DOCUMENT_DELETED;
             return _mainResponse;
@@ -722,26 +721,13 @@ namespace AAYHS.Service.Service
         public MainResponse UploadFinancialDocument(FinancialDocumentRequest financialDocumentRequest, string actionBy)
         {
             string uniqueFileName = null;
-            string path = null;
-            if (financialDocumentRequest.Documents != null)
-            {
-                foreach (IFormFile file in financialDocumentRequest.Documents)
-                {
-
+            string path = null;                         
                     string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-
-
-                    uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
-
+                    uniqueFileName = Guid.NewGuid().ToString() + "_" + financialDocumentRequest.Document.FileName;
                     var FilePath = Path.Combine(uploadsFolder, "Resources", "FinancialDocuments");
                     path = Path.Combine(FilePath, uniqueFileName);
-
                     string filePath = Path.Combine(FilePath, uniqueFileName);
-
-
-                    file.CopyTo(new FileStream(filePath, FileMode.Create));
-
-
+                financialDocumentRequest.Document.CopyTo(new FileStream(filePath, FileMode.Create));
                     path = path.Replace(uploadsFolder, "").Replace("\\", "/");
 
                     var exhibitorPayment = _exhibitorPaymentDetailRepository.GetSingle(x => x.ExhibitorPaymentId == financialDocumentRequest.ExhibitorPaymentId
@@ -754,13 +740,10 @@ namespace AAYHS.Service.Service
                         exhibitorPayment.ModifiedDate = DateTime.Now;
 
                         _exhibitorPaymentDetailRepository.Update(exhibitorPayment);
-                    }
-                    
-                }
-
                 _mainResponse.Message = Constants.DOCUMENT_UPLOAD;
                 _mainResponse.Success = true;
             }
+                             
             else
             {
                 _mainResponse.Message = Constants.NO_DOCUMENT_FOUND;
