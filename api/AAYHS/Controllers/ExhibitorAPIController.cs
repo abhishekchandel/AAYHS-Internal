@@ -325,8 +325,8 @@ namespace AAYHS.API.Controllers
         /// </summary>
         /// <param name="documentDeleteRequest"></param>
         /// <returns></returns>
-        [HttpDelete]
-        public ActionResult DeleteUploadedDocuments(IEnumerable<DocumentDeleteRequest> documentDeleteRequest)
+        [HttpPost]
+        public ActionResult DeleteUploadedDocuments([FromBody] IEnumerable<DocumentDeleteRequest> documentDeleteRequest)
         {
             string actionBy = User.Identity.Name;
             _mainResponse = _exhibitorService.DeleteUploadedDocuments(documentDeleteRequest, actionBy);
