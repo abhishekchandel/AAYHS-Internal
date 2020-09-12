@@ -261,6 +261,13 @@ namespace AAYHS.Service.Service
             var exhibitorHorse = _exhibitorHorseRepository.GetSingle(x => x.ExhibitorHorseId == exhibitorHorseId && x.IsActive == true && x.IsDeleted == false);
             if (exhibitorHorse != null && exhibitorHorse.ExhibitorId > 0)
             {
+                var exhibitor = _exhibitorRepository.GetSingle(x => x.ExhibitorId == exhibitorHorse.ExhibitorId && x.IsActive == true && x.IsDeleted == false);
+
+                if (exhibitor.BackNumber==exhibitorHorse.BackNumber)
+                {
+                    exhibitor.BackNumber = 0;
+                    _exhibitorRepository.Update(exhibitor);
+                }
                 _exhibitorHorseRepository.Delete(exhibitorHorse);
                 _mainResponse.Message = Constants.EXHIBITOR_HORSE_DELETED;
                 _mainResponse.Success = true;
