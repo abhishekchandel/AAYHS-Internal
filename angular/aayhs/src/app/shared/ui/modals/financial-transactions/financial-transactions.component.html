@@ -16,8 +16,8 @@
                             <table class="table table-bordered tableBodyScroll">
                                 <tbody>
                                     <tr>
-                                        <td><span class="blueBox"></span><b>Exhibitor: </b> {{exhibitorDetails.ExhibitorId}}  </td>
-                                        <td><span class="blueBox"></span><b>Exhibitor Name: </b> {{exhibitorDetails.ExhibitorName}}</td>
+                                        <td><span class="blueBox"></span><b>Exhibitor: </b> {{ExhibitorId}}  </td>
+                                        <td><span class="blueBox"></span><b>Exhibitor Name: </b> {{ExhibitorName}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -29,7 +29,7 @@
                                 <thead>
                                     <tr>
                                         <th>Date</th>
-                                        <th>Type of fee</th>
+                                        <th>Transaction Type</th>
                                         <th>Pre/Post</th>
                                         <th>Amount</th>
                                         <th>Amount Paid</th>
@@ -40,41 +40,41 @@
                                 </thead>
                                 <perfect-scrollbar class="nicescrollBar-2">
                                     <tbody>
-                                        <tr>
-                                            <td></td>
-                                            <td>Tack</td>
+                                        <tr *ngFor="let transaction of exhibitorTransactions ; let i=index">
+                                            <td>{{transaction.PayDate}}</td>
+                                            <td>{{transaction.TypeOfFee}}</td>
                                             <td>
                                                 <div class="prePostField">
                                                     <label class="radioBtn">Pre
-                                                        <input type="radio" checked="checked" name="timeframe">
+                                                        <input type="radio"  [(ngModel)]="transaction.TimeFrameType" value="Pre" name="timeframe{{i}}">
                                                         <span class="checkmark"></span>
                                                     </label>
                                                     <label class="radioBtn">Post
-                                                        <input type="radio" name="timeframe">
+                                                        <input type="radio"  [(ngModel)]="transaction.TimeFrameType" value="Post" name="timeframe{{i}}">
                                                         <span class="checkmark"></span>
                                                     </label>
                                                 </div>
                                             </td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
+                                            <td>{{transaction.Amount}}</td>
+                                            <td>{{transaction.AmountPaid}}</td>
+                                            <td>{{transaction.RefundAmount}}</td>
                                             <td>
                                                 <div class="ftButton">
                                                     <span class="fileUpload">
-                                                        <input type="file"  name="file" (change)="uploadDocument($event)" />
+                                                        <input type="file"  name="file" (change)="uploadDocument($event,transaction.ExhibitorPaymentDetailId)" />
                                                         <i class="fa fa-upload" aria-hidden="true"></i>
                                                     </span> 
-                                                    <a href="#"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                                    <button type="button" (click)="viewDocument(transaction.DocumentPath)" class="icon"><span></span><i class="fa fa-eye" aria-hidden="true"></i></button>
                                                 </div>
                                             </td>
                                             <td>
-                                                <button type="button" class="icon" (click)="deleteFee(1)"><span></span> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                                <button type="button" class="icon" (click)="confirmDeleteFee(transaction.ExhibitorPaymentDetailId)"><span></span> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
 
                                             </td>
                                         </tr>                                      
                                         <tr>
                                             <td>
-                                                <span *ngIf="fee.FeeType">
+                                                <span *ngIf="fee.FeeTypeId">
                                                 <mat-form-field>
 													<input matInput [matDatepicker]="scheduleDatePicker"
 														 class="form-control" [value]="date"
@@ -90,7 +90,7 @@
                                             </td>
                                             <td>
                                                 <select class="form-control" name="fee" required
-                                                [(ngModel)]="fee.FeeType" (change)="setFeeType($event)" #feeControl="ngModel">
+                                                [(ngModel)]="fee.FeeTypeId" (change)="setFeeType($event)" #feeControl="ngModel">
                                                 <option [ngValue]="null">
                                                     Select Fee
                                                 </option>
@@ -102,26 +102,26 @@
                                                 *ngIf="(feeForm.submitted || feeControl.touched) && feeControl.invalid">Please
                                                 select fee</span> 
                                             </td>
-                                            <td>
-                                                <div *ngIf="fee.FeeType" class="prePostField">
+                                            <td >
+                                                <div *ngIf="(fee.FeeTypeId && !isSponsorRefund && feeType !=='Additional Program')" class="prePostField">
                                                     <label class="radioBtn">Pre
-                                                        <input type="radio" checked="checked" [(ngModel)]="fee.Timeframe"  value="Pre" name="radio">
+                                                        <input type="radio"  [(ngModel)]="fee.TimeFrameType" (change)="setAmount('Pre')" value="Pre" name="radio">
                                                         <span class="checkmark"></span>
                                                     </label>
                                                     <label class="radioBtn">Post
-                                                        <input type="radio" value="Post" [(ngModel)]="fee.Timeframe" name="radio">
+                                                        <input type="radio" value="Post" (change)="setAmount('Post')" [(ngModel)]="fee.TimeFrameType" name="radio">
                                                         <span class="checkmark"></span>
                                                     </label>
                                                 </div>  
                                             </td>
                                             <td>
-                                            <span *ngIf="fee.FeeType">
+                                            <span *ngIf="(fee.FeeTypeId && !isSponsorRefund)">
                                             <input appOnlynumber #amountControl="ngModel" [(ngModel)]="fee.Amount" type="text"  class="form-control" name="amountControl"  />    
                                         </span> 
                                             </td>
                                             <td>
-                                                <span *ngIf="fee.FeeType">
-                                           <input appOnlynumber #paidControl="ngModel" [(ngModel)]="fee.Paid" required type="text"  class="form-control" name="paid"  /> 
+                                                <span *ngIf="(fee.FeeTypeId && !isSponsorRefund)">
+                                           <input appOnlynumber #paidControl="ngModel" [(ngModel)]="fee.AmountPaid" required type="text"  class="form-control" name="paid"  /> 
                                            <span class="help-block"
                                             *ngIf="(feeForm.submitted || paidControl.touched) && paidControl.invalid">
                                             Please enter amount
@@ -129,7 +129,10 @@
                                           </span>    
                                             </td>
                                             <td>
-                                                {{fee.Refund}}
+                                                {{fee.RefundAmount}}
+                                                <span *ngIf="isSponsorRefund">
+                                                <input appOnlynumber #amountControl="ngModel" [(ngModel)]="fee.RefundAmount" type="text"  class="form-control" name="amountControl"  />    
+                                            </span>
                                             </td>
                                             <td></td>
                                             <td></td>

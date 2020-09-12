@@ -6,6 +6,8 @@ import {ExhibitorService } from '../../../../core/services/exhibitor.service';
 import { NgForm } from '@angular/forms';
 import * as moment from 'moment';
 import { BaseUrl } from 'src/app/config/url-config';
+import { ConfirmDialogComponent, ConfirmDialogModel } from'../../../../shared/ui/modals/confirmation-modal/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-financial-transactions',
@@ -17,31 +19,36 @@ export class FinancialTransactionsComponent implements OnInit {
 
 //for binding images with server url
 filesUrl = BaseUrl.filesUrl;
-
-  exhibitorDetails:{
-    ExhibitorId:null;
-    ExhibitorName:null
-  }
+exhibitorTransactions:any;
+    ExhibitorId:any;
+    ExhibitorName:any
+  
   constructor(public dialogRef: MatDialogRef<FinancialTransactionsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private snackBar: MatSnackbarComponent,
-    private exhibitorService: ExhibitorService) { }
-
+    private exhibitorService: ExhibitorService,
+    public dialog: MatDialog,) { }
+    result: string = '';
     date = new Date();
     document:File;
-   feeDetails:any
+    feeDetails:any
     loading = false;
+    isSponsorRefund:boolean=false;
+    feeType:string=null;
     fee:FeeModel={
-      Date:new Date().toString(),
-      FeeType:null,
+      PayDate:moment(new Date()).format('YYYY-MM-DD'),
+      FeeTypeId:null,
       Amount:null,
-      Paid:null,
-      Refund:null,
-      Timeframe:null
+      AmountPaid:null,
+      RefundAmount:null,
+      TimeFrameType:null,
+      ExhibitorId:null
     }
   ngOnInit(): void {
-    this.exhibitorDetails=this.data;
-    this.getFees();
+     this.ExhibitorId=this.data.ExhibitorId;
+     this.ExhibitorName=this.data.ExhibitorName;
+   this.feeDetails=this.data.feeDetails;
+   this.exhibitorTransactions=this.data.exhibitorTransactions;
   }
 
   onDismiss(): void {
@@ -52,13 +59,17 @@ filesUrl = BaseUrl.filesUrl;
   addFee(){
     debugger;
       this.loading = true;
-      this.fee.Refund=this.fee.Refund !=null ? Number(this.fee.Refund) :0;
-      this.fee.FeeType= Number(this.fee.FeeType);
+      this.fee.RefundAmount=this.fee.RefundAmount !=null ? Number(this.fee.RefundAmount) :0;
+      this.fee.FeeTypeId= Number(this.fee.FeeTypeId);
+      this.fee.ExhibitorId=this.ExhibitorId;
+      this.fee.Amount=this.fee.Amount !=null ? Number(this.fee.Amount) :0;
+      this.fee.AmountPaid=this.fee.AmountPaid !=null ? Number(this.fee.AmountPaid) :0;
 
       this.exhibitorService.addFee(this.fee).subscribe(response => {
         this.loading = false;
         this.resetFees();
         this.feeForm.resetForm({ classControl: null });
+        this.getExhibitorTransactions(this.ExhibitorId);
         this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
     
       }, error => {
@@ -69,30 +80,42 @@ filesUrl = BaseUrl.filesUrl;
   }
 
   resetFees(){
-    this.fee.Date=null
-    this.fee.FeeType=null
+    this.fee.PayDate=null
+    this.fee.FeeTypeId=null
     this.fee.Amount=null
-    this.fee.Paid=null
-    this.fee.Refund=null
-    this.fee.Timeframe=null
-
+    this.fee.AmountPaid=null
+    this.fee.RefundAmount=null
+    this.fee.TimeFrameType=null
+    this.fee.ExhibitorId=null
+    this.feeType=null
   }
 
   handleFeeDateSelection() {
-    this.fee.Date = moment(this.fee.Date).format('YYYY-MM-DD');
+    this.fee.PayDate = moment(this.fee.PayDate).format('YYYY-MM-DD');
   }
 
   setFeeType(e){
-    debugger;
-   this.fee.FeeType=Number(e.target.value);
-   var feeType=e.target.options[e.target.options.selectedIndex].text;
-   let amount=this.feeDetails.find(i =>i.FeeType==feeType).Amount;
+   this.fee.FeeTypeId=Number(e.target.value);
+   this. feeType=e.target.options[e.target.options.selectedIndex].text;
+   let amount=this.feeDetails.find(i =>i.FeeType==this.feeType).Amount;
+   let timeframe=this.feeDetails.find(i =>i.FeeType==this.feeType).TimeFrameType;
     this.fee.Amount=amount;
-   if(feeType =="Class Entry"|| feeType=="Stall" || feeType=="Tack"){
-   this.fee.Refund =Math.round((amount * 40)/100)
+    this.fee.TimeFrameType=timeframe;
+   if(this.feeType =="Class Entry"|| this.feeType=="Stall" || this.feeType=="Tack"){
+   this.fee.RefundAmount =Math.round((amount * 40)/100)
+   this.isSponsorRefund=false
    }
-   else{
-    this.fee.Refund=null;
+   else if(this.feeType=="Ad Sponsor Refund"){
+    this.isSponsorRefund=true;
+    this.fee.RefundAmount=null;
+   }
+   else if(this.feeType=="Additional Program"){
+    this.fee.TimeFrameType=null
+   }
+   else
+   {
+    this.fee.RefundAmount=null;
+    this.isSponsorRefund=false
    }
   }
 
@@ -100,29 +123,32 @@ filesUrl = BaseUrl.filesUrl;
     window.open(this.filesUrl+path.replace(/\s+/g, '%20').toLowerCase(), '_blank');
   }
 
- getFees(){
-  this.loading = true;
-  this.exhibitorService.getFees().subscribe(response => {    
-   this.feeDetails = response.Data.getFees;
-    this.loading = false;
-  }, error => {
-    this.loading = false;
-  })
-}
+ setAmount(feeType){
+   if(feeType=="Pre")
+   {
+    let amount=this.feeDetails.find(i =>i.FeeType==this.feeType).PreFee;
+  this.fee.Amount=amount;
+   }
+   else{
+    let amount=this.feeDetails.find(i =>i.FeeType==this.feeType).PostFee;
+    this.fee.Amount=amount;
 
-  uploadDocument($event){
+   }
+ }
+  uploadDocument($event,id){
     this.loading = true;
     this.document=($event.target.files[0]);
     var reader = new FileReader();
     const file = $event.target.files[0];
     reader.readAsDataURL(file);
     const formData :any= new FormData();
-   formData.append('exhibitorPaymentId',1);
+   formData.append('exhibitorPaymentId',id);
    formData.append('document', this.document);
       this.exhibitorService.uploadFinancialDocument(formData).subscribe(response => {
        this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
        this.loading = false;
-       this.document=null 
+       this.document=null;
+       this.getExhibitorTransactions(this.ExhibitorId);
      }
      , error => {
        this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
@@ -131,15 +157,42 @@ filesUrl = BaseUrl.filesUrl;
      });
   }
 
+  confirmDeleteFee(id){
+    const message = `Are you sure you want to remove the transaction?`;
+  const dialogData = new ConfirmDialogModel("Confirm Action", message);
+  const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    maxWidth: "400px",
+    data: dialogData
+  });
+  dialogRef.afterClosed().subscribe(dialogResult => {
+    this.result = dialogResult;
+    if (this.result) {
+      this.deleteFee(id)
+    }
+  });
+  }
   deleteFee(id){
     this.loading = true;
     this.exhibitorService.deleteFee(id).subscribe(response => {
       this.loading = false;
+      this.getExhibitorTransactions(this.ExhibitorId);
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
     }, error => {
       this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
       this.loading = false;
   
     })
+  }
+
+  getExhibitorTransactions(id){
+    this.loading = true;
+    this.exhibitorService.getExhibitorTransactions(id).subscribe(response => {
+     this.exhibitorTransactions=response.Data.getExhibitorTransactions;
+      this.loading = false;
+    }, error => {
+      this.loading = false;
+      this.exhibitorTransactions = null;
+    }
+    )
   }
 }

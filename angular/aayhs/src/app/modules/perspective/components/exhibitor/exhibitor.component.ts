@@ -80,6 +80,9 @@ export class ExhibitorComponent implements OnInit {
   scannedDocuments:any;
   horseDate:any;
   classDate:any;
+  exhibitorTransactions:any;
+  feeDetails:any
+
   //for binding images with server url
   filesUrl = BaseUrl.filesUrl;
   baseRequest: BaseRecordFilterRequest = {
@@ -145,10 +148,11 @@ export class ExhibitorComponent implements OnInit {
   }
 
   showFinancialTransaction(){
-    debugger;
     var data={
       ExhibitorId:this.exhibitorInfo.ExhibitorId,
-      ExhibitorName:this.exhibitorInfo.FirstName + this.exhibitorInfo.LastName
+      ExhibitorName:this.exhibitorInfo.FirstName +''+ this.exhibitorInfo.LastName,
+      feeDetails:this.feeDetails,
+      exhibitorTransactions:this.exhibitorTransactions
     }
     const dialogRef = this.dialog.open(FinancialTransactionsComponent, {
       maxWidth: "400px",
@@ -189,6 +193,9 @@ export class ExhibitorComponent implements OnInit {
     this.getAllSponsorTypes();
     this.getbilledFeesSummary(id);
     this.getScannedDocuments(id);
+    this.getExhibitorTransactions(id);
+    this.getFees();
+
   }
 
   resetForm(){
@@ -509,6 +516,7 @@ resetLinkedhorse(){
   this.backNumberLinked=null;
   this.linkedHorseId=null;
   this.horseType=null;
+  this.horseDate=null;
 }
 
 
@@ -643,6 +651,7 @@ resetLinkClass(){
   this.classDetails.Entries=null;
   this.classDetails.IsScratch=null;
   this.showScratch=false;
+  this.classDate=null;
 }
 
 
@@ -953,7 +962,8 @@ viewDocument(path){
 openTransactionDetails(id){
   var data={
     feeTypeId:id,
-    exhibitorId:this.exhibitorInfo.ExhibitorId
+    exhibitorId:this.exhibitorInfo.ExhibitorId,
+    
   }
   const dialogRef = this.dialog.open(FilteredFinancialTransactionsComponent, {
     maxWidth: "400px",
@@ -968,7 +978,7 @@ handleHorseDate(){
 }
 
 handleClassDate(){
-  this.classDate = moment(this.horseDate).format('YYYY-MM-DD');
+  this.classDate = moment(this.classDate).format('YYYY-MM-DD');
 }
 
 confirmRemoveDocument(id,path): void {
@@ -1007,5 +1017,25 @@ confirmRemoveDocument(id,path): void {
     })
   }
 
+  getExhibitorTransactions(id){
+    this.loading = true;
+    this.exhibitorService.getExhibitorTransactions(id).subscribe(response => {
+     this.exhibitorTransactions=response.Data.getExhibitorTransactions;
+      this.loading = false;
+    }, error => {
+      this.loading = false;
+      this.exhibitorTransactions = null;
+    }
+    )
+  }
 
+  getFees(){
+    this.loading = true;
+    this.exhibitorService.getFees().subscribe(response => {    
+     this.feeDetails = response.Data.getFees;
+      this.loading = false;
+    }, error => {
+      this.loading = false;
+    })
+  }
 }

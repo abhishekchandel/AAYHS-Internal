@@ -1,10 +1,10 @@
 export interface FeeModel
 {
-    Date:string;
-    FeeType:number;
+    PayDate:string;
+    FeeTypeId:number;
     Amount:number;
-    Paid:number;
-    Refund:number;
-    Timeframe:string;
-    
+    AmountPaid:number;
+    RefundAmount:number;
+    TimeFrameType:string;
+    ExhibitorId:number
 }
