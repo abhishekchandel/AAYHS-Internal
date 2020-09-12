@@ -365,11 +365,15 @@ namespace AAYHS.Repository.Repository
                     select new ExhibitorMoneyReceived
                     {
                         Date = exhibitorpayment.PayDate,
-                        Amount = exhibitorpayment.Amount,
+                        Amount = exhibitorpayment.AmountPaid,
                     });
 
             getExhibitorFinancials.exhibitorMoneyReceived = data.ToList();
-            getExhibitorFinancials.MoneyReceivedTotal = _context.ExhibitorPaymentDetails.Where(x => x.ExhibitorId == exhibitorId && x.IsActive == true && x.IsDeleted == false).Select(x => x.Amount).Sum();
+            getExhibitorFinancials.MoneyReceivedTotal = _context.ExhibitorPaymentDetails.Where(x => x.ExhibitorId == exhibitorId && x.IsActive == true && x.IsDeleted == false).Select(x => x.AmountPaid).Sum();
+
+            getExhibitorFinancials.Outstanding = _context.ExhibitorPaymentDetail.Where(x => x.ExhibitorId == exhibitorId && x.IsActive == true && x.IsDeleted == false).Select(x => x.AmountPaid).Sum();
+            getExhibitorFinancials.OverPayment= (horseStallAmount + tackStallAmount + additionalAmount + classAmount)-(getExhibitorFinancials.MoneyReceivedTotal);
+            getExhibitorFinancials.Refunds=_context.ExhibitorPaymentDetail.Where(x => x.ExhibitorId == exhibitorId && x.IsActive == true && x.IsDeleted == false).Select(x => x.RefundAmount).Sum();
             return getExhibitorFinancials;
         }
 

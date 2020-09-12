@@ -716,21 +716,28 @@ namespace AAYHS.Service.Service
 
         public MainResponse UploadFinancialDocument(FinancialDocumentRequest financialDocumentRequest, string actionBy)
         {
-            string uniqueFileName = null;
-            string path = null;
-            string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-            uniqueFileName = Guid.NewGuid().ToString() + "_" + financialDocumentRequest.Document.FileName;
-            var FilePath = Path.Combine(uploadsFolder, "Resources", "FinancialDocuments");
-            path = Path.Combine(FilePath, uniqueFileName);
-            string filePath = Path.Combine(FilePath, uniqueFileName);
-            financialDocumentRequest.Document.CopyTo(new FileStream(filePath, FileMode.Create));
-            path = path.Replace(uploadsFolder, "").Replace("\\", "/");
-
+          
             var exhibitorPayment = _exhibitorPaymentDetailRepository.GetSingle(x => x.ExhibitorPaymentId == financialDocumentRequest.ExhibitorPaymentId
                                      && x.IsActive == true && x.IsDeleted == false);
 
             if (exhibitorPayment != null)
             {
+                string uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                var fileToBeDeleted = uploadFolder + exhibitorPayment.DocumentPath;
+
+                if ((System.IO.File.Exists(fileToBeDeleted)))
+                {
+                    System.IO.File.Delete(fileToBeDeleted);
+                }
+                string uniqueFileName = null;
+                string path = null;
+                string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + financialDocumentRequest.Document.FileName;
+                var FilePath = Path.Combine(uploadsFolder, "Resources", "FinancialDocuments");
+                path = Path.Combine(FilePath, uniqueFileName);
+                string filePath = Path.Combine(FilePath, uniqueFileName);
+                financialDocumentRequest.Document.CopyTo(new FileStream(filePath, FileMode.Create));
+                path = path.Replace(uploadsFolder, "").Replace("\\", "/");
                 exhibitorPayment.DocumentPath = path;
                 exhibitorPayment.ModifiedBy = actionBy;
                 exhibitorPayment.ModifiedDate = DateTime.Now;

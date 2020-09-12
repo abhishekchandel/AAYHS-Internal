@@ -133,6 +133,9 @@ namespace AAYHS.Core.DTOs.Response
         public decimal FeeBilledTotal { get; set; }
         public List<ExhibitorMoneyReceived> exhibitorMoneyReceived { get; set; }
         public decimal MoneyReceivedTotal { get; set; }
+        public decimal  Outstanding { get; set; }
+        public decimal OverPayment { get; set; }
+        public decimal Refunds { get; set; }
     }
     public class ExhibitorFeesBilled
     {
