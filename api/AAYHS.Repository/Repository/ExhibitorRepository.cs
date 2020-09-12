@@ -203,6 +203,8 @@ namespace AAYHS.Repository.Repository
                                          Email =sponsor.Email,
                                          Amount=sponsor.AmountReceived,
                                          SponsorTypeId=sponsorExhibitor.SponsorTypeId,
+                                         SponsorTypeName= (from code in _context.GlobalCodes where code.GlobalCodeId == sponsorExhibitor.SponsorTypeId select code.CodeName).FirstOrDefault(),
+                                         AdTypeName = (from code1 in _context.GlobalCodes where code1.GlobalCodeId == sponsorExhibitor.AdTypeId select code1.CodeName).FirstOrDefault(),
                                          IdNumber = sponsorExhibitor.SponsorTypeId == (int)SponsorTypes.Class ? Convert.ToString(_context.Classes.Where(x => x.ClassId == Convert.ToInt32(sponsorExhibitor.TypeId)).Select(x => x.ClassNumber).FirstOrDefault())
                                        : (sponsorExhibitor.SponsorTypeId == (int)SponsorTypes.Add ? sponsorExhibitor.TypeId
                                        : Convert.ToString(0)),
