@@ -34,7 +34,7 @@ namespace AAYHS.Repository.Repository
             _Mapper = Mapper;
         }
 
-        public async Task<GlobalCodeMainResponse> GetCodes(string categoryName)
+        public GlobalCodeMainResponse GetCodes(string categoryName)
         {
             IQueryable<GlobalCodeResponse> data;
             GlobalCodeMainResponse globalCodeMainResponse = new GlobalCodeMainResponse();
@@ -51,7 +51,7 @@ namespace AAYHS.Repository.Repository
                         CategoryId = gc.CategoryId,
                     });
             globalCodeMainResponse.totalRecords = data.Count();
-            globalCodeMainResponse.globalCodeResponse = await data.ToListAsync();
+            globalCodeMainResponse.globalCodeResponse = data.ToList();
             return globalCodeMainResponse;
         }
 

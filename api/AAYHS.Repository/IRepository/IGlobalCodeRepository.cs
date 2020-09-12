@@ -9,6 +9,6 @@ namespace AAYHS.Repository.IRepository
 {
     public interface IGlobalCodeRepository: IGenericRepository<GlobalCodes>
     {
-        Task<GlobalCodeMainResponse> GetCodes(string categoryName);
+        GlobalCodeMainResponse GetCodes(string categoryName);
     }
 }

@@ -35,9 +35,9 @@ namespace AAYHS.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetGlobalCode(string categoryName)
+        public  IActionResult GetGlobalCode(string categoryName)
         {
-            _mainResponse = await _globalCodeService.GetGlobalCode(categoryName);
+            _mainResponse = _globalCodeService.GetGlobalCode(categoryName);
             _jsonString = Mapper.Convert<GlobalCodeMainResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }       

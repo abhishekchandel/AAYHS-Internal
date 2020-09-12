@@ -8,7 +8,7 @@ namespace AAYHS.Service.IService
 {
     public interface IGlobalCodeService
     {
-        Task<MainResponse> GetGlobalCode(string globalCodeType);
+        MainResponse GetGlobalCode(string globalCodeType);
         MainResponse GetAllStates();
         MainResponse GetAllCities(int StateId);
         MainResponse GetAllZipCodes(int CityId);

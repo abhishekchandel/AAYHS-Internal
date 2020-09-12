@@ -781,6 +781,48 @@ namespace AAYHS.Service.Service
 
         public MainResponse AddFinancialTransaction(AddFinancialTransactionRequest addFinancialTransactionRequest, string actionBy)
         {
+            var feeType = _globalCodeRepository.GetCodes("FeeType");
+
+            int additionalFeeId = feeType.globalCodeResponse.Where(x => x.CodeName == "Additional Program").Select(x => x.GlobalCodeId).FirstOrDefault();
+            int sponsorRefund = feeType.globalCodeResponse.Where(x => x.CodeName == "Ad Sponsor Refund").Select(x => x.GlobalCodeId).FirstOrDefault();
+            if (addFinancialTransactionRequest.FeeTypeId==additionalFeeId)
+            {
+                var additionalfinancialTransaction = new ExhibitorPaymentDetail()
+                {
+                    ExhibitorId = addFinancialTransactionRequest.ExhibitorId,
+                    PayDate = Convert.ToDateTime(addFinancialTransactionRequest.PayDate),
+                    TimeFrameType = "",
+                    FeeTypeId = addFinancialTransactionRequest.FeeTypeId,
+                    Amount = addFinancialTransactionRequest.Amount,
+                    AmountPaid = addFinancialTransactionRequest.AmountPaid,
+                    RefundAmount = addFinancialTransactionRequest.RefundAmount,
+                    CreatedBy = actionBy,
+                    CreatedDate = DateTime.Now
+                };
+                _exhibitorPaymentDetailRepository.Add(additionalfinancialTransaction);
+                _mainResponse.Message = Constants.FINANCIAL_TRANSACTION_ADDED;
+                _mainResponse.Success = true;
+                return _mainResponse;
+            }
+            if (addFinancialTransactionRequest.FeeTypeId == sponsorRefund)
+            {
+                var sponsorTransaction = new ExhibitorPaymentDetail()
+                {
+                    ExhibitorId = addFinancialTransactionRequest.ExhibitorId,
+                    PayDate = Convert.ToDateTime(addFinancialTransactionRequest.PayDate),
+                    FeeTypeId = addFinancialTransactionRequest.FeeTypeId,                
+                    TimeFrameType="",
+                    Amount=0,
+                    AmountPaid=0,
+                    RefundAmount = addFinancialTransactionRequest.RefundAmount,
+                    CreatedBy = actionBy,
+                    CreatedDate = DateTime.Now
+                };
+                _exhibitorPaymentDetailRepository.Add(sponsorTransaction);
+                _mainResponse.Message = Constants.FINANCIAL_TRANSACTION_ADDED;
+                _mainResponse.Success = true;
+                return _mainResponse;
+            }
             var financialTransaction = new ExhibitorPaymentDetail()
             {
                 ExhibitorId = addFinancialTransactionRequest.ExhibitorId,
