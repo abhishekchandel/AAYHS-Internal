@@ -326,7 +326,7 @@ namespace AAYHS.Repository.Repository
 
             decimal postHorseStallAmount = horseStallFee.PostEntryFee * postHorseStall.Count();
             decimal postTackStallAmount = tackStallFee.PostEntryFee * postTackStall.Count();
-            decimal postClassAmount = classEntryFee.PostEntryFee * postTackStall.Count();
+            decimal postClassAmount = classEntryFee.PostEntryFee * postClasses.Count();
 
             decimal horseStallAmount = preHorseStallAmount + postHorseStallAmount;
             decimal tackStallAmount = preTackStallAmount + preTackStallAmount;
