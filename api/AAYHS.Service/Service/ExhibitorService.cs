@@ -551,6 +551,7 @@ namespace AAYHS.Service.Service
                     SponsorId = addSponsorForExhibitor.SponsorId,
                     SponsorTypeId = addSponsorForExhibitor.SponsorTypeId,
                     TypeId = addSponsorForExhibitor.TypeId,
+                    AdTypeId=addSponsorForExhibitor.AdTypeId,
                     CreatedBy = actionBy,
                     CreatedDate = DateTime.Now
                 };
@@ -568,6 +569,7 @@ namespace AAYHS.Service.Service
                     sponsor.ExhibitorId = addSponsorForExhibitor.ExhibitorId;
                     sponsor.SponsorTypeId = addSponsorForExhibitor.SponsorTypeId;
                     sponsor.TypeId = addSponsorForExhibitor.TypeId;
+                    sponsor.AdTypeId = addSponsorForExhibitor.AdTypeId;
                     sponsor.ModifiedDate = DateTime.Now;
                     _sponsorExhibitorRepository.Update(sponsor);
                     _mainResponse.Message = Constants.EXHIBITOR_SPONSOR_UPDATED;
