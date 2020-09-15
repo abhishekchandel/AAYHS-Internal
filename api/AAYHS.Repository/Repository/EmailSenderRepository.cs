@@ -63,8 +63,10 @@ namespace AAYHS.Repository.Repository
             }
             return Body;
         }
+
         public void SendEmailWithDocument(EmailRequest request,string DocumentPath)
         {
+            
             Attachment data = new Attachment( DocumentPath,MediaTypeNames.Application.Octet);
 
             MailMessage mail = new MailMessage();

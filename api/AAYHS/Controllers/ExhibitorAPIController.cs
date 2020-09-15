@@ -419,5 +419,18 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
+        /// <summary>
+        /// This api used to download the document
+        /// </summary>
+        /// <param name="documentPath"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<ActionResult> DownloadDocument(string documentPath)
+        {
+            await _exhibitorService.DownloadDocument(documentPath);
+            _mainResponse.Success = true;
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
     }
 }

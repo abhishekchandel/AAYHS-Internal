@@ -10,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+
 namespace AAYHS.Service.Service
 {
     public class ExhibitorService : IExhibitorService
@@ -888,6 +890,15 @@ namespace AAYHS.Service.Service
             _mainResponse.Success = true;
 
             return _mainResponse;
+        }
+
+        public async Task<FileStream> DownloadDocument(string documentPath)
+        {                    
+                var currentDirectory = System.IO.Directory.GetCurrentDirectory();
+                currentDirectory = currentDirectory + "\\src\\assets";
+                var file = Path.Combine(Path.Combine(currentDirectory, "attachments"), documentPath);
+                return new FileStream(file, FileMode.Open, FileAccess.Read);
+                       
         }
     }
 }

@@ -2,6 +2,7 @@
 using AAYHS.Core.DTOs.Response;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -40,5 +41,6 @@ namespace AAYHS.Service.IService
         MainResponse AddFinancialTransaction(AddFinancialTransactionRequest addFinancialTransactionRequest, string actionBy);
         MainResponse GetFinancialViewDetail(ViewDetailRequest viewDetailRequest);
         MainResponse SendEmailWithDocument(EmailWithDocumentRequest emailWithDocumentRequest);
+        Task<FileStream> DownloadDocument(string documentPath);
    }
 }
