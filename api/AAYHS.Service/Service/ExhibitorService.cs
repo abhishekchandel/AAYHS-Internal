@@ -869,6 +869,9 @@ namespace AAYHS.Service.Service
 
         public MainResponse SendEmailWithDocument(EmailWithDocumentRequest emailWithDocumentRequest)
         {
+            var currentDirectory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+            currentDirectory = currentDirectory.Replace("\\","/");            
+            string fullPath = currentDirectory+ emailWithDocumentRequest.DocumentPath;
             string guid = Guid.NewGuid().ToString();
 
             //get email settings
@@ -884,7 +887,7 @@ namespace AAYHS.Service.Service
             email.Token = guid;
             email.TemplateType = "Email With Document";
 
-            _emailSenderRepository.SendEmailWithDocument(email, emailWithDocumentRequest.DocumentPath);
+            _emailSenderRepository.SendEmailWithDocument(email, fullPath);
 
             _mainResponse.Message = Constants.EMAIL_SENT;
             _mainResponse.Success = true;
@@ -893,12 +896,12 @@ namespace AAYHS.Service.Service
         }
 
         public async Task<FileStream> DownloadDocument(string documentPath)
-        {                    
-                var currentDirectory = System.IO.Directory.GetCurrentDirectory();
-                currentDirectory = currentDirectory + "\\src\\assets";
-                var file = Path.Combine(Path.Combine(currentDirectory, "attachments"), documentPath);
-                return new FileStream(file, FileMode.Open, FileAccess.Read);
-                       
+        {
+            var currentDirectory = System.IO.Directory.GetCurrentDirectory();
+            currentDirectory = currentDirectory + "\\wwwroot";
+            var file = currentDirectory+ documentPath;
+            return new FileStream(file, FileMode.Open, FileAccess.Read);
+
         }
     }
 }
