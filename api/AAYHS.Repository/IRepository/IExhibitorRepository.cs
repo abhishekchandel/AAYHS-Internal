@@ -19,5 +19,6 @@ namespace AAYHS.Repository.IRepository
         GetAllUploadedDocuments GetUploadedDocuments(int exhibitorId);
         GetAllFees GetAllFees();
         GetAllExhibitorTransactions GetAllExhibitorTransactions(int exhibitorId);
+        GetAllExhibitorTransactions GetFinancialViewDetail(ViewDetailRequest viewDetailRequest);
    }
 }

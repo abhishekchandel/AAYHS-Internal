@@ -74,9 +74,9 @@
                                     <label><input #nsbaIndicator="ngModel" name="nsbaIndicator" [(ngModel)]="exhibitorInfo.IsNSBAMember" type="checkbox" value="" class="ciCheckbox">NSBA Indicator</label>
                                 </div>
                                 <div class="form-group">
-                                    <label>Back Number </label>	
-                                    <input #backNumber="ngModel" appOnlynumber name="backNumber" pattern="(^[0-9]*$)" [(ngModel)]="exhibitorInfo.BackNumber" type="text" class="form-control" placeholder="Back Number"/>                                
-                                     <span class="help-block" *ngIf="backNumber.errors?.pattern">Back Number is not valid</span>
+                                    <label>Back Number <span>*</span> </label>	
+                                    <input #backNumber="ngModel" appOnlynumber name="backNumber" required  [(ngModel)]="exhibitorInfo.BackNumber" type="text" class="form-control" placeholder="Back Number"/>                                
+                                     <span class="help-block" *ngIf="backNumber.errors?.required && (backNumber.touched || exhibitorInfoForm.submitted)">Back Number is required</span>
                                 </div>
                                 <div class="form-group">
                                     <label>First name <span>*</span></label>	
@@ -321,7 +321,7 @@
                     <div class="actionBtn text-right mb-4 mt-3">
                         <button (click)='tabGroup.selectedIndex = 0' class="btn btn-red btnCss roundBtn">Previous</button>
                         <button (click)='tabGroup.selectedIndex = 2' class="btn btn-red btnCss roundBtn">Next</button>
-                        <a [routerLink]="['/perspective/horse']" target="_blank"><button type="button" class="btn btn-red btnCss roundBtn">+ Hourse</button></a>
+                        <a [routerLink]="['/perspective/horse']" target="_blank"><button type="button" class="btn btn-red btnCss roundBtn">+ Horse</button></a>
                         <button type="submit"class="btn btn-red btnCss roundBtn">Submit</button>
                     </div>
                 </form>
@@ -340,7 +340,7 @@
                                         <th>Email</th>
                                         <th>Total $ Received</th>
                                         <th>Sponsor Type</th>
-                                        <th>Ad Number</th>
+                                        <th>Id Number</th>
                                         <th>Ad Size</th>
                                         <th>Remove</th> 
                                     </tr>	
@@ -353,9 +353,9 @@
                                         </td>
                                         <td>{{sponsor.Email}}</td>
                                         <td>{{sponsor.Amount}}</td>
-                                        <td>{{sponsor.SponsorTypeId}}</td>
+                                        <td>{{sponsor.SponsorTypeName}}</td>
                                         <td>{{sponsor.IdNumber}}</td>
-                                        <td>{{sponsor.AdSize}}</td>
+                                        <td>{{sponsor.AdTypeName}}</td>
                                         <td>
                                             <button type="button" class="icon" (click)="confirmRemoveExhibitorSponsor(sponsor.SponsorExhibitorId)"><span></span> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
                                         </td>
@@ -574,12 +574,12 @@
                                         </thead>
                                         <perfect-scrollbar class="nicescrollBar-2">
                                             <tbody>
-                                                <tr *ngFor="let fee of feesSummary">
+                                                <tr *ngFor="let fee of billedSummary">
                                                     <td>{{fee.Qty}}</td>
                                                     <td>{{fee.FeeType}}</td>
                                                     <td>
                                                         <div class="icon"></div>
-                                                        <button type="button" class="icon" (click)="openTransactionDetails(1)"><span></span><i class="fa fa-external-link" aria-hidden="true"></i></button>
+                                                        <button type="button" class="icon" (click)="openTransactionDetails(fee.FeeTypeId)"><span></span><i class="fa fa-external-link" aria-hidden="true"></i></button>
                                                     </td>
                                                     <td>{{fee.Amount}}</td>
                                                 </tr>                                                                                            
@@ -604,20 +604,12 @@
                                         </thead>
                                         <perfect-scrollbar class="nicescrollBar-2">
                                             <tbody>
+                                                <tr *ngFor="let row of receievedSummary">
+                                                    <td>{{row.Date | date : 'yyyy/MM/dd'}}</td>
+                                                    <td>${{row.Amount}}</td>
+                                                </tr>                                              
                                                 <tr>
-                                                    <td>1/12/21</td>
-                                                    <td>$45.00</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>1/30/21</td>
-                                                    <td>$30.00</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3/17/21</td>
-                                                    <td>$45.00</td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="2"><b>TOTAL:</b> $255.00</td>
+                                                    <td colspan="2"><b>TOTAL:</b> ${{moneyReceivedTotal}}</td>
                                                 </tr>
                                             </tbody>
                                         </perfect-scrollbar>
@@ -626,20 +618,20 @@
                                             <tbody>
                                                 <tr>
                                                     <td>Outstanding:</td>
-                                                    <td>$130.00</td>
+                                                    <td>${{outstanding}}</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Over Payment:</td>
-                                                    <td>$0.00</td>
+                                                    <td>${{overPayment}}</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Refund:</td>
-                                                    <td>$48.00</td>
+                                                    <td>${{refunds}}</td>
                                                 </tr>
                                                 <tr>
                                                     <td colspan="2">
                                                         <div class="actionBtn text-left p-0 ">                                                            
-                                                            <button class="btn btn-red btnCss roundBtn">Recalculate</button>
+                                                            <button (click)="recalculate()" class="btn btn-red btnCss roundBtn">Recalculate</button>
                                                         </div>
                                                     </td>
                                                 </tr>

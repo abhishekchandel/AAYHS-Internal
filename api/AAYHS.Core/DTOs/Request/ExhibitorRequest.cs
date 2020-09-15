@@ -51,6 +51,7 @@ namespace AAYHS.Core.DTOs.Request
         public int SponsorId { get; set; }
         public int SponsorTypeId { get; set; }
         public string TypeId { get; set; }
+        public int AdTypeId { get; set; }
     }
     public class DocumentUploadRequest
     {
@@ -67,5 +68,20 @@ namespace AAYHS.Core.DTOs.Request
     {
         public int ScanId { get; set; }
         public string Path { get; set; }
+    }
+    public class AddFinancialTransactionRequest
+    {
+        public int FeeTypeId { get; set; }
+        public int ExhibitorId { get; set; }
+        public decimal Amount { get; set; }
+        public string TimeFrameType { get; set; }                 
+        public string PayDate { get; set; }           
+        public decimal AmountPaid { get; set; }
+        public decimal RefundAmount { get; set; }
+    }
+    public class ViewDetailRequest
+    {
+        public int FeeTypeId { get; set; }
+        public int ExhibitorId { get; set; }
     }
 }

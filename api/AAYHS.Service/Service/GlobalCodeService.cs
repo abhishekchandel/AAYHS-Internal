@@ -37,9 +37,9 @@ namespace AAYHS.Service.Service
             _mainResponse = new MainResponse();
         }
 
-        public async Task<MainResponse> GetGlobalCode(string categoryName)
+        public MainResponse GetGlobalCode(string categoryName)
         {
-            var globalCodeResponse = await _globalCodeRepository.GetCodes(categoryName);
+            var globalCodeResponse =  _globalCodeRepository.GetCodes(categoryName);
             if (globalCodeResponse.totalRecords != 0)
             {
 
@@ -74,7 +74,6 @@ namespace AAYHS.Service.Service
             _mainResponse.Success = true;
             return _mainResponse;
         }
-
         public MainResponse GetAllZipCodes(int CityId)
         {
             var zipCodes = _zipCodeRepository.GetAll(x => x.CityId == CityId && x.IsDeleted == false && x.IsActive == true).OrderBy(x => x.Number);

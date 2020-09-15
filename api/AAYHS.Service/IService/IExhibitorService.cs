@@ -37,5 +37,7 @@ namespace AAYHS.Service.IService
         MainResponse RemoveExhibitorTransaction(int exhibitorPaymentId, string actionBy);
         MainResponse UploadFinancialDocument(FinancialDocumentRequest financialDocumentRequest, string actionBy);
         MainResponse GetAllExhibitorTransactions(int exhibitorId);
+        MainResponse AddFinancialTransaction(AddFinancialTransactionRequest addFinancialTransactionRequest, string actionBy);
+        MainResponse GetFinancialViewDetail(ViewDetailRequest viewDetailRequest);
    }
 }

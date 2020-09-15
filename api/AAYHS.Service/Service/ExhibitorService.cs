@@ -1,6 +1,5 @@
 ﻿using AAYHS.Core.DTOs.Request;
 using AAYHS.Core.DTOs.Response;
-using AAYHS.Core.DTOs.Response.Common;
 using AAYHS.Core.Shared.Static;
 using AAYHS.Data.DBEntities;
 using AAYHS.Repository.IRepository;
@@ -11,13 +10,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 namespace AAYHS.Service.Service
 {
-  public  class ExhibitorService: IExhibitorService
-  {
+    public class ExhibitorService : IExhibitorService
+    {
         #region readonly
         private readonly IMapper _mapper;
         #endregion
@@ -38,12 +34,12 @@ namespace AAYHS.Service.Service
         private IHorseRepository _horseRepository;
         #endregion
 
-        public ExhibitorService(IExhibitorRepository exhibitorRepository,IAddressRepository addressRepository,
-                                 IExhibitorHorseRepository exhibitorHorseRepository,IHorseRepository horseRepository, 
-                                 IGroupExhibitorRepository groupExhibitorRepository,IGlobalCodeRepository globalCodeRepository,
+        public ExhibitorService(IExhibitorRepository exhibitorRepository, IAddressRepository addressRepository,
+                                 IExhibitorHorseRepository exhibitorHorseRepository, IHorseRepository horseRepository,
+                                 IGroupExhibitorRepository groupExhibitorRepository, IGlobalCodeRepository globalCodeRepository,
                                  IExhibitorClassRepository exhibitorClassRepository, IClassRepository classRepository,
-                                 ISponsorExhibitorRepository sponsorExhibitorRepository,ISponsorRepository sponsorRepository,
-                                 IScanRepository scanRepository,IExhibitorPaymentDetailRepository exhibitorPaymentDetailRepository,IMapper mapper)
+                                 ISponsorExhibitorRepository sponsorExhibitorRepository, ISponsorRepository sponsorRepository,
+                                 IScanRepository scanRepository, IExhibitorPaymentDetailRepository exhibitorPaymentDetailRepository, IMapper mapper)
         {
             _exhibitorRepository = exhibitorRepository;
             _addressRepository = addressRepository;
@@ -66,7 +62,7 @@ namespace AAYHS.Service.Service
             if (request.ExhibitorId <= 0)
             {
                 var exhibitorBackNumberExist = _exhibitorRepository.GetSingle(x => x.BackNumber == request.BackNumber && x.IsActive == true && x.IsDeleted == false);
-                if (exhibitorBackNumberExist != null && exhibitorBackNumberExist.ExhibitorId>0)
+                if (exhibitorBackNumberExist != null && exhibitorBackNumberExist.ExhibitorId > 0)
                 {
                     _mainResponse.Message = Constants.BACKNUMBER_AlREADY_EXIST;
                     _mainResponse.Success = false;
@@ -82,26 +78,26 @@ namespace AAYHS.Service.Service
                 };
                 var _address = _addressRepository.Add(address);
                 var exhibitor = new Exhibitors
-                {                   
-                    AddressId= _address.AddressId,
-                    FirstName=request.FirstName,
-                    LastName=request.LastName,
-                    BackNumber=request.BackNumber,
-                    BirthYear=request.BirthYear,
-                    IsNSBAMember=request.IsNSBAMember,
-                    IsDoctorNote=request.IsDoctorNote,
-                    QTYProgram=request.QTYProgram,
-                    PrimaryEmail=request.PrimaryEmail,
-                    SecondaryEmail=request.SecondaryEmail,
-                    Phone=request.Phone,
-                    Date= request.Date,
+                {
+                    AddressId = _address.AddressId,
+                    FirstName = request.FirstName,
+                    LastName = request.LastName,
+                    BackNumber = request.BackNumber,
+                    BirthYear = request.BirthYear,
+                    IsNSBAMember = request.IsNSBAMember,
+                    IsDoctorNote = request.IsDoctorNote,
+                    QTYProgram = request.QTYProgram,
+                    PrimaryEmail = request.PrimaryEmail,
+                    SecondaryEmail = request.SecondaryEmail,
+                    Phone = request.Phone,
+                    Date = request.Date,
                     CreatedBy = actionBy,
                     CreatedDate = DateTime.Now,
                     IsActive = true,
                     IsDeleted = false
                 };
-               
-                var _exhibitor= _exhibitorRepository.Add(exhibitor);
+
+                var _exhibitor = _exhibitorRepository.Add(exhibitor);
                 if (request.GroupId > 0)
                 {
                     var groupExhibitor = new GroupExhibitors
@@ -109,9 +105,9 @@ namespace AAYHS.Service.Service
                         ExhibitorId = _exhibitor.ExhibitorId,
                         GroupId = request.GroupId,
                         CreatedBy = actionBy,
-                        CreatedDate= DateTime.Now,
-                        IsActive=true,
-                        IsDeleted=false
+                        CreatedDate = DateTime.Now,
+                        IsActive = true,
+                        IsDeleted = false
                     };
                     var _groupExhibitor = _groupExhibitorRepository.Add(groupExhibitor);
                 }
@@ -120,11 +116,11 @@ namespace AAYHS.Service.Service
                 _mainResponse.Success = true;
             }
             else
-            {               
+            {
                 var exhibitor = _exhibitorRepository.GetSingle(x => x.ExhibitorId == request.ExhibitorId && x.IsActive == true && x.IsDeleted == false);
-               
-                if (exhibitor!=null && exhibitor.ExhibitorId>0)
-                {                  
+
+                if (exhibitor != null && exhibitor.ExhibitorId > 0)
+                {
                     exhibitor.FirstName = request.FirstName;
                     exhibitor.LastName = request.LastName;
                     exhibitor.BackNumber = request.BackNumber;
@@ -143,7 +139,7 @@ namespace AAYHS.Service.Service
                     _mainResponse.Success = true;
 
                     var address = _addressRepository.GetSingle(x => x.AddressId == request.AddressId && x.IsActive == true && x.IsDeleted == false);
-                    if (address!=null && address.AddressId>0)
+                    if (address != null && address.AddressId > 0)
                     {
                         address.Address = request.Address;
                         address.CityId = request.CityId;
@@ -181,12 +177,12 @@ namespace AAYHS.Service.Service
                     _mainResponse.Message = Constants.NO_RECORD_EXIST_WITH_ID;
                     _mainResponse.Success = false;
                 }
-               
-               
+
+
             }
             return _mainResponse;
         }
-    
+
         public MainResponse GetAllExhibitors(BaseRecordFilterRequest filterRequest)
         {
             var exhibitorList = _exhibitorRepository.GetAllExhibitors(filterRequest);
@@ -208,8 +204,8 @@ namespace AAYHS.Service.Service
         {
             var data = _exhibitorRepository.GetExhibitorById(exhibitorId);
             if (data.exhibitorResponses != null && data.TotalRecords > 0)
-            {               
-                _mainResponse.ExhibitorListResponse =data;
+            {
+                _mainResponse.ExhibitorListResponse = data;
                 _mainResponse.Message = Constants.RECORD_FOUND;
                 _mainResponse.Success = true;
             }
@@ -222,10 +218,10 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
-        public MainResponse DeleteExhibitor(int exhibitorId,string actionBy)
+        public MainResponse DeleteExhibitor(int exhibitorId, string actionBy)
         {
             var Exhibitor = _exhibitorRepository.GetSingle(x => x.ExhibitorId == exhibitorId);
-            if (Exhibitor != null && Exhibitor.ExhibitorId>0)
+            if (Exhibitor != null && Exhibitor.ExhibitorId > 0)
             {
                 Exhibitor.IsDeleted = true;
                 Exhibitor.IsActive = false;
@@ -242,11 +238,11 @@ namespace AAYHS.Service.Service
             }
             return _mainResponse;
         }
-     
+
         public MainResponse GetExhibitorHorses(int exhibitorId)
         {
             var exhibitorHorses = _exhibitorRepository.GetExhibitorHorses(exhibitorId);
-            if (exhibitorHorses.exhibitorHorses!=null && exhibitorHorses.TotalRecords>0)
+            if (exhibitorHorses.exhibitorHorses != null && exhibitorHorses.TotalRecords > 0)
             {
                 _mainResponse.ExhibitorHorsesResponse = exhibitorHorses;
                 _mainResponse.ExhibitorHorsesResponse.TotalRecords = exhibitorHorses.TotalRecords;
@@ -260,11 +256,18 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
-        public MainResponse DeleteExhibitorHorse(int exhibitorHorseId,string actionBy)
+        public MainResponse DeleteExhibitorHorse(int exhibitorHorseId, string actionBy)
         {
             var exhibitorHorse = _exhibitorHorseRepository.GetSingle(x => x.ExhibitorHorseId == exhibitorHorseId && x.IsActive == true && x.IsDeleted == false);
-            if (exhibitorHorse!=null && exhibitorHorse.ExhibitorId>0)
-            {              
+            if (exhibitorHorse != null && exhibitorHorse.ExhibitorId > 0)
+            {
+                var exhibitor = _exhibitorRepository.GetSingle(x => x.ExhibitorId == exhibitorHorse.ExhibitorId && x.IsActive == true && x.IsDeleted == false);
+
+                if (exhibitor.BackNumber==exhibitorHorse.BackNumber)
+                {
+                    exhibitor.BackNumber = 0;
+                    _exhibitorRepository.Update(exhibitor);
+                }
                 _exhibitorHorseRepository.Delete(exhibitorHorse);
                 _mainResponse.Message = Constants.EXHIBITOR_HORSE_DELETED;
                 _mainResponse.Success = true;
@@ -282,7 +285,7 @@ namespace AAYHS.Service.Service
             var allHorses = _horseRepository.GetAll(x => x.IsActive == true && x.IsDeleted == false);
             var exhibitorHorses = _exhibitorHorseRepository.GetAll(x => x.ExhibitorId == exhibitorId && x.IsActive == true && x.IsDeleted == false);
 
-            if (allHorses.Count>0)
+            if (allHorses.Count > 0)
             {
                 var horses = allHorses.Where(x => exhibitorHorses.All(y => y.HorseId != x.HorseId)).ToList();
                 var _allHorses = _mapper.Map<List<GetHorses>>(horses);
@@ -302,9 +305,9 @@ namespace AAYHS.Service.Service
         public MainResponse GetHorseDetail(int horseId)
         {
             var horse = _horseRepository.GetSingle(x => x.HorseId == horseId && x.IsActive == true && x.IsDeleted == false);
-            if (horse != null && horse.HorseId>0)
+            if (horse != null && horse.HorseId > 0)
             {
-                var horseType= _globalCodeRepository.GetSingle(x => x.GlobalCodeId == horse.HorseTypeId);
+                var horseType = _globalCodeRepository.GetSingle(x => x.GlobalCodeId == horse.HorseTypeId);
                 var horseDetail = _mapper.Map<GetHorses>(horse);
                 horseDetail.HorseType = horseType.CodeName;
                 _mainResponse.GetHorses = horseDetail;
@@ -318,16 +321,16 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
-        public MainResponse AddExhibitorHorse(AddExhibitorHorseRequest addExhibitorHorseRequest,string actionBy)
+        public MainResponse AddExhibitorHorse(AddExhibitorHorseRequest addExhibitorHorseRequest, string actionBy)
         {
             var exhibitorHorse = new ExhibitorHorse
             {
                 ExhibitorId = addExhibitorHorseRequest.ExhibitorId,
-                HorseId=addExhibitorHorseRequest.HorseId,
-                BackNumber=addExhibitorHorseRequest.BackNumber,
-                Date=addExhibitorHorseRequest.Date,
-                CreatedDate=DateTime.Now,
-                CreatedBy= actionBy
+                HorseId = addExhibitorHorseRequest.HorseId,
+                BackNumber = addExhibitorHorseRequest.BackNumber,
+                Date = addExhibitorHorseRequest.Date,
+                CreatedDate = DateTime.Now,
+                CreatedBy = actionBy
             };
 
             _exhibitorHorseRepository.Add(exhibitorHorse);
@@ -340,7 +343,7 @@ namespace AAYHS.Service.Service
         {
             var exhibitorClasses = _exhibitorRepository.GetAllClassesOfExhibitor(exhibitorId);
 
-            if (exhibitorClasses != null && exhibitorClasses.TotalRecords!=0)
+            if (exhibitorClasses != null && exhibitorClasses.TotalRecords != 0)
             {
                 _mainResponse.GetAllClassesOfExhibitor = exhibitorClasses;
                 _mainResponse.GetAllClassesOfExhibitor.TotalRecords = exhibitorClasses.TotalRecords;
@@ -403,7 +406,7 @@ namespace AAYHS.Service.Service
             var classDetail = _classRepository.GetSingle(x => x.ClassId == classId && x.IsActive == true && x.IsDeleted == false);
             if (classDetail != null && classDetail.ClassId > 0)
             {
-                var entries = _exhibitorClassRepository.GetAll(x => x.ClassId == classId && x.IsActive == true && x.IsDeleted == false);               
+                var entries = _exhibitorClassRepository.GetAll(x => x.ClassId == classId && x.IsActive == true && x.IsDeleted == false);
                 var _class = _mapper.Map<GetClassesForExhibitor>(classDetail);
                 _class.Entries = entries.Count();
                 _class.IsScratch = false;
@@ -418,12 +421,12 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
-        public MainResponse UpdateScratch(UpdateScratch updateScratch,string actionBy)
+        public MainResponse UpdateScratch(UpdateScratch updateScratch, string actionBy)
         {
             var exhibitorClass = _exhibitorClassRepository.GetSingle(x => x.ExhibitorClassId == updateScratch.exhibitorClassId && x.IsActive == true
-                                                          &&  x.IsDeleted == false);
+                                                          && x.IsDeleted == false);
 
-            if (exhibitorClass!=null && exhibitorClass.ExhibitorClassId>0)
+            if (exhibitorClass != null && exhibitorClass.ExhibitorClassId > 0)
             {
                 exhibitorClass.IsScratch = updateScratch.IsScratch;
                 exhibitorClass.ModifiedBy = actionBy;
@@ -447,7 +450,7 @@ namespace AAYHS.Service.Service
             {
                 ExhibitorId = addExhibitorToClass.ExhibitorId,
                 ClassId = addExhibitorToClass.ClassId,
-                Date= addExhibitorToClass.Date,
+                Date = addExhibitorToClass.Date,
                 CreatedBy = actionBy,
                 CreatedDate = DateTime.Now
             };
@@ -462,7 +465,7 @@ namespace AAYHS.Service.Service
         {
             var allsponsor = _exhibitorRepository.GetAllSponsorsOfExhibitor(exhibitorId);
 
-            if (allsponsor.getSponsorsOfExhibitors!=null && allsponsor.TotalRecords>0 )
+            if (allsponsor.getSponsorsOfExhibitors != null && allsponsor.TotalRecords > 0)
             {
                 _mainResponse.GetAllSponsorsOfExhibitor = allsponsor;
                 _mainResponse.GetAllSponsorsOfExhibitor.TotalRecords = allsponsor.TotalRecords;
@@ -476,11 +479,11 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
-        public MainResponse RemoveSponsorFromExhibitor(int sponsorExhibitorId,string actionBy)
+        public MainResponse RemoveSponsorFromExhibitor(int sponsorExhibitorId, string actionBy)
         {
-            var sponsor = _sponsorExhibitorRepository.GetSingle(x => x.SponsorExhibitorId == sponsorExhibitorId && x.IsActive==true && x.IsDeleted==false);
+            var sponsor = _sponsorExhibitorRepository.GetSingle(x => x.SponsorExhibitorId == sponsorExhibitorId && x.IsActive == true && x.IsDeleted == false);
 
-            if (sponsor!=null)
+            if (sponsor != null)
             {
                 sponsor.IsDeleted = true;
                 sponsor.DeletedBy = actionBy;
@@ -501,9 +504,9 @@ namespace AAYHS.Service.Service
         public MainResponse GetAllSponsor(int exhibitorId)
         {
             var allSponsors = _sponsorRepository.GetAll(x => x.IsActive == true && x.IsDeleted == false);
-            var sponsors = _sponsorExhibitorRepository.GetAll(x=>x.ExhibitorId==exhibitorId && x.IsActive==true && x.IsDeleted==false);
+            var sponsors = _sponsorExhibitorRepository.GetAll(x => x.ExhibitorId == exhibitorId && x.IsActive == true && x.IsDeleted == false);
 
-            if (sponsors.Count>0)
+            if (allSponsors.Count > 0)
             {
                 var _sponsors = allSponsors.Where(x => sponsors.All(y => y.SponsorId != x.SponsorId)).ToList();
                 var _allSponsors = _mapper.Map<List<GetSponsorForExhibitor>>(_sponsors);
@@ -523,10 +526,10 @@ namespace AAYHS.Service.Service
 
         public MainResponse GetSponsorDetail(int sponsorId)
         {
-            var sponsor= _exhibitorRepository.GetSponsorDetail(sponsorId);
+            var sponsor = _exhibitorRepository.GetSponsorDetail(sponsorId);
 
-            if (sponsor!=null && sponsor.SponsorId>0)
-            {              
+            if (sponsor != null && sponsor.SponsorId > 0)
+            {
                 _mainResponse.GetSponsorForExhibitor = sponsor;
                 _mainResponse.Success = true;
             }
@@ -537,10 +540,10 @@ namespace AAYHS.Service.Service
             }
             return _mainResponse;
         }
-      
+
         public MainResponse AddSponsorForExhibitor(AddSponsorForExhibitor addSponsorForExhibitor, string actionBy)
         {
-            if (addSponsorForExhibitor.SponsorExhibitorId==0)
+            if (addSponsorForExhibitor.SponsorExhibitorId == 0)
             {
                 var sponsor = new SponsorExhibitor
                 {
@@ -548,6 +551,7 @@ namespace AAYHS.Service.Service
                     SponsorId = addSponsorForExhibitor.SponsorId,
                     SponsorTypeId = addSponsorForExhibitor.SponsorTypeId,
                     TypeId = addSponsorForExhibitor.TypeId,
+                    AdTypeId=addSponsorForExhibitor.AdTypeId,
                     CreatedBy = actionBy,
                     CreatedDate = DateTime.Now
                 };
@@ -559,12 +563,13 @@ namespace AAYHS.Service.Service
             {
                 var sponsor = _sponsorExhibitorRepository.GetSingle(x => x.SponsorExhibitorId == addSponsorForExhibitor.SponsorExhibitorId && x.IsActive == true
                                                                     && x.IsDeleted == false);
-                if (sponsor!=null && sponsor.SponsorExhibitorId>0)
+                if (sponsor != null && sponsor.SponsorExhibitorId > 0)
                 {
                     sponsor.SponsorId = addSponsorForExhibitor.SponsorId;
                     sponsor.ExhibitorId = addSponsorForExhibitor.ExhibitorId;
                     sponsor.SponsorTypeId = addSponsorForExhibitor.SponsorTypeId;
                     sponsor.TypeId = addSponsorForExhibitor.TypeId;
+                    sponsor.AdTypeId = addSponsorForExhibitor.AdTypeId;
                     sponsor.ModifiedDate = DateTime.Now;
                     _sponsorExhibitorRepository.Update(sponsor);
                     _mainResponse.Message = Constants.EXHIBITOR_SPONSOR_UPDATED;
@@ -576,7 +581,7 @@ namespace AAYHS.Service.Service
                     _mainResponse.Success = false;
                 }
             }
-                 
+
             return _mainResponse;
         }
 
@@ -587,18 +592,18 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
-        public MainResponse UploadDocumentFile(DocumentUploadRequest documentUploadRequest,string actionBy)
+        public MainResponse UploadDocumentFile(DocumentUploadRequest documentUploadRequest, string actionBy)
         {
             string uniqueFileName = null;
             string path = null;
-            if (documentUploadRequest.Documents!=null)
+            if (documentUploadRequest.Documents != null)
             {
                 foreach (IFormFile file in documentUploadRequest.Documents)
                 {
 
                     string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
 
-                    
+
                     uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
 
                     var FilePath = Path.Combine(uploadsFolder, "Resources", "Documents");
@@ -622,7 +627,7 @@ namespace AAYHS.Service.Service
                     };
                     _scanRepository.Add(scans);
                 }
-               
+
                 _mainResponse.Message = Constants.DOCUMENT_UPLOAD;
                 _mainResponse.Success = true;
             }
@@ -638,7 +643,7 @@ namespace AAYHS.Service.Service
         {
             var documents = _exhibitorRepository.GetUploadedDocuments(exhibitorId);
 
-            if (documents.getUploadedDocuments!=null && documents.getUploadedDocuments.Count()>0)
+            if (documents.getUploadedDocuments != null && documents.getUploadedDocuments.Count() > 0)
             {
                 _mainResponse.GetAllUploadedDocuments = documents;
                 _mainResponse.Success = true;
@@ -653,26 +658,26 @@ namespace AAYHS.Service.Service
 
         public MainResponse DeleteUploadedDocuments(DocumentDeleteRequest documentDeleteRequest, string actionBy)
         {
-            
-                string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-                var FilePath = Path.Combine(uploadsFolder, documentDeleteRequest.Path);
-                var fileToBeDeleted = uploadsFolder + documentDeleteRequest.Path;
 
-                if ((System.IO.File.Exists(fileToBeDeleted)))
-                {
-                    System.IO.File.Delete(fileToBeDeleted);
-                }
+            string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+            var FilePath = Path.Combine(uploadsFolder, documentDeleteRequest.Path);
+            var fileToBeDeleted = uploadsFolder + documentDeleteRequest.Path;
 
-                var resource = _scanRepository.GetSingle(x => x.ScansId == documentDeleteRequest.ScanId && x.IsActive == true);
-                if (resource != null)
-                {
-                    resource.IsDeleted = true;
-                    resource.DeletedBy = actionBy;
-                    resource.DeletedDate = DateTime.Now;
-                    _scanRepository.Update(resource);
+            if ((System.IO.File.Exists(fileToBeDeleted)))
+            {
+                System.IO.File.Delete(fileToBeDeleted);
+            }
 
-                }
-            
+            var resource = _scanRepository.GetSingle(x => x.ScansId == documentDeleteRequest.ScanId && x.IsActive == true);
+            if (resource != null)
+            {
+                resource.IsDeleted = true;
+                resource.DeletedBy = actionBy;
+                resource.DeletedDate = DateTime.Now;
+                _scanRepository.Update(resource);
+
+            }
+
             _mainResponse.Success = true;
             _mainResponse.Message = Constants.DOCUMENT_DELETED;
             return _mainResponse;
@@ -682,7 +687,7 @@ namespace AAYHS.Service.Service
         {
             var fees = _exhibitorRepository.GetAllFees();
 
-            if (fees.getFees!=null && fees.getFees.Count()>0)
+            if (fees.getFees != null && fees.getFees.Count() > 0)
             {
                 _mainResponse.GetAllFees = fees;
                 _mainResponse.Success = true;
@@ -695,12 +700,12 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
-        public MainResponse RemoveExhibitorTransaction(int exhibitorPaymentId,string actionBy)
+        public MainResponse RemoveExhibitorTransaction(int exhibitorPaymentId, string actionBy)
         {
             var exhibitorPayment = _exhibitorPaymentDetailRepository.GetSingle(x => x.ExhibitorPaymentId == exhibitorPaymentId && x.IsActive == true
                                     && x.IsDeleted == false);
 
-            if (exhibitorPayment!=null && exhibitorPayment.ExhibitorPaymentId>0)
+            if (exhibitorPayment != null && exhibitorPayment.ExhibitorPaymentId > 0)
             {
                 exhibitorPayment.IsDeleted = true;
                 exhibitorPayment.DeletedBy = actionBy;
@@ -720,30 +725,37 @@ namespace AAYHS.Service.Service
 
         public MainResponse UploadFinancialDocument(FinancialDocumentRequest financialDocumentRequest, string actionBy)
         {
-            string uniqueFileName = null;
-            string path = null;                         
-                    string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-                    uniqueFileName = Guid.NewGuid().ToString() + "_" + financialDocumentRequest.Document.FileName;
-                    var FilePath = Path.Combine(uploadsFolder, "Resources", "FinancialDocuments");
-                    path = Path.Combine(FilePath, uniqueFileName);
-                    string filePath = Path.Combine(FilePath, uniqueFileName);
+          
+            var exhibitorPayment = _exhibitorPaymentDetailRepository.GetSingle(x => x.ExhibitorPaymentId == financialDocumentRequest.ExhibitorPaymentId
+                                     && x.IsActive == true && x.IsDeleted == false);
+
+            if (exhibitorPayment != null)
+            {
+                string uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                var fileToBeDeleted = uploadFolder + exhibitorPayment.DocumentPath;
+
+                if ((System.IO.File.Exists(fileToBeDeleted)))
+                {
+                    System.IO.File.Delete(fileToBeDeleted);
+                }
+                string uniqueFileName = null;
+                string path = null;
+                string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + financialDocumentRequest.Document.FileName;
+                var FilePath = Path.Combine(uploadsFolder, "Resources", "FinancialDocuments");
+                path = Path.Combine(FilePath, uniqueFileName);
+                string filePath = Path.Combine(FilePath, uniqueFileName);
                 financialDocumentRequest.Document.CopyTo(new FileStream(filePath, FileMode.Create));
-                    path = path.Replace(uploadsFolder, "").Replace("\\", "/");
+                path = path.Replace(uploadsFolder, "").Replace("\\", "/");
+                exhibitorPayment.DocumentPath = path;
+                exhibitorPayment.ModifiedBy = actionBy;
+                exhibitorPayment.ModifiedDate = DateTime.Now;
 
-                    var exhibitorPayment = _exhibitorPaymentDetailRepository.GetSingle(x => x.ExhibitorPaymentId == financialDocumentRequest.ExhibitorPaymentId
-                                             && x.IsActive == true && x.IsDeleted == false);
-
-                    if (exhibitorPayment!=null)
-                    {
-                        exhibitorPayment.DocumentPath = path;
-                        exhibitorPayment.ModifiedBy = actionBy;
-                        exhibitorPayment.ModifiedDate = DateTime.Now;
-
-                        _exhibitorPaymentDetailRepository.Update(exhibitorPayment);
+                _exhibitorPaymentDetailRepository.Update(exhibitorPayment);
                 _mainResponse.Message = Constants.DOCUMENT_UPLOAD;
                 _mainResponse.Success = true;
             }
-                             
+
             else
             {
                 _mainResponse.Message = Constants.NO_DOCUMENT_FOUND;
@@ -756,7 +768,7 @@ namespace AAYHS.Service.Service
         {
             var exhibitorTransactions = _exhibitorRepository.GetAllExhibitorTransactions(exhibitorId);
 
-            if (exhibitorTransactions.getExhibitorTransactions!=null && exhibitorTransactions.getExhibitorTransactions.Count!=0)
+            if (exhibitorTransactions.getExhibitorTransactions != null && exhibitorTransactions.getExhibitorTransactions.Count != 0)
             {
                 _mainResponse.GetAllExhibitorTransactions = exhibitorTransactions;
                 _mainResponse.Success = true;
@@ -769,6 +781,83 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
+        public MainResponse AddFinancialTransaction(AddFinancialTransactionRequest addFinancialTransactionRequest, string actionBy)
+        {
+            var feeType = _globalCodeRepository.GetCodes("FeeType");
 
-  }
+            int additionalFeeId = feeType.globalCodeResponse.Where(x => x.CodeName == "Additional Program").Select(x => x.GlobalCodeId).FirstOrDefault();
+            int sponsorRefund = feeType.globalCodeResponse.Where(x => x.CodeName == "Ad Sponsor Refund").Select(x => x.GlobalCodeId).FirstOrDefault();
+            if (addFinancialTransactionRequest.FeeTypeId==additionalFeeId)
+            {
+                var additionalfinancialTransaction = new ExhibitorPaymentDetail()
+                {
+                    ExhibitorId = addFinancialTransactionRequest.ExhibitorId,
+                    PayDate = Convert.ToDateTime(addFinancialTransactionRequest.PayDate),
+                    TimeFrameType = "",
+                    FeeTypeId = addFinancialTransactionRequest.FeeTypeId,
+                    Amount = addFinancialTransactionRequest.Amount,
+                    AmountPaid = addFinancialTransactionRequest.AmountPaid,
+                    RefundAmount = addFinancialTransactionRequest.RefundAmount,
+                    CreatedBy = actionBy,
+                    CreatedDate = DateTime.Now
+                };
+                _exhibitorPaymentDetailRepository.Add(additionalfinancialTransaction);
+                _mainResponse.Message = Constants.FINANCIAL_TRANSACTION_ADDED;
+                _mainResponse.Success = true;
+                return _mainResponse;
+            }
+            if (addFinancialTransactionRequest.FeeTypeId == sponsorRefund)
+            {
+                var sponsorTransaction = new ExhibitorPaymentDetail()
+                {
+                    ExhibitorId = addFinancialTransactionRequest.ExhibitorId,
+                    PayDate = Convert.ToDateTime(addFinancialTransactionRequest.PayDate),
+                    FeeTypeId = addFinancialTransactionRequest.FeeTypeId,                
+                    TimeFrameType="",
+                    Amount=0,
+                    AmountPaid=0,
+                    RefundAmount = addFinancialTransactionRequest.RefundAmount,
+                    CreatedBy = actionBy,
+                    CreatedDate = DateTime.Now
+                };
+                _exhibitorPaymentDetailRepository.Add(sponsorTransaction);
+                _mainResponse.Message = Constants.FINANCIAL_TRANSACTION_ADDED;
+                _mainResponse.Success = true;
+                return _mainResponse;
+            }
+            var financialTransaction = new ExhibitorPaymentDetail()
+            {
+                ExhibitorId = addFinancialTransactionRequest.ExhibitorId,
+                PayDate = Convert.ToDateTime(addFinancialTransactionRequest.PayDate),
+                FeeTypeId = addFinancialTransactionRequest.FeeTypeId,
+                TimeFrameType = addFinancialTransactionRequest.TimeFrameType,
+                Amount = addFinancialTransactionRequest.Amount,
+                AmountPaid = addFinancialTransactionRequest.AmountPaid,
+                RefundAmount = addFinancialTransactionRequest.RefundAmount,
+                CreatedBy = actionBy,
+                CreatedDate = DateTime.Now
+            };
+            _exhibitorPaymentDetailRepository.Add(financialTransaction);
+            _mainResponse.Message = Constants.FINANCIAL_TRANSACTION_ADDED;
+            _mainResponse.Success = true;
+            return _mainResponse;
+        }
+
+        public MainResponse GetFinancialViewDetail(ViewDetailRequest viewDetailRequest)
+        {
+            var financialDetail = _exhibitorRepository.GetFinancialViewDetail(viewDetailRequest);
+
+            if (financialDetail.getExhibitorTransactions != null && financialDetail.getExhibitorTransactions.Count() != 0)
+            {
+                _mainResponse.GetAllExhibitorTransactions = financialDetail;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+                _mainResponse.Success = false;
+            }
+            return _mainResponse;
+        }
+    }
 }

@@ -203,6 +203,8 @@ namespace AAYHS.Repository.Repository
                                          Email =sponsor.Email,
                                          Amount=sponsor.AmountReceived,
                                          SponsorTypeId=sponsorExhibitor.SponsorTypeId,
+                                         SponsorTypeName= (from code in _context.GlobalCodes where code.GlobalCodeId == sponsorExhibitor.SponsorTypeId select code.CodeName).FirstOrDefault(),
+                                         AdTypeName = (from code1 in _context.GlobalCodes where code1.GlobalCodeId == sponsorExhibitor.AdTypeId select code1.CodeName).FirstOrDefault(),
                                          IdNumber = sponsorExhibitor.SponsorTypeId == (int)SponsorTypes.Class ? Convert.ToString(_context.Classes.Where(x => x.ClassId == Convert.ToInt32(sponsorExhibitor.TypeId)).Select(x => x.ClassNumber).FirstOrDefault())
                                        : (sponsorExhibitor.SponsorTypeId == (int)SponsorTypes.Add ? sponsorExhibitor.TypeId
                                        : Convert.ToString(0)),
@@ -326,7 +328,7 @@ namespace AAYHS.Repository.Repository
 
             decimal postHorseStallAmount = horseStallFee.PostEntryFee * postHorseStall.Count();
             decimal postTackStallAmount = tackStallFee.PostEntryFee * postTackStall.Count();
-            decimal postClassAmount = classEntryFee.PostEntryFee * postTackStall.Count();
+            decimal postClassAmount = classEntryFee.PostEntryFee * postClasses.Count();
 
             decimal horseStallAmount = preHorseStallAmount + postHorseStallAmount;
             decimal tackStallAmount = preTackStallAmount + preTackStallAmount;
@@ -336,6 +338,7 @@ namespace AAYHS.Repository.Repository
             int tackStall = preTackStall.Count() + postTackStall.Count();
             int classes = preClasses.Count + postClasses.Count();
 
+            int[] FeeTypeId = { horseStallFeeId, tackStallFeeId, additionalProgramsFeeId, classEntryId };
             string[] feetype = { "Stall", "Tack", "Additional Programs", "Class Entry" };
             decimal[] amount = { horseStallAmount, tackStallAmount, additionalAmount, classAmount };
             int[] qty = { horseStall, tackStall, additionalPrograme, classes };
@@ -346,6 +349,7 @@ namespace AAYHS.Repository.Repository
                 if (qty[i]!=0)
                 {
                     ExhibitorFeesBilled exhibitorFeesBilled = new ExhibitorFeesBilled();
+                    exhibitorFeesBilled.FeeTypeId = FeeTypeId[i];
                     exhibitorFeesBilled.Qty = qty[i];
                     exhibitorFeesBilled.FeeType = feetype[i];
                     exhibitorFeesBilled.Amount = amount[i];
@@ -363,11 +367,20 @@ namespace AAYHS.Repository.Repository
                     select new ExhibitorMoneyReceived
                     {
                         Date = exhibitorpayment.PayDate,
-                        Amount = exhibitorpayment.Amount,
+                        Amount = exhibitorpayment.AmountPaid,
                     });
 
             getExhibitorFinancials.exhibitorMoneyReceived = data.ToList();
-            getExhibitorFinancials.MoneyReceivedTotal = _context.ExhibitorPaymentDetails.Where(x => x.ExhibitorId == exhibitorId && x.IsActive == true && x.IsDeleted == false).Select(x => x.Amount).Sum();
+            getExhibitorFinancials.MoneyReceivedTotal = _context.ExhibitorPaymentDetails.Where(x => x.ExhibitorId == exhibitorId && x.IsActive == true && x.IsDeleted == false).Select(x => x.AmountPaid).Sum();
+
+            getExhibitorFinancials.Outstanding = (horseStallAmount + tackStallAmount + additionalAmount + classAmount)- (getExhibitorFinancials.MoneyReceivedTotal);
+            decimal overPayment= (getExhibitorFinancials.MoneyReceivedTotal)-(horseStallAmount + tackStallAmount + additionalAmount + classAmount);
+            if (overPayment<0)
+            {
+                overPayment = 0;
+            }
+            getExhibitorFinancials.OverPayment = overPayment;
+            getExhibitorFinancials.Refunds=_context.ExhibitorPaymentDetail.Where(x => x.ExhibitorId == exhibitorId && x.IsActive == true && x.IsDeleted == false).Select(x => x.RefundAmount).Sum();
             return getExhibitorFinancials;
         }
 
@@ -436,9 +449,9 @@ namespace AAYHS.Repository.Repository
             IEnumerable<GetExhibitorTransactions> data = null;
             GetAllExhibitorTransactions getAllExhibitorTransactions = new GetAllExhibitorTransactions();
 
-            var yearlyId = _context.YearlyMaintainence.Where(x => x.Year.Year == DateTime.Now.Year && x.IsActive == true && x.IsDeleted == false).FirstOrDefault();
+            var exhibitorSponsor =_context.SponsorExhibitor.Where(x => x.ExhibitorId == exhibitorId && x.IsActive == true && x.IsDeleted == false);
 
-            data = (from exhibitorPaymentDetail in _context.ExhibitorPaymentDetails
+            data = (from exhibitorPaymentDetail in _context.ExhibitorPaymentDetail
                     where exhibitorPaymentDetail.ExhibitorId == exhibitorId &&
                     exhibitorPaymentDetail.IsActive == true && exhibitorPaymentDetail.IsDeleted == false
                     select new GetExhibitorTransactions 
@@ -449,10 +462,42 @@ namespace AAYHS.Repository.Repository
                       TimeFrameType= exhibitorPaymentDetail.TimeFrameType,
                       Amount =exhibitorPaymentDetail.Amount,
                       AmountPaid=exhibitorPaymentDetail.AmountPaid,
-                      RefundAmount=exhibitorPaymentDetail.RefundAmount                    
+                      RefundAmount=exhibitorPaymentDetail.RefundAmount,
+                      DocumentPath=exhibitorPaymentDetail.DocumentPath
                     });
 
             getAllExhibitorTransactions.getExhibitorTransactions = data.ToList();
+            if (exhibitorSponsor.Count()!=0)
+            {
+                getAllExhibitorTransactions.IsRefund = true;
+            }
+            else
+            {
+                getAllExhibitorTransactions.IsRefund = false;
+            }
+            return getAllExhibitorTransactions;
+        }
+
+        public GetAllExhibitorTransactions GetFinancialViewDetail(ViewDetailRequest viewDetailRequest)
+        {
+            IEnumerable<GetExhibitorTransactions> data = null;
+            GetAllExhibitorTransactions getAllExhibitorTransactions = new GetAllExhibitorTransactions();
+
+            data = (from exhibitorPaymentDetail in _context.ExhibitorPaymentDetail
+                    where exhibitorPaymentDetail.ExhibitorId == viewDetailRequest.ExhibitorId &&
+                    exhibitorPaymentDetail.FeeTypeId== viewDetailRequest.FeeTypeId &&
+                    exhibitorPaymentDetail.IsActive == true && exhibitorPaymentDetail.IsDeleted == false
+                    select new GetExhibitorTransactions
+                    {
+                        ExhibitorPaymentDetailId = exhibitorPaymentDetail.ExhibitorPaymentId,
+                        PayDate = exhibitorPaymentDetail.PayDate,
+                        TypeOfFee = _context.GlobalCodes.Where(x => x.GlobalCodeId == exhibitorPaymentDetail.FeeTypeId).Select(x => x.CodeName).FirstOrDefault(),
+                        TimeFrameType = exhibitorPaymentDetail.TimeFrameType,
+                        Amount = exhibitorPaymentDetail.Amount,
+                        AmountPaid = exhibitorPaymentDetail.AmountPaid,
+                        RefundAmount = exhibitorPaymentDetail.RefundAmount
+                    });
+            getAllExhibitorTransactions.getExhibitorTransactions = data.ToList();            
             return getAllExhibitorTransactions;
         }
     }

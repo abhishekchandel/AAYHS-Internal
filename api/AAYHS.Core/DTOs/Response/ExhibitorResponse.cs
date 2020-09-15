@@ -84,7 +84,7 @@ namespace AAYHS.Core.DTOs.Response
     public class GetSponsorsOfExhibitor
     {
         public int SponsorExhibitorId { get; set; }
-        public int SponsorId { get; set; }
+        public int SponsorId { get; set; }        
         public string Sponsor { get; set; }
         public string ContactName { get; set; }
         public string Phone { get; set; }
@@ -95,6 +95,8 @@ namespace AAYHS.Core.DTOs.Response
         public string Email { get; set; }
         public float Amount { get; set; }
         public int SponsorTypeId { get; set; }
+        public string SponsorTypeName { get; set; }
+        public string AdTypeName { get; set; }
         public string IdNumber { get; set; }
     }
     public class GetAllSponsorsOfExhibitor
@@ -133,9 +135,13 @@ namespace AAYHS.Core.DTOs.Response
         public decimal FeeBilledTotal { get; set; }
         public List<ExhibitorMoneyReceived> exhibitorMoneyReceived { get; set; }
         public decimal MoneyReceivedTotal { get; set; }
+        public decimal  Outstanding { get; set; }
+        public decimal OverPayment { get; set; }
+        public decimal Refunds { get; set; }
     }
     public class ExhibitorFeesBilled
     {
+        public int FeeTypeId { get; set; }
         public int Qty { get; set; }
         public string FeeType { get; set; }
         public decimal Amount { get; set; }
@@ -181,9 +187,11 @@ namespace AAYHS.Core.DTOs.Response
         public decimal Amount { get; set; }
         public decimal AmountPaid { get; set; }
         public decimal RefundAmount { get; set; }
+        public string DocumentPath { get; set; }
     }
     public class GetAllExhibitorTransactions
     {
         public List<GetExhibitorTransactions> getExhibitorTransactions { get; set; }
+        public bool IsRefund { get; set; }
     }
 }
