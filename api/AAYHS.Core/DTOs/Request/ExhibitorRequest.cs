@@ -84,4 +84,9 @@ namespace AAYHS.Core.DTOs.Request
         public int FeeTypeId { get; set; }
         public int ExhibitorId { get; set; }
     }
+    public class EmailWithDocumentRequest
+    {
+        public string DocumentPath { get; set; }
+        public string EmailId { get; set; }
+    }
 }

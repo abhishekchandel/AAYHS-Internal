@@ -30,6 +30,8 @@ namespace AAYHS.Service.Service
         private ISponsorRepository _sponsorRepository;
         private IScanRepository _scanRepository;
         private IExhibitorPaymentDetailRepository _exhibitorPaymentDetailRepository;
+        private IApplicationSettingRepository _applicationRepository;
+        private IEmailSenderRepository _emailSenderRepository;
         private IExhibitorHorseRepository _exhibitorHorseRepository;
         private IHorseRepository _horseRepository;
         #endregion
@@ -39,7 +41,8 @@ namespace AAYHS.Service.Service
                                  IGroupExhibitorRepository groupExhibitorRepository, IGlobalCodeRepository globalCodeRepository,
                                  IExhibitorClassRepository exhibitorClassRepository, IClassRepository classRepository,
                                  ISponsorExhibitorRepository sponsorExhibitorRepository, ISponsorRepository sponsorRepository,
-                                 IScanRepository scanRepository, IExhibitorPaymentDetailRepository exhibitorPaymentDetailRepository, IMapper mapper)
+                                 IScanRepository scanRepository, IExhibitorPaymentDetailRepository exhibitorPaymentDetailRepository,
+                                 IApplicationSettingRepository applicationRepository,IEmailSenderRepository emailSenderRepository ,IMapper mapper)
         {
             _exhibitorRepository = exhibitorRepository;
             _addressRepository = addressRepository;
@@ -53,6 +56,8 @@ namespace AAYHS.Service.Service
             _sponsorRepository = sponsorRepository;
             _scanRepository = scanRepository;
             _exhibitorPaymentDetailRepository = exhibitorPaymentDetailRepository;
+            _applicationRepository = applicationRepository;
+            _emailSenderRepository = emailSenderRepository;
             _mapper = mapper;
             _mainResponse = new MainResponse();
         }
@@ -857,6 +862,31 @@ namespace AAYHS.Service.Service
                 _mainResponse.Message = Constants.NO_RECORD_FOUND;
                 _mainResponse.Success = false;
             }
+            return _mainResponse;
+        }
+
+        public MainResponse SendEmailWithDocument(EmailWithDocumentRequest emailWithDocumentRequest)
+        {
+            string guid = Guid.NewGuid().ToString();
+
+            //get email settings
+            var settings = _applicationRepository.GetAll().FirstOrDefault();
+
+            // Send Email with document
+            EmailRequest email = new EmailRequest();
+            email.To = emailWithDocumentRequest.EmailId;
+            email.SenderEmail = settings.CompanyEmail;
+            email.CompanyEmail = settings.CompanyEmail;
+            email.CompanyPassword = settings.CompanyPassword;
+            email.Url = settings.ResetPasswordUrl;
+            email.Token = guid;
+            email.TemplateType = "Email With Document";
+
+            _emailSenderRepository.SendEmailWithDocument(email, emailWithDocumentRequest.DocumentPath);
+
+            _mainResponse.Message = Constants.EMAIL_SENT;
+            _mainResponse.Success = true;
+
             return _mainResponse;
         }
     }

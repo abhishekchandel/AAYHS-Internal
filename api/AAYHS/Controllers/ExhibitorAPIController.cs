@@ -407,5 +407,17 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<GetAllExhibitorTransactions>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
+        /// <summary>
+        /// This api used to send email with document file
+        /// </summary>
+        /// <param name="emailWithDocumentRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult SendEmailWithDocument(EmailWithDocumentRequest emailWithDocumentRequest)
+        {
+            _mainResponse = _exhibitorService.SendEmailWithDocument(emailWithDocumentRequest);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
     }
 }

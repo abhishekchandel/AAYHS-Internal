@@ -39,5 +39,6 @@ namespace AAYHS.Service.IService
         MainResponse GetAllExhibitorTransactions(int exhibitorId);
         MainResponse AddFinancialTransaction(AddFinancialTransactionRequest addFinancialTransactionRequest, string actionBy);
         MainResponse GetFinancialViewDetail(ViewDetailRequest viewDetailRequest);
+        MainResponse SendEmailWithDocument(EmailWithDocumentRequest emailWithDocumentRequest);
    }
 }

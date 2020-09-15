@@ -8,5 +8,6 @@ namespace AAYHS.Repository.IRepository
     public interface IEmailSenderRepository
     {
         void SendEmail(EmailRequest request);
+        void SendEmailWithDocument(EmailRequest request, string DocumentPath);
     }
 }

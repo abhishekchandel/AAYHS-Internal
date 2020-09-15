@@ -61,5 +61,6 @@ namespace AAYHS.Core.Shared.Static
         public const string NO_DOCUMENT_FOUND = "No Document Found to upload";
         public const string FINANCIAL_TRANSACTION_DELETED = "Financial Transaction deleted successfully";
         public const string FINANCIAL_TRANSACTION_ADDED = "Financial Transaction added successfully";
+        public const string EMAIL_SENT = "Email sent successfully";
     }
 }
