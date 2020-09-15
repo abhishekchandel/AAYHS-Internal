@@ -34,7 +34,13 @@ export class AssignStallModalComponent implements OnInit {
     this.setStallType(this.stallTypes[1].GlobalCodeId);
     }
     else{
+      if(this.data.modalData.StallAssignmentTypeId>0)
+      {
+        this.setStallType(this.data.modalData.StallAssignmentTypeId);
+      }
+      else{
       this.setStallType(this.stallTypes[0].GlobalCodeId);
+      }
     }
   // this.getAllStallTypes();
 
@@ -119,6 +125,7 @@ export class AssignStallModalComponent implements OnInit {
     
     this.StallAssignmentTypeId=Number(id);
   }
+
   setMoveToStall(id){
     
     this.StallMovedTo=Number(id);
