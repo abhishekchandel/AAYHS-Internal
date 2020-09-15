@@ -35,6 +35,7 @@ exhibitorTransactions:any;
     loading = false;
     isSponsorRefund:boolean=false;
     feeType:string=null;
+    isRefund:boolean=false;
     fee:FeeModel={
       PayDate:moment(new Date()).format('YYYY-MM-DD'),
       FeeTypeId:null,
@@ -45,10 +46,12 @@ exhibitorTransactions:any;
       ExhibitorId:null
     }
   ngOnInit(): void {
+    debugger;
      this.ExhibitorId=this.data.ExhibitorId;
      this.ExhibitorName=this.data.ExhibitorName;
-   this.feeDetails=this.data.feeDetails;
-   this.exhibitorTransactions=this.data.exhibitorTransactions;
+     this.feeDetails=this.data.feeDetails;
+     this.isRefund=this.data.isRefund
+     this.exhibitorTransactions=this.data.exhibitorTransactions;
   }
 
   onDismiss(): void {
@@ -87,7 +90,8 @@ exhibitorTransactions:any;
     this.fee.RefundAmount=null
     this.fee.TimeFrameType=null
     this.fee.ExhibitorId=null
-    this.feeType=null
+    this.feeType=null;
+    this.isSponsorRefund=false;
   }
 
   handleFeeDateSelection() {
@@ -95,14 +99,15 @@ exhibitorTransactions:any;
   }
 
   setFeeType(e){
+    let amount;
    this.fee.FeeTypeId=Number(e.target.value);
    this. feeType=e.target.options[e.target.options.selectedIndex].text;
-   let amount=this.feeDetails.find(i =>i.FeeType==this.feeType).Amount;
    let timeframe=this.feeDetails.find(i =>i.FeeType==this.feeType).TimeFrameType;
-    this.fee.Amount=amount;
+   let refundAmount=this.feeDetails.find(i =>i.FeeType==this.feeType).RefundPercentage;
     this.fee.TimeFrameType=timeframe;
    if(this.feeType =="Class Entry"|| this.feeType=="Stall" || this.feeType=="Tack"){
-   this.fee.RefundAmount =Math.round((amount * 40)/100)
+     amount=timeframe=="Pre" ? this.feeDetails.find(i =>i.FeeType==this.feeType).PreFee : this.feeDetails.find(i =>i.FeeType==this.feeType).PostFee;
+   this.fee.RefundAmount =Math.round((amount * refundAmount)/100)
    this.isSponsorRefund=false
    }
    else if(this.feeType=="Ad Sponsor Refund"){
@@ -110,17 +115,29 @@ exhibitorTransactions:any;
     this.fee.RefundAmount=null;
    }
    else if(this.feeType=="Additional Program"){
+    this.isSponsorRefund=false;
     this.fee.TimeFrameType=null
-   }
+    amount=this.feeDetails.find(i =>i.FeeType==this.feeType).Amount;
+    this.fee.RefundAmount =Math.round((amount * refundAmount)/100)
+  }
    else
    {
     this.fee.RefundAmount=null;
     this.isSponsorRefund=false
    }
+   this.fee.Amount=amount;
+
   }
 
   viewDocument(path){
-    window.open(this.filesUrl+path.replace(/\s+/g, '%20').toLowerCase(), '_blank');
+    if(path==null)
+    {
+      this.snackBar.openSnackBar('No document uploaded for display', 'Close', 'red-snackbar');
+    }
+      else{
+        window.open(this.filesUrl+path.replace(/\s+/g, '%20').toLowerCase(), '_blank');
+
+    }
   }
 
  setAmount(feeType){

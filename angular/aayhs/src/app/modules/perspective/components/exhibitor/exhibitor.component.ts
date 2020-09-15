@@ -64,17 +64,22 @@ export class ExhibitorComponent implements OnInit {
   sponsortypeId=null;
   showClasses=false;
   typeList:any=[];
-  typeId:string=null;
+  typeId:number=null;
   showAds=false;
   sponsorClassesList:any
   UnassignedSponsorClasses:any
   adTypeId:number=null;
-  feesSummary:any;
+  billedSummary:any;
+  receievedSummary:any;
+  outstanding:any;
+  overPayment:any;
+  refunds:any;
   AdTypes:any;
   myFiles:File;
   documentTypeId:any;
   pdf:any;
   feeBilledTotal:any;
+  moneyReceivedTotal:any
   documentTypes:any;
   documentId:number=null;
   scannedDocuments:any;
@@ -82,7 +87,7 @@ export class ExhibitorComponent implements OnInit {
   classDate:any;
   exhibitorTransactions:any;
   feeDetails:any
-
+  isRefund:boolean=false;
   //for binding images with server url
   filesUrl = BaseUrl.filesUrl;
   baseRequest: BaseRecordFilterRequest = {
@@ -139,8 +144,8 @@ export class ExhibitorComponent implements OnInit {
     this.data.searchTerm.subscribe((searchTerm: string) => {
       this.baseRequest.SearchTerm = searchTerm;
       this.getAllExhibitors();
-
-    });    this.getAllStates();
+    });    
+    this.getAllStates();
     this.getAllGroups();
     this.setYears();
     this.getAllAdTypes();
@@ -152,7 +157,9 @@ export class ExhibitorComponent implements OnInit {
       ExhibitorId:this.exhibitorInfo.ExhibitorId,
       ExhibitorName:this.exhibitorInfo.FirstName +''+ this.exhibitorInfo.LastName,
       feeDetails:this.feeDetails,
-      exhibitorTransactions:this.exhibitorTransactions
+      exhibitorTransactions:this.exhibitorTransactions,
+      isRefund:this.isRefund
+
     }
     const dialogRef = this.dialog.open(FinancialTransactionsComponent, {
       maxWidth: "400px",
@@ -183,6 +190,8 @@ export class ExhibitorComponent implements OnInit {
   highlight(id, i) {
     this.resetForm()
     this.selectedRowIndex = i;
+    this.getbilledFeesSummary(id);
+    this.getExhibitorTransactions(id);
     this.getExhibitorDetails(id);
     this.getExhibitorHorses(id);
     this.getAllHorses(id);
@@ -191,11 +200,8 @@ export class ExhibitorComponent implements OnInit {
     this.getExhibitorSponsors(id);
     this.getAllSponsors(id);
     this.getAllSponsorTypes();
-    this.getbilledFeesSummary(id);
     this.getScannedDocuments(id);
-    this.getExhibitorTransactions(id);
     this.getFees();
-
   }
 
   resetForm(){
@@ -490,6 +496,7 @@ addHorseToExhibitor(){
     this.resetLinkedhorse();
     this.getExhibitorHorses(this.exhibitorInfo.ExhibitorId);
     this.getAllHorses(this.exhibitorInfo.ExhibitorId);
+    this.getbilledFeesSummary(this.exhibitorInfo.ExhibitorId);
     this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
 
   }, error => {
@@ -638,6 +645,7 @@ addClassToExhibitor(){
     this.classesForm.resetForm({ classControl: null });
     this.getExhibitorClasses(this.exhibitorInfo.ExhibitorId);
     this.getAllClasses(this.exhibitorInfo.ExhibitorId);
+    this.getbilledFeesSummary(this.exhibitorInfo.ExhibitorId);
     this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
 
   }, error => {
@@ -714,14 +722,13 @@ getAllSponsors(id){
 }
 
 addSponsorToExhibitor(){
-  debugger;
   this.loading = true;
   var addSponsor = {
     exhibitorId: this.exhibitorInfo.ExhibitorId,
     sponsorId:Number(this.linkedSponsorId),
     sponsorTypeId:this.sponsortypeId,
-    AdTypeId:this.adTypeId,
-    typeId:this.typeId!=null ?this.typeId:""
+    AdTypeId:this.adTypeId!=null ? this.adTypeId :0,
+    typeId:this.typeId!=null ? this.typeId:""
   }
   this.exhibitorService.addSponsorToExhibitor(addSponsor).subscribe(response => {
     this.loading = false;
@@ -729,6 +736,7 @@ addSponsorToExhibitor(){
     this.sponsorsForm.resetForm({ addNumberControl: null ,typeControl:null,addTypeControl:null,});
     this.getExhibitorSponsors(this.exhibitorInfo.ExhibitorId);
     this.getAllSponsors(this.exhibitorInfo.ExhibitorId);
+    this.getExhibitorTransactions(this.exhibitorInfo.ExhibitorId);
     this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
 
   }, error => {
@@ -866,12 +874,18 @@ setType(value){
 getbilledFeesSummary(id){
   this.loading = true;
   this.exhibitorService.getbilledFeesSummary(id).subscribe(response => {
-    this.feesSummary = response.Data.exhibitorFeesBilled;
+    this.billedSummary = response.Data.exhibitorFeesBilled;
     this.feeBilledTotal=response.Data.FeeBilledTotal
+    this.receievedSummary=response.Data.exhibitorMoneyReceived
+    this.moneyReceivedTotal=response.Data.MoneyReceivedTotal
+    this.overPayment=response.Data.OverPayment
+    this.outstanding=response.Data.Outstanding
+    this.refunds=response.Data.Refunds
     this.loading = false;
   }, error => {
     this.loading = false;
-    this.feesSummary =null;
+    this.billedSummary =null;
+    this.receievedSummary=null;
   })
 }
 
@@ -963,8 +977,8 @@ openTransactionDetails(id){
   var data={
     feeTypeId:id,
     exhibitorId:this.exhibitorInfo.ExhibitorId,
-    
   }
+  debugger;
   const dialogRef = this.dialog.open(FilteredFinancialTransactionsComponent, {
     maxWidth: "400px",
     data
@@ -1021,6 +1035,8 @@ confirmRemoveDocument(id,path): void {
     this.loading = true;
     this.exhibitorService.getExhibitorTransactions(id).subscribe(response => {
      this.exhibitorTransactions=response.Data.getExhibitorTransactions;
+     debugger;
+     this.isRefund=response.Data.IsRefund;
       this.loading = false;
     }, error => {
       this.loading = false;
@@ -1037,5 +1053,8 @@ confirmRemoveDocument(id,path): void {
     }, error => {
       this.loading = false;
     })
+  }
+  recalculate(){
+    this.getbilledFeesSummary(this.exhibitorInfo.ExhibitorId);
   }
 }

@@ -41,7 +41,7 @@
                                 <perfect-scrollbar class="nicescrollBar-2">
                                     <tbody>
                                         <tr *ngFor="let transaction of exhibitorTransactions ; let i=index">
-                                            <td>{{transaction.PayDate}}</td>
+                                            <td>{{transaction.PayDate | date : 'yyyy/MM/dd'}}</td>
                                             <td>{{transaction.TypeOfFee}}</td>
                                             <td>
                                                 <div class="prePostField">
@@ -129,9 +129,13 @@
                                           </span>    
                                             </td>
                                             <td>
-                                                {{fee.RefundAmount}}
-                                                <span *ngIf="isSponsorRefund">
-                                                <input appOnlynumber #amountControl="ngModel" [(ngModel)]="fee.RefundAmount" type="text"  class="form-control" name="amountControl"  />    
+                                               <span *ngIf="!isSponsorRefund"> {{fee.RefundAmount}} </span>
+                                                <span *ngIf="(isSponsorRefund && isRefund)">
+                                                <input appOnlynumber #refundAmountControl="ngModel" required [(ngModel)]="fee.RefundAmount" type="text"  class="form-control" name="refundAmountControl"  />    
+                                                <span class="help-block"
+                                                *ngIf="(feeForm.submitted || refundAmountControl.touched) && refundAmountControl.invalid">
+                                                Please enter refund amount
+                                              </span> 
                                             </span>
                                             </td>
                                             <td></td>

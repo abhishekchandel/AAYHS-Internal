@@ -22,7 +22,7 @@
                       <perfect-scrollbar class="nicescrollBar-2">
                           <tbody>
                             <tr *ngFor="let financial of financialDetails;let i of index">
-                                <td data-label="date">{{financial.PayDate}}</td>
+                                <td data-label="date">{{financial.PayDate | date : 'yyyy/MM/dd'}}</td>
                                 <td data-label="feeType">{{financial.TypeOfFee}}</td>
                                 <td data-label="Pre/Post">
                                     <div class="prePostField">
