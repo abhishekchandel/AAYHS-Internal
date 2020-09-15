@@ -47,6 +47,7 @@ import { ExportAsModule } from 'ngx-export-as';
 import {NgxPrintModule} from 'ngx-print';
 import { SponsorInfoModalComponent } from './ui/modals/sponsor-info-modal/sponsor-info-modal.component';
 import { FilteredFinancialTransactionsComponent } from './ui/modals/filtered-financial-transactions/filtered-financial-transactions.component';
+import { EmailModalComponent } from './ui/modals/email-modal/email-modal.component';
 
 
 
@@ -56,7 +57,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 };
 
 @NgModule({
-  declarations: [HeaderComponent, FooterComponent,SidebarComponent, MatSnackbarComponent, ConfirmDialogComponent, AddSplitClassModalComponent, ExportConfirmationModalComponent, ConfirmEqualValidatorDirective, SearchPipe, AssignStallModalComponent, FinancialTransactionsComponent, OnlynumberDirective, SponsorInfoModalComponent, FilteredFinancialTransactionsComponent],
+  declarations: [HeaderComponent, FooterComponent,SidebarComponent, MatSnackbarComponent, ConfirmDialogComponent, AddSplitClassModalComponent, ExportConfirmationModalComponent, ConfirmEqualValidatorDirective, SearchPipe, AssignStallModalComponent, FinancialTransactionsComponent, OnlynumberDirective, SponsorInfoModalComponent, FilteredFinancialTransactionsComponent, EmailModalComponent],
   imports: [
     CommonModule,
     RouterModule,

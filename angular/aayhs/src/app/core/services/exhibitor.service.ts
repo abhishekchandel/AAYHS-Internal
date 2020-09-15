@@ -169,4 +169,7 @@ export class ExhibitorService {
     return this.http.post<any>(`${this.api}ExhibitorAPI/DeleteUploadedDocuments`,data);
   }
   
+  sendEmail(data){
+    return this.http.post<any>(`${this.api}ExhibitorAPI/DeleteUploadedDocuments`,data);
+  }
 }

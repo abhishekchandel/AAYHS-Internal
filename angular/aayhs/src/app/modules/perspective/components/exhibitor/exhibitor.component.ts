@@ -15,6 +15,7 @@ import { SponsorService} from '../../../../core/services/sponsor.service';
 import { BaseUrl } from 'src/app/config/url-config';
 import { FilteredFinancialTransactionsComponent } from 'src/app/shared/ui/modals/filtered-financial-transactions/filtered-financial-transactions.component';
 import * as moment from 'moment';
+import { EmailModalComponent } from 'src/app/shared/ui/modals/email-modal/email-modal.component';
 
 @Component({
   selector: 'app-exhibitor',
@@ -388,27 +389,30 @@ getAllGroups(){
   })
 }
 
-getExhibitorDetails(id:number){
+ getExhibitorDetails(id:number){
+  return new Promise((resolve, reject) => {
   this.loading = true;
-  this.exhibitorService.getExhibitorById(id).subscribe(response => {
+ this.exhibitorService.getExhibitorById(id).subscribe(response => {
     if(response.Data!=null)
       {
       this.getCities(response.Data.exhibitorResponses[0].StateId).then(res => {
         this.getZipCodes(response.Data.CityId).then(res => {
         this.exhibitorInfo = response.Data.exhibitorResponses[0];
+        this.exhibitorInfo.BackNumber=response.Data.exhibitorResponses[0].BackNumber ===0 ? null :response.Data.exhibitorResponses[0].BackNumber;
       });
     });
-  }
-
     this.exhibitorInfo.GroupId=this.exhibitorInfo.GroupId >0 ? Number(this.exhibitorInfo.GroupId) :null;
     this.exhibitorInfo.QTYProgram=this.exhibitorInfo.QTYProgram >0 ? Number(this.exhibitorInfo.QTYProgram) :null
-
+  }
+   
     this.loading = false;
   }, error => {
     this.loading = false;
     this.exhibitorInfo = null;
   }
   )
+  resolve();
+});
 }
 
 setYears(){
@@ -424,7 +428,8 @@ getExhibitorHorses(id){
   this.loading = true;
   this.exhibitorService.getExhibitorHorses(id).subscribe(response => {
       this.exhibitorHorses=response.Data.exhibitorHorses;
-      this.isFirstBackNumber=false
+    let count=  response.Data.TotalRecords;
+    count > 0 ?  this.isFirstBackNumber=false : this.isFirstBackNumber=true
     this.loading = false;
   }, error => {
     this.loading = false;
@@ -446,6 +451,7 @@ deleteExhibitorHorse(id){
       this.horseType=null;
       this.getExhibitorHorses(this.exhibitorInfo.ExhibitorId);
       this.getAllHorses(this.exhibitorInfo.ExhibitorId);
+      this.getExhibitorDetails(this.exhibitorInfo.ExhibitorId);
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
     }, error => {
       this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
@@ -821,7 +827,6 @@ getAllSponsorTypes() {
   this.loading = true;
   this.sponsorTypes=null;
   this.sponsorService.getAllTypes('SponsorTypes').subscribe(response => {
-    debugger
     if(response.Data!=null && response.Data.totalRecords>0)
     {
    this.sponsorTypes = response.Data.globalCodeResponse;
@@ -1035,7 +1040,6 @@ confirmRemoveDocument(id,path): void {
     this.loading = true;
     this.exhibitorService.getExhibitorTransactions(id).subscribe(response => {
      this.exhibitorTransactions=response.Data.getExhibitorTransactions;
-     debugger;
      this.isRefund=response.Data.IsRefund;
       this.loading = false;
     }, error => {
@@ -1056,5 +1060,29 @@ confirmRemoveDocument(id,path): void {
   }
   recalculate(){
     this.getbilledFeesSummary(this.exhibitorInfo.ExhibitorId);
+  }
+
+  printDocument(url){
+    url="resources/documents/742b38b2-507f-456a-84e1-2a5c72e97a88_classresult%20(16).pdf"
+    // var top = (screen.availHeight - 600) / 2;
+    // var left = (screen.availWidth - 800) / 2;
+    // window.open(url, "_blank", "directories=no,height=600,width=800,location=no,menubar=no,resizable=yes," +"scrollbars=yes,status=no,toolbar=no,top=" + top + ",left=" + left);
+  
+  
+    // var blobURL = window.URL.createObjectURL(new Blob(['test'], { type: 'application/octet-stream' }));
+    //     var anchor = document.createElement("a");
+    //     anchor.download = url;
+    //     anchor.href = blobURL;
+    //     anchor.click();
+    this.openEmailModal()
+  }
+
+  openEmailModal(){
+  const dialogRef = this.dialog.open(EmailModalComponent, {
+    maxWidth: "400px",
+  });
+  dialogRef.afterClosed().subscribe(dialogResult => {
+    this.result = dialogResult;
+  });
   }
 }

@@ -74,8 +74,8 @@
                                     <label><input #nsbaIndicator="ngModel" name="nsbaIndicator" [(ngModel)]="exhibitorInfo.IsNSBAMember" type="checkbox" value="" class="ciCheckbox">NSBA Indicator</label>
                                 </div>
                                 <div class="form-group">
-                                    <label>Back Number <span>*</span> </label>	
-                                    <input #backNumber="ngModel" appOnlynumber name="backNumber" required  [(ngModel)]="exhibitorInfo.BackNumber" type="text" class="form-control" placeholder="Back Number"/>                                
+                                    <label>Back Number <span *ngIf="exhibitorInfo.ExhibitorId==null">*</span> </label>	
+                                    <input #backNumber="ngModel" appOnlynumber name="backNumber" [required]="exhibitorInfo.ExhibitorId==null"  [(ngModel)]="exhibitorInfo.BackNumber" type="text" class="form-control" placeholder="Back Number"/>                                
                                      <span class="help-block" *ngIf="backNumber.errors?.required && (backNumber.touched || exhibitorInfoForm.submitted)">Back Number is required</span>
                                 </div>
                                 <div class="form-group">
@@ -230,6 +230,7 @@
                                         <th>Horse Name</th> 
                                         <th>Horse Type</th> 
                                         <th>Back Number</th>
+                                        <th>Date</th>
                                         <th>Remove</th>
                                     </tr>
                                 </thead>
@@ -240,6 +241,7 @@
                                             <td>{{horse.HorseName}}</td>
                                             <td>{{horse.HorseType}}</td>
                                             <td>{{horse.BackNumber}}</td>
+                                            <td>{{horse.Date | date : 'yyyy/MM/dd'}}</td>
                                             <td>
                                             <button type="button" class="icon" (click)="confirmRemoveExhibitorHorse(horse.ExhibitorHorseId)"><span></span> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
                                             </td>
@@ -263,16 +265,15 @@
                                             </td>
                                             <td>{{horseType}}</td>
                                             <td>
-                                                <span *ngIf="(!isFirstBackNumber && horseType)">
+                                                <span *ngIf="(!isFirstBackNumber && horseType) || (horseType && exhibitorInfo.BackNumber==null)">
                                                 <input appOnlynumber  type="text" [required]="horseType" class="form-control" name="backNumberControl" #backNumberControl="ngModel" [(ngModel)]="backNumberLinked" placeholder="Back Number" />                                               
                                                 <span class="help-block"
 												*ngIf="(horsesForm.submitted || backNumberControl.touched) && backNumberControl.invalid">Please
                                                 enter back number
                                                  </span>
                                                 </span>
-                                                <span *ngIf="(isFirstBackNumber && horseType)"> {{exhibitorInfo.BackNumber}}</span>
+                                                <span *ngIf="(isFirstBackNumber && horseType && exhibitorInfo.BackNumber !=null)"> {{exhibitorInfo.BackNumber}}</span>
                                             </td>
-
                                             <td>
                                                 <span *ngIf="horseType">
                                                 <mat-form-field>
@@ -291,7 +292,8 @@
                                                 required</span> 
                                                 </span>
                                              
-                                            </td>                                            
+                                            </td> 
+                                            <td></td>                                           
                                         </tr>
                                     </tbody> 
                                 </perfect-scrollbar>
@@ -461,7 +463,8 @@
                                         <th>Class Number</th> 
                                         <th>Class Name</th> 
                                         <th>Age Group</th> 
-                                        <th>Total Entries</th> 
+                                        <th>Entries</th> 
+                                        <th>Date</th>
                                         <th>Scratch</th>
                                         <th>Remove</th> 
                                     </tr>
@@ -473,6 +476,7 @@
                                             <td>{{class.Name}}</td>
                                             <td>{{class.AgeGroup}}</td>
                                             <td>{{class.Entries}}</td>
+                                            <td>{{class.Date | date : 'yyyy/MM/dd'}}</td>
                                             <td>
                                                 <div class="scratchimage"
 																(click)="confirmScratch(!class.Scratch,class.ExhibitorClassId)">
@@ -505,14 +509,6 @@
                                             </td>
                                             <td>{{classDetails.Entries}}</td>
                                             <td>
-                                                <div *ngIf="showScratch" class="scratchimage">
-                                                <img   src="/assets/images/sizzer-icon-1.png">
-                                            </div>
-                                                <!-- <div class="sizzerIcon">
-                                                    <img src="assets/images/sizzer-icon.png" alt="image" />
-                                                </div> -->
-                                            </td>
-                                            <td>
                                                 <span *ngIf="(linkedClassId)">
                                                     <mat-form-field>
                                                         <input matInput [matDatepicker]="classDatePicker"
@@ -530,7 +526,16 @@
                                                     required</span>
                                                     </span>
                                                   
+                                            </td>                                       
+                                            <td>
+                                                <div *ngIf="showScratch" class="scratchimage">
+                                                <img   src="/assets/images/sizzer-icon-1.png">
+                                            </div>
+                                                <!-- <div class="sizzerIcon">
+                                                    <img src="assets/images/sizzer-icon.png" alt="image" />
+                                                </div> -->
                                             </td>
+                                            <td></td>                                        
                                         </tr>                             
                                    </tbody>
                                 </perfect-scrollbar>
@@ -551,14 +556,7 @@
                     <div class="card-body"> 
                         <div class="row">
                             <div class="col-sm-12">
-                                <div class="indicatorWrapper">
-                                    <div class="form-group">
-                                        <label><input type="checkbox" value="" class="ciCheckbox">Scratch Indicator</label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label><input type="checkbox" value="" class="ciCheckbox">Doctor / Vet Note Indicator</label>
-                                    </div>
-                                </div>
+                               
                             </div>
                             <div class="col-sm-12 col-lg-7">
                                 <h3 class="tableCaption">Summary of Fees Billed to Exhibitor</h3>
@@ -765,6 +763,9 @@
                                             <td>{{document.DocumentType}}</td>
                                             <td>
                                                 <button type="button" (click)="viewDocument(document.DocumentPath)" class="icon"><span></span><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                                <button type="button" class="icon"><i class="fa fa-envelope-o" aria-hidden="true"></i></button>
+                                                <button type="button" class="icon"><i class="fa fa-print" aria-hidden="true"></i></button>
+                                                <button type="button" class="icon"><i class="fa fa-download" aria-hidden="true"></i></button>
                                                 <button type="button" (click)="confirmRemoveDocument(document.ScansId,document.DocumentPath)" class="icon"><span></span> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
                                             </td>
                                         </tr>

@@ -850,7 +850,7 @@ border-bottom: none;
     top: 0;
     left: 0;
     height: 100%;
-    z-index: 9;
+    z-index: 99999;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -905,6 +905,18 @@ background-color: #f1efef  !important ;
 /* trash icon */
 .fa-trash-o {
 color: #7b1124;
+}
+.fa.fa-download {
+    color: #79b500;
+}
+.fa.fa-print {
+    color: #f6c963;
+}
+.fa.fa-envelope-o {
+    color: #df3532;
+}
+.fa.fa-eye {
+    color: #3b74c5;
 }
 /* nicescroll */
 .nicescrollBar-1{

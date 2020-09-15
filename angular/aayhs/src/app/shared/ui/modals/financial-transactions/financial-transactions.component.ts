@@ -60,7 +60,6 @@ exhibitorTransactions:any;
   }
 
   addFee(){
-    debugger;
       this.loading = true;
       this.fee.RefundAmount=this.fee.RefundAmount !=null ? Number(this.fee.RefundAmount) :0;
       this.fee.FeeTypeId= Number(this.fee.FeeTypeId);
@@ -76,7 +75,6 @@ exhibitorTransactions:any;
         this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
     
       }, error => {
-        debugger;
         this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
         this.loading = false;
       })   
