@@ -140,7 +140,8 @@ namespace AAYHS.Repository.Repository
                                  ExhibitorHorseId=exhibitorHorse.ExhibitorHorseId,
                                  HorseName=horse.Name,
                                  HorseType=_context.GlobalCodes.Where(x=>x.GlobalCodeId==horse.HorseTypeId).Select(y=>y.CodeName).First(),
-                                 BackNumber= exhibitorHorse.BackNumber
+                                 BackNumber= exhibitorHorse.BackNumber,
+                                 Date=Convert.ToString(exhibitorHorse.Date)
                                });
 
             if (exhibitorHorses.Count()!=0)
@@ -167,7 +168,9 @@ namespace AAYHS.Repository.Repository
                                Name=classes.Name,
                                AgeGroup=classes.AgeGroup,
                                Entries= classes != null ? _context.ExhibitorClass.Where(x => x.ClassId == classes.ClassId && x.IsActive == true && x.IsDeleted == false).Select(x => x.ExhibitorClassId).Count() : 0,
-                               Scratch= exhibitorClass.IsScratch
+                               Scratch= exhibitorClass.IsScratch,
+                               Date=Convert.ToString(exhibitorClass.Date)
+                              
                              });
             if (getClassesOfExhibitor.Count()>0)
             {

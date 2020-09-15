@@ -37,6 +37,7 @@ namespace AAYHS.Core.DTOs.Response
         public string HorseName { get; set; }
         public string HorseType { get; set; }
         public int BackNumber { get; set; }
+        public string Date { get; set; }
     }
     public class ExhibitorHorsesResponse
     {
@@ -61,6 +62,7 @@ namespace AAYHS.Core.DTOs.Response
         public string AgeGroup { get; set; }
         public int Entries { get; set; }
         public bool Scratch { get; set; }
+        public string Date { get; set; }
     }
     public class GetAllClassesOfExhibitor
     {
