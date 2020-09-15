@@ -310,8 +310,8 @@ namespace AAYHS.Repository.Repository
             int tackStallFeeId= feeCodes.Where(x => x.CodeName == "Tack").Select(x => x.GlobalCodeId).FirstOrDefault();
             int additionalProgramsFeeId= feeCodes.Where(x => x.CodeName == "Additional Program").Select(x => x.GlobalCodeId).FirstOrDefault();
             int classEntryId= feeCodes.Where(x => x.CodeName == "Class Entry").Select(x => x.GlobalCodeId).FirstOrDefault();
+            int sponsorRefundId= feeCodes.Where(x => x.CodeName == "Ad Sponsor Refund").Select(x => x.GlobalCodeId).FirstOrDefault();
 
-            
 
             var horseStallFee = _context.YearlyMaintainenceFee.Where(x => x.FeeTypeId == horseStallFeeId && x.YearlyMaintainenceId == yearlyMaintainence.YearlyMaintainenceId).FirstOrDefault();
 
@@ -366,7 +366,7 @@ namespace AAYHS.Repository.Repository
 
             data = (from exhibitorpayment in _context.ExhibitorPaymentDetails
                     where exhibitorpayment.IsActive == true && exhibitorpayment.IsDeleted == false
-                    && exhibitorpayment.ExhibitorId == exhibitorId
+                    && exhibitorpayment.ExhibitorId == exhibitorId && exhibitorpayment.FeeTypeId!= sponsorRefundId
                     select new ExhibitorMoneyReceived
                     {
                         Date = exhibitorpayment.PayDate,
