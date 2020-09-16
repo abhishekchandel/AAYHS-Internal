@@ -335,7 +335,7 @@ namespace AAYHS.Repository.Repository
 
             decimal horseStallAmount = preHorseStallAmount + postHorseStallAmount;
             decimal tackStallAmount = preTackStallAmount + preTackStallAmount;
-            decimal classAmount = preHorseStallAmount + preHorseStallAmount;
+            decimal classAmount = preClassAmount + postClassAmount;
 
             int horseStall = preHorseStall.Count() + postHorseStall.Count();
             int tackStall = preTackStall.Count() + postTackStall.Count();
