@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { StallService } from '../../../../core/services/stall.service';
 import { AssignStallModalComponent } from '../../../../shared/ui/modals/assign-stall-modal/assign-stall-modal.component'
 import { MatDialogRef, MatDialogConfig, MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -18,11 +18,14 @@ export class StallComponent implements OnInit {
   newAssignedStalls: any = [];
   StallTypes: any = [];
   UnassignedStallNumbers: any = [];
-
-
+  hoverStallId:any;
+  hoverStallName:any;
+  hoverBookedByType:any;
+  hoverStallType:any;
 
 
   constructor(
+
     private stallService: StallService,
     private snackBar: MatSnackbarComponent,
     public dialogRef: MatDialogRef<StallComponent>,
@@ -77,21 +80,23 @@ export class StallComponent implements OnInit {
 
             if (element != null && element != undefined) {
               if (this.groupAssignedStalls.length > 0) {
-
+               
                 var assigendstall = this.groupAssignedStalls.filter((x) => { return x.StallId == data.StallId });
                 if (assigendstall != null && assigendstall.length > 0) {
                   element.classList.add("bookedgroupstall");
                   element.classList.remove("bookedstall");
+                  element.addEventListener('mouseover', () => this.ShowStallDetail(data.StallId));
                 }
                 else {
                   element.classList.add("bookedstall");
                   element.classList.remove("bookedgroupstall");
-
+                  element.addEventListener('mouseover', () => this.ShowStallDetail(data.StallId));
                 }
               }
               else {
                 element.classList.add("bookedstall");
                 element.classList.remove("bookedgroupstall");
+                element.addEventListener('mouseover', () => this.ShowStallDetail(data.StallId))
               }
             }
           });
@@ -116,16 +121,15 @@ export class StallComponent implements OnInit {
   }
 
   assignStall(stallId) {
-    // var checkassigned = this.groupAssignedStalls.filter((x) => { return x.StallId == stallId });
+    var checkIngroupassigned = this.groupAssignedStalls.filter((x) => { return x.StallId == stallId });
+    var checkInAllassigned = this.allAssignedStalls.filter((x) => { return x.StallId == stallId });
 
-    // if (checkassigned == null || checkassigned == undefined || checkassigned.length <= 0) {
-    //   var checknonassigned = this.allAssignedStalls.filter((x) => { return x.StallId == stallId });
-    //   if (checknonassigned != null && checknonassigned != undefined && checknonassigned.length > 0) {
-    //     var nameandtype ='Already assigned to '+ checknonassigned[0].BookedByName + '--' + checknonassigned[0].BookedByType;
-    //     this.snackBar.openSnackBar(nameandtype, 'Close', 'red-snackbar');
-    //     return;
-    //   }
-    // }
+    if (checkInAllassigned != null && checkInAllassigned != undefined && checkInAllassigned.length > 0
+      && (checkIngroupassigned == null || checkIngroupassigned == undefined || checkIngroupassigned <= 0)) {
+      return;
+    }
+
+
 
     var temparray = [];
     if (this.groupAssignedStalls != null && this.groupAssignedStalls != undefined
@@ -151,10 +155,10 @@ export class StallComponent implements OnInit {
         data = {
           SelectedStallId: stallId,
           Assigned: true,
-
           StallAssignmentId: check[0].StallAssignmentId,
           StallAssignmentTypeId: check[0].StallAssignmentTypeId,
-          AssignedToName: check[0].GroupName
+          StallAssignmentDate: check[0].StallAssignmentDate,
+          BookedByName: check[0].BookedByName
         }
       }
       else {
@@ -164,7 +168,8 @@ export class StallComponent implements OnInit {
 
           StallAssignmentId: 0,
           StallAssignmentTypeId: 0,
-          AssignedToName: ''
+          StallAssignmentDate: new Date(),
+          BookedByName: ''
         }
       }
     }
@@ -174,7 +179,8 @@ export class StallComponent implements OnInit {
         Assigned: false,
         StallAssignmentId: 0,
         StallAssignmentTypeId: 0,
-        AssignedToName: ''
+        StallAssignmentDate: new Date(),
+        BookedByName: ''
       }
     }
 
@@ -209,9 +215,10 @@ export class StallComponent implements OnInit {
             StallAssignmentId: result.data.StallAssignmentId,
             StallId: result.data.SelectedStallId,
             StallAssignmentTypeId: result.data.StallAssignmentTypeId,
+            StallAssignmentDate: result.data.StallAssignmentDate,
             GroupId: 0,
             ExhibitorId: 0,
-            GroupName: ""
+            BookedByName: ""
           }
 
           if (this.newAssignedStalls != null && this.newAssignedStalls != undefined && this.newAssignedStalls.length > 0) {
@@ -287,14 +294,18 @@ export class StallComponent implements OnInit {
           if (this.groupAssignedStalls != null && this.groupAssignedStalls.length > 0) {
             this.groupAssignedStalls = this.groupAssignedStalls.filter(x => x.StallId != result.data.SelectedStallId);
           }
+          if (this.allAssignedStalls != null && this.allAssignedStalls.length > 0) {
+            this.allAssignedStalls = this.allAssignedStalls.filter(x => x.StallId != result.data.SelectedStallId);
+          }
 
           var newGroupStallData = {
             StallAssignmentId: result.data.StallAssignmentId,
             StallId: result.data.StallMovedTo,
             StallAssignmentTypeId: result.data.StallAssignmentTypeId,
+            StallAssignmentDate: result.data.StallAssignmentDate,
             GroupId: 0,
             ExhibitorId: 0,
-            GroupName: ""
+            BookedByName: ""
           }
 
           if (this.newAssignedStalls != null && this.newAssignedStalls != undefined && this.newAssignedStalls.length > 0) {
@@ -349,6 +360,7 @@ export class StallComponent implements OnInit {
       data: { groupAssignedStalls: this.groupAssignedStalls, unassignedStallNumbers: this.UnassignedStallNumbers }
     });
   }
+
   changeTab() {
     if (this.allAssignedStalls != null && this.allAssignedStalls != undefined && this.allAssignedStalls.length > 0) {
       this.allAssignedStalls.forEach(data => {
@@ -358,6 +370,7 @@ export class StallComponent implements OnInit {
         if (element != null && element != undefined) {
           element.classList.remove("bookedgroupstall");
           element.classList.add("bookedstall");
+          element.addEventListener('mouseover', () => this.ShowStallDetail(data.StallId));
         }
       });
     }
@@ -370,11 +383,12 @@ export class StallComponent implements OnInit {
         if (element != null && element != undefined) {
           element.classList.add("bookedgroupstall");
           element.classList.remove("bookedstall");
+          element.addEventListener('mouseover', () => this.ShowStallDetail(data.StallId));
         }
       });
     }
 
-    
+
     if (this.newAssignedStalls != null && this.newAssignedStalls != undefined && this.newAssignedStalls.length > 0) {
       this.newAssignedStalls.forEach(data => {
         var s_id = String('stall_' + data.StallId);
@@ -383,15 +397,29 @@ export class StallComponent implements OnInit {
         if (element != null && element != undefined) {
           element.classList.add("bookedgroupstall");
           element.classList.remove("bookedstall");
+          element.addEventListener('mouseover', () => this.ShowStallDetail(data.StallId));
         }
       });
     }
+  }
 
+  ShowStallDetail(val) {
+    var checkInAllassigned = this.allAssignedStalls.filter((x) => { return x.StallId == val });
+    debugger
+    if (checkInAllassigned != null && checkInAllassigned != undefined && checkInAllassigned.length > 0)
+    {
+      document.getElementById("hoverbox").style.display = "block";
+      this.hoverStallId=checkInAllassigned[0].StallId;
+      this.hoverStallName=checkInAllassigned[0].BookedByName;
+      this.hoverBookedByType=checkInAllassigned[0].BookedByType;
+      var type=this.StallTypes.filter((x) => { return x.GlobalCodeId == checkInAllassigned[0].StallAssignmentTypeId });
+      this.hoverStallType=type[0].CodeName;
 
-
-
-
-
+    }
+    return false;
+  }
+  closehoverbox(){
+    document.getElementById("hoverbox").style.display = "none";
   }
 
 }

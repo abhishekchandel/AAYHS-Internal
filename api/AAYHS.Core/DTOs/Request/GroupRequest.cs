@@ -25,6 +25,7 @@ namespace AAYHS.Core.DTOs.Request
         public int StallAssignmentId { get; set; }
         public int SelectedStallId { get; set; }
         public int StallAssignmentTypeId { get; set; }
+        public DateTime StallAssignmentDate { get; set; }
     }
     public class AddGroupFinancialRequest
     {

@@ -15,6 +15,7 @@ export class AssignStallModalComponent implements OnInit {
   dataToReturn:any;
   stallTypes:any;
   StallAssignmentTypeId:number;
+  StallAssignmentDate:Date=new Date();
   StallMovedTo:number=null;
   StallNumber:number;
   AssignedToName:string;
@@ -26,13 +27,19 @@ export class AssignStallModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.StallNumber=this.data.modalData.SelectedStallId;
-    this.AssignedToName=this.data.modalData.AssignedToName;
+    this.AssignedToName=this.data.modalData.BookedByName;
     this.showAssign=this.data.modalData.Assigned;
+    if(this.data.modalData.StallAssignmentDate!=null && this.data.modalData.StallAssignmentDate!=undefined)
+    {
+    this.StallAssignmentDate=this.data.modalData.StallAssignmentDate;
+    }
+
     this.stallTypes=this.data.StallTypes;
     if(this.StallNumber==2051 || this.StallNumber==2045 || this.StallNumber==2132 || this.StallNumber==2138)
     {
     this.setStallType(this.stallTypes[1].GlobalCodeId);
     }
+
     else{
       if(this.data.modalData.StallAssignmentTypeId>0)
       {
@@ -53,6 +60,7 @@ export class AssignStallModalComponent implements OnInit {
       Status:"Assign",
       StallAssignmentId: this.data.modalData.StallAssignmentId,
       StallAssignmentTypeId: this.StallAssignmentTypeId,
+      StallAssignmentDate:this.StallAssignmentDate,
       StallMovedTo: 0,
     }
     this.dialogRef.close({
@@ -69,6 +77,7 @@ export class AssignStallModalComponent implements OnInit {
       Status:"Unassign",
       StallAssignmentId: this.data.modalData.StallAssignmentId,
       StallAssignmentTypeId: this.StallAssignmentTypeId,
+      StallAssignmentDate:this.StallAssignmentDate,
       StallMovedTo: 0,
     }
     this.dialogRef.close({
@@ -98,6 +107,7 @@ export class AssignStallModalComponent implements OnInit {
       Status:"Move",
       StallAssignmentId: this.data.modalData.StallAssignmentId,
       StallAssignmentTypeId: this.StallAssignmentTypeId,
+      StallAssignmentDate:this.StallAssignmentDate,
       StallMovedTo: this.StallMovedTo,
     }
     this.dialogRef.close({
@@ -119,8 +129,6 @@ export class AssignStallModalComponent implements OnInit {
     });
   }
 
-  
-
   setStallType(id){
     
     this.StallAssignmentTypeId=Number(id);
@@ -129,5 +137,10 @@ export class AssignStallModalComponent implements OnInit {
   setMoveToStall(id){
     
     this.StallMovedTo=Number(id);
+  }
+
+  setStallDate(date : Date){
+    debugger
+    this.StallAssignmentDate=date;
   }
 }

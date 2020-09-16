@@ -25,57 +25,57 @@
                                                     <table class="table table-bordered">
                                                         <tbody>
                                                             <tr>
-                                                                <td (click)="assignStall(1012)" id="stall_1012">1012
+                                                                <td>1012
                                                                 </td>
                                                                 <td (click)="assignStall(959)" id="stall_959">959</td>
                                                             </tr>
                                                             <tr>
-                                                                <td (click)="assignStall(1011)" id="stall_1011">1011
+                                                                <td>1011
                                                                 </td>
                                                                 <td (click)="assignStall(960)" id="stall_960">960</td>
                                                             </tr>
                                                             <tr>
-                                                                <td (click)="assignStall(1010)" id="stall_1010">1010
+                                                                <td>1010
                                                                 </td>
                                                                 <td (click)="assignStall(961)" id="stall_961">961</td>
                                                             </tr>
                                                             <tr>
-                                                                <td (click)="assignStall(1009)" id="stall_1009">1009
+                                                                <td>1009
                                                                 </td>
                                                                 <td (click)="assignStall(962)" id="stall_962">962</td>
                                                             </tr>
                                                             <tr>
-                                                                <td (click)="assignStall(1008)" id="stall_1008">1008
+                                                                <td>1008
                                                                 </td>
                                                                 <td (click)="assignStall(963)" id="stall_963">963</td>
                                                             </tr>
                                                             <tr>
-                                                                <td (click)="assignStall(1007)" id="stall_1007">1007
+                                                                <td>1007
                                                                 </td>
                                                                 <td (click)="assignStall(964)" id="stall_964">964</td>
                                                             </tr>
                                                             <tr>
-                                                                <td (click)="assignStall(1006)" id="stall_1006">1006
+                                                                <td>1006
                                                                 </td>
                                                                 <td (click)="assignStall(965)" id="stall_965">965</td>
                                                             </tr>
                                                             <tr>
-                                                                <td (click)="assignStall(1005)" id="stall_1005">1005
+                                                                <td>1005
                                                                 </td>
                                                                 <td (click)="assignStall(966)" id="stall_966">966</td>
                                                             </tr>
                                                             <tr>
-                                                                <td (click)="assignStall(1004)" id="stall_1004">1004
+                                                                <td>1004
                                                                 </td>
                                                                 <td (click)="assignStall(967)" id="stall_967">967</td>
                                                             </tr>
                                                             <tr>
-                                                                <td (click)="assignStall(1003)" id="stall_1003">1003
+                                                                <td>1003
                                                                 </td>
                                                                 <td (click)="assignStall(968)" id="stall_968">968</td>
                                                             </tr>
                                                             <tr>
-                                                                <td (click)="assignStall(1002)" id="stall_1002">1002
+                                                                <td>1002
                                                                 </td>
                                                                 <td (click)="assignStall(969)" id="stall_969">969</td>
                                                             </tr>
@@ -2837,3 +2837,23 @@
 <div class="loaderWrappers" *ngIf="loading">
     <div class="loaders"></div>
 </div>
+
+<div class="hoverContent" id="hoverbox">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" (click)="closehoverbox()">&times;</button>
+        <h4>Stall Info</h4>
+    </div>
+    <div class="labelCol">
+        <label>StallId :</label><span>{{hoverStallId}}</span>
+        </div>
+    <div class="labelCol">
+    <label>Name :</label><span>{{hoverStallName}}</span>
+    </div>
+    <div class="labelCol">
+    <label>Type :</label><span>{{hoverBookedByType}}</span>
+    </div>
+    <div class="labelCol">
+    <label>Assignment Type :</label><span>{{hoverStallType}}</span>
+    </div>
+    
+    </div>

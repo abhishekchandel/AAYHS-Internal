@@ -225,6 +225,7 @@ export class GroupComponent implements OnInit {
           SelectedStallId: resp.StallId,
           StallAssignmentId: resp.StallAssignmentId,
           StallAssignmentTypeId: resp.StallAssignmentTypeId,
+          StallAssignmentDate:resp.StallAssignmentDate
         }
         this.StallAssignmentRequestsData.push(groupstallData);
       });
@@ -626,7 +627,7 @@ export class GroupComponent implements OnInit {
 
     );
     dialogRef.afterClosed().subscribe(dialogResult => {
-      debugger;
+     
       const result: any = dialogResult;
       if (result && result.submitted == true) {
         this.groupStallAssignmentResponses=[];

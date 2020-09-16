@@ -47,7 +47,7 @@ namespace AAYHS.Repository.Repository
                              (from grp in _ObjContext.Groups where grp.GroupId == stallAssign.GroupId 
                               select grp.GroupName).FirstOrDefault():
                              (from exb in _ObjContext.Exhibitors where exb.ExhibitorId == stallAssign.ExhibitorId 
-                              select exb.FirstName + ' '+ exb.FirstName).FirstOrDefault()
+                              select exb.FirstName + ' '+ exb.LastName).FirstOrDefault()
 
                          }).ToList();
 

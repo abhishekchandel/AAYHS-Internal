@@ -92,6 +92,7 @@ namespace AAYHS.Service.Service
                         stallAssignment.IsActive = true;
                         stallAssignment.IsDeleted = false;
                         stallAssignment.CreatedDate = DateTime.Now;
+                        stallAssignment.Date = item.StallAssignmentDate;
                         _stallAssignmentRepository.Add(stallAssignment);
 
                     }
@@ -126,45 +127,22 @@ namespace AAYHS.Service.Service
                     }
                     if (request.groupStallAssignmentRequests != null && request.groupStallAssignmentRequests.Count > 0)
                     {
-                        
+
                         var stalls = _stallAssignmentRepository.RemoveAllGroupAssignedStalls(Group.GroupId);
                         foreach (var assignment in request.groupStallAssignmentRequests)
                         {
-                            //if(assignment.Status=="Assign")
-                            //{
-                                StallAssignment stallAssignment = new StallAssignment();
-                                stallAssignment.StallId = assignment.SelectedStallId;
-                                stallAssignment.StallAssignmentTypeId = assignment.StallAssignmentTypeId;
-                                stallAssignment.GroupId = Group.GroupId;
-                                stallAssignment.ExhibitorId = 0;
-                                stallAssignment.BookedByType = "Group";
-                                stallAssignment.IsActive = true;
-                                stallAssignment.IsDeleted = false;
-                                stallAssignment.CreatedDate = DateTime.Now;
-                                _stallAssignmentRepository.Add(stallAssignment);
-                            //}
-
-                            //if (assignment.Status == "Unassign")
-                            //{
-                            //    var data = _stallAssignmentRepository.GetSingle(x => x.StallAssignmentId == assignment.StallAssignmentId && x.IsActive == true && x.IsDeleted == false);
-                            //    if(data!=null)
-                            //    {
-                            //        _stallAssignmentRepository.Delete(data);
-                            //    }
-                            //}
-
-                            //if (assignment.Status == "Move")
-                            //{
-                            //    var data = _stallAssignmentRepository.GetSingle(x => x.StallAssignmentId == assignment.StallAssignmentId && x.IsActive == true && x.IsDeleted == false);
-                            //    if (data != null)
-                            //    {
-                            //        data.StallId = assignment.StallMovedTo;
-                            //        data.ModifiedDate = DateTime.Now;
-                            //        _stallAssignmentRepository.Update(data);
-                            //    }
-                            //}
+                            StallAssignment stallAssignment = new StallAssignment();
+                            stallAssignment.StallId = assignment.SelectedStallId;
+                            stallAssignment.StallAssignmentTypeId = assignment.StallAssignmentTypeId;
+                            stallAssignment.GroupId = Group.GroupId;
+                            stallAssignment.ExhibitorId = 0;
+                            stallAssignment.BookedByType = "Group";
+                            stallAssignment.IsActive = true;
+                            stallAssignment.IsDeleted = false;
+                            stallAssignment.CreatedDate = DateTime.Now;
+                            stallAssignment.Date = assignment.StallAssignmentDate;
+                            _stallAssignmentRepository.Add(stallAssignment);
                         }
-
                     }
 
                     _mainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
@@ -191,6 +169,7 @@ namespace AAYHS.Service.Service
                 Group.IsActive = false;
                 Group.DeletedDate = DateTime.Now;
                 _GroupRepository.Update(Group);
+                _stallAssignmentRepository.RemoveAllGroupAssignedStalls(Group.GroupId);
                 _mainResponse.Message = Constants.RECORD_DELETE_SUCCESS;
                 _mainResponse.Success = true;
             }

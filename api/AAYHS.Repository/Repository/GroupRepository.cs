@@ -75,7 +75,8 @@ namespace AAYHS.Repository.Repository
                                                                       GroupId = stallassign.GroupId,
                                                                       ExhibitorId = stallassign.ExhibitorId,
                                                                       BookedByType = stallassign.BookedByType,
-                                                                      GroupName = groups.GroupName
+                                                                      BookedByName = groups.GroupName,
+                                                                      StallAssignmentDate= stallassign.Date
                                                                   }).ToList()
 
                              }).FirstOrDefault();
