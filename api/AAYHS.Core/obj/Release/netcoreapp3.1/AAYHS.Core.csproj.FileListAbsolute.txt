@@ -10,3 +10,15 @@ C:\Projects\AAYHS\AAYHS-Internal\api\AAYHS.Core\obj\Release\netcoreapp3.1\AAYHS.
 C:\Projects\AAYHS\AAYHS-Internal\api\AAYHS.Core\obj\Release\netcoreapp3.1\AAYHS.Core.csproj.CopyComplete
 C:\Projects\AAYHS\AAYHS-Internal\api\AAYHS.Core\obj\Release\netcoreapp3.1\AAYHS.Core.dll
 C:\Projects\AAYHS\AAYHS-Internal\api\AAYHS.Core\obj\Release\netcoreapp3.1\AAYHS.Core.pdb
+C:\Users\DITSTrainee6\Desktop\AAYHS\AAYHS-Internal\api\AAYHS.Core\bin\Release\netcoreapp3.1\AAYHS.Core.deps.json
+C:\Users\DITSTrainee6\Desktop\AAYHS\AAYHS-Internal\api\AAYHS.Core\bin\Release\netcoreapp3.1\AAYHS.Core.dll
+C:\Users\DITSTrainee6\Desktop\AAYHS\AAYHS-Internal\api\AAYHS.Core\bin\Release\netcoreapp3.1\AAYHS.Core.pdb
+C:\Users\DITSTrainee6\Desktop\AAYHS\AAYHS-Internal\api\AAYHS.Core\bin\Release\netcoreapp3.1\AAYHS.Data.dll
+C:\Users\DITSTrainee6\Desktop\AAYHS\AAYHS-Internal\api\AAYHS.Core\bin\Release\netcoreapp3.1\AAYHS.Data.pdb
+C:\Users\DITSTrainee6\Desktop\AAYHS\AAYHS-Internal\api\AAYHS.Core\obj\Release\netcoreapp3.1\AAYHS.Core.csprojAssemblyReference.cache
+C:\Users\DITSTrainee6\Desktop\AAYHS\AAYHS-Internal\api\AAYHS.Core\obj\Release\netcoreapp3.1\AAYHS.Core.AssemblyInfoInputs.cache
+C:\Users\DITSTrainee6\Desktop\AAYHS\AAYHS-Internal\api\AAYHS.Core\obj\Release\netcoreapp3.1\AAYHS.Core.AssemblyInfo.cs
+C:\Users\DITSTrainee6\Desktop\AAYHS\AAYHS-Internal\api\AAYHS.Core\obj\Release\netcoreapp3.1\AAYHS.Core.csproj.CoreCompileInputs.cache
+C:\Users\DITSTrainee6\Desktop\AAYHS\AAYHS-Internal\api\AAYHS.Core\obj\Release\netcoreapp3.1\AAYHS.Core.csproj.CopyComplete
+C:\Users\DITSTrainee6\Desktop\AAYHS\AAYHS-Internal\api\AAYHS.Core\obj\Release\netcoreapp3.1\AAYHS.Core.dll
+C:\Users\DITSTrainee6\Desktop\AAYHS\AAYHS-Internal\api\AAYHS.Core\obj\Release\netcoreapp3.1\AAYHS.Core.pdb

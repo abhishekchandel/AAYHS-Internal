@@ -335,7 +335,7 @@ namespace AAYHS.Repository.Repository
 
             decimal horseStallAmount = preHorseStallAmount + postHorseStallAmount;
             decimal tackStallAmount = preTackStallAmount + preTackStallAmount;
-            decimal classAmount = preHorseStallAmount + preHorseStallAmount;
+            decimal classAmount = preClassAmount + postClassAmount;
 
             int horseStall = preHorseStall.Count() + postHorseStall.Count();
             int tackStall = preTackStall.Count() + postTackStall.Count();
@@ -381,6 +381,10 @@ namespace AAYHS.Repository.Repository
             if (overPayment<0)
             {
                 overPayment = 0;
+            }
+            if (getExhibitorFinancials.Outstanding<0)
+            {
+                getExhibitorFinancials.Outstanding = 0;
             }
             getExhibitorFinancials.OverPayment = overPayment;
             getExhibitorFinancials.Refunds=_context.ExhibitorPaymentDetail.Where(x => x.ExhibitorId == exhibitorId && x.IsActive == true && x.IsDeleted == false).Select(x => x.RefundAmount).Sum();
