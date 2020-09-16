@@ -382,6 +382,10 @@ namespace AAYHS.Repository.Repository
             {
                 overPayment = 0;
             }
+            if (getExhibitorFinancials.Outstanding<0)
+            {
+                getExhibitorFinancials.Outstanding = 0;
+            }
             getExhibitorFinancials.OverPayment = overPayment;
             getExhibitorFinancials.Refunds=_context.ExhibitorPaymentDetail.Where(x => x.ExhibitorId == exhibitorId && x.IsActive == true && x.IsDeleted == false).Select(x => x.RefundAmount).Sum();
             return getExhibitorFinancials;

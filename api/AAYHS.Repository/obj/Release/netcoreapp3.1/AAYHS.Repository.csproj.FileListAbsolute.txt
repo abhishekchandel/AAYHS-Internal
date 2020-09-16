@@ -12,3 +12,17 @@ C:\Projects\AAYHS\AAYHS-Internal\api\AAYHS.Repository\obj\Release\netcoreapp3.1\
 C:\Projects\AAYHS\AAYHS-Internal\api\AAYHS.Repository\obj\Release\netcoreapp3.1\AAYHS.Repository.csproj.CopyComplete
 C:\Projects\AAYHS\AAYHS-Internal\api\AAYHS.Repository\obj\Release\netcoreapp3.1\AAYHS.Repository.dll
 C:\Projects\AAYHS\AAYHS-Internal\api\AAYHS.Repository\obj\Release\netcoreapp3.1\AAYHS.Repository.pdb
+C:\Users\DITSTrainee6\Desktop\AAYHS\AAYHS-Internal\api\AAYHS.Repository\bin\Release\netcoreapp3.1\AAYHS.Repository.deps.json
+C:\Users\DITSTrainee6\Desktop\AAYHS\AAYHS-Internal\api\AAYHS.Repository\bin\Release\netcoreapp3.1\AAYHS.Repository.dll
+C:\Users\DITSTrainee6\Desktop\AAYHS\AAYHS-Internal\api\AAYHS.Repository\bin\Release\netcoreapp3.1\AAYHS.Repository.pdb
+C:\Users\DITSTrainee6\Desktop\AAYHS\AAYHS-Internal\api\AAYHS.Repository\bin\Release\netcoreapp3.1\AAYHS.Core.dll
+C:\Users\DITSTrainee6\Desktop\AAYHS\AAYHS-Internal\api\AAYHS.Repository\bin\Release\netcoreapp3.1\AAYHS.Data.dll
+C:\Users\DITSTrainee6\Desktop\AAYHS\AAYHS-Internal\api\AAYHS.Repository\bin\Release\netcoreapp3.1\AAYHS.Core.pdb
+C:\Users\DITSTrainee6\Desktop\AAYHS\AAYHS-Internal\api\AAYHS.Repository\bin\Release\netcoreapp3.1\AAYHS.Data.pdb
+C:\Users\DITSTrainee6\Desktop\AAYHS\AAYHS-Internal\api\AAYHS.Repository\obj\Release\netcoreapp3.1\AAYHS.Repository.csprojAssemblyReference.cache
+C:\Users\DITSTrainee6\Desktop\AAYHS\AAYHS-Internal\api\AAYHS.Repository\obj\Release\netcoreapp3.1\AAYHS.Repository.AssemblyInfoInputs.cache
+C:\Users\DITSTrainee6\Desktop\AAYHS\AAYHS-Internal\api\AAYHS.Repository\obj\Release\netcoreapp3.1\AAYHS.Repository.AssemblyInfo.cs
+C:\Users\DITSTrainee6\Desktop\AAYHS\AAYHS-Internal\api\AAYHS.Repository\obj\Release\netcoreapp3.1\AAYHS.Repository.csproj.CoreCompileInputs.cache
+C:\Users\DITSTrainee6\Desktop\AAYHS\AAYHS-Internal\api\AAYHS.Repository\obj\Release\netcoreapp3.1\AAYHS.Repository.csproj.CopyComplete
+C:\Users\DITSTrainee6\Desktop\AAYHS\AAYHS-Internal\api\AAYHS.Repository\obj\Release\netcoreapp3.1\AAYHS.Repository.dll
+C:\Users\DITSTrainee6\Desktop\AAYHS\AAYHS-Internal\api\AAYHS.Repository\obj\Release\netcoreapp3.1\AAYHS.Repository.pdb
