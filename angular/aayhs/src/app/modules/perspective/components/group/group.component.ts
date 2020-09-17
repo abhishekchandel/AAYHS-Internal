@@ -661,6 +661,7 @@ export class GroupComponent implements OnInit {
         this.groupInfo.AmountReceived = Number(val);
       }
     }
+    
 
   printGroupFinancials() {
     let printContents, popupWin, printbutton, hideRow, gridTableDesc;
