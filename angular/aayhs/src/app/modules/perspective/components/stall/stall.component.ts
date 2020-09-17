@@ -85,17 +85,23 @@ export class StallComponent implements OnInit {
                 if (assigendstall != null && assigendstall.length > 0) {
                   element.classList.add("bookedgroupstall");
                   element.classList.remove("bookedstall");
+                  element.classList.remove("clstackstall");
+
                   element.addEventListener('mouseover', () => this.ShowStallDetail(data.StallId));
                 }
                 else {
                   element.classList.add("bookedstall");
                   element.classList.remove("bookedgroupstall");
+                  element.classList.remove("clstackstall");
+
                   element.addEventListener('mouseover', () => this.ShowStallDetail(data.StallId));
                 }
               }
               else {
                 element.classList.add("bookedstall");
                 element.classList.remove("bookedgroupstall");
+                element.classList.remove("clstackstall");
+
                 element.addEventListener('mouseover', () => this.ShowStallDetail(data.StallId))
               }
             }
@@ -244,8 +250,9 @@ export class StallComponent implements OnInit {
           if (element != null && element != undefined) {
             element.classList.add("bookedgroupstall");
             element.classList.remove("unassignedgroupstall");
+            element.classList.remove("clstackstall");
 
-          }
+             }
 
 
         }
@@ -269,6 +276,7 @@ export class StallComponent implements OnInit {
           if (element != null && element != undefined) {
             element.classList.add("unassignedgroupstall");
             element.classList.remove("bookedgroupstall");
+            element.classList.remove("clstackstall");
           }
         }
 
@@ -327,6 +335,7 @@ export class StallComponent implements OnInit {
           if (element != null && element != undefined) {
             element.classList.add("unassignedgroupstall");
             element.classList.remove("bookedgroupstall");
+            element.classList.remove("clstackstall");
           }
           var movedstall_id = String('stall_' + result.data.StallMovedTo);
           var movedtoelement = document.getElementById(movedstall_id);
@@ -334,8 +343,11 @@ export class StallComponent implements OnInit {
           if (movedtoelement != null && movedtoelement != undefined) {
             movedtoelement.classList.add("bookedgroupstall");
             movedtoelement.classList.remove("unassignedgroupstall");
+            movedtoelement.classList.remove("clstackstall");
           }
         }
+
+
       }
     });
   }
@@ -368,8 +380,9 @@ export class StallComponent implements OnInit {
         var element = document.getElementById(s_id);
 
         if (element != null && element != undefined) {
-          element.classList.remove("bookedgroupstall");
           element.classList.add("bookedstall");
+          element.classList.remove("bookedgroupstall");
+          element.classList.remove("clstackstall");
           element.addEventListener('mouseover', () => this.ShowStallDetail(data.StallId));
         }
       });
@@ -383,6 +396,7 @@ export class StallComponent implements OnInit {
         if (element != null && element != undefined) {
           element.classList.add("bookedgroupstall");
           element.classList.remove("bookedstall");
+          element.classList.remove("clstackstall");
           element.addEventListener('mouseover', () => this.ShowStallDetail(data.StallId));
         }
       });
@@ -397,6 +411,7 @@ export class StallComponent implements OnInit {
         if (element != null && element != undefined) {
           element.classList.add("bookedgroupstall");
           element.classList.remove("bookedstall");
+          element.classList.remove("clstackstall");
           element.addEventListener('mouseover', () => this.ShowStallDetail(data.StallId));
         }
       });
@@ -405,7 +420,7 @@ export class StallComponent implements OnInit {
 
   ShowStallDetail(val) {
     var checkInAllassigned = this.allAssignedStalls.filter((x) => { return x.StallId == val });
-    debugger
+    
     if (checkInAllassigned != null && checkInAllassigned != undefined && checkInAllassigned.length > 0)
     {
       document.getElementById("hoverbox").style.display = "block";
