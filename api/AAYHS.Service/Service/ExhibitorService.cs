@@ -34,6 +34,7 @@ namespace AAYHS.Service.Service
         private IExhibitorPaymentDetailRepository _exhibitorPaymentDetailRepository;
         private IApplicationSettingRepository _applicationRepository;
         private IEmailSenderRepository _emailSenderRepository;
+        private IClassSponsorRepository _classSponsorRepository;
         private IExhibitorHorseRepository _exhibitorHorseRepository;
         private IHorseRepository _horseRepository;
         #endregion
@@ -44,7 +45,8 @@ namespace AAYHS.Service.Service
                                  IExhibitorClassRepository exhibitorClassRepository, IClassRepository classRepository,
                                  ISponsorExhibitorRepository sponsorExhibitorRepository, ISponsorRepository sponsorRepository,
                                  IScanRepository scanRepository, IExhibitorPaymentDetailRepository exhibitorPaymentDetailRepository,
-                                 IApplicationSettingRepository applicationRepository,IEmailSenderRepository emailSenderRepository ,IMapper mapper)
+                                 IApplicationSettingRepository applicationRepository,IEmailSenderRepository emailSenderRepository ,
+                                 IClassSponsorRepository classSponsorRepository,IMapper mapper)
         {
             _exhibitorRepository = exhibitorRepository;
             _addressRepository = addressRepository;
@@ -60,6 +62,7 @@ namespace AAYHS.Service.Service
             _exhibitorPaymentDetailRepository = exhibitorPaymentDetailRepository;
             _applicationRepository = applicationRepository;
             _emailSenderRepository = emailSenderRepository;
+            _classSponsorRepository = classSponsorRepository;
             _mapper = mapper;
             _mainResponse = new MainResponse();
         }
@@ -552,6 +555,28 @@ namespace AAYHS.Service.Service
         {
             if (addSponsorForExhibitor.SponsorExhibitorId == 0)
             {
+                var sponsorType = _globalCodeRepository.GetSingle(x => x.GlobalCodeId == addSponsorForExhibitor.SponsorTypeId);
+                if (sponsorType.CodeName== "Class")
+                {
+                    var sponsorClass = _classSponsorRepository.GetSingle(x => x.SponsorId == addSponsorForExhibitor.SponsorId && 
+                    x.ClassId == Convert.ToInt32(addSponsorForExhibitor.TypeId) && x.IsActive == true && x.IsDeleted == false);
+
+                    if (sponsorClass==null)
+                    {
+                        var classAge = _classRepository.GetSingle(x => x.ClassId == Convert.ToInt32(addSponsorForExhibitor.TypeId) 
+                                      && x.IsActive == true && x.IsDeleted == false);
+                        var classSpnosor = new ClassSponsors
+                        {
+                            SponsorId=addSponsorForExhibitor.SponsorId,
+                            ClassId=Convert.ToInt32( addSponsorForExhibitor.TypeId),
+                            AgeGroup=classAge.AgeGroup,
+                            CreatedBy=actionBy,
+                            CreatedDate=DateTime.Now
+                        };
+
+                        _classSponsorRepository.Add(classSpnosor);
+                    }
+                }
                 var sponsor = new SponsorExhibitor
                 {
                     ExhibitorId = addSponsorForExhibitor.ExhibitorId,
