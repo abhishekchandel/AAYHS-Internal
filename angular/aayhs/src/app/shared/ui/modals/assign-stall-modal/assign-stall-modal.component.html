@@ -22,6 +22,7 @@
                     [value]="item.GlobalCodeId"
                      [checked]="StallAssignmentTypeId===item.GlobalCodeId"
                     name="item.CodeName"
+                    [disabled]="item.CodeName=='HorseStall' && DisableHorseType==true"
                     (change)="setStallType($event.target.value)">
                     <span class="checkmark">{{item.CodeName}}</span>
                 </div>

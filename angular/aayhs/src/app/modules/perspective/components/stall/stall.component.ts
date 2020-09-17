@@ -86,6 +86,7 @@ export class StallComponent implements OnInit {
                   element.classList.add("bookedgroupstall");
                   element.classList.remove("bookedstall");
                   element.classList.remove("clstackstall");
+                  element.classList.remove("unassignedgroupstall");
 
                   element.addEventListener('mouseover', () => this.ShowStallDetail(data.StallId));
                 }
@@ -93,6 +94,7 @@ export class StallComponent implements OnInit {
                   element.classList.add("bookedstall");
                   element.classList.remove("bookedgroupstall");
                   element.classList.remove("clstackstall");
+                  element.classList.remove("unassignedgroupstall");
 
                   element.addEventListener('mouseover', () => this.ShowStallDetail(data.StallId));
                 }
@@ -101,6 +103,7 @@ export class StallComponent implements OnInit {
                 element.classList.add("bookedstall");
                 element.classList.remove("bookedgroupstall");
                 element.classList.remove("clstackstall");
+                element.classList.remove("unassignedgroupstall");
 
                 element.addEventListener('mouseover', () => this.ShowStallDetail(data.StallId))
               }
@@ -127,6 +130,7 @@ export class StallComponent implements OnInit {
   }
 
   assignStall(stallId) {
+
     var checkIngroupassigned = this.groupAssignedStalls.filter((x) => { return x.StallId == stallId });
     var checkInAllassigned = this.allAssignedStalls.filter((x) => { return x.StallId == stallId });
 
@@ -249,6 +253,7 @@ export class StallComponent implements OnInit {
 
           if (element != null && element != undefined) {
             element.classList.add("bookedgroupstall");
+            element.classList.remove("bookedstall");
             element.classList.remove("unassignedgroupstall");
             element.classList.remove("clstackstall");
 
@@ -277,6 +282,8 @@ export class StallComponent implements OnInit {
             element.classList.add("unassignedgroupstall");
             element.classList.remove("bookedgroupstall");
             element.classList.remove("clstackstall");
+            element.classList.remove("bookedstall");
+
           }
         }
 
@@ -336,6 +343,7 @@ export class StallComponent implements OnInit {
             element.classList.add("unassignedgroupstall");
             element.classList.remove("bookedgroupstall");
             element.classList.remove("clstackstall");
+            element.classList.remove("bookedstall");
           }
           var movedstall_id = String('stall_' + result.data.StallMovedTo);
           var movedtoelement = document.getElementById(movedstall_id);
@@ -344,6 +352,7 @@ export class StallComponent implements OnInit {
             movedtoelement.classList.add("bookedgroupstall");
             movedtoelement.classList.remove("unassignedgroupstall");
             movedtoelement.classList.remove("clstackstall");
+            movedtoelement.classList.remove("bookedstall");
           }
         }
 
@@ -384,6 +393,7 @@ export class StallComponent implements OnInit {
           element.classList.add("bookedstall");
           element.classList.remove("bookedgroupstall");
           element.classList.remove("clstackstall");
+          element.classList.remove("unassignedgroupstall");
           element.addEventListener('mouseover', () => this.ShowStallDetail(data.StallId));
         }
       });
@@ -398,6 +408,7 @@ export class StallComponent implements OnInit {
           element.classList.add("bookedgroupstall");
           element.classList.remove("bookedstall");
           element.classList.remove("clstackstall");
+          element.classList.remove("unassignedgroupstall");
           element.addEventListener('mouseover', () => this.ShowStallDetail(data.StallId));
         }
       });
@@ -413,6 +424,7 @@ export class StallComponent implements OnInit {
           element.classList.add("bookedgroupstall");
           element.classList.remove("bookedstall");
           element.classList.remove("clstackstall");
+          element.classList.remove("unassignedgroupstall");
           element.addEventListener('mouseover', () => this.ShowStallDetail(data.StallId));
         }
       });
