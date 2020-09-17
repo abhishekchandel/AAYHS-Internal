@@ -90,6 +90,7 @@ export class ExhibitorComponent implements OnInit {
   exhibitorTransactions:any;
   feeDetails:any
   isRefund:boolean=false;
+  minDate=moment( new Date()).format('YYYY-MM-DD');
   //for binding images with server url
   filesUrl = BaseUrl.filesUrl;
   baseRequest: BaseRecordFilterRequest = {
@@ -903,15 +904,17 @@ setSponsorType(id){
       this.showAds=false;
       
       //get sponsor classes
-      this.sponsorService.GetSponsorClasses(Number(this.linkedSponsorId)).subscribe(response=>{ 
-        if(response.Data!=null && response.Data.TotalRecords>0)
-        {
-        this.sponsorClassesList = response.Data.sponsorClassesListResponses;
-        }
-        this.loading=false;
-      },error=>{
-        this.loading=false;
-      })
+
+      this.sponsorClassesList= this.exhibitorClasses
+      // this.sponsorService.GetSponsorClasses(Number(this.linkedSponsorId)).subscribe(response=>{ 
+      //   if(response.Data!=null && response.Data.TotalRecords>0)
+      //   {
+      //   this.sponsorClassesList = response.Data.sponsorClassesListResponses;
+      //   }
+      //   this.loading=false;
+      // },error=>{
+      //   this.loading=false;
+      // })
 
   }
     if(sponsorTypename[0].CodeName=="Ad")
