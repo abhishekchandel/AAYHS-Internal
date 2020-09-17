@@ -588,6 +588,7 @@ export class SponsorComponent implements OnInit {
       this.sponsorInfo.AmountReceived = Number(val);
     }
   }
+  
 
   printSponsorExhibitor() {
     let printContents, popupWin, printbutton, hideRow, gridTableDesc;

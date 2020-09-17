@@ -19,6 +19,7 @@ export class AssignStallModalComponent implements OnInit {
   StallMovedTo:number=null;
   StallNumber:number;
   AssignedToName:string;
+  
   constructor(
     private groupService: GroupService,
     private snackBar: MatSnackbarComponent,

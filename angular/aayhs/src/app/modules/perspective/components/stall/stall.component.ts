@@ -373,6 +373,7 @@ export class StallComponent implements OnInit {
     });
   }
 
+  
   changeTab() {
     if (this.allAssignedStalls != null && this.allAssignedStalls != undefined && this.allAssignedStalls.length > 0) {
       this.allAssignedStalls.forEach(data => {
@@ -417,6 +418,7 @@ export class StallComponent implements OnInit {
       });
     }
   }
+
 
   ShowStallDetail(val) {
     var checkInAllassigned = this.allAssignedStalls.filter((x) => { return x.StallId == val });
