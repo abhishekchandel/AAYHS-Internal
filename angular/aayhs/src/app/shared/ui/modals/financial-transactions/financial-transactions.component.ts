@@ -46,7 +46,6 @@ exhibitorTransactions:any;
       ExhibitorId:null
     }
   ngOnInit(): void {
-    debugger;
      this.ExhibitorId=this.data.ExhibitorId;
      this.ExhibitorName=this.data.ExhibitorName;
      this.feeDetails=this.data.feeDetails;
@@ -81,7 +80,7 @@ exhibitorTransactions:any;
   }
 
   resetFees(){
-    this.fee.PayDate=null
+    this.fee.PayDate=moment(new Date()).format('YYYY-MM-DD')
     this.fee.FeeTypeId=null
     this.fee.Amount=null
     this.fee.AmountPaid=null
@@ -133,7 +132,7 @@ exhibitorTransactions:any;
       this.snackBar.openSnackBar('No document uploaded for display', 'Close', 'red-snackbar');
     }
       else{
-        window.open(this.filesUrl+path.replace(/\s+/g, '%20').toLowerCase(), '_blank');
+        window.open(this.filesUrl+path.replace(/\s+/g, '%20'), '_blank');
 
     }
   }

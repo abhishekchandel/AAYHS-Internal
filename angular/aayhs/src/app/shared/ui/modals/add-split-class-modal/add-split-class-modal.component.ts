@@ -35,11 +35,11 @@ export class AddSplitClassModalComponent implements OnInit {
   onSubmit(): void {
     debugger;
     const filledEntries = this.entriesArray.filter((x) => x.Entries);
-    // if (emptyEntries > 0) {
-    //   // TODO : Call SnackBar
-    //   this.snackBar.openSnackBar('Please fill the enteries', 'Close', 'red-snackbar');
-    //   return;
-    // }
+    if (filledEntries.length == 0) {
+      // TODO : Call SnackBar
+      this.snackBar.openSnackBar('Please fill the enteries', 'Close', 'red-snackbar');
+      return;
+    }
 debugger;
     // Close the dialog, return true
     this.dialogRef.close({

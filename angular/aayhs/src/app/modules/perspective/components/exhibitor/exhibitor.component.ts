@@ -16,6 +16,7 @@ import { BaseUrl } from 'src/app/config/url-config';
 import { FilteredFinancialTransactionsComponent } from 'src/app/shared/ui/modals/filtered-financial-transactions/filtered-financial-transactions.component';
 import * as moment from 'moment';
 import { EmailModalComponent } from 'src/app/shared/ui/modals/email-modal/email-modal.component';
+import { HttpEventType } from '@angular/common/http';
 
 @Component({
   selector: 'app-exhibitor',
@@ -156,12 +157,13 @@ export class ExhibitorComponent implements OnInit {
   showFinancialTransaction(){
     var data={
       ExhibitorId:this.exhibitorInfo.ExhibitorId,
-      ExhibitorName:this.exhibitorInfo.FirstName +''+ this.exhibitorInfo.LastName,
+      ExhibitorName:this.exhibitorInfo.FirstName +' '+ this.exhibitorInfo.LastName,
       feeDetails:this.feeDetails,
       exhibitorTransactions:this.exhibitorTransactions,
       isRefund:this.isRefund
 
     }
+    debugger;
     const dialogRef = this.dialog.open(FinancialTransactionsComponent, {
       maxWidth: "400px",
       data
@@ -207,6 +209,7 @@ export class ExhibitorComponent implements OnInit {
 
   resetForm(){
     
+      // info section
       this.exhibitorInfo.ExhibitorId=null,
       this.exhibitorInfo.BackNumber=null,
       this.exhibitorInfo.FirstName=null,
@@ -226,6 +229,50 @@ export class ExhibitorComponent implements OnInit {
       this.exhibitorInfoForm.resetForm();
       this.selectedRowIndex = null
 
+      //horses section
+      this.exhibitorHorses=null;
+      this.isFirstBackNumber=false;
+      this.horses=null;
+      this.resetLinkedhorse();
+      this.horseType = null;
+
+
+      //class section
+      this.exhibitorClasses = null;
+      this.classes =null;
+      this.classDetails. Entries=null,
+      this.classDetails.IsScratch= null;
+      this.resetLinkClass();
+
+      //sponsor section
+      this.exhibitorSponsors = null;
+      this.sponsors =null;
+      this.resetLinkSponsor();
+      this.sponsorDetails.Email=null,
+      this.sponsorDetails.AmountReceived=null,
+      this.sponsorDetails.SponsorId=null,
+      this.sponsorDetails.SponsorName=null,
+      this.sponsorDetails.ContactName=null,
+      this.sponsorDetails.Phone=null,
+      this.sponsorDetails.Address=null,
+      this.sponsorDetails.City=null,
+      this.sponsorDetails.State=null,
+      this.sponsorTypes=null;
+
+      //financial section
+      this.billedSummary =null;
+      this.receievedSummary=null;
+      this.feeBilledTotal=null;
+      this.moneyReceivedTotal=null;
+      this.overPayment=null
+      this.outstanding=null
+      this.refunds=null
+      this.exhibitorTransactions = null;
+
+      //scan section
+      this.documentId=null;
+      this.myFiles=null;
+      this.scannedDocuments =null;
   }
 
   getNext(event) {
@@ -452,6 +499,7 @@ deleteExhibitorHorse(id){
       this.getExhibitorHorses(this.exhibitorInfo.ExhibitorId);
       this.getAllHorses(this.exhibitorInfo.ExhibitorId);
       this.getExhibitorDetails(this.exhibitorInfo.ExhibitorId);
+      this.getbilledFeesSummary(this.exhibitorInfo.ExhibitorId);
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
     }, error => {
       this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
@@ -492,7 +540,7 @@ addHorseToExhibitor(){
   var addHorse = {
     exhibitorId: this.exhibitorInfo.ExhibitorId,
     horseId:Number(this.linkedHorseId),
-    backNumber: this.backNumberLinked !=null ? Number(this.backNumberLinked) : this.exhibitorInfo.BackNumber,
+    backNumber: this.backNumberLinked !=null ? Number(this.backNumberLinked) : Number(this.exhibitorInfo.BackNumber),
     isFirstBackNumber:this.isFirstBackNumber,
     date:this.horseDate
   }
@@ -605,6 +653,7 @@ deleteExhibitorClass(id){
     this.loading = false;
     this.getExhibitorClasses(this.exhibitorInfo.ExhibitorId);
     this.getAllClasses(this.exhibitorInfo.ExhibitorId);
+    this.getbilledFeesSummary(this.exhibitorInfo.ExhibitorId);
     this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
   }, error => {
     this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
@@ -834,6 +883,7 @@ getAllSponsorTypes() {
     this.loading = false;
   }, error => {
     this.loading = false;
+    this.sponsorTypes=null;
   })
 }
 
@@ -891,6 +941,11 @@ getbilledFeesSummary(id){
     this.loading = false;
     this.billedSummary =null;
     this.receievedSummary=null;
+    this.feeBilledTotal=null;
+    this.moneyReceivedTotal=null;
+    this.overPayment=null
+    this.outstanding=null
+    this.refunds=null
   })
 }
 
@@ -953,7 +1008,7 @@ getDocumentTypes() {
     this.loading = false;
   }, error => {
     this.loading = false;
-
+    this.documentTypes=null;
   }
   )
 }
@@ -974,7 +1029,7 @@ getScannedDocuments(id){
 }
 
 viewDocument(path){
-  window.open(this.filesUrl+path.replace(/\s+/g, '%20').toLowerCase(), '_blank');
+  window.open(this.filesUrl+path.replace(/\s+/g, '%20'), '_blank');
 
 }
 
@@ -1060,29 +1115,61 @@ confirmRemoveDocument(id,path): void {
   }
   recalculate(){
     this.getbilledFeesSummary(this.exhibitorInfo.ExhibitorId);
+    this.getExhibitorTransactions(this.exhibitorInfo.ExhibitorId);
   }
 
   printDocument(url){
-    url="resources/documents/742b38b2-507f-456a-84e1-2a5c72e97a88_classresult%20(16).pdf"
+    url="localhost:4200/resources/documents/742b38b2-507f-456a-84e1-2a5c72e97a88_classresult%20(16).pdf"
     // var top = (screen.availHeight - 600) / 2;
     // var left = (screen.availWidth - 800) / 2;
     // window.open(url, "_blank", "directories=no,height=600,width=800,location=no,menubar=no,resizable=yes," +"scrollbars=yes,status=no,toolbar=no,top=" + top + ",left=" + left);
-  
+  window.print()
   
     // var blobURL = window.URL.createObjectURL(new Blob(['test'], { type: 'application/octet-stream' }));
     //     var anchor = document.createElement("a");
     //     anchor.download = url;
     //     anchor.href = blobURL;
     //     anchor.click();
-    this.openEmailModal()
   }
 
-  openEmailModal(){
+  openEmailModal(path){
   const dialogRef = this.dialog.open(EmailModalComponent, {
     maxWidth: "400px",
+    data:path
   });
   dialogRef.afterClosed().subscribe(dialogResult => {
     this.result = dialogResult;
   });
   }
+
+  
+
+   downloadFile(path) {
+       this.loading = true;
+    this.exhibitorService.downloadFile(path).subscribe(
+      data => {
+        switch (data.type) {
+          case HttpEventType.DownloadProgress:
+            break;
+          case HttpEventType.Response:
+            const downloadedFile = new Blob([data.body], { type: data.body.type });
+            const a = document.createElement('a');
+            a.setAttribute('style', 'display:none;');
+            document.body.appendChild(a);
+            a.download = path;
+            a.href = URL.createObjectURL(downloadedFile);
+            a.target = '_blank';
+            a.click();
+            document.body.removeChild(a);
+            break;
+        }
+        this.loading = false;
+
+      },
+      error => {
+        this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
+      }
+    );
+  }
+
 }

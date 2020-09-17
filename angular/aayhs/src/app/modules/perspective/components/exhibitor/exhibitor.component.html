@@ -445,7 +445,7 @@
                         <div class="actionBtn text-right mb-4 mt-3">
                             <button (click)='tabGroup.selectedIndex = 1' class="btn btn-red btnCss roundBtn">Previous</button>
                             <button (click)='tabGroup.selectedIndex = 3' class="btn btn-red btnCss roundBtn">Next</button>
-                            <button class="btn btn-red btnCss roundBtn">+ Sponsors</button>
+                            <a [routerLink]="['/perspective/sponsor']" target="_blank"> <button type="button" class="btn btn-red btnCss roundBtn">+ Sponsors</button></a>
                             <button class="btn btn-red btnCss roundBtn">Submit</button>
                         </div>
                     </div>
@@ -679,7 +679,7 @@
                                     </tbody>
                                 </perfect-scrollbar> 
                             </table> 
-                            <div class="prePostField mt-2">
+                            <div class="prePostField multiCheckBtn mt-2">
                                 <div class="form-group">
                                     <label class="radioBtn">
                                         <input type="radio" checked="checked" name="radio">
@@ -763,9 +763,9 @@
                                             <td>{{document.DocumentType}}</td>
                                             <td>
                                                 <button type="button" (click)="viewDocument(document.DocumentPath)" class="icon"><span></span><i class="fa fa-eye" aria-hidden="true"></i></button>
-                                                <button type="button" class="icon"><i class="fa fa-envelope-o" aria-hidden="true"></i></button>
+                                                <button type="button" (click)="openEmailModal(document.DocumentPath)" class="icon"><i class="fa fa-envelope-o" aria-hidden="true"></i></button>
                                                 <button type="button" class="icon"><i class="fa fa-print" aria-hidden="true"></i></button>
-                                                <button type="button" class="icon"><i class="fa fa-download" aria-hidden="true"></i></button>
+                                                <button type="button" (click)="downloadFile(document.DocumentPath)" class="icon"><i class="fa fa-download" aria-hidden="true"></i></button>
                                                 <button type="button" (click)="confirmRemoveDocument(document.ScansId,document.DocumentPath)" class="icon"><span></span> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
                                             </td>
                                         </tr>
@@ -775,16 +775,16 @@
                             </table> 
 
 
-                            <div class="prePostField mt-2">
+                            <div class="prePostField multiCheckBtn mt-2">
                                 <div class="form-group">
                                     <label class="radioBtn">
-                                        <input type="radio" checked="checked" name="radio">
+                                        <input type="radio"  checked="checked" name="radio">
                                         <span class="checkmark"></span>Email
                                     </label>
                                 </div>
                                 <div class="form-group">
                                     <label class="radioBtn">
-                                        <input type="radio" name="radio">
+                                        <input type="radio" (change)="printDocument('hxh')" name="radio">
                                         <span class="checkmark"></span>Print
                                     </label>
                                 </div>

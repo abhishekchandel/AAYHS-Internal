@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BaseUrl } from '../../config/url-config';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpEvent, HttpRequest } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -170,6 +171,17 @@ export class ExhibitorService {
   }
   
   sendEmail(data){
-    return this.http.post<any>(`${this.api}ExhibitorAPI/DeleteUploadedDocuments`,data);
+    return this.http.post<any>(`${this.api}ExhibitorAPI/SendEmailWithDocument`,data);
+  }
+
+  downloadFile(data): Observable<HttpEvent<Blob>>{
+    return this.http.request< Blob>(new HttpRequest(
+      'GET',
+      `${this.api}ExhibitorAPI/DownloadFile?documentPath=${data} `,
+      null,
+      {
+        reportProgress: true,
+        responseType: 'blob'
+      }));
   }
 }

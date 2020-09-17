@@ -206,8 +206,7 @@
                                                 <label>Amount Received</label>
                                                 <input type="number" class="form-control" #amountReceieved="ngModel"
                                                     name="amountReceieved" [(ngModel)]="groupInfo.AmountReceived"
-                                                    placeholder="Amount Received"
-                                                    (change)="setAmount($event.target.value)" />
+                                                    placeholder="Amount Received" />
                                             </div>
 
 
@@ -517,7 +516,7 @@
                                             </tbody>
                                         </perfect-scrollbar> 
                                     </table> 
-                                    <div class="prePostField mt-2">
+                                    <div class="prePostField mt-2 multiCheckBtn">
                                         <div class="form-group">
                                             <label class="radioBtn">
                                                 <input type="radio" checked="checked" name="radio">

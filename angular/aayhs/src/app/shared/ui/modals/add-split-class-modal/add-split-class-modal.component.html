@@ -6,13 +6,14 @@
             <div class="modal-body text-center">
                 <div class="table-responsive">
                     <form #splitClassForm="ngForm">
-                    <table class="table table-bordered splitTable">
+                    <table class="table table-bordered splitTable tableBodyScroll ">
                         <thead>
                             <tr>
                                 <th>CLASS SPLIT SCREEN</th>
                                 <th>CLASS NUMBER: {{classNumber}}</th>
                             </tr>
                         </thead>
+                        <perfect-scrollbar class="nicescrollBar-3">
                         <tbody>
                             <tr>
                                 <td>
@@ -49,7 +50,7 @@
                                 </td>
                             </tr>
                         </tbody>
-
+                    </perfect-scrollbar>
                     </table>
                 </form>
                 </div>
