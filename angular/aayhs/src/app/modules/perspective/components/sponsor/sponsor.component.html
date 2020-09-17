@@ -147,7 +147,10 @@
 									<div class="form-group">
 										<label>Amount Received</label>
 										
-										<input type="number" class="form-control" #amountReceieved="ngModel" 
+										<input type="number" 
+										class="form-control"     
+										min="0"
+										#amountReceieved="ngModel" 
 										name="amountReceieved"
 										 [(ngModel)]="sponsorInfo.AmountReceived" 
 										 placeholder="Amount Received"/>

@@ -30,3 +30,12 @@ C:\Users\DITSTrainee6\Desktop\AAYHS\AAYHS-Internal\api\AAYHS.Data\obj\Debug\netc
 C:\Users\DITSTrainee6\Desktop\AAYHS\AAYHS-Internal\api\AAYHS.Data\obj\Debug\netcoreapp3.1\AAYHS.Data.csproj.CoreCompileInputs.cache
 C:\Users\DITSTrainee6\Desktop\AAYHS\AAYHS-Internal\api\AAYHS.Data\obj\Debug\netcoreapp3.1\AAYHS.Data.dll
 C:\Users\DITSTrainee6\Desktop\AAYHS\AAYHS-Internal\api\AAYHS.Data\obj\Debug\netcoreapp3.1\AAYHS.Data.pdb
+C:\Projects\AAYHS New\AAYHS-Internal\api\AAYHS.Data\bin\Debug\netcoreapp3.1\AAYHS.Data.deps.json
+C:\Projects\AAYHS New\AAYHS-Internal\api\AAYHS.Data\bin\Debug\netcoreapp3.1\AAYHS.Data.dll
+C:\Projects\AAYHS New\AAYHS-Internal\api\AAYHS.Data\bin\Debug\netcoreapp3.1\AAYHS.Data.pdb
+C:\Projects\AAYHS New\AAYHS-Internal\api\AAYHS.Data\obj\Debug\netcoreapp3.1\AAYHS.Data.csprojAssemblyReference.cache
+C:\Projects\AAYHS New\AAYHS-Internal\api\AAYHS.Data\obj\Debug\netcoreapp3.1\AAYHS.Data.AssemblyInfoInputs.cache
+C:\Projects\AAYHS New\AAYHS-Internal\api\AAYHS.Data\obj\Debug\netcoreapp3.1\AAYHS.Data.AssemblyInfo.cs
+C:\Projects\AAYHS New\AAYHS-Internal\api\AAYHS.Data\obj\Debug\netcoreapp3.1\AAYHS.Data.csproj.CoreCompileInputs.cache
+C:\Projects\AAYHS New\AAYHS-Internal\api\AAYHS.Data\obj\Debug\netcoreapp3.1\AAYHS.Data.dll
+C:\Projects\AAYHS New\AAYHS-Internal\api\AAYHS.Data\obj\Debug\netcoreapp3.1\AAYHS.Data.pdb

@@ -457,21 +457,14 @@ export class GroupComponent implements OnInit {
     this.groupService.deleteGroup(Groupid).subscribe(response => {
 
       if (response.Success == true) {
-
-        this.groupsList.splice(index, 1);
-        this.totalItems = this.totalItems - 1;
-
-        if (this.selectedGroupId == Groupid) {
-          this.selectedGroupId = 0;
-          this.resetForm();
-        }
         this.loading = false;
+        this.getAllGroups();
+        this.resetForm();
         this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
       }
       else {
         this.loading = false;
         this.snackBar.openSnackBar(response.Message, 'Close', 'red-snackbar');
-
       }
     }, error => {
       this.loading = false;

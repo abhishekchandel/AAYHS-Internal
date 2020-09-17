@@ -404,21 +404,9 @@ export class SponsorComponent implements OnInit {
       
       if(response.Success==true)
       {
-     
-     
-        this.sponsorsList.splice(index, 1);
-        this.totalItems=this.totalItems-1;
-
-        if(this.selectedSponsorId==Sponsorid){
-          this.selectedSponsorId=0;
-          this.sponsorsExhibitorsList= null;
-          this.sponsorClassesList=null;
-          this.UnassignedSponsorExhibitor=null;
-          this.UnassignedSponsorClasses=null;
-          this.SponsorTypes=null;
-          this.resetForm();
-        }
         this.loading = false;
+        this.getAllSponsors();
+        this.resetForm();
         this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
       }
       else{
