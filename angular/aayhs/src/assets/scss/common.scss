@@ -908,16 +908,16 @@ background-color: #f1efef  !important ;
 color: #7b1124;
 }
 .fa.fa-download {
-    color: #79b500;
+    color: #273992;
 }
 .fa.fa-print {
-    color: #f6c963;
+    color: #273992;
 }
 .fa.fa-envelope-o {
-    color: #df3532;
+    color: #273992;
 }
 .fa.fa-eye {
-    color: #3b74c5;
+    color: #273992;
 }
 /* nicescroll */
 .nicescrollBar-1{
@@ -2036,6 +2036,17 @@ span{
                 min-width: 100px;
                 font-weight: 600;
                 letter-spacing: 0.5px;
+            }
+        }
+    }
+    .stallDiagram {
+        .table {
+            tbody {
+                tr {
+                    td {
+                        word-break: inherit;
+                    }
+                }
             }
         }
     }
