@@ -366,6 +366,10 @@ export class GroupComponent implements OnInit {
   }
   setUpdatedFinancialAmount(data) {
     this.UpdatedFinancialAmount = Number(data);
+    if(this.UpdatedFinancialAmount <=0)
+    {
+      this.UpdatedFinancialAmount =0;
+    }
   }
   cancelUpdateFinancialsAmount(e, index, GroupFinancialId) {
     this.updatemode = false;
@@ -401,6 +405,10 @@ export class GroupComponent implements OnInit {
 
   setFinancialsAmount(data) {
     this.FinancialsAmount = Number(data);
+    if(this.FinancialsAmount<=0)
+    {
+      this.FinancialsAmount=0;
+    }
   }
 
 
@@ -645,6 +653,14 @@ export class GroupComponent implements OnInit {
       }
     });
   }
+  setAmount(val) {
+    if (val <= 0) {
+        this.groupInfo.AmountReceived =Number(0);
+      }
+      else {
+        this.groupInfo.AmountReceived = Number(val);
+      }
+    }
 
   printGroupFinancials() {
     let printContents, popupWin, printbutton, hideRow, gridTableDesc;

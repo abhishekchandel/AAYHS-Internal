@@ -149,11 +149,11 @@
 										
 										<input type="number" 
 										class="form-control"     
-										min="0"
 										#amountReceieved="ngModel" 
 										name="amountReceieved"
 										 [(ngModel)]="sponsorInfo.AmountReceived" 
-										 placeholder="Amount Received"/>
+										 placeholder="Amount Received"
+										 (change)="setAmount($event.target.value)"/>
 
 									  </div> 
 									  
