@@ -117,6 +117,7 @@ namespace AAYHS.Core.DTOs.Response
         public string State { get; set; }
         public string Email { get; set; }
         public float AmountReceived { get; set; }
+        public int Zipcode { get; set; }
     }
     public class GetAllSponsorForExhibitor
     {
