@@ -2071,3 +2071,11 @@ span{
             right: 0;
         }
     }
+
+    .uantityField{
+        &.stallQuantity {
+            input {
+                width: 90px;
+            }
+        }
+    }
