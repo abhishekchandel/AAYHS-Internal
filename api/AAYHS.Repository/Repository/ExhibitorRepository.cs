@@ -164,6 +164,7 @@ namespace AAYHS.Repository.Repository
                              select new GetClassesOfExhibitor
                              {
                                ExhibitorClassId = exhibitorClass.ExhibitorClassId,
+                               ClassId=classes.ClassId,
                                ClassNumber =classes.ClassNumber,
                                Name=classes.Name,
                                AgeGroup=classes.AgeGroup,
