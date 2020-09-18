@@ -169,6 +169,17 @@ namespace AAYHS.Service.Service
                             groupExhibitor.ModifiedDate = DateTime.Now;
                             _groupExhibitorRepository.Update(groupExhibitor);
                         }
+                        else
+                        {
+                            var group = new GroupExhibitors
+                            {
+                                GroupId=request.GroupId,
+                                ExhibitorId=request.ExhibitorId,
+                                CreatedBy=actionBy,
+                                CreatedDate=DateTime.Now
+                            };
+                            _groupExhibitorRepository.Add(group);
+                        }
                     }
                     else
                     {
@@ -514,12 +525,10 @@ namespace AAYHS.Service.Service
         public MainResponse GetAllSponsor(int exhibitorId)
         {
             var allSponsors = _sponsorRepository.GetAll(x => x.IsActive == true && x.IsDeleted == false);
-            var sponsors = _sponsorExhibitorRepository.GetAll(x => x.ExhibitorId == exhibitorId && x.IsActive == true && x.IsDeleted == false);
-
+           
             if (allSponsors.Count > 0)
-            {
-                var _sponsors = allSponsors.Where(x => sponsors.All(y => y.SponsorId != x.SponsorId)).ToList();
-                var _allSponsors = _mapper.Map<List<GetSponsorForExhibitor>>(_sponsors);
+            {                
+                var _allSponsors = _mapper.Map<List<GetSponsorForExhibitor>>(allSponsors);
                 GetAllSponsorForExhibitor getAllSponsorForExhibitor = new GetAllSponsorForExhibitor();
                 getAllSponsorForExhibitor.getSponsorForExhibitors = _allSponsors;
                 _mainResponse.GetAllSponsorForExhibitor = getAllSponsorForExhibitor;
@@ -558,6 +567,16 @@ namespace AAYHS.Service.Service
                 var sponsorType = _globalCodeRepository.GetSingle(x => x.GlobalCodeId == addSponsorForExhibitor.SponsorTypeId);
                 if (sponsorType.CodeName== "Class")
                 {
+                    var sponsorExhibitorClassExist = _sponsorExhibitorRepository.GetSingle(x => x.ExhibitorId == addSponsorForExhibitor.ExhibitorId &&
+                    x.SponsorId == addSponsorForExhibitor.SponsorId && x.TypeId == addSponsorForExhibitor.TypeId && x.IsActive == true && x.IsDeleted == false);
+
+                    if (sponsorExhibitorClassExist!=null)
+                    {
+                        _mainResponse.Message = Constants.RECORD_AlREADY_EXIST;
+                        _mainResponse.Success = false;
+                        return _mainResponse;
+                    }
+                    
                     var sponsorClass = _classSponsorRepository.GetSingle(x => x.SponsorId == addSponsorForExhibitor.SponsorId && 
                     x.ClassId == Convert.ToInt32(addSponsorForExhibitor.TypeId) && x.IsActive == true && x.IsDeleted == false);
 
@@ -575,6 +594,17 @@ namespace AAYHS.Service.Service
                         };
 
                         _classSponsorRepository.Add(classSpnosor);
+                    }
+                }
+                else
+                {
+                    var sponsorExhibitorExist = _sponsorExhibitorRepository.GetSingle(x => x.ExhibitorId == addSponsorForExhibitor.ExhibitorId && 
+                    x.SponsorId == addSponsorForExhibitor.SponsorId && x.IsActive == true && x.IsDeleted == false);
+                    if (sponsorExhibitorExist!=null)
+                    {
+                        _mainResponse.Message = Constants.RECORD_AlREADY_EXIST;
+                        _mainResponse.Success = false;
+                        return _mainResponse;
                     }
                 }
                 var sponsor = new SponsorExhibitor

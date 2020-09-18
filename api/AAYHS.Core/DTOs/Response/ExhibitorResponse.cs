@@ -57,6 +57,7 @@ namespace AAYHS.Core.DTOs.Response
     public class GetClassesOfExhibitor
     {
         public int ExhibitorClassId { get; set; }
+        public int ClassId { get; set; }
         public string ClassNumber { get; set; }
         public string Name { get; set; }
         public string AgeGroup { get; set; }

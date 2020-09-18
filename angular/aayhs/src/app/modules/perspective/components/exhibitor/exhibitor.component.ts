@@ -362,7 +362,6 @@ getZipCodes(id: number) {
     this.loading = true;
     this.zipCodesResponse=null;
     this.exhibitorService.getZipCodes(Number(id)).subscribe(response => {
-      debugger
         this.zipCodesResponse = response.Data.ZipCode;
         this.loading = false;
     }, error => {
@@ -444,7 +443,7 @@ getAllGroups(){
     if(response.Data!=null)
       {
       this.getCities(response.Data.exhibitorResponses[0].StateId).then(res => {
-        this.getZipCodes(response.Data.CityId).then(res => {
+        this.getZipCodes(response.Data.exhibitorResponses[0].CityId).then(res => {
         this.exhibitorInfo = response.Data.exhibitorResponses[0];
         this.exhibitorInfo.BackNumber=response.Data.exhibitorResponses[0].BackNumber ===0 ? null :response.Data.exhibitorResponses[0].BackNumber;
       });
@@ -899,12 +898,11 @@ setSponsorType(id){
    
     if(sponsorTypename[0].CodeName=="Class")
     {
-      this.loading=true;
       this.showClasses=true;
       this.showAds=false;
       
       //get sponsor classes
-
+debugger
       this.sponsorClassesList= this.exhibitorClasses
       // this.sponsorService.GetSponsorClasses(Number(this.linkedSponsorId)).subscribe(response=>{ 
       //   if(response.Data!=null && response.Data.TotalRecords>0)
@@ -926,6 +924,7 @@ setSponsorType(id){
 }
 
 setType(value){
+  debugger;
   this.typeId=value;
 }
 
