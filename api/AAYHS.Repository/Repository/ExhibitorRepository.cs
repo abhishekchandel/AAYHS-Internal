@@ -94,14 +94,19 @@ namespace AAYHS.Repository.Repository
             exhibitorResponses = (from exhibitor in _context.Exhibitors                                  
                                   join address in _context.Addresses on exhibitor.AddressId equals address.AddressId into address1
                                   from address2 in address1.DefaultIfEmpty()
+                                  join groupsExhibitor in _context.GroupExhibitors on exhibitor.ExhibitorId equals groupsExhibitor.ExhibitorId into groupsExhibitor1
+                                  from groupsExhibitor2 in groupsExhibitor1.DefaultIfEmpty()
+                                  join groups in  _context.Groups on groupsExhibitor2.GroupId equals groups.GroupId into groups1
+                                  from group2 in groups1.DefaultIfEmpty()
                                   where exhibitor.IsActive == true && exhibitor.IsDeleted == false                                 
                                   && address2.IsActive==true && address2.IsDeleted==false
                                   && exhibitor.ExhibitorId== exhibitorId
                                   select new ExhibitorResponse 
                                   { 
                                     ExhibitorId=exhibitor.ExhibitorId,
-                                    GroupId= exhibitor != null ? _context.GroupExhibitors.Where(x => x.ExhibitorId == exhibitorId && x.IsActive == true && x.IsDeleted == false).Select(y => y.GroupId).FirstOrDefault() : 0,                                    
-                                    BackNumber=exhibitor.BackNumber,
+                                    GroupId= groupsExhibitor2!=null ?groupsExhibitor2.GroupId:0,  
+                                    GroupName= group2!=null?group2.GroupName:"",
+                                    BackNumber =exhibitor.BackNumber,
                                     FirstName=exhibitor.FirstName,
                                     LastName=exhibitor.LastName,
                                     BirthYear=exhibitor.BirthYear,
@@ -190,7 +195,9 @@ namespace AAYHS.Repository.Repository
                                        join sponsor in _context.Sponsors on sponsorExhibitor.SponsorId equals sponsor.SponsorId
                                        join address in _context.Addresses on sponsor.AddressId equals address.AddressId
                                        join city in _context.Cities on address.CityId equals city.CityId
-                                       join state in _context.States on city.StateId equals state.StateId                                    
+                                       join state in _context.States on city.StateId equals state.StateId 
+                                       join zipcode in _context.ZipCodes on address.ZipCodeId equals zipcode.ZipCodeId into zipcode1
+                                       from zipcode2 in zipcode1.DefaultIfEmpty()
                                        where sponsorExhibitor.IsActive==true && sponsorExhibitor.IsDeleted==false &&
                                        sponsor.IsActive==true && sponsor.IsDeleted==false &&
                                        sponsorExhibitor.ExhibitorId == exhibitorId
@@ -203,7 +210,8 @@ namespace AAYHS.Repository.Repository
                                          Phone=sponsor.Phone,
                                          Address=address.Address,
                                          City=city.Name,
-                                         State=state.Name,                                       
+                                         State=state.Name, 
+                                         Zipcode= zipcode2!=null? zipcode2.Number:0,
                                          Email =sponsor.Email,
                                          Amount=sponsor.AmountReceived,
                                          SponsorTypeId=sponsorExhibitor.SponsorTypeId,
@@ -229,7 +237,7 @@ namespace AAYHS.Repository.Repository
             data= (from sponsor in _context.Sponsors                  
                    join address in _context.Addresses on sponsor.AddressId equals address.AddressId
                    join city in _context.Cities on address.CityId equals city.CityId
-                   join state in _context.States on city.StateId equals state.StateId
+                   join state in _context.States on city.StateId equals state.StateId    
                    join zipcode in _context.ZipCodes on address.ZipCodeId equals zipcode.ZipCodeId into zipcode1
                    from zipcode2 in zipcode1.DefaultIfEmpty()
                    where sponsor.IsActive == true && sponsor.IsDeleted == false &&
@@ -245,7 +253,7 @@ namespace AAYHS.Repository.Repository
                        State = state.Name,
                        Email = sponsor.Email,
                        AmountReceived = sponsor.AmountReceived,
-                       Zipcode=zipcode2!=null ?zipcode2.Number:0
+                       Zipcode= zipcode2!=null? zipcode2.Number:0
                    });
 
             getSponsorForExhibitor = data.FirstOrDefault();
