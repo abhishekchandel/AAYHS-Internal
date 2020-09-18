@@ -23,6 +23,9 @@ namespace AAYHS.Service.Service
         private MainResponse _mainResponse;
         private BaseResponse newIdResponse;
         private IGroupRepository _GroupRepository;
+        private IZipCodeRepository _zipRepository;
+        private IZipCodeRepository2 _zipRepository2;
+        private ICityRepository _cityRepository;
         private IStallAssignmentRepository _stallAssignmentRepository;
         private IAddressRepository _AddressRepository;
         private readonly IGroupExhibitorRepository _groupExhibitorRepository;
@@ -30,7 +33,9 @@ namespace AAYHS.Service.Service
         #endregion
 
         public GroupService(IGroupRepository GroupRepository, IStallAssignmentRepository stallAssignmentRepository, IAddressRepository AddressRepository,IGroupExhibitorRepository groupExhibitorRepository
-                          ,IGroupFinancialRepository groupFinancialRepository, IMapper Mapper)
+                          ,IGroupFinancialRepository groupFinancialRepository, IMapper Mapper
+            
+            , IZipCodeRepository zipRepository, IZipCodeRepository2 zipRepository2, ICityRepository cityRepository)
         {
             _GroupRepository = GroupRepository;
             _AddressRepository = AddressRepository;
@@ -40,6 +45,9 @@ namespace AAYHS.Service.Service
             _Mapper = Mapper;
             _mainResponse = new MainResponse();
             newIdResponse = new BaseResponse();
+            _zipRepository = zipRepository;
+            _zipRepository2 = zipRepository2;
+            _cityRepository = cityRepository;
         }
 
         public MainResponse AddUpdateGroup(GroupRequest request)
@@ -125,10 +133,11 @@ namespace AAYHS.Service.Service
                         address.ModifiedDate = DateTime.Now;
                         _AddressRepository.Update(address);
                     }
+                     var stalls = _stallAssignmentRepository.RemoveAllGroupAssignedStalls(Group.GroupId);
+
                     if (request.groupStallAssignmentRequests != null && request.groupStallAssignmentRequests.Count > 0)
                     {
 
-                        var stalls = _stallAssignmentRepository.RemoveAllGroupAssignedStalls(Group.GroupId);
                         foreach (var assignment in request.groupStallAssignmentRequests)
                         {
                             StallAssignment stallAssignment = new StallAssignment();
@@ -183,7 +192,7 @@ namespace AAYHS.Service.Service
 
         public MainResponse GetAllGroups(BaseRecordFilterRequest request)
         {
-
+           // AddZipCodes();
             _mainResponse = _GroupRepository.GetAllGroups(request);
             if (_mainResponse.GroupListResponse.groupResponses != null && _mainResponse.GroupListResponse.groupResponses.Count() > 0)
             {
@@ -394,6 +403,35 @@ namespace AAYHS.Service.Service
             _mainResponse.GetGroupStatement = groupStatement;
             _mainResponse.Success = true;
             return _mainResponse;
+        }
+        public void AddZipCodes()
+        {
+            var zip2list = _zipRepository2.GetAll();
+            foreach(var code2 in zip2list)
+            {
+                try
+                {
+                    var city = _cityRepository.GetSingle(x => x.Name == code2.City);
+                    if (city != null)
+                    {
+                        ZipCodes code = new ZipCodes();
+                        code.CityId = city.CityId;
+                        code.Number = Convert.ToInt32(code2.ZipCode);
+                        code.IsActive = true;
+                        code.IsDeleted = false;
+                        code.CreatedDate = DateTime.Now;
+                        _zipRepository.Add(code);
+                    }
+                    else
+                    {
+
+                    }
+                }
+                catch
+                {
+                    continue;
+                }
+            }
         }
    }
 }

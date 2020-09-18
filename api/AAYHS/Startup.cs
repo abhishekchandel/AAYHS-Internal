@@ -169,6 +169,7 @@ namespace AAYHS
             //services.AddTransient<IStallRepository, StallRepository>();
             services.AddTransient<IAdvertisementRepository, AdvertisementRepository>();
             services.AddTransient<IExhibitorHorseRepository, ExhibitorHorseRepository>();
+            services.AddTransient<IZipCodeRepository2, ZipCodeRepository2>();
             services.AddTransient<IZipCodeRepository, ZipCodeRepository>();
             services.AddTransient<IScanRepository, ScanRepository>();
             services.AddTransient<IExhibitorPaymentDetailRepository, ExhibitorPaymentDetailRepository>();
