@@ -471,6 +471,7 @@ namespace AAYHS.Service.Service
             {
                 ExhibitorId = addExhibitorToClass.ExhibitorId,
                 ClassId = addExhibitorToClass.ClassId,
+                HorseId=addExhibitorToClass.HorseId,
                 Date = addExhibitorToClass.Date,
                 CreatedBy = actionBy,
                 CreatedDate = DateTime.Now
