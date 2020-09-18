@@ -75,7 +75,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Back Number <span *ngIf="exhibitorInfo.ExhibitorId==null">*</span> </label>	
-                                    <input #backNumber="ngModel" [readonly]="(exhibitorInfo.ExhibitorId !=null) && (exhibitorInfo.ExhibitorId ==null)" appOnlynumber name="backNumber" [required]="exhibitorInfo.ExhibitorId==null"  [(ngModel)]="exhibitorInfo.BackNumber" type="text" class="form-control" placeholder="Back Number"/>                                
+                                    <input #backNumber="ngModel" [disabled]="(exhibitorInfo.ExhibitorId !=null) && (exhibitorInfo.BackNumber ==null)" appOnlynumber name="backNumber" [required]="exhibitorInfo.ExhibitorId==null"  [(ngModel)]="exhibitorInfo.BackNumber" type="text" class="form-control" placeholder="Back Number"/>                                
                                      <span class="help-block" *ngIf="backNumber.errors?.required && (backNumber.touched || exhibitorInfoForm.submitted)">Back Number is required</span>
                                 </div>
                                 <div class="form-group">

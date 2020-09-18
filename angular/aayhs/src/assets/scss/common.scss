@@ -2050,3 +2050,12 @@ span{
             }
         }
     }
+
+    .dateField {
+        position: relative;
+        .ng-star-inserted {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+    }
