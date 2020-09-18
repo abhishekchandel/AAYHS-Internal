@@ -364,6 +364,7 @@ export class GroupComponent implements OnInit {
     this.updateRowIndex = index;
     this.UpdatedFinancialAmount = Number(Amount);
   }
+
   setUpdatedFinancialAmount(data) {
     this.UpdatedFinancialAmount = Number(data);
     if(this.UpdatedFinancialAmount <=0)
@@ -371,6 +372,7 @@ export class GroupComponent implements OnInit {
       this.UpdatedFinancialAmount =0;
     }
   }
+
   cancelUpdateFinancialsAmount(e, index, GroupFinancialId) {
     this.updatemode = false;
     this.updateRowIndex = index;
@@ -399,6 +401,7 @@ export class GroupComponent implements OnInit {
   setFinancialsFeeType(id) {
     this.FinancialsFeeTypeId = Number(id);
   }
+
   setFinancialsTimeFrameType(id) {
     this.FinancialsTimeFrameTypeId = Number(id);
   }
@@ -540,6 +543,8 @@ export class GroupComponent implements OnInit {
     this.groupStallAssignmentResponses = [];
     this.horsestalllength=0;
     this.tackstalllength=0;
+    this.groupFinancialsList = null;
+    this.groupExhibitorsList = null;
   }
 
   getNext(event) {
@@ -653,6 +658,7 @@ export class GroupComponent implements OnInit {
       }
     });
   }
+
   setAmount(val) {
     if (val <= 0) {
         this.groupInfo.AmountReceived =Number(0);
@@ -662,7 +668,6 @@ export class GroupComponent implements OnInit {
       }
     }
 
-    
 
   printGroupFinancials() {
     let printContents, popupWin, printbutton, hideRow, gridTableDesc;
