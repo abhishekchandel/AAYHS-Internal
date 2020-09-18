@@ -169,6 +169,17 @@ namespace AAYHS.Service.Service
                             groupExhibitor.ModifiedDate = DateTime.Now;
                             _groupExhibitorRepository.Update(groupExhibitor);
                         }
+                        else
+                        {
+                            var group = new GroupExhibitors
+                            {
+                                GroupId=request.GroupId,
+                                ExhibitorId=request.ExhibitorId,
+                                CreatedBy=actionBy,
+                                CreatedDate=DateTime.Now
+                            };
+                            _groupExhibitorRepository.Add(group);
+                        }
                     }
                     else
                     {
