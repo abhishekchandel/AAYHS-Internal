@@ -795,7 +795,7 @@ addSponsorToExhibitor(){
     this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
 
   }, error => {
-    this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
+    this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
     this.loading = false;
   })
 }
