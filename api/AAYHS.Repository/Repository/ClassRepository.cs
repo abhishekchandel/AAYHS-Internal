@@ -179,11 +179,7 @@ namespace AAYHS.Repository.Repository
                     join exhibitors in _ObjContext.Exhibitors on exhibitorclasses.ExhibitorId equals exhibitors.ExhibitorId into exhibitors1
                     from exhibitors2 in exhibitors1.DefaultIfEmpty()
                     join horses in _ObjContext.Horses on exhibitorclasses.HorseId equals horses.HorseId into horses1
-                    from horses2 in horses1.DefaultIfEmpty()
-                    join paymentdetails in _ObjContext.ExhibitorPaymentDetails on exhibitorclasses.ExhibitorId equals paymentdetails.ExhibitorId into paymentdetails1
-                    from paymentdetails2 in paymentdetails1.DefaultIfEmpty()
-                    join f in _ObjContext.Fees on paymentdetails2.FeeTypeId equals f.FeeId into f1
-                    from f2 in f1.DefaultIfEmpty()
+                    from horses2 in horses1.DefaultIfEmpty()                   
                     where exhibitorclasses.IsDeleted == false && exhibitors2.IsDeleted == false && exhibitorclasses.IsActive == true && exhibitors2.IsActive == true &&
                     horses2.IsDeleted==false && horses2.IsActive==true &&
                     exhibitorclasses.ClassId== classRequest.ClassId
@@ -192,11 +188,9 @@ namespace AAYHS.Repository.Repository
                         ExhibitorClassId= exhibitorclasses.ExhibitorClassId,
                         Exhibitor= exhibitors2.ExhibitorId+ " " + exhibitors2.FirstName + " " + exhibitors2.LastName,
                         Horse= horses2.Name,
-                        BirthYear= exhibitors2.BirthYear,
-                        AmountPaid= paymentdetails2.Amount,
-                        AmountDue= ((int)(Convert.ToDecimal(f2.FeeAmount)- paymentdetails2.Amount)),
+                        BirthYear= exhibitors2.BirthYear,                       
                         Scratch=exhibitorclasses.IsScratch
-                    });
+                    }).Distinct().ToList();
             if (data.Count() != 0)
             {
                 if (classRequest.OrderByDescending == true)
@@ -245,11 +239,7 @@ namespace AAYHS.Repository.Repository
                              join state in _ObjContext.States on city2.StateId equals state.StateId into state1
                              from state2 in state1.DefaultIfEmpty()
                              join exhibitorsClass in _ObjContext.ExhibitorClass on exhibitors.ExhibitorId equals exhibitorsClass.ExhibitorId into exhibitorsClass1
-                             from exhibitorsClass2 in exhibitorsClass1.DefaultIfEmpty()
-                             join paymentdetails in _ObjContext.ExhibitorPaymentDetails on exhibitorsClass2.ExhibitorId equals paymentdetails.ExhibitorId into paymentdetails1
-                             from paymentdetails2 in paymentdetails1.DefaultIfEmpty()
-                             join f in _ObjContext.Fees on paymentdetails2.FeeTypeId equals f.FeeId into f1
-                             from f2 in f1.DefaultIfEmpty()
+                             from exhibitorsClass2 in exhibitorsClass1.DefaultIfEmpty()                            
                              where exhibitors.IsActive == true && exhibitors.IsDeleted == false &&
                              exhibitors.BackNumber == resultExhibitorRequest.BackNumber && exhibitorsClass2.ClassId == resultExhibitorRequest.ClassId
                              && exhibitorsClass2.IsActive == true && exhibitorsClass2.IsDeleted == false
@@ -260,10 +250,7 @@ namespace AAYHS.Repository.Repository
                                  ExhibitorName = exhibitors.FirstName + " " + exhibitors.LastName,
                                  BirthYear = exhibitors.BirthYear,
                                  HorseName = _ObjContext.Horses.Where(x => x.HorseId == exhibitorsClass2.HorseId && x.IsActive==true && x.IsDeleted==false).Select(x => x.Name).FirstOrDefault(),
-                                 Address= city2.Name+", "+ state2.Code,
-                                 AmountPaid= paymentdetails2.Amount,
-                                 AmountDue= ((int)(Convert.ToDecimal(f2.FeeAmount) - paymentdetails2.Amount))
-
+                                 Address= city2.Name+", "+ state2.Code,                               
                              }).FirstOrDefault();
 
             return exhibitor;
@@ -283,11 +270,7 @@ namespace AAYHS.Repository.Repository
                     join city in _ObjContext.Cities on addresses2.CityId equals city.CityId into city1
                     from city2 in city1.DefaultIfEmpty()
                     join state in _ObjContext.States on city2.StateId equals state.StateId into state1
-                    from state2 in state1.DefaultIfEmpty()                       
-                    join paymentdetails in _ObjContext.ExhibitorPaymentDetails on exhibitor2.ExhibitorId equals paymentdetails.ExhibitorId into paymentdetails1
-                    from paymentdetails2 in paymentdetails1.DefaultIfEmpty()
-                    join f in _ObjContext.Fees on paymentdetails2.FeeTypeId equals f.FeeId into f1
-                    from f2  in f1.DefaultIfEmpty()
+                    from state2 in state1.DefaultIfEmpty()                                          
                     where result.IsActive == true && result.IsDeleted == false && exhibitor2.IsActive == true && exhibitor2.IsDeleted == false
                     && exhibitorsClass2.IsDeleted==false && addresses2.IsDeleted == false && city2.IsDeleted == false && state2.IsDeleted == false                   
                     && result.ClassId == classRequest.ClassId
@@ -300,9 +283,7 @@ namespace AAYHS.Repository.Repository
                         ExhibitorName= exhibitor2.FirstName+" "+ exhibitor2.LastName,
                         BirthYear= exhibitor2.BirthYear,
                         HorseName= _ObjContext.Horses.Where(x => x.HorseId == exhibitorsClass2.HorseId && x.IsDeleted==false).Select(x => x.Name).FirstOrDefault(),
-                        Address= city2.Name + ", " + state2.Code,
-                        AmountPaid = paymentdetails2.Amount,
-                        AmountDue = ((int)(Convert.ToDecimal(f2.FeeAmount) - paymentdetails2.Amount))
+                        Address= city2.Name + ", " + state2.Code                       
                     }).Distinct().ToList();
 
             if (data.Count() != 0)
