@@ -110,7 +110,7 @@ export class ExhibitorComponent implements OnInit {
     StateId:null,
     CityId:null,
     ZipCodeId:null,
-    QTYProgram:null,
+    QTYProgram:1,
     BirthYear:null,
     Phone:null,
     PrimaryEmail:null,
@@ -218,7 +218,7 @@ export class ExhibitorComponent implements OnInit {
       this.exhibitorInfo.StateId=null,
       this.exhibitorInfo.CityId=null,
       this.exhibitorInfo.ZipCodeId=null,
-      this.exhibitorInfo.QTYProgram=null,
+      this.exhibitorInfo.QTYProgram=1,
       this.exhibitorInfo.BirthYear=null,
       this.exhibitorInfo.Phone=null,
       this.exhibitorInfo. PrimaryEmail=null,
@@ -227,7 +227,7 @@ export class ExhibitorComponent implements OnInit {
       this.exhibitorInfo.IsDoctorNote=false,
       this.exhibitorInfo.GroupId=null,
       this.exhibitorInfo.GroupName=null
-      this.exhibitorInfoForm.resetForm();
+      this.exhibitorInfoForm.resetForm({quantityPrograms:1});
       this.selectedRowIndex = null
 
       //horses section
@@ -924,7 +924,6 @@ debugger
 }
 
 setType(value){
-  debugger;
   this.typeId=value;
 }
 

@@ -67,7 +67,6 @@ export class HorseComponent implements OnInit {
 
   ngOnInit(): void {
     this.data.searchTerm.subscribe((searchTerm: string) => {
-      debugger;
       this.baseRequest.SearchTerm = searchTerm;
       this.getAllHorses();
     });
