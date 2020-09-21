@@ -315,7 +315,7 @@ namespace AAYHS.Service.Service
 
             if (allHorses.Count > 0)
             {
-                var horses = allHorses.Where(x => exhibitorHorses.All(y => y.HorseId != x.HorseId)).ToList();
+                var horses = allHorses.Where(x => exhibitorHorses.All(y => y.HorseId != x.HorseId)).OrderBy(z=>z.Name).ToList();
                 var _allHorses = _mapper.Map<List<GetHorses>>(horses);
                 GetExhibitorHorsesList getExhibitorHorsesList = new GetExhibitorHorsesList();
                 getExhibitorHorsesList.getHorses = _allHorses;
