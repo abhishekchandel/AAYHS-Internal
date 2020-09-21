@@ -71,7 +71,13 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label><input #nsbaIndicator="ngModel" name="nsbaIndicator" [(ngModel)]="exhibitorInfo.IsNSBAMember" type="checkbox" value="" class="ciCheckbox">NSBA Indicator</label>
+                                    <label class="customCheckbox">NSBA Indicator
+                                        <input #nsbaIndicator="ngModel" name="nsbaIndicator" [(ngModel)]="exhibitorInfo.IsNSBAMember" type="checkbox" value="" class="ciCheckbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+
+
+                                    <!--label><input #nsbaIndicator="ngModel" name="nsbaIndicator" [(ngModel)]="exhibitorInfo.IsNSBAMember" type="checkbox" value="" class="ciCheckbox">NSBA Indicator</label-->
                                 </div>
                                 <div class="form-group">
                                     <label>Back Number <span *ngIf="exhibitorInfo.ExhibitorId==null">*</span> </label>	
@@ -157,7 +163,11 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label><input type="checkbox"  #doctorVetNoteIndicator="ngModel" name="doctorVetNoteIndicator" [(ngModel)]="exhibitorInfo.IsDoctorNote" value="" class="ciCheckbox">Doctor/Vet Note Indicator</label>
+                                    <label class="customCheckbox">Doctor/Vet Note Indicator
+                                        <input #doctorVetNoteIndicator="ngModel" name="doctorVetNoteIndicator" [(ngModel)]="exhibitorInfo.IsDoctorNote" type="checkbox" value="" class="ciCheckbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <!--label><input type="checkbox"  #doctorVetNoteIndicator="ngModel" name="doctorVetNoteIndicator" [(ngModel)]="exhibitorInfo.IsDoctorNote" value="" class="ciCheckbox">Doctor/Vet Note Indicator</label-->
                                 </div>
                                 <div class="form-group">
                                     <label>Birth Year <span>*</span></label>                                  
