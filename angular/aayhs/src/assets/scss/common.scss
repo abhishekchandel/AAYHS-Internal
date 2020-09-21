@@ -2050,6 +2050,7 @@ span{
                 letter-spacing: 0.5px;
             }
         }
+        
     }
     .stallDiagram {
         .table {
@@ -2076,6 +2077,30 @@ span{
         &.stallQuantity {
             input {
                 width: 90px;
+            }
+        }
+    }
+
+    perfect-scrollbar{        
+        &.nicescrollBar-4 {
+            height: 90px;
+            overflow: auto;
+            .ps__rail-x {
+                display: block !important;
+                opacity: 1 !important;
+                }
+            .ps__rail-y {
+                opacity: 1 !important;
+                background-color: #fff !important;
+                width: 15px !important;
+                box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.5) !important;
+                -webkit-box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.5) !important;
+                -moz-box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.5) !important;
+                -ms-box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.5) !important;
+            }
+                .ps__thumb-y {
+                background-color: #a0b8f9 !important;
+                width: 10px !important;
             }
         }
     }
