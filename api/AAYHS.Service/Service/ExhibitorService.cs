@@ -344,6 +344,14 @@ namespace AAYHS.Service.Service
 
         public MainResponse AddExhibitorHorse(AddExhibitorHorseRequest addExhibitorHorseRequest, string actionBy)
         {
+            var backNumber = _exhibitorHorseRepository.GetSingle(x => x.BackNumber == addExhibitorHorseRequest.BackNumber && x.IsActive == true && x.IsDeleted == false);
+
+            if (backNumber!=null)
+            {
+                _mainResponse.Message = Constants.BACKNUMBER_AlREADY_EXIST;
+                _mainResponse.Success = false;
+                return _mainResponse;
+            }
             var exhibitorHorse = new ExhibitorHorse
             {
                 ExhibitorId = addExhibitorHorseRequest.ExhibitorId,
@@ -566,10 +574,26 @@ namespace AAYHS.Service.Service
             if (addSponsorForExhibitor.SponsorExhibitorId == 0)
             {
                 var sponsorType = _globalCodeRepository.GetSingle(x => x.GlobalCodeId == addSponsorForExhibitor.SponsorTypeId);
+
+                if (sponsorType.CodeName=="Ad")
+                {
+                    var sponsorAdExist= _sponsorExhibitorRepository.GetSingle(x => x.ExhibitorId == addSponsorForExhibitor.ExhibitorId &&
+                     x.SponsorId == addSponsorForExhibitor.SponsorId && x.SponsorTypeId == addSponsorForExhibitor.SponsorTypeId &&
+                    x.AdTypeId== addSponsorForExhibitor.AdTypeId && x.TypeId == addSponsorForExhibitor.TypeId && 
+                    x.IsActive == true && x.IsDeleted == false);
+
+                    if (sponsorAdExist!=null)
+                    {
+                        _mainResponse.Message = Constants.RECORD_AlREADY_EXIST;
+                        _mainResponse.Success = false;
+                        return _mainResponse;
+                    }
+                }
                 if (sponsorType.CodeName== "Class")
                 {
                     var sponsorExhibitorClassExist = _sponsorExhibitorRepository.GetSingle(x => x.ExhibitorId == addSponsorForExhibitor.ExhibitorId &&
-                    x.SponsorId == addSponsorForExhibitor.SponsorId && x.TypeId == addSponsorForExhibitor.TypeId && x.IsActive == true && x.IsDeleted == false);
+                    x.SponsorId == addSponsorForExhibitor.SponsorId && x.SponsorTypeId==addSponsorForExhibitor.SponsorTypeId && 
+                    x.TypeId == addSponsorForExhibitor.TypeId && x.IsActive == true && x.IsDeleted == false);
 
                     if (sponsorExhibitorClassExist!=null)
                     {
@@ -600,7 +624,8 @@ namespace AAYHS.Service.Service
                 else
                 {
                     var sponsorExhibitorExist = _sponsorExhibitorRepository.GetSingle(x => x.ExhibitorId == addSponsorForExhibitor.ExhibitorId && 
-                    x.SponsorId == addSponsorForExhibitor.SponsorId && x.IsActive == true && x.IsDeleted == false);
+                    x.SponsorId == addSponsorForExhibitor.SponsorId && x.SponsorTypeId==addSponsorForExhibitor.SponsorTypeId  
+                    && x.IsActive == true && x.IsDeleted == false);
                     if (sponsorExhibitorExist!=null)
                     {
                         _mainResponse.Message = Constants.RECORD_AlREADY_EXIST;
