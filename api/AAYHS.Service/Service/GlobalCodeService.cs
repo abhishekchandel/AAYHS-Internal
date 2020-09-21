@@ -79,7 +79,7 @@ namespace AAYHS.Service.Service
         public MainResponse GetAllZipCodes(string city)
         {
             var zipCodes = _zipCodeRepository2.GetAll(x => x.City == city).OrderBy(x => x.ZipCode);
-            var zipCodeResponse = _mapper.Map<List<ZipCode>>(zipCodes);
+            var zipCodeResponse = _mapper.Map<List<GetZipCodes>>(zipCodes);
             ZipCodeResponse response = new ZipCodeResponse();
             response.ZipCode = zipCodeResponse;
             _mainResponse.ZipCodeResponse = response;
