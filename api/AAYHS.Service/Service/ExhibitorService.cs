@@ -628,18 +628,20 @@ namespace AAYHS.Service.Service
                         _classSponsorRepository.Add(classSpnosor);
                     }
                 }
-                else
+                if (sponsorType.CodeName != "Class" && sponsorType.CodeName != "Ad")
                 {
-                    var sponsorExhibitorExist = _sponsorExhibitorRepository.GetSingle(x => x.ExhibitorId == addSponsorForExhibitor.ExhibitorId && 
-                    x.SponsorId == addSponsorForExhibitor.SponsorId && x.SponsorTypeId==addSponsorForExhibitor.SponsorTypeId  
-                    && x.IsActive == true && x.IsDeleted == false);
-                    if (sponsorExhibitorExist!=null)
+                    var sponsorExhibitorExist = _sponsorExhibitorRepository.GetSingle(x => x.ExhibitorId == addSponsorForExhibitor.ExhibitorId &&
+                   x.SponsorId == addSponsorForExhibitor.SponsorId && x.SponsorTypeId == addSponsorForExhibitor.SponsorTypeId
+                   && x.IsActive == true && x.IsDeleted == false);
+                    if (sponsorExhibitorExist != null)
                     {
                         _mainResponse.Message = Constants.RECORD_AlREADY_EXIST;
                         _mainResponse.Success = false;
                         return _mainResponse;
                     }
                 }
+                   
+                
                 var sponsor = new SponsorExhibitor
                 {
                     ExhibitorId = addSponsorForExhibitor.ExhibitorId,
