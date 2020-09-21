@@ -467,10 +467,7 @@ namespace AAYHS.API.Controllers
             {
                 string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
                 var file = uploadsFolder + documentPath;
-
-                //  string file = Path.Combine(
-                //Path.Combine(AssemblyDirectory, "App_Data"), filename);
-
+            
                 var memory = new MemoryStream();
                 using (var stream = new FileStream(file, FileMode.Open, FileAccess.Read))
                 {
