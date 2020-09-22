@@ -210,8 +210,9 @@ namespace AAYHS.Service.Service
             }
             else
             {
-                var checkNumber = _classRepository.GetSingle(x => x.ClassId == addClassRequest.ClassId  && x.IsActive == true && x.IsDeleted == false);
-                if (checkNumber.ClassNumber!=addClassRequest.ClassNumber)
+                var checkNumber = _classRepository.GetSingle(x => x.ClassId == addClassRequest.ClassId && x.ClassNumber==addClassRequest.ClassNumber
+                && x.IsActive == true && x.IsDeleted == false);
+                if (checkNumber==null)
                 {
                     var classNumber = _classRepository.GetSingle(x => x.ClassNumber == addClassRequest.ClassNumber && x.IsActive == true && x.IsDeleted == false);
                     if (classNumber != null && classNumber.ClassId > 0)
@@ -221,15 +222,20 @@ namespace AAYHS.Service.Service
                         return _mainResponse;
                     }
                 }
-               
-                var classExist = _classRepository.GetSingle(x => x.Name == addClassRequest.Name && x.AgeGroup == addClassRequest.AgeGroup
+                var checkName=_classRepository.GetSingle(x => x.Name == addClassRequest.Name && x.AgeGroup == addClassRequest.AgeGroup
                                                    && x.IsActive == true && x.IsDeleted == false);
-                if (classExist != null && classExist.ClassId > 0)
+                if (checkName==null)
                 {
-                    _mainResponse.Message = Constants.CLASS_EXIST;
-                    _mainResponse.Success = false;
-                    return _mainResponse;
+                    var classExist = _classRepository.GetSingle(x => x.Name == addClassRequest.Name && x.AgeGroup == addClassRequest.AgeGroup
+                                                   && x.IsActive == true && x.IsDeleted == false);
+                    if (classExist != null && classExist.ClassId > 0)
+                    {
+                        _mainResponse.Message = Constants.CLASS_EXIST;
+                        _mainResponse.Success = false;
+                        return _mainResponse;
+                    }
                 }
+                
                 var updateClass = _classRepository.GetSingle(x => x.ClassId == addClassRequest.ClassId && x.IsActive==true && x.IsDeleted==false);
                 if (updateClass!=null)
                 {
