@@ -30,8 +30,8 @@ getCities(stateId:number){
     return this.http.get<any>(`${this.api}CommonAPI/GetCities?stateId=${stateId}`);
   }
 
-getZipCodes(city:string){
-    return this.http.get<any>(`${this.api}CommonAPI/GetZipCodes?city=${city}`);
+getZipCodes(cityId:number){
+    return this.http.get<any>(`${this.api}CommonAPI/GetZipCodes?cityId=${cityId}`);
   }
 
 getAllStates(){

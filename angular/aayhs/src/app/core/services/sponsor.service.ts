@@ -42,8 +42,8 @@ export class SponsorService {
   getAllStates(){
     return this.http.get<any>(`${this.api}CommonAPI/GetStates`,{});
   }
-  getZipCodes(city:string){
-    return this.http.get<any>(`${this.api}CommonAPI/GetZipCodes?city=${city}`);
+  getZipCodes(cityId:number){
+    return this.http.get<any>(`${this.api}CommonAPI/GetZipCodes?cityId=${cityId}`);
   }
   GetSponsorExhibitorBySponsorId(sponsorId:number){
     return this.http.get<any>(`${this.api}SponsorExhibitorAPI/GetSponsorExhibitorBySponsorId?SponsorId=${sponsorId}`);

@@ -47,9 +47,8 @@ export class StallComponent implements OnInit {
   }
 
   getAllAssignedStalls() {
-    this.loading = true;
     return new Promise((resolve, reject) => {
-     
+      this.loading = true;
       this.allAssignedStalls = [];
       this.stallService.getAllAssignedStalls().subscribe(response => {
         if (response.Data != null && response.Data.TotalRecords > 0) {
