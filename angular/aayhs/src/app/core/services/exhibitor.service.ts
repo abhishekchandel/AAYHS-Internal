@@ -27,8 +27,8 @@ export class ExhibitorService {
   getAllStates(){
     return this.http.get<any>(`${this.api}CommonAPI/GetStates`,{});
   }
-  getZipCodes(city){
-    return this.http.get<any>(`${this.api}CommonAPI/GetZipCodes?city=${city}`);
+  getZipCodes(cityId:number){
+    return this.http.get<any>(`${this.api}CommonAPI/GetZipCodes?cityId=${cityId}`);
   }
   getGroups(){
     return this.http.get<any>(`${this.api}HorseAPI/GetGroups`);
