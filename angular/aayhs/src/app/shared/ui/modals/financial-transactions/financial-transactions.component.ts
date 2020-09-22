@@ -107,7 +107,7 @@ exhibitorTransactions:any;
    this.fee.RefundAmount =Math.round((amount * refundAmount)/100)
    this.isSponsorRefund=false
    }
-   else if(this.feeType=="Ad Sponsor Refund"){
+   else if(this.feeType=="Sponsor Refund"){
     this.isSponsorRefund=true;
     this.fee.RefundAmount=null;
    }
