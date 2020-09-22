@@ -10,6 +10,8 @@ namespace AAYHS.Data.DBEntities
 {
    public class ZipCodes2
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key]
         public int ZipCodeId { get; set; }
         public string StateAbbrv { get; set; }
         public string City { get; set; }

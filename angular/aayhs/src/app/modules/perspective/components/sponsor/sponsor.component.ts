@@ -252,7 +252,7 @@ export class SponsorComponent implements OnInit {
     this.sponsorExhibitorRequest.SponsorId = this.selectedSponsorId;
     this.sponsorExhibitorRequest.ExhibitorId = this.exhibitorId;
     this.sponsorExhibitorRequest.SponsorTypeId = this.sponsortypeId;
-    this.sponsorExhibitorRequest.AdTypeId = this.adTypeId;
+    this.sponsorExhibitorRequest.AdTypeId = this.adTypeId!=null?this.adTypeId:0;
     this.sponsorExhibitorRequest.TypeId = this.typeId != null ? this.typeId : "";
 
     this.sponsorService.AddUpdateSponsorExhibitor(this.sponsorExhibitorRequest).subscribe(response => {
@@ -382,6 +382,7 @@ export class SponsorComponent implements OnInit {
   }
 
 
+  
 
   //delete record
   deleteSponsor(Sponsorid, index) {
