@@ -272,8 +272,9 @@ namespace AAYHS.Repository.Repository
                     join state in _ObjContext.States on city2.StateId equals state.StateId into state1
                     from state2 in state1.DefaultIfEmpty()                                          
                     where result.IsActive == true && result.IsDeleted == false && exhibitor2.IsActive == true && exhibitor2.IsDeleted == false
-                    && exhibitorsClass2.IsDeleted==false && addresses2.IsDeleted == false && city2.IsDeleted == false && state2.IsDeleted == false                   
+                    && exhibitorsClass2.IsDeleted==false && exhibitorsClass2.ClassId== classRequest.ClassId
                     && result.ClassId == classRequest.ClassId
+
                     select new GetResultOfClass
                     {
                         ResultId=result.ResultId,
