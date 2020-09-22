@@ -162,13 +162,12 @@
 										<div class="col-md-7">
 									  <div class="form-group">
 									    <label>City <span>*</span></label>	
-										<select required class="form-control" placeholder="city" (change)="getZipCodes($event.target.value);getCityName($event)" name="city" #city="ngModel" [(ngModel)]="sponsorInfo.CityId" >
-											
-											
+										<select required class="form-control" placeholder="city" 
+										(change)="getZipCodes($event,false);getCityName($event)" 
+										name="city" #city="ngModel" [(ngModel)]="sponsorInfo.CityId" >
 											<option value="null" disabled="true" [selected]="true">
 												Select City
 											</option>
-													
 											<option *ngFor="let city of citiesResponse"
 											[value]="city.CityId">{{city.Name}}
 													</option>												

@@ -55,6 +55,7 @@ namespace AAYHS.Repository.Repository
                                        Address = data != null ? data.Address : "",
                                        ZipCodeId = data != null ? data.ZipCodeId :0,
                                        CityId = data != null ? data.CityId : 0,
+                                       CityName = data != null ? _context.Cities.Where(x => x.CityId == data.CityId).Select(y => y.Name).FirstOrDefault() : "",
                                        StateId = data != null ? _context.Cities.Where(x => x.CityId == data.CityId).Select(y => y.StateId).FirstOrDefault() : 0,
                                    }).FirstOrDefault();
             _mainResponse.SponsorResponse = sponsorResponse;
