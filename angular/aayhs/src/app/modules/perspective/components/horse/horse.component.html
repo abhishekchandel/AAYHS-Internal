@@ -129,9 +129,13 @@
 											</div>
 											<div class="form-group text-left">
 												<div class="checkbox">
-													<label><input type="checkbox"  #nsbaIndicator="ngModel"
+													<label class="customCheckbox">NSBA Indicator
+														<input #nsbaIndicator="ngModel" name="nsbaIndicator" [(ngModel)]="horseInfo.NSBAIndicator" type="checkbox" value="" class="ciCheckbox">
+														<span class="checkmark"></span>
+													</label>
+													<!--label><input type="checkbox"  #nsbaIndicator="ngModel"
 															name="nsbaIndicator" [(ngModel)]="horseInfo.NSBAIndicator"
-															class="ciCheckbox">NSBA Indicator</label>
+															class="ciCheckbox">NSBA Indicator</label-->
 												</div>
 											</div>
 										</div>

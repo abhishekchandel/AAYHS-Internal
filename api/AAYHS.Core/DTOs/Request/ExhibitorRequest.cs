@@ -37,6 +37,7 @@ namespace AAYHS.Core.DTOs.Request
     {
         public int ExhibitorId { get; set; }
         public int ClassId { get; set; }
+        public int HorseId { get; set; }
         public DateTime Date { get; set; }
     }
     public class UpdateScratch

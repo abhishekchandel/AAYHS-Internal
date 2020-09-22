@@ -19,6 +19,7 @@ namespace AAYHS.Service.Service
         private IStateRepository _stateRepository;
         private ICityRepository _cityRepository;
         private IZipCodeRepository _zipCodeRepository;
+        private IZipCodeRepository2 _zipCodeRepository2;
         private readonly IMapper _mapper;
         #endregion
 
@@ -27,12 +28,13 @@ namespace AAYHS.Service.Service
         #endregion
 
         public GlobalCodeService(IGlobalCodeRepository GlobalCodeRepository, IStateRepository stateRepository,ICityRepository cityRepository, IZipCodeRepository zipCodeRepository
-                                 , IMapper Mapper)
+                                ,IZipCodeRepository2 zipCodeRepository2 , IMapper Mapper)
         {
             _globalCodeRepository = GlobalCodeRepository;
             _stateRepository = stateRepository;
             _cityRepository = cityRepository;
             _zipCodeRepository = zipCodeRepository;
+            _zipCodeRepository2 = zipCodeRepository2;
             _mapper = Mapper;
             _mainResponse = new MainResponse();
         }
@@ -74,10 +76,10 @@ namespace AAYHS.Service.Service
             _mainResponse.Success = true;
             return _mainResponse;
         }
-        public MainResponse GetAllZipCodes(int CityId)
+        public MainResponse GetAllZipCodes(string city)
         {
-            var zipCodes = _zipCodeRepository.GetAll(x => x.CityId == CityId && x.IsDeleted == false && x.IsActive == true).OrderBy(x => x.Number);
-            var zipCodeResponse = _mapper.Map<List<ZipCode>>(zipCodes);
+            var zipCodes = _zipCodeRepository2.GetAll(x => x.City == city).OrderBy(x => x.ZipCode);
+            var zipCodeResponse = _mapper.Map<List<GetZipCodes>>(zipCodes);
             ZipCodeResponse response = new ZipCodeResponse();
             response.ZipCode = zipCodeResponse;
             _mainResponse.ZipCodeResponse = response;

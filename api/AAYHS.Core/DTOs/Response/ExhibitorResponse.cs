@@ -24,6 +24,7 @@ namespace AAYHS.Core.DTOs.Response
         public int StateId { get; set; }
         public string GroupName { get; set; }
         public string Address { get; set; }
+        public string CityName { get; set; }
 
     }
     public class ExhibitorListResponse

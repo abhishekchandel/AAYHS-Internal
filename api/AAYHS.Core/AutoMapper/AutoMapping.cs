@@ -20,7 +20,7 @@ namespace AAYHS.Core.AutoMapper
             CreateMap<APILogRequest, Apilogs>();
             CreateMap<States, State>();
             CreateMap<Cities, City>();
-            CreateMap<ZipCodes, ZipCode>();
+            CreateMap<ZipCodes2, GetZipCodes>();
             CreateMap<Exhibitors, ExhibitorRequest>();
 
 

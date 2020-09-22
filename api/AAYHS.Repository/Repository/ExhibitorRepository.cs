@@ -89,39 +89,38 @@ namespace AAYHS.Repository.Repository
 
         public ExhibitorListResponse GetExhibitorById(int exhibitorId)
         {
+            int groupId = _context.GroupExhibitors.Where(x => x.ExhibitorId == exhibitorId && x.IsActive == true && x.IsDeleted == false).Select(x=>x.GroupId).FirstOrDefault();
+
             IEnumerable<ExhibitorResponse> exhibitorResponses = null;
             ExhibitorListResponse exhibitorListResponses = new ExhibitorListResponse();
-            exhibitorResponses = (from exhibitor in _context.Exhibitors                                  
+            exhibitorResponses = (from exhibitor in _context.Exhibitors
                                   join address in _context.Addresses on exhibitor.AddressId equals address.AddressId into address1
                                   from address2 in address1.DefaultIfEmpty()
-                                  join groupsExhibitor in _context.GroupExhibitors on exhibitor.ExhibitorId equals groupsExhibitor.ExhibitorId into groupsExhibitor1
-                                  from groupsExhibitor2 in groupsExhibitor1.DefaultIfEmpty()
-                                  join groups in  _context.Groups on groupsExhibitor2.GroupId equals groups.GroupId into groups1
-                                  from group2 in groups1.DefaultIfEmpty()
-                                  where exhibitor.IsActive == true && exhibitor.IsDeleted == false                                 
-                                  && address2.IsActive==true && address2.IsDeleted==false
-                                  && exhibitor.ExhibitorId== exhibitorId
-                                  select new ExhibitorResponse 
-                                  { 
-                                    ExhibitorId=exhibitor.ExhibitorId,
-                                    GroupId= groupsExhibitor2!=null ?groupsExhibitor2.GroupId:0,  
-                                    GroupName= group2!=null?group2.GroupName:"",
-                                    BackNumber =exhibitor.BackNumber,
-                                    FirstName=exhibitor.FirstName,
-                                    LastName=exhibitor.LastName,
-                                    BirthYear=exhibitor.BirthYear,
-                                    IsDoctorNote=exhibitor.IsDoctorNote,
-                                    IsNSBAMember=exhibitor.IsNSBAMember,
-                                    PrimaryEmail=exhibitor.PrimaryEmail,
-                                    SecondaryEmail=exhibitor.SecondaryEmail,
-                                    Phone=exhibitor.Phone,
-                                    QTYProgram=exhibitor.QTYProgram,
-                                    AddressId= address2 != null ? address2.AddressId:0,
-                                    Address= address2 != null ? address2.Address:"",
-                                    ZipCodeId= address2 != null ? address2.ZipCodeId:0,
-                                    CityId= address2 != null ?address2.CityId:0,
-                                    StateId = address2 != null ? _context.Cities.Where(x => x.CityId == address2.CityId).Select(y => y.StateId).FirstOrDefault() : 0,
-                                  });
+                                  where exhibitor.IsActive == true && exhibitor.IsDeleted == false
+                                  && address2.IsActive == true && address2.IsDeleted == false
+                                  && exhibitor.ExhibitorId == exhibitorId
+                                  select new ExhibitorResponse
+                                  {
+                                      ExhibitorId = exhibitor.ExhibitorId,
+                                      GroupId = _context.Groups.Where(x => x.GroupId == groupId && x.IsActive == true && x.IsDeleted == false).Select(x => x.GroupId).FirstOrDefault(),
+                                      GroupName = _context.Groups.Where(x => x.GroupId == groupId && x.IsActive == true && x.IsDeleted == false).Select(x => x.GroupName).FirstOrDefault(),
+                                      BackNumber = exhibitor.BackNumber,
+                                      FirstName = exhibitor.FirstName,
+                                      LastName = exhibitor.LastName,
+                                      BirthYear = exhibitor.BirthYear,
+                                      IsDoctorNote = exhibitor.IsDoctorNote,
+                                      IsNSBAMember = exhibitor.IsNSBAMember,
+                                      PrimaryEmail = exhibitor.PrimaryEmail,
+                                      SecondaryEmail = exhibitor.SecondaryEmail,
+                                      Phone = exhibitor.Phone,
+                                      QTYProgram = exhibitor.QTYProgram,
+                                      AddressId = address2 != null ? address2.AddressId : 0,
+                                      Address = address2 != null ? address2.Address : "",
+                                      ZipCodeId = address2 != null ? address2.ZipCodeId : 0,
+                                      CityId = address2 != null ? address2.CityId : 0,
+                                      CityName = address2 != null ? _context.Cities.Where(x => x.CityId == address2.CityId).Select(x => x.Name).FirstOrDefault():"",
+                                      StateId = address2 != null ? _context.Cities.Where(x => x.CityId == address2.CityId).Select(y => y.StateId).FirstOrDefault() : 0,
+                                  }); ;
             if (exhibitorResponses.Count()!=0)
             {
                 exhibitorListResponses.exhibitorResponses = exhibitorResponses.ToList();

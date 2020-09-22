@@ -74,10 +74,10 @@ namespace AAYHS.API.Controllers
         /// <param name="cityid"></param>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult GetZipCodes(int cityId)
+        public IActionResult GetZipCodes(string city)
         {
 
-            _mainResponse = _globalCodeService.GetAllZipCodes(cityId);
+            _mainResponse = _globalCodeService.GetAllZipCodes(city);
             _jsonString = Mapper.Convert<ZipCodeResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }

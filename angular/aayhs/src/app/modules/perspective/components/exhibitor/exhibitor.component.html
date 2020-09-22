@@ -71,7 +71,13 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label><input #nsbaIndicator="ngModel" name="nsbaIndicator" [(ngModel)]="exhibitorInfo.IsNSBAMember" type="checkbox" value="" class="ciCheckbox">NSBA Indicator</label>
+                                    <label class="customCheckbox">NSBA Indicator
+                                        <input #nsbaIndicator="ngModel" name="nsbaIndicator" [(ngModel)]="exhibitorInfo.IsNSBAMember" type="checkbox" value="" class="ciCheckbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+
+
+                                    <!--label><input #nsbaIndicator="ngModel" name="nsbaIndicator" [(ngModel)]="exhibitorInfo.IsNSBAMember" type="checkbox" value="" class="ciCheckbox">NSBA Indicator</label-->
                                 </div>
                                 <div class="form-group">
                                     <label>Back Number <span *ngIf="exhibitorInfo.ExhibitorId==null">*</span> </label>	
@@ -157,7 +163,11 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label><input type="checkbox"  #doctorVetNoteIndicator="ngModel" name="doctorVetNoteIndicator" [(ngModel)]="exhibitorInfo.IsDoctorNote" value="" class="ciCheckbox">Doctor/Vet Note Indicator</label>
+                                    <label class="customCheckbox">Doctor/Vet Note Indicator
+                                        <input #doctorVetNoteIndicator="ngModel" name="doctorVetNoteIndicator" [(ngModel)]="exhibitorInfo.IsDoctorNote" type="checkbox" value="" class="ciCheckbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <!--label><input type="checkbox"  #doctorVetNoteIndicator="ngModel" name="doctorVetNoteIndicator" [(ngModel)]="exhibitorInfo.IsDoctorNote" value="" class="ciCheckbox">Doctor/Vet Note Indicator</label-->
                                 </div>
                                 <div class="form-group">
                                     <label>Birth Year <span>*</span></label>                                  
@@ -347,6 +357,7 @@
                                         <th>Remove</th> 
                                     </tr>	
                                 </thead>
+                                <perfect-scrollbar class="nicescrollBar-2">
                                 <tbody>
                                     <tr *ngFor="let sponsor of exhibitorSponsors;let i=index ">
                                         <td>{{sponsor.Sponsor}}</td>
@@ -440,14 +451,16 @@
                                         <td></td>
                                     </tr>
                                 </tbody> 
+                            </perfect-scrollbar>
                             </table>
                         </div>
-                        <div class="actionBtn text-right mb-4 mt-3">
-                            <button (click)='tabGroup.selectedIndex = 1' class="btn btn-red btnCss roundBtn">Previous</button>
-                            <button (click)='tabGroup.selectedIndex = 3' class="btn btn-red btnCss roundBtn">Next</button>
-                            <a [routerLink]="['/perspective/sponsor']" target="_blank"> <button type="button" class="btn btn-red btnCss roundBtn">+ Sponsors</button></a>
-                            <button class="btn btn-red btnCss roundBtn">Submit</button>
-                        </div>
+                        
+                    </div>
+                    <div class="actionBtn text-right mb-4 mt-3">
+                        <button (click)='tabGroup.selectedIndex = 1' class="btn btn-red btnCss roundBtn">Previous</button>
+                        <button (click)='tabGroup.selectedIndex = 3' class="btn btn-red btnCss roundBtn">Next</button>
+                        <a [routerLink]="['/perspective/sponsor']" target="_blank"> <button type="button" class="btn btn-red btnCss roundBtn">+ Sponsors</button></a>
+                        <button class="btn btn-red btnCss roundBtn">Submit</button>
                     </div>
                 </form>
                 </div>
@@ -600,7 +613,7 @@
                                                 <th>Amount</th>
                                             </tr>
                                         </thead>
-                                        <perfect-scrollbar class="nicescrollBar-2">
+                                        <perfect-scrollbar class="nicescrollBar-4">
                                             <tbody>
                                                 <tr *ngFor="let row of receievedSummary">
                                                     <td>{{row.Date | date : 'yyyy/MM/dd'}}</td>
@@ -708,6 +721,7 @@
                         </div>
                     </div>
                     <div class="actionBtn text-right mb-3">
+                        <button (click)='tabGroup.selectedIndex = 3' class="btn btn-red btnCss roundBtn">Previous</button>
                         <button (click)='tabGroup.selectedIndex = 6' class="btn btn-red btnCss roundBtn">Next</button>
                         <button class="btn btn-red btnCss roundBtn">Submit</button>
                     </div>
@@ -717,39 +731,37 @@
                 <div class="card dataEntriesTable">
                     <form #scanForm="ngForm" (ngSubmit)="scanForm.valid && uploadDocument()">
                     <div class="card-body">
-                        <div class="table-responsive tableTab ssReports" id="contentscroll2">
-                           
-                            <div class="browseDoc row">
-                                <div class="col-md-6 col-sm-12">
+                        <div class="browseDoc row">
+                            <div class="col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <label>Choose Scans</label>	                              
+                                    <select class="form-control" name="document" required
+                                                            [(ngModel)]="documentId" (change)="setDocumentType($event.target.value)" #documentControl="ngModel">
+                                                            <option [ngValue]="null">
+                                                                Select Document
+                                                            </option>
+                                                            <option *ngFor="let document of documentTypes"
+                                                                [value]="document.GlobalCodeId">{{document.CodeName}} -
+                                                            </option>
+                                                        </select>
+                                                        <span class="help-block"
+                                                            *ngIf="(scanForm.submitted || documentControl.touched) && documentControl.invalid">Please
+                                                            select document</span>                                              
+                                </div>
+                            </div> 
+                            <div class="col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <label>Choose File</label>	
                                     <div class="form-group">
-                                        <label>Choose Scans</label>	                              
-                                        <select class="form-control" name="document" required
-																[(ngModel)]="documentId" (change)="setDocumentType($event.target.value)" #documentControl="ngModel">
-																<option [ngValue]="null">
-																	Select Document
-																</option>
-																<option *ngFor="let document of documentTypes"
-																	[value]="document.GlobalCodeId">{{document.CodeName}} -
-																</option>
-															</select>
-															<span class="help-block"
-																*ngIf="(scanForm.submitted || documentControl.touched) && documentControl.invalid">Please
-																select document</span>                                              
+                                        <input type="file" #file="ngModel" [(ngModel)]="pdf" (change)="onFileChange($event)" class="form-control" required name="file" />
+                                        <span class="help-block"
+                                        *ngIf="file.errors?.required && file.touched || scanForm.submitted && file.invalid">File is
+                                        required</span>
                                     </div>
-                                </div> 
-                                <div class="col-md-6 col-sm-12">
-                                    <div class="form-group">
-                                        <label>Choose File</label>	
-                                        <div class="form-group">
-                                            <input type="file" #file="ngModel" [(ngModel)]="pdf" (change)="onFileChange($event)" class="form-control" required name="file" />
-                                            <span class="help-block"
-                                            *ngIf="file.errors?.required && file.touched || scanForm.submitted && file.invalid">File is
-                                            required</span>
-                                        </div>
-                                    </div>                                
-                                </div> 
-                            </div>
-
+                                </div>                                
+                            </div> 
+                        </div>
+                        <div class="table-responsive tableTab ssReports" id="contentscroll2">
                             <table class="table table-bordered tableBodyScroll">
                                 <thead>
                                 <tr>
@@ -773,40 +785,10 @@
                                     </tbody>
                                 </perfect-scrollbar> 
                             </table> 
-
-
-                            <div class="prePostField multiCheckBtn mt-2">
-                                <div class="form-group">
-                                    <label class="radioBtn">
-                                        <input type="radio"  checked="checked" name="radio">
-                                        <span class="checkmark"></span>Email
-                                    </label>
-                                </div>
-                                <div class="form-group">
-                                    <label class="radioBtn">
-                                        <input type="radio" (change)="printDocument('hxh')" name="radio">
-                                        <span class="checkmark"></span>Print
-                                    </label>
-                                </div>
-                                <div class="form-group">
-                                    <label class="radioBtn">
-                                        <input type="radio" checked="checked" name="radio">
-                                        <span class="checkmark"></span>Display
-                                    </label>
-                                </div>
-                                <div class="form-group">
-                                    <label class="radioBtn">
-                                        <input type="radio" name="radio">
-                                        <span class="checkmark"></span>Download
-                                    </label>
-                                </div>
-                            </div>   
-                            
-                           
-
                         </div>                         
                     </div>
                     <div class="actionBtn text-right mb-3">
+                        <button (click)='tabGroup.selectedIndex = 3' class="btn btn-red btnCss roundBtn">Previous</button>
                         <button type="submit" class="btn btn-red btnCss roundBtn">Submit</button>
                     </div>
                 </form>

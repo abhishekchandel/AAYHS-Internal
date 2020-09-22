@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using AAYHS.Core.DTOs.Response.Common;
 using AAYHS.Core.Shared.Static;
+using System.IO;
 
 namespace AAYHS.API.Controllers
 {
@@ -25,6 +26,28 @@ namespace AAYHS.API.Controllers
 
         #region readonly
         private readonly IExhibitorService _exhibitorService;
+        #endregion
+
+        #region Types
+        private string GetMimeType(string file)
+        {
+            string extension = Path.GetExtension(file).ToLowerInvariant();
+            switch (extension)
+            {
+                case ".txt": return "text/plain";
+                case ".pdf": return "application/pdf";
+                case ".doc": return "application/vnd.ms-word";
+                case ".docx": return "application/vnd.ms-word";
+                case ".xls": return "application/vnd.ms-excel";
+                case ".xlsx": return "application/vnd.ms-excel";
+                case ".png": return "image/png";
+                case ".jpg": return "image/jpeg";
+                case ".jpeg": return "image/jpeg";
+                case ".gif": return "image/gif";
+                case ".csv": return "text/csv";
+                default: return "";
+            }
+        }
         #endregion
 
         public ExhibitorAPIController(IExhibitorService exhibitorService)
@@ -432,5 +455,34 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
+        /// <summary>
+        /// This api used to download the file
+        /// </summary>
+        /// <param name="documentPath"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> DownloadFile(string documentPath)
+        {
+            try
+            {
+                string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                var file = uploadsFolder + documentPath;
+            
+                var memory = new MemoryStream();
+                using (var stream = new FileStream(file, FileMode.Open, FileAccess.Read))
+                {
+                    await stream.CopyToAsync(memory);
+                }
+
+                memory.Position = 0;
+                return File(memory, GetMimeType(file), documentPath);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+
+       
     }
 }
