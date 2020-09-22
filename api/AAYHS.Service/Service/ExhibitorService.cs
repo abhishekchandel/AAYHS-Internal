@@ -127,13 +127,18 @@ namespace AAYHS.Service.Service
             }
             else
             {
-                var exhibitorBackNumberExist = _exhibitorRepository.GetSingle(x => x.BackNumber == request.BackNumber && x.IsActive == true && x.IsDeleted == false);
-                if (exhibitorBackNumberExist != null && exhibitorBackNumberExist.ExhibitorId > 0)
+                var backNumber = _exhibitorRepository.GetSingle(x => x.ExhibitorId==request.ExhibitorId && x.BackNumber == request.BackNumber && x.IsActive == true && x.IsDeleted == false);
+                if (backNumber==null)
                 {
-                    _mainResponse.Message = Constants.BACKNUMBER_AlREADY_EXIST;
-                    _mainResponse.Success = false;
-                    return _mainResponse;
+                    var exhibitorBackNumberExist = _exhibitorRepository.GetSingle(x => x.BackNumber == request.BackNumber && x.IsActive == true && x.IsDeleted == false);
+                    if (exhibitorBackNumberExist != null && exhibitorBackNumberExist.ExhibitorId > 0)
+                    {
+                        _mainResponse.Message = Constants.BACKNUMBER_AlREADY_EXIST;
+                        _mainResponse.Success = false;
+                        return _mainResponse;
+                    }
                 }
+               
                 var exhibitor = _exhibitorRepository.GetSingle(x => x.ExhibitorId == request.ExhibitorId && x.IsActive == true && x.IsDeleted == false);
 
                 if (exhibitor != null && exhibitor.ExhibitorId > 0)
