@@ -153,7 +153,10 @@
 										name="amountReceieved"
 										 [(ngModel)]="sponsorInfo.AmountReceived" 
 										 placeholder="Amount Received"
-										 (change)="setAmount($event.target.value)"/>
+										 (change)="setAmount($event.target.value)"
+										 mask="9999.99"
+
+										 />
 
 										 
 									  </div> 
@@ -188,7 +191,7 @@
 												Select Zip Code
 											</option>
 											<option *ngFor="let code of zipCodesResponse"
-												[value]="code.ZipCodeId">{{code.Number}} 
+												[value]="code.ZipCodeId">{{code.ZipCode}} 
 											</option>
 										</select>
 										<span class="help-block"
