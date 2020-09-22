@@ -222,7 +222,7 @@ namespace AAYHS.Service.Service
                         return _mainResponse;
                     }
                 }
-                var checkName=_classRepository.GetSingle(x => x.Name == addClassRequest.Name && x.AgeGroup == addClassRequest.AgeGroup
+                var checkName=_classRepository.GetSingle(x => x.Name == addClassRequest.Name && x.AgeGroup == addClassRequest.AgeGroup && x.ClassId==addClassRequest.ClassId
                                                    && x.IsActive == true && x.IsDeleted == false);
                 if (checkName==null)
                 {
