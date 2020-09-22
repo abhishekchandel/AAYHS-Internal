@@ -58,7 +58,7 @@ namespace AAYHS.Service.Service
                     SponsorExhibitor.SponsorId = request.SponsorId;
                     SponsorExhibitor.ExhibitorId = request.ExhibitorId;
                     SponsorExhibitor.SponsorTypeId = request.SponsorTypeId;
-                    SponsorExhibitor.AdTypeId = request.AdTypeId;
+                    SponsorExhibitor.AdTypeId =Convert.ToInt32(request.AdTypeId);
                     SponsorExhibitor.TypeId = request.TypeId;
                     SponsorExhibitor.ModifiedDate = DateTime.Now;
                     _SponsorExhibitorRepository.Update(SponsorExhibitor);

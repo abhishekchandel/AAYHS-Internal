@@ -10,7 +10,7 @@ namespace AAYHS.Core.DTOs.Request
         public int SponsorId { get; set; }
         public int ExhibitorId { get; set; }
         public int SponsorTypeId { get; set; }
-        public int AdTypeId { get; set; }
+        public int? AdTypeId { get; set; }
         public string TypeId { get; set; }
 
     }
