@@ -584,14 +584,12 @@ namespace AAYHS.Service.Service
 
                 if (sponsorType.CodeName=="Ad")
                 {
-                    var sponsorAdExist= _sponsorExhibitorRepository.GetSingle(x => x.ExhibitorId == addSponsorForExhibitor.ExhibitorId &&
-                     x.SponsorId == addSponsorForExhibitor.SponsorId && x.SponsorTypeId == addSponsorForExhibitor.SponsorTypeId &&
-                    x.AdTypeId== addSponsorForExhibitor.AdTypeId && x.TypeId == addSponsorForExhibitor.TypeId && 
+                    var sponsorAdExist= _sponsorExhibitorRepository.GetSingle(x=>x.TypeId == addSponsorForExhibitor.TypeId && 
                     x.IsActive == true && x.IsDeleted == false);
 
                     if (sponsorAdExist!=null)
                     {
-                        _mainResponse.Message = Constants.RECORD_AlREADY_EXIST;
+                        _mainResponse.Message = Constants.AD_NUMBER_EXIST;
                         _mainResponse.Success = false;
                         return _mainResponse;
                     }
