@@ -150,7 +150,7 @@
                                             <div class="form-group">
                                                 <label>City <span>*</span></label>
                                                 <select required class="form-control" placeholder="city"
-                                                    (change)="getZipCodes($event.target.value);getCityName($event)"
+                                                    (change)="getZipCodes($event,false);getCityName($event)"
                                                      name="city" #city="ngModel"
                                                     [(ngModel)]="groupInfo.CityId">
                                                     <option value="null" disabled="true" [selected]="true">
@@ -179,7 +179,7 @@
                                                         Select Zip Code
                                                     </option>
                                                     <option *ngFor="let code of zipCodesResponse"
-                                                        [value]="code.ZipCodeId">{{code.Number}} 
+                                                        [value]="code.ZipCodeId">{{code.ZipCode}} 
                                                     </option>
                                                 </select>
                                                 <span class="help-block"
@@ -213,7 +213,7 @@
 
 
                                             <div class="form-group">
-                                                <label>Group ID <span>*</span></label>
+                                                <label>Group ID</label>
                                                 <input type="text" readonly="true" class="form-control" name="groupId"
                                                     #groupId="ngModel" [(ngModel)]="groupInfo.GroupId"
                                                     placeholder="Group ID" />
@@ -543,6 +543,11 @@
                                                 <span class="checkmark"></span>Download
                                             </label>
                                         </div>
+                                    </div>
+                                    <div class="actionBtn text-right mb-3 ">
+                                        <button type="button" (click)='tabGroup.selectedIndex = 2'
+                                            class="btn btn-red btnCss roundBtn">Previous</button>
+                                     
                                     </div>
                                 </div>
                             </div>
