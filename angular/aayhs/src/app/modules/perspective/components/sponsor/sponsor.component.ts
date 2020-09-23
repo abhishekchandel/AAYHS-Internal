@@ -15,6 +15,8 @@ import { SponsorViewModel } from '../../../../core/models/sponsor-model'
 import PerfectScrollbar from 'perfect-scrollbar';
 import { GlobalService } from '../../../../core/services/global.service'
 
+
+
 @Component({
   selector: 'app-sponsor',
   templateUrl: './sponsor.component.html',
@@ -169,7 +171,7 @@ export class SponsorComponent implements OnInit {
       if (response.Data != null) {
 
         this.getCities(response.Data.StateId).then(res => {
-          this.getZipCodes(response.Data.CityId).then(res => {
+          this.getZipCodes(response.Data.CityName,true).then(res => {
             this.sponsorInfo = response.Data;
             this.selectedRowIndex = selectedRowIndex;
             this.sponsorInfo.AmountReceived = Number(this.sponsorInfo.AmountReceived.toFixed(2));
@@ -552,11 +554,14 @@ export class SponsorComponent implements OnInit {
 
   }
 
-  getZipCodes(id: number) {
+  getZipCodes(event,Notfromhtml) {
+    
+    var cityname;
+    Notfromhtml==true ?cityname= event : cityname = event.target.options[event.target.options.selectedIndex].text;
     return new Promise((resolve, reject) => {
       this.loading = true;
       this.zipCodesResponse = null;
-      this.sponsorService.getZipCodes(Number(id)).subscribe(response => {
+      this.sponsorService.getZipCodes(cityname).subscribe(response => {
         debugger
         this.zipCodesResponse = response.Data.ZipCode;
         this.loading = false;

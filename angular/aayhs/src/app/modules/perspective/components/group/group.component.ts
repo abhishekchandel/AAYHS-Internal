@@ -114,6 +114,7 @@ export class GroupComponent implements OnInit {
     private snackBar: MatSnackbarComponent,
     private data: GlobalService
   ) { }
+
   ngOnInit(): void {
     this.data.searchTerm.subscribe((searchTerm: string) => {
       this.baseRequest.SearchTerm = searchTerm;
@@ -151,7 +152,7 @@ export class GroupComponent implements OnInit {
     this.groupService.getGroup(id).subscribe(response => {
       if (response.Data != null) {
         this.getCities(response.Data.StateId).then(res => {
-          this.getZipCodes(response.Data.CityId).then(res => {
+          this.getZipCodes(response.Data.CityName,true).then(res => {
             this.groupInfo = response.Data;
             debugger
             this.groupStallAssignmentResponses = response.Data.groupStallAssignmentResponses;
@@ -291,11 +292,15 @@ export class GroupComponent implements OnInit {
     });
   }
 
-  getZipCodes(id: number) {
+  getZipCodes(event,Notfromhtml) {
+
+    var cityname;
+    Notfromhtml==true ?cityname= event : cityname = event.target.options[event.target.options.selectedIndex].text;
+
     return new Promise((resolve, reject) => {
       this.loading = true;
       this.zipCodesResponse = null;
-      this.groupService.getZipCodes(Number(id)).subscribe(response => {
+      this.groupService.getZipCodes(cityname).subscribe(response => {
 
         this.zipCodesResponse = response.Data.ZipCode;
         this.loading = false;
@@ -317,13 +322,16 @@ export class GroupComponent implements OnInit {
     })
 
   }
-
+  
+  
+  
   getAllFeeTypes() {
     this.loading = true;
     this.FeeTypes = null;
     this.groupService.getGlobalCodes('FeeType').subscribe(response => {
       if (response.Data != null && response.Data.totalRecords > 0) {
-        this.FeeTypes = response.Data.globalCodeResponse;
+        this.FeeTypes = response.Data.globalCodeResponse.filter(x=>x.CodeName !="Class Entry" 
+        && x.CodeName!="Additional Program" && x.CodeName!="Sponsor Refund");
       }
       this.loading = false;
     }, error => {
@@ -343,7 +351,6 @@ export class GroupComponent implements OnInit {
     })
   }
 
-  
 
   getAllTimeFrameTypes() {
     this.loading = true;
@@ -608,6 +615,7 @@ export class GroupComponent implements OnInit {
   getCityName(e) {
     this.groupInfo.CityId = Number(e.target.options[e.target.selectedIndex].value)
   }
+
   getZipNumber(e) {
     this.groupInfo.ZipCodeId = Number(e.target.options[e.target.selectedIndex].value)
   }
