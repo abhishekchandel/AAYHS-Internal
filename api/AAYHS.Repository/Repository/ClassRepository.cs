@@ -222,7 +222,7 @@ namespace AAYHS.Repository.Repository
                               from exhibitors2 in exhibitors1.DefaultIfEmpty()
                               where exhibitorsClass.IsActive == true && exhibitorsClass.IsDeleted == false
                               && exhibitors2.IsActive==true && exhibitors2.IsDeleted==false
-                              && exhibitorsClass.ClassId == ClassId
+                              && exhibitorsClass.ClassId == ClassId 
                               select new GetBackNumber
                               {
                                   BackNumber = exhibitors2.BackNumber
@@ -238,19 +238,20 @@ namespace AAYHS.Repository.Repository
                              from city2 in city1.DefaultIfEmpty()
                              join state in _ObjContext.States on city2.StateId equals state.StateId into state1
                              from state2 in state1.DefaultIfEmpty()
+                             join zipcode in _ObjContext.ZipCodes2 on addresses2.ZipCodeId equals zipcode.ZipCodeId into zipcode1
+                             from zipcode2 in zipcode1.DefaultIfEmpty()
                              join exhibitorsClass in _ObjContext.ExhibitorClass on exhibitors.ExhibitorId equals exhibitorsClass.ExhibitorId into exhibitorsClass1
-                             from exhibitorsClass2 in exhibitorsClass1.DefaultIfEmpty()                            
+                             from exhibitorsClass2 in exhibitorsClass1.DefaultIfEmpty()                    
                              where exhibitors.IsActive == true && exhibitors.IsDeleted == false &&
                              exhibitors.BackNumber == resultExhibitorRequest.BackNumber && exhibitorsClass2.ClassId == resultExhibitorRequest.ClassId
                              && exhibitorsClass2.IsActive == true && exhibitorsClass2.IsDeleted == false
-                             && addresses2.IsDeleted==false && city2.IsDeleted==false && state2.IsDeleted==false
                              select new ResultExhibitorDetails
                              {
                                  ExhibitorId=exhibitors.ExhibitorId,
                                  ExhibitorName = exhibitors.FirstName + " " + exhibitors.LastName,
                                  BirthYear = exhibitors.BirthYear,
                                  HorseName = _ObjContext.Horses.Where(x => x.HorseId == exhibitorsClass2.HorseId && x.IsActive==true && x.IsDeleted==false).Select(x => x.Name).FirstOrDefault(),
-                                 Address= city2.Name+", "+ state2.Code,                               
+                                 Address= city2.Name+", "+ state2.Code+", "+ zipcode2.ZipCode                             
                              }).FirstOrDefault();
 
             return exhibitor;
@@ -270,7 +271,9 @@ namespace AAYHS.Repository.Repository
                     join city in _ObjContext.Cities on addresses2.CityId equals city.CityId into city1
                     from city2 in city1.DefaultIfEmpty()
                     join state in _ObjContext.States on city2.StateId equals state.StateId into state1
-                    from state2 in state1.DefaultIfEmpty()                                          
+                    from state2 in state1.DefaultIfEmpty()
+                    join zipcode in _ObjContext.ZipCodes2 on addresses2.ZipCodeId equals zipcode.ZipCodeId into zipcode1
+                    from zipcode2 in zipcode1.DefaultIfEmpty()
                     where result.IsActive == true && result.IsDeleted == false && exhibitor2.IsActive == true && exhibitor2.IsDeleted == false
                     && exhibitorsClass2.IsDeleted==false && exhibitorsClass2.ClassId== classRequest.ClassId
                     && result.ClassId == classRequest.ClassId
@@ -284,7 +287,7 @@ namespace AAYHS.Repository.Repository
                         ExhibitorName= exhibitor2.FirstName+" "+ exhibitor2.LastName,
                         BirthYear= exhibitor2.BirthYear,
                         HorseName= _ObjContext.Horses.Where(x => x.HorseId == exhibitorsClass2.HorseId && x.IsDeleted==false).Select(x => x.Name).FirstOrDefault(),
-                        Address= city2.Name + ", " + state2.Code                       
+                        Address= city2.Name + ", " + state2.Code+" ,"+ zipcode2.ZipCode                     
                     }).Distinct().ToList();
 
             if (data.Count() != 0)
