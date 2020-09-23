@@ -351,6 +351,7 @@ export class GroupComponent implements OnInit {
     })
   }
 
+  
 
   getAllTimeFrameTypes() {
     this.loading = true;
