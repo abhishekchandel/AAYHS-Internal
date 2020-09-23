@@ -46,11 +46,19 @@ color: #000;
     }
 }
 select{
+appearance: none;
 -webkit-appearance: none;
+-moz-appearance: none;
+-ms-appearance: none;
 background-image: url(../images/select-arrow.png);
 background-repeat: no-repeat;
 background-position: center right;
 }
+select::-ms-expand {
+    display: none;
+}
+::-moz-selection { background: #b5cbf7; }
+::selection { background: #b5cbf7; }
 .btn-red {
 color: #fff;
 background-color: #7b1124;
@@ -248,9 +256,9 @@ height: auto;
 min-height: 45px;
 padding: 15px 10px;
 display: table-cell;
-word-break: break-all;
+//word-break: break-word;
 @media(max-width:767px) {
-padding: 6px 20px;
+padding: 6px 8px;
 }
 a {
 text-decoration: underline;
@@ -335,11 +343,11 @@ font-family:'Roboto-Medium';
 
 
 }
-@media screen and (max-width:480px) {
+@media screen and (max-width:767px) {
     .gridTable{
         &.addBlueStrip {
             table{
-                width: 480px;
+                width: 540px;
             }            
         }
     }
@@ -1677,8 +1685,17 @@ span{
         &.multiCol{
             table {
                 tr{
+                    @media(max-width:1199px){
+                        flex-direction: column;
+                    }
                     td {
                         width: 33.33%;
+                        @media(min-width:767px) and (max-width:1199px){
+                            width: 100%;
+                        }
+                        @media(max-width:767px){
+                            width: 100%;
+                        }
                     }
                 }
             } 
@@ -1729,6 +1746,7 @@ span{
                         line-height: 16px;
                         top: -50px; 
                         opacity: 0;
+                        z-index: 99;
                     }
                     .classNameExt {
                         &:hover {
@@ -1868,6 +1886,9 @@ span{
     &:hover {
         background-color: #857b7d;
         }
+    @media(max-width:767px){
+        margin-bottom: 5px !important;
+    }
 }
 
 .roundBtn2 {
@@ -1881,7 +1902,10 @@ span{
     margin: 5px;
     &:hover {
         background-color: #857b7d;
-        }
+    }
+    @media(max-width:767px){
+        margin-bottom: 5px !important;
+    }
 }
 
 .roundBtn3 {
@@ -1894,6 +1918,9 @@ span{
     padding: 4px 13px;
     margin: 5px;
     pointer-events: none;
+    @media(max-width:767px){
+        margin-bottom: 5px !important;
+    }
 }
 
 .trashPopup{
@@ -2070,6 +2097,12 @@ span{
             position: absolute;
             top: 0;
             right: 0;
+            button{
+                span{
+                    position: relative !important;
+                    top: 11px; 
+                }
+            }
         }
     }
 
@@ -2155,4 +2188,8 @@ span{
 			transform: rotate(45deg);
 		}
 	}
+}
+// reduce col width
+.comWidth {
+    width: 100px;
 }

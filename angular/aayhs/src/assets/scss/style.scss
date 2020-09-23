@@ -363,6 +363,7 @@
 	overflow: hidden;
 	max-height: 455px;
 	min-height: 455px;
+	overflow-y: auto;
 	&.dataEntriesTable{
 	max-height: inherit;
 	min-height: inherit;

@@ -8,7 +8,7 @@
 			<table class="table table-bordered tableBodyScroll">
 				<thead>
 					<tr>
-						<th (click)="sortData('ClassNumber')">Class No.
+						<th (click)="sortData('ClassNumber')" class="comWidth">Class No.
 							<span [ngClass]="getSort('ClassNumber')">
 							</span>
 						</th>
@@ -20,7 +20,7 @@
 							<span [ngClass]="getSort('AgeGroup')">
 							</span>
 						</th>
-						<th (click)="sortData('Entries')">Entries
+						<th (click)="sortData('Entries')" class="comWidth">Entries
 							<span [ngClass]="getSort('Entries')">
 							</span>
 						</th>
@@ -30,11 +30,11 @@
 					<tbody>
 						<tr *ngFor="let class of classesList;let i = index " (click)="highlight(class.ClassId,i)"
 							[ngClass]="{'blueRow': selectedRowIndex == i}">
-							<td data-label="Class No.">{{class.ClassNumber}}</td>
+							<td data-label="Class No." class="comWidth">{{class.ClassNumber}}</td>
 							<td data-label="Class Name">{{class.Name}}</td>
 							<td data-label="Age Group">{{class.AgeGroup}}</td>
-							<td data-label="Enteries">{{class.Entries}}</td>
-							<td data-label="Remove">
+							<td data-label="Enteries" class="comWidth">{{class.Entries}}</td>
+							<td data-label="Remove" class="comWidth">
 								<button class="icon" (click)="confirmRemoveClass($event, i,class.ClassId)"><span></span>
 									<i class="fa fa-trash-o" aria-hidden="true"></i></button>
 							</td>
