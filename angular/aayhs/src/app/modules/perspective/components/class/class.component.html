@@ -27,7 +27,6 @@
 						<th>Remove</th>
 					</tr>
 				</thead>
-				<perfect-scrollbar class="nicescrollBar-1">
 					<tbody>
 						<tr *ngFor="let class of classesList;let i = index " (click)="highlight(class.ClassId,i)"
 							[ngClass]="{'blueRow': selectedRowIndex == i}">
@@ -42,7 +41,6 @@
 						</tr>
 
 					</tbody>
-				</perfect-scrollbar>
 			</table>
 			<div [hidden]="totalItems == 0">
 				<mat-paginator #paginator [length]="totalItems" (page)="getNext($event)" [pageSizeOptions]="[5]">

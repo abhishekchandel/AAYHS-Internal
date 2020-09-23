@@ -908,18 +908,8 @@ setSponsorType(id){
       this.showClasses=true;
       this.showAds=false;
       
-      //get sponsor classes
-debugger
       this.sponsorClassesList= this.exhibitorClasses
-      // this.sponsorService.GetSponsorClasses(Number(this.linkedSponsorId)).subscribe(response=>{ 
-      //   if(response.Data!=null && response.Data.TotalRecords>0)
-      //   {
-      //   this.sponsorClassesList = response.Data.sponsorClassesListResponses;
-      //   }
-      //   this.loading=false;
-      // },error=>{
-      //   this.loading=false;
-      // })
+     
 
   }
     if(sponsorTypename[0].CodeName=="Ad")
@@ -1127,11 +1117,32 @@ confirmRemoveDocument(id,path): void {
   }
 
   printDocument(url){
-    url="https://localhost:44386/resources/documents/db29482b-a751-448a-bb18-c860e20104a0__Resources_Documents_93489a63-faa0-45f3-a868-c341e5307b67_download1.jpg"
-    var top = (screen.availHeight - 600) / 2;
-    var left = (screen.availWidth - 800) / 2;
-    window.open(url, "_blank", "directories=no,height=600,width=800,location=no,menubar=no,resizable=yes," +"scrollbars=yes,status=no,toolbar=no,top=" + top + ",left=" + left);
-    window.print();
+    this.loading = true;
+
+this.exhibitorService.downloadFile(url).subscribe(
+  data => {
+    switch (data.type) {
+      case HttpEventType.DownloadProgress:
+        break;
+      case HttpEventType.Response:
+        var downloadedFile = new Blob([data.body], { type: data.body.type });
+        var fileURL = URL.createObjectURL(downloadedFile);
+        var printFile=   window.open(fileURL);
+        this.loading = false;
+
+        setTimeout(function () {
+          printFile.print();
+            }, 2000);
+        break;
+    }
+
+  },
+  error => {
+    this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
+    this.loading = false;
+  }
+);
+    
   }
 
   openEmailModal(path){
@@ -1163,13 +1174,13 @@ confirmRemoveDocument(id,path): void {
             a.target = '_blank';
             a.click();
             document.body.removeChild(a);
+            this.loading = false;
             break;
         }
-        this.loading = false;
-
       },
       error => {
         this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
+        this.loading = false;
       }
     );
   }
