@@ -118,6 +118,7 @@ export class GroupComponent implements OnInit {
   ngOnInit(): void {
     this.data.searchTerm.subscribe((searchTerm: string) => {
       this.baseRequest.SearchTerm = searchTerm;
+      this.baseRequest.Page = 1;
       this.getAllGroups();
     });
     this.getAllStates();
@@ -133,6 +134,9 @@ export class GroupComponent implements OnInit {
         if (response.Data != null && response.Data.TotalRecords > 0) {
           this.groupsList = response.Data.groupResponses;
           this.totalItems = response.Data.TotalRecords;
+          if(this.baseRequest.Page === 1){
+            this.paginator.pageIndex =0;
+          }
           //this.resetForm();
         }
         this.loading = false;

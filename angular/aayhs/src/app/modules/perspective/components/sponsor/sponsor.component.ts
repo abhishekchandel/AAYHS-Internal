@@ -114,6 +114,7 @@ export class SponsorComponent implements OnInit {
   ngOnInit(): void {
     this.data.searchTerm.subscribe((searchTerm: string) => {
       this.baseRequest.SearchTerm = searchTerm;
+      this.baseRequest.Page = 1;
       this.getAllSponsors();
     });
     this.getAllStates();
@@ -128,6 +129,9 @@ export class SponsorComponent implements OnInit {
         if (response.Data != null && response.Data.TotalRecords > 0) {
           this.sponsorsList = response.Data.sponsorResponses;
           this.totalItems = response.Data.TotalRecords;
+          if(this.baseRequest.Page === 1){
+            this.paginator.pageIndex =0;
+          }
         }
         this.loading = false;
       }, error => {
@@ -248,7 +252,6 @@ export class SponsorComponent implements OnInit {
   }
 
   AddUpdateSponsorExhibitor() {
-    debugger
     this.loading = true;
     this.sponsorExhibitorRequest.SponsorExhibitorId = 0;
     this.sponsorExhibitorRequest.SponsorId = this.selectedSponsorId;

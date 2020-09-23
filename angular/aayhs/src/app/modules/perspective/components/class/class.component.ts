@@ -139,6 +139,7 @@ export class ClassComponent implements OnInit {
     this.data.searchTerm.subscribe((searchTerm: string) => {
       this.baseRequest.SearchTerm = searchTerm;
       this.getAllClasses();
+      this.baseRequest.Page = 1;
     });
     this.getClassheaders();
   }
@@ -253,7 +254,10 @@ export class ClassComponent implements OnInit {
       this.loading = true;
       this.classService.getAllClasses(this.baseRequest).subscribe(response => {
         this.classesList = response.Data.classesResponse;
-        this.totalItems = response.Data.TotalRecords
+        this.totalItems = response.Data.TotalRecords;
+        if(this.baseRequest.Page === 1){
+          this.paginator.pageIndex =0;
+        }
         this.loading = false;
       }, error => {
         this.loading = false;

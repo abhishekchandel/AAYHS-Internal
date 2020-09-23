@@ -8,6 +8,7 @@ import { NgForm } from '@angular/forms';
 import { ConfirmDialogComponent, ConfirmDialogModel } from'../../../../shared/ui/modals/confirmation-modal/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import {GlobalService} from '../../../../core/services/global.service'
+import { MatPaginator } from '@angular/material/paginator';
 
 
 @Component({
@@ -19,6 +20,7 @@ export class HorseComponent implements OnInit {
   
   @ViewChild('tabGroup') tabGroup: MatTabGroup;
   @ViewChild('horseInfoForm') horseInfoForm: NgForm;
+  @ViewChild('paginator') paginator: MatPaginator;
 
   sortColumn:string="";
   reverseSort : boolean = false;
@@ -68,6 +70,7 @@ export class HorseComponent implements OnInit {
   ngOnInit(): void {
     this.data.searchTerm.subscribe((searchTerm: string) => {
       this.baseRequest.SearchTerm = searchTerm;
+      this.baseRequest.Page = 1;
       this.getAllHorses();
     });
     this.getAllGroups();
@@ -131,7 +134,10 @@ export class HorseComponent implements OnInit {
     this.loading = true;
     this.horseService.getAllHorses(this.baseRequest).subscribe(response => {
       this.horsesList = response.Data.horsesResponse;
-      this.totalItems = response.Data.TotalRecords
+      this.totalItems = response.Data.TotalRecords;
+      if(this.baseRequest.Page === 1){
+        this.paginator.pageIndex =0;
+      }
       this.loading = false;
     }, error => {
       this.loading = false;
