@@ -237,7 +237,7 @@ namespace AAYHS.Repository.Repository
                    join address in _context.Addresses on sponsor.AddressId equals address.AddressId
                    join city in _context.Cities on address.CityId equals city.CityId
                    join state in _context.States on city.StateId equals state.StateId    
-                   join zipcode in _context.ZipCodes on address.ZipCodeId equals zipcode.ZipCodeId into zipcode1
+                   join zipcode in _context.ZipCodes2 on address.ZipCodeId equals zipcode.ZipCodeId into zipcode1
                    from zipcode2 in zipcode1.DefaultIfEmpty()
                    where sponsor.IsActive == true && sponsor.IsDeleted == false &&
                    sponsor.SponsorId == sponsorId
@@ -252,7 +252,7 @@ namespace AAYHS.Repository.Repository
                        State = state.Name,
                        Email = sponsor.Email,
                        AmountReceived = sponsor.AmountReceived,
-                       Zipcode= zipcode2!=null? zipcode2.Number:0
+                       Zipcode= zipcode2!=null?Convert.ToInt32(zipcode2.ZipCode):0
                    });
 
             getSponsorForExhibitor = data.FirstOrDefault();
