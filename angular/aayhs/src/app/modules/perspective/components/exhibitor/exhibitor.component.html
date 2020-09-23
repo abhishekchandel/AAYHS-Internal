@@ -119,7 +119,7 @@
                                     <div class="col-md-7">
                                 <div class="form-group">
                                     <label>City <span>*</span></label>	
-                                    <select required class="form-control" placeholder="city" (change)="getZipCodes($event.target.value);getCityName($event)" name="city" #city="ngModel" [(ngModel)]="exhibitorInfo.CityId" >																						
+                                    <select required class="form-control" placeholder="city" (change)="getZipCodes($event,false);getCityName($event)" name="city" #city="ngModel" [(ngModel)]="exhibitorInfo.CityId" >																						
                                         <option value="null" disabled="true" [selected]="true">
                                             Select City
                                         </option>                                               
@@ -144,7 +144,7 @@
                                                 Select Zip Code
                                             </option>
                                             <option *ngFor="let code of zipCodesResponse"
-                                                [value]="code.ZipCodeId">{{code.Number}} 
+                                                [value]="code.ZipCodeId">{{code.ZipCode}} 
                                             </option>
                                         </select>
                                         <span class="help-block"
@@ -365,7 +365,7 @@
                                         <button type="button" class="icon" (click)="showSponsorInfo(sponsor,false)"><span></span> <i class="fa fa-external-link" aria-hidden="true"></i></button>
                                         </td>
                                         <td>{{sponsor.Email}}</td>
-                                        <td>{{sponsor.Amount}}</td>
+                                        <td>{{sponsor.Amount |mask :'separator.2':',' }}</td>
                                         <td>{{sponsor.SponsorTypeName}}</td>
                                         <td>{{sponsor.IdNumber}}</td>
                                         <td>{{sponsor.AdTypeName}}</td>
@@ -721,7 +721,7 @@
                         </div>
                     </div>
                     <div class="actionBtn text-right mb-3">
-                        <button (click)='tabGroup.selectedIndex = 3' class="btn btn-red btnCss roundBtn">Previous</button>
+                        <button (click)='tabGroup.selectedIndex = 4' class="btn btn-red btnCss roundBtn">Previous</button>
                         <button (click)='tabGroup.selectedIndex = 6' class="btn btn-red btnCss roundBtn">Next</button>
                         <button class="btn btn-red btnCss roundBtn">Submit</button>
                     </div>
@@ -788,7 +788,7 @@
                         </div>                         
                     </div>
                     <div class="actionBtn text-right mb-3">
-                        <button (click)='tabGroup.selectedIndex = 3' class="btn btn-red btnCss roundBtn">Previous</button>
+                        <button (click)='tabGroup.selectedIndex =5' class="btn btn-red btnCss roundBtn">Previous</button>
                         <button type="submit" class="btn btn-red btnCss roundBtn">Submit</button>
                     </div>
                 </form>

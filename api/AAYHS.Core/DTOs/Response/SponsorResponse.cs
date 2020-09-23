@@ -15,7 +15,6 @@ namespace AAYHS.Core.DTOs.Response
         public string Address { get; set; }
         public int ZipCodeId { get; set; }
         public int CityId { get; set; }
-        public string CityName { get; set; }
         public int StateId { get; set; }
     }
     public class SponsorListResponse

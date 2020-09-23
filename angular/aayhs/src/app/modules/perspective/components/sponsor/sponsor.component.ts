@@ -169,7 +169,7 @@ export class SponsorComponent implements OnInit {
       if (response.Data != null) {
 
         this.getCities(response.Data.StateId).then(res => {
-          this.getZipCodes(response.Data.CityName,true).then(res => {
+          this.getZipCodes(response.Data.CityId).then(res => {
             this.sponsorInfo = response.Data;
             this.selectedRowIndex = selectedRowIndex;
             this.sponsorInfo.AmountReceived = Number(this.sponsorInfo.AmountReceived.toFixed(2));
@@ -552,14 +552,11 @@ export class SponsorComponent implements OnInit {
 
   }
 
-  getZipCodes(event,Notfromhtml) {
-    
-    var cityname;
-    Notfromhtml==true ?cityname= event : cityname = event.target.options[event.target.options.selectedIndex].text;
+  getZipCodes(id: number) {
     return new Promise((resolve, reject) => {
       this.loading = true;
       this.zipCodesResponse = null;
-      this.sponsorService.getZipCodes(cityname).subscribe(response => {
+      this.sponsorService.getZipCodes(Number(id)).subscribe(response => {
         debugger
         this.zipCodesResponse = response.Data.ZipCode;
         this.loading = false;
