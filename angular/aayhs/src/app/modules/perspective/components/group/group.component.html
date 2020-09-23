@@ -369,7 +369,7 @@
                                                         <td data-label="Pre/Post">{{list.TimeFrameName}}</td>
                                                         <td data-label="Amount"
                                                             *ngIf="updatemode==false || (updatemode==true && updateRowIndex!=i)">
-                                                            {{list.Amount}}</td>
+                                                            {{list.Amount | mask :'separator.2':','}}</td>
                                                         <td data-label="Amount"
                                                             *ngIf="updatemode==true && updateRowIndex==i">
                                                             <input type="number" class="form-control whitebg"
@@ -476,9 +476,9 @@
 
                                             <tr
                                                 *ngIf="groupFinancialsList!=null && groupFinancialsList.length>0 && groupFinancialsTotals!=null">
-                                                <td colspan="2"><b>Pre Total : ${{PreTotal}}</b></td>
-                                                <td colspan="2"><b>Post Total : ${{PostTotal}}</b></td>
-                                                <td colspan="2"><b>Total : ${{PrePostTotal}}</b></td>
+                                                <td colspan="2"><b>Pre Total : ${{PreTotal  | mask :'separator.2':','}}</b></td>
+                                                <td colspan="2"><b>Post Total : ${{PostTotal | mask :'separator.2':','}}</b></td>
+                                                <td colspan="2"><b>Total : ${{PrePostTotal  | mask :'separator.2':','}}</b></td>
 
                                             </tr>
                                         </table>
