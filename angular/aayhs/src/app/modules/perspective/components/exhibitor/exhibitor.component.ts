@@ -17,7 +17,7 @@ import { FilteredFinancialTransactionsComponent } from 'src/app/shared/ui/modals
 import * as moment from 'moment';
 import { EmailModalComponent } from 'src/app/shared/ui/modals/email-modal/email-modal.component';
 import { HttpEventType } from '@angular/common/http';
-
+import { MatPaginator } from '@angular/material/paginator';
 @Component({
   selector: 'app-exhibitor',
   templateUrl: './exhibitor.component.html',
@@ -31,6 +31,7 @@ export class ExhibitorComponent implements OnInit {
   @ViewChild('classesForm') classesForm: NgForm;
   @ViewChild('sponsorsForm') sponsorsForm: NgForm;
   @ViewChild('scanForm') scanForm: NgForm;
+  @ViewChild('paginator') paginator: MatPaginator;
 
   searchTerm:string;
   maxyear: any;
@@ -146,6 +147,7 @@ export class ExhibitorComponent implements OnInit {
   ngOnInit(): void {
     this.data.searchTerm.subscribe((searchTerm: string) => {
       this.baseRequest.SearchTerm = searchTerm;
+      this.baseRequest.Page = 1;
       this.getAllExhibitors();
     });    
     this.getAllStates();
@@ -182,6 +184,9 @@ export class ExhibitorComponent implements OnInit {
     this.exhibitorService.getAllExhibitors(this.baseRequest).subscribe(response => {
       this.exhibitorsList = response.Data.exhibitorResponses;
       this.totalItems = response.Data.TotalRecords
+      if(this.baseRequest.Page === 1){
+        this.paginator.pageIndex =0;
+      }
       this.loading = false;
     }, error => {
       this.loading = false;
@@ -357,11 +362,13 @@ getCities(id: number) {
 }
 
 
-getZipCodes(id: number) {
+getZipCodes(event,exhibitorDetail) {
+  var name;
+  exhibitorDetail==true ?name= event : name = event.target.options[event.target.options.selectedIndex].text;
   return new Promise((resolve, reject) => {
     this.loading = true;
     this.zipCodesResponse=null;
-    this.exhibitorService.getZipCodes(Number(id)).subscribe(response => {
+    this.exhibitorService.getZipCodes(name).subscribe(response => {
         this.zipCodesResponse = response.Data.ZipCode;
         this.loading = false;
     }, error => {
@@ -443,7 +450,7 @@ getAllGroups(){
     if(response.Data!=null)
       {
       this.getCities(response.Data.exhibitorResponses[0].StateId).then(res => {
-        this.getZipCodes(response.Data.exhibitorResponses[0].CityId).then(res => {
+        this.getZipCodes(response.Data.exhibitorResponses[0].CityName,true).then(res => {
         this.exhibitorInfo = response.Data.exhibitorResponses[0];
         this.exhibitorInfo.BackNumber=response.Data.exhibitorResponses[0].BackNumber ===0 ? null :response.Data.exhibitorResponses[0].BackNumber;
       });
@@ -554,7 +561,7 @@ addHorseToExhibitor(){
     this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
 
   }, error => {
-    this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
+    this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
     this.loading = false;
 
   })
@@ -1120,17 +1127,11 @@ confirmRemoveDocument(id,path): void {
   }
 
   printDocument(url){
-    url="localhost:4200/resources/documents/742b38b2-507f-456a-84e1-2a5c72e97a88_classresult%20(16).pdf"
-    // var top = (screen.availHeight - 600) / 2;
-    // var left = (screen.availWidth - 800) / 2;
-    // window.open(url, "_blank", "directories=no,height=600,width=800,location=no,menubar=no,resizable=yes," +"scrollbars=yes,status=no,toolbar=no,top=" + top + ",left=" + left);
-  window.print()
-  
-    // var blobURL = window.URL.createObjectURL(new Blob(['test'], { type: 'application/octet-stream' }));
-    //     var anchor = document.createElement("a");
-    //     anchor.download = url;
-    //     anchor.href = blobURL;
-    //     anchor.click();
+    url="https://localhost:44386/resources/documents/db29482b-a751-448a-bb18-c860e20104a0__Resources_Documents_93489a63-faa0-45f3-a868-c341e5307b67_download1.jpg"
+    var top = (screen.availHeight - 600) / 2;
+    var left = (screen.availWidth - 800) / 2;
+    window.open(url, "_blank", "directories=no,height=600,width=800,location=no,menubar=no,resizable=yes," +"scrollbars=yes,status=no,toolbar=no,top=" + top + ",left=" + left);
+    window.print();
   }
 
   openEmailModal(path){
