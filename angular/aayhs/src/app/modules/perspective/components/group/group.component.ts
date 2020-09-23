@@ -671,6 +671,10 @@ export class GroupComponent implements OnInit {
   setAmount(val) {
     if (val <= 0) {
         this.groupInfo.AmountReceived =Number(0);
+      } 
+      else if (val > 9999.99) {
+        this.groupInfo.AmountReceived = Number(9999.99);
+        this.snackBar.openSnackBar("Amount cannot be greater then 9999.99", 'Close', 'red-snackbar');
       }
       else {
         this.groupInfo.AmountReceived = Number(val);

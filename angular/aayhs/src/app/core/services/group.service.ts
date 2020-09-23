@@ -10,53 +10,53 @@ export class GroupService {
   constructor(private http: HttpClient) { }
 
 
-getAllGroups(data){
-  return this.http.post<any>(`${this.api}GroupAPI/GetAllGroups`,data);
-}
-
-getGroup(id:number){
-  return this.http.get<any>(`${this.api}GroupAPI/GetGroupById?GroupId=${id}`);
+  getAllGroups(data) {
+    return this.http.post<any>(`${this.api}GroupAPI/GetAllGroups`, data);
   }
- 
 
-addUpdateGroup(data){
-    return this.http.post<any>(this.api +'GroupAPI/AddUpdateGroup',data);
+  getGroup(id: number) {
+    return this.http.get<any>(`${this.api}GroupAPI/GetGroupById?GroupId=${id}`);
   }
-deleteGroup(id:number){
+
+
+  addUpdateGroup(data) {
+    return this.http.post<any>(this.api + 'GroupAPI/AddUpdateGroup', data);
+  }
+  deleteGroup(id: number) {
     return this.http.delete<any>(`${this.api}GroupAPI/DeleteGroup?GroupId=${id}`);
   }
 
-getCities(stateId:number){
+  getCities(stateId: number) {
     return this.http.get<any>(`${this.api}CommonAPI/GetCities?stateId=${stateId}`);
   }
 
-getZipCodes(cityId:number){
-    return this.http.get<any>(`${this.api}CommonAPI/GetZipCodes?cityId=${cityId}`);
+  getZipCodes(city: string) {
+    return this.http.get<any>(`${this.api}CommonAPI/GetZipCodes?city=${city}`);
   }
 
-getAllStates(){
-    return this.http.get<any>(`${this.api}CommonAPI/GetStates`,{});
+  getAllStates() {
+    return this.http.get<any>(`${this.api}CommonAPI/GetStates`, {});
   }
-getGroupExhibitors(id:number){
+  getGroupExhibitors(id: number) {
     return this.http.get<any>(`${this.api}GroupAPI/GetGroupExhibitors?GroupId=${id}`);
-    }
-deleteGroupExhibitors(id:number){
-      return this.http.delete<any>(`${this.api}GroupAPI/DeleteGroupExhibitor?groupExhibitorId=${id}`);
-    }
-getAllGroupFinancials(id:number){
-      return this.http.get<any>(`${this.api}GroupAPI/GetAllGroupFinancials?GroupId=${id}`);
-}
-addUpdateGroupFinancials(data){
-  return this.http.post<any>(this.api +'GroupAPI/AddUpdateGroupFinancials',data);
-}
-UpdateGroupFinancialsAmount(data){
-  return this.http.post<any>(this.api +'GroupAPI/UpdateGroupFinancialsAmount',data);
-}
+  }
+  deleteGroupExhibitors(id: number) {
+    return this.http.delete<any>(`${this.api}GroupAPI/DeleteGroupExhibitor?groupExhibitorId=${id}`);
+  }
+  getAllGroupFinancials(id: number) {
+    return this.http.get<any>(`${this.api}GroupAPI/GetAllGroupFinancials?GroupId=${id}`);
+  }
+  addUpdateGroupFinancials(data) {
+    return this.http.post<any>(this.api + 'GroupAPI/AddUpdateGroupFinancials', data);
+  }
+  UpdateGroupFinancialsAmount(data) {
+    return this.http.post<any>(this.api + 'GroupAPI/UpdateGroupFinancialsAmount', data);
+  }
 
-deleteGroupFinancials(id:number){
-  return this.http.delete<any>(`${this.api}GroupAPI/DeleteGroupFinancials?groupFinancialId=${id}`);
-}
-getGlobalCodes(type:string){
-  return this.http.get<any>(`${this.api}CommonAPI/GetGlobalCode?categoryName=${type}`);
-}
+  deleteGroupFinancials(id: number) {
+    return this.http.delete<any>(`${this.api}GroupAPI/DeleteGroupFinancials?groupFinancialId=${id}`);
+  }
+  getGlobalCodes(type: string) {
+    return this.http.get<any>(`${this.api}CommonAPI/GetGlobalCode?categoryName=${type}`);
+  }
 }

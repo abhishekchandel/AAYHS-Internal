@@ -171,7 +171,7 @@ export class SponsorComponent implements OnInit {
       if (response.Data != null) {
 
         this.getCities(response.Data.StateId).then(res => {
-          this.getZipCodes(response.Data.CityName,true).then(res => {
+          this.getZipCodes(response.Data.CityName, true).then(res => {
             this.sponsorInfo = response.Data;
             this.selectedRowIndex = selectedRowIndex;
             this.sponsorInfo.AmountReceived = Number(this.sponsorInfo.AmountReceived.toFixed(2));
@@ -254,7 +254,7 @@ export class SponsorComponent implements OnInit {
     this.sponsorExhibitorRequest.SponsorId = this.selectedSponsorId;
     this.sponsorExhibitorRequest.ExhibitorId = this.exhibitorId;
     this.sponsorExhibitorRequest.SponsorTypeId = this.sponsortypeId;
-    this.sponsorExhibitorRequest.AdTypeId = this.adTypeId!=null?this.adTypeId:0;
+    this.sponsorExhibitorRequest.AdTypeId = this.adTypeId != null ? this.adTypeId : 0;
     this.sponsorExhibitorRequest.TypeId = this.typeId != null ? this.typeId : "";
 
     this.sponsorService.AddUpdateSponsorExhibitor(this.sponsorExhibitorRequest).subscribe(response => {
@@ -384,7 +384,7 @@ export class SponsorComponent implements OnInit {
   }
 
 
-  
+
 
   //delete record
   deleteSponsor(Sponsorid, index) {
@@ -554,10 +554,10 @@ export class SponsorComponent implements OnInit {
 
   }
 
-  getZipCodes(event,Notfromhtml) {
-    
+  getZipCodes(event, Notfromhtml) {
+
     var cityname;
-    Notfromhtml==true ?cityname= event : cityname = event.target.options[event.target.options.selectedIndex].text;
+    Notfromhtml == true ? cityname = event : cityname = event.target.options[event.target.options.selectedIndex].text;
     return new Promise((resolve, reject) => {
       this.loading = true;
       this.zipCodesResponse = null;
@@ -587,14 +587,18 @@ export class SponsorComponent implements OnInit {
     window.open(url, "_blank");
   }
   setAmount(val) {
-  if (val <= 0) {
+    if (val <= 0) {
       this.sponsorInfo.AmountReceived = Number(0);
+    }
+    else if (val > 9999.99) {
+      this.sponsorInfo.AmountReceived = Number(9999.99);
+      this.snackBar.openSnackBar("Amount cannot be greater then 9999.99", 'Close', 'red-snackbar');
     }
     else {
       this.sponsorInfo.AmountReceived = Number(val);
     }
   }
-  
+
 
   printSponsorExhibitor() {
     let printContents, popupWin, printbutton, hideRow, gridTableDesc;
