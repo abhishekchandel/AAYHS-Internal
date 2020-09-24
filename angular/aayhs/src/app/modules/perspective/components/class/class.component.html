@@ -331,7 +331,10 @@
 															{{result.Place +ordinal_suffix_of(result.Place)}}
 														</td>
 														<td *ngIf="updatemode==true && updateRowIndex==i"> 
-															<input appOnlynumber type="text" class="form-control" placeholder="Place" #placement="ngModel" (change)="setPlace($event.target.value)" name="placement" [(ngModel)]="place" required />
+															<input 
+															appOnlynumber 
+															
+															type="text" class="form-control" placeholder="Place" #placement="ngModel" (change)="setPlace($event.target.value)" name="placement" [(ngModel)]="place" required />
 														</td>
 
 

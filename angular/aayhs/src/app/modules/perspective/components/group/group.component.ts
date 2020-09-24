@@ -681,7 +681,7 @@ export class GroupComponent implements OnInit {
 
   setAmount(val) {
 
-    val=val.replace(",","");
+    val = val.replace(",", "");
     if (val <= 0) {
       this.groupInfo.AmountReceived = 0.00;
     }
@@ -690,12 +690,9 @@ export class GroupComponent implements OnInit {
       this.snackBar.openSnackBar("Amount cannot be greater then 9999.99", 'Close', 'red-snackbar');
     }
     else {
-      this.groupInfo.AmountReceived =Number(Number(val).toFixed(2));
+      this.groupInfo.AmountReceived = Number(Number(val).toFixed(2));
     }
-    var element=document.getElementById('groupamount');
-    element.value= this.groupInfo.AmountReceived; 
-    element.innerHTML= this.groupInfo.AmountReceived; 
-    element.innerText= this.groupInfo.AmountReceived; 
+
   }
 
 

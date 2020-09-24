@@ -68,7 +68,7 @@ export class SponsorComponent implements OnInit {
   SponsorTypes: any;
   AdTypes: any;
   selectedSponsorId: number = 0;
-
+  value:any;
   exhibitorId: number = null;
   sponsortypeId: number = null;
   adTypeId: number = null;
@@ -190,6 +190,7 @@ export class SponsorComponent implements OnInit {
 
 
   GetSponsorExhibitorBySponsorId(selectedSponsorId: number) {
+    return new Promise((resolve, reject) => {
     this.loading = true;
     this.sponsorsExhibitorsList = null;
     this.UnassignedSponsorExhibitor = null;
@@ -202,10 +203,14 @@ export class SponsorComponent implements OnInit {
     }, error => {
       this.loading = false;
     })
-
+    resolve();
+  });
   }
 
   GetSponsorClasses(SponsorId: number) {
+
+    return new Promise((resolve, reject) => {
+
     this.loading = true;
     this.sponsorClassesList = null;
     this.UnassignedSponsorClasses = null;
@@ -219,8 +224,9 @@ export class SponsorComponent implements OnInit {
     }, error => {
       this.loading = false;
     })
-
-  }
+    resolve();
+  });
+}
 
 
 
@@ -266,10 +272,12 @@ export class SponsorComponent implements OnInit {
 
     this.sponsorService.AddUpdateSponsorExhibitor(this.sponsorExhibitorRequest).subscribe(response => {
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
-      this.GetSponsorExhibitorBySponsorId(this.selectedSponsorId);
-      this.exhibitorId = null;
-      this.sponsortypeId = null;
-      this.sponsorExhibitorForm.resetForm({ exhibitorId: null, sponsortypeId: null });
+      this.GetSponsorExhibitorBySponsorId(this.selectedSponsorId).then(res => {
+        this.exhibitorId = null;
+        this.sponsortypeId = null;
+        this.sponsorExhibitorForm.resetForm({ exhibitorId: null, sponsortypeId: null });
+        this.GetSponsorClasses(this.selectedSponsorId);
+      });
 
     }, error => {
       this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
@@ -285,9 +293,11 @@ export class SponsorComponent implements OnInit {
     this.sponsorClassRequest.ClassId = this.sponsorClassId;
     this.sponsorService.AddUpdateSponsorClass(this.sponsorClassRequest).subscribe(response => {
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
-      this.GetSponsorClasses(this.selectedSponsorId);
-      this.sponsorClassId = null;
-      this.sponsorClassForm.resetForm({ sponsorClassId: null });
+      this.GetSponsorClasses(this.selectedSponsorId).then(res => {
+        this.sponsorClassId = null;
+        this.sponsorClassForm.resetForm({ sponsorClassId: null });
+        this.GetSponsorExhibitorBySponsorId(this.selectedSponsorId);
+      });
     }, error => {
       this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
       this.loading = false;
@@ -606,12 +616,6 @@ export class SponsorComponent implements OnInit {
     else {
       this.sponsorInfo.AmountReceived =Number(Number(val).toFixed(2));
     }
-    
-    var element=document.getElementById('sponsoramount');
-    element.value= this.sponsorInfo.AmountReceived; 
-    element.innerHTML= this.sponsorInfo.AmountReceived; 
-    element.innerText= this.sponsorInfo.AmountReceived; 
-
   }
 
 

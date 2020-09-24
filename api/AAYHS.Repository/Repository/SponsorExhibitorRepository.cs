@@ -76,7 +76,7 @@ namespace AAYHS.Repository.Repository
                                  {
                                      ExhibitorId = exhibitor.ExhibitorId,
                                      Name = exhibitor.FirstName + ' ' + exhibitor.LastName
-                                 }).ToList();
+                                 }).OrderBy(x=>x.Name).ToList();
 
             if (sponsorExhibitor != null && sponsorExhibitor.Count() > 0)
             {

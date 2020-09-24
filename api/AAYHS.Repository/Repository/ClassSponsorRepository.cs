@@ -137,7 +137,7 @@ namespace AAYHS.Repository.Repository
                                      }).ToList();
             foreach(var item in sponsorClassResponses)
             {
-                item.ClassExhibitorsAndHorses = GetClassExhibitorsAndHorses(item.ClassId);
+                item.ClassExhibitorsAndHorses = GetClassExhibitorsAndHorses(item.ClassId, SponsorId);
             }
 
             sponsorClassesListResponse.sponsorClassesListResponses = sponsorClassResponses.ToList();
@@ -147,19 +147,31 @@ namespace AAYHS.Repository.Repository
             return _mainResponse;
         }
 
-        public List<string> GetClassExhibitorsAndHorses(int ClassId)
+        public List<string> GetClassExhibitorsAndHorses(int ClassId,int SponsorId)
         {
             List<string> list = new List<string>();
-            var exhibitorClass = (from ce in _context.ExhibitorClass
-                                  where ce.ClassId == ClassId && ce.IsActive==true && ce.IsDeleted==false
-                                  select ce).ToList();
+            //var exhibitors = (from ce in _context.ExhibitorClass
+            //                      where ce.ClassId == ClassId && ce.IsActive==true && ce.IsDeleted==false
+            //                      select ce).ToList();
+            var exhibitors = (from se in _context.SponsorExhibitor
+                                  where se.SponsorId == SponsorId && se.IsActive == true && se.IsDeleted == false
+                                  select se).ToList();
 
-            foreach (var data in exhibitorClass)
+            foreach (var data in exhibitors)
             {
-                var exhibitor = (from ex in _context.Exhibitors where ex.ExhibitorId == data.ExhibitorId select ex).FirstOrDefault();
+                var exhibitor = (from ex in _context.Exhibitors 
+                                 where ex.ExhibitorId == data.ExhibitorId 
+                                 && ex.IsActive==true && ex.IsDeleted==false select ex).FirstOrDefault();
+
                 if (exhibitor != null)
                 {
-                    var horses = (from hr in _context.Horses select hr).ToList();
+                    var horses = (from hr in _context.Horses 
+                                  join exbhr in _context.ExhibitorHorse 
+                                  on hr.HorseId equals exbhr.HorseId
+                                  where exbhr.ExhibitorId== exhibitor.ExhibitorId
+                                  && hr.IsActive==true && hr.IsDeleted == false  && exbhr.IsActive == true && exbhr.IsDeleted==false
+                                  select hr).ToList();
+
                     if (horses != null && horses.Count > 0)
                     {
                         foreach (var horse in horses)
@@ -168,6 +180,12 @@ namespace AAYHS.Repository.Repository
                             if (!list.Contains(name))
                                 list.Add(name);
                         }
+                    }
+                    else
+                    {
+                        var name = exhibitor.FirstName + ' ' + exhibitor.LastName ;
+                        if (!list.Contains(name))
+                            list.Add(name);
                     }
                 }
 
@@ -189,7 +207,7 @@ namespace AAYHS.Repository.Repository
                                      ClassNumber = classes.ClassNumber,
                                      Name = classes.Name,
                                      AgeGroup = classes.AgeGroup,
-                                 }).ToList();
+                                 }).OrderBy(x=>x.Name).ToList();
 
             if (sponsorClassResponses != null && sponsorClassResponses.Count() > 0)
             {

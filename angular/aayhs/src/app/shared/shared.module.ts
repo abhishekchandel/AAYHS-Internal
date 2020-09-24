@@ -11,6 +11,8 @@ import {SearchPipe} from '../shared/filters/search.pipe'
 import { AssignStallModalComponent } from './ui/modals/assign-stall-modal/assign-stall-modal.component';
 import { FinancialTransactionsComponent } from './ui/modals/financial-transactions/financial-transactions.component';
 import { OnlynumberDirective } from './directives/only-number.directive';
+import { OnlyTwoDecimalsDirective } from './directives/only-two-decimals.directive';
+import { NumericDecimalDirective } from './directives/only-decimals-numbers.directive';
 
 //All material imports here//
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -48,6 +50,7 @@ import {NgxPrintModule} from 'ngx-print';
 import { SponsorInfoModalComponent } from './ui/modals/sponsor-info-modal/sponsor-info-modal.component';
 import { FilteredFinancialTransactionsComponent } from './ui/modals/filtered-financial-transactions/filtered-financial-transactions.component';
 import { EmailModalComponent } from './ui/modals/email-modal/email-modal.component';
+import {AmountPipe} from '../shared/filters/amount.pipe'
 
 
 
@@ -57,7 +60,11 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 };
 
 @NgModule({
-  declarations: [HeaderComponent, FooterComponent,SidebarComponent, MatSnackbarComponent, ConfirmDialogComponent, AddSplitClassModalComponent, ExportConfirmationModalComponent, ConfirmEqualValidatorDirective, SearchPipe, AssignStallModalComponent, FinancialTransactionsComponent, OnlynumberDirective, SponsorInfoModalComponent, FilteredFinancialTransactionsComponent, EmailModalComponent],
+  declarations: [HeaderComponent, FooterComponent,SidebarComponent, MatSnackbarComponent, 
+    ConfirmDialogComponent, AddSplitClassModalComponent, ExportConfirmationModalComponent,
+     ConfirmEqualValidatorDirective, SearchPipe, AssignStallModalComponent, FinancialTransactionsComponent,
+      OnlynumberDirective, SponsorInfoModalComponent, FilteredFinancialTransactionsComponent, 
+      EmailModalComponent,AmountPipe,OnlyTwoDecimalsDirective,NumericDecimalDirective],
   imports: [
     CommonModule,
     RouterModule,
@@ -123,8 +130,10 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     NgxPrintModule,
     ConfirmEqualValidatorDirective,
     SearchPipe,
-    OnlynumberDirective
-    
+    OnlynumberDirective,
+    AmountPipe,
+    OnlyTwoDecimalsDirective,
+    NumericDecimalDirective
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
