@@ -219,15 +219,19 @@ namespace AAYHS.Repository.Repository
         {
             var backNumber = (from exhibitorsClass in _ObjContext.ExhibitorClass
                               join exhibitors in _ObjContext.Exhibitors on exhibitorsClass.ExhibitorId equals exhibitors.ExhibitorId into exhibitors1
-                              from exhibitors2 in exhibitors1.DefaultIfEmpty()
+                              from exhibitors2 in exhibitors1.DefaultIfEmpty()                             
                               where exhibitorsClass.IsActive == true && exhibitorsClass.IsDeleted == false
                               && exhibitors2.IsActive==true && exhibitors2.IsDeleted==false
                               && exhibitorsClass.ClassId == ClassId 
                               select new GetBackNumber
                               {
+                                  ExhibitorId=exhibitors2.ExhibitorId,
                                   BackNumber = exhibitors2.BackNumber
                               }).ToList();
-            return backNumber;
+
+            var exhibitorResult = _ObjContext.Result.Where(x => x.ClassId == ClassId && x.IsActive == true && x.IsDeleted == false);
+            var number = backNumber.Where(x => exhibitorResult.All(y => y.ExhibitorId != x.ExhibitorId)).ToList();
+            return number;
         }
         public ResultExhibitorDetails GetResultExhibitorDetails(ResultExhibitorRequest resultExhibitorRequest)
         {

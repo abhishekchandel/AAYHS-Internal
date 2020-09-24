@@ -71,6 +71,7 @@ namespace AAYHS.Core.DTOs.Response.Common
     }
     public class GetBackNumber
     {
+        public int ExhibitorId { get; set; }
         public int BackNumber { get; set; }
     }
     public class ResultExhibitorDetails
