@@ -82,7 +82,7 @@ namespace AAYHS.Service.Service
             if (allExhibitor.Count!=0)
             {
                 var exhibitorClasses = _exhibitorClassRepositor.GetAll(x => x.ClassId == ClassId && x.IsActive == true && x.IsDeleted == false);
-                var exhibitor = allExhibitor.Where(x => exhibitorClasses.All(y => y.ExhibitorId != x.ExhibitorId)).ToList(); 
+                var exhibitor = allExhibitor.Where(x => exhibitorClasses.All(y => y.ExhibitorId != x.ExhibitorId)).OrderBy(z=>z.FirstName).ToList(); 
                 if (exhibitor.Count()!=0)
                 {
                     for (int i = 0; i < exhibitor.Count(); i++)

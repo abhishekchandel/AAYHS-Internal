@@ -61,6 +61,8 @@ namespace AAYHS.Core.DTOs.Response
         public int ClassId { get; set; }
         public string ClassNumber { get; set; }
         public string Name { get; set; }
+        public int HorseId { get; set; }
+        public string HorseName { get; set; }
         public string AgeGroup { get; set; }
         public int Entries { get; set; }
         public bool Scratch { get; set; }
