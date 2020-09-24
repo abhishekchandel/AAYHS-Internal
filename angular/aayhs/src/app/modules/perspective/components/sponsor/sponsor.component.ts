@@ -53,7 +53,7 @@ export class SponsorComponent implements OnInit {
     CityId: null,
     StateId: null,
     ZipCodeId: null,
-    AmountReceived: '0.00',
+    AmountReceived: 0.00,
     SponsorId: 0,
     sponsorExhibitors: null,
     sponsorClasses: null,
@@ -229,7 +229,11 @@ export class SponsorComponent implements OnInit {
     console.log(this.sponsorInfo);
     //return
     this.loading = true;
-    this.sponsorInfo.AmountReceived = Number(this.sponsorInfo.AmountReceived == null ? 0 : this.sponsorInfo.AmountReceived);
+    this.sponsorInfo.AmountReceived = this.sponsorInfo.AmountReceived.replace(",","");
+    this.sponsorInfo.AmountReceived = Number(Number(this.sponsorInfo.AmountReceived == null 
+                                    || this.sponsorInfo.AmountReceived == undefined
+                                   || this.sponsorInfo.AmountReceived == NaN ? 0 : 
+                                   this.sponsorInfo.AmountReceived).toFixed(2));
     this.sponsorService.addUpdateSponsor(this.sponsorInfo).subscribe(response => {
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
       this.getAllSponsors().then(res => {
@@ -456,7 +460,7 @@ export class SponsorComponent implements OnInit {
     this.sponsorInfo.CityId = null;
     this.sponsorInfo.StateId = null;
     this.sponsorInfo.ZipCodeId = null;
-    this.sponsorInfo.AmountReceived = 0;
+    this.sponsorInfo.AmountReceived = 0.00;
     this.sponsorInfo.SponsorId = 0;
     this.sponsorInfoForm.resetForm();
     this.tabGroup.selectedIndex = 0
@@ -590,16 +594,24 @@ export class SponsorComponent implements OnInit {
     window.open(url, "_blank");
   }
   setAmount(val) {
+
+    val=val.replace(",","");
     if (val <= 0) {
-      this.sponsorInfo.AmountReceived = Number(0);
+      this.sponsorInfo.AmountReceived = 0.00;
     }
     else if (val > 9999.99) {
-      this.sponsorInfo.AmountReceived = Number(9999.99);
+      this.sponsorInfo.AmountReceived = 9999.99;
       this.snackBar.openSnackBar("Amount cannot be greater then 9999.99", 'Close', 'red-snackbar');
     }
     else {
-      this.sponsorInfo.AmountReceived = Number(val);
+      this.sponsorInfo.AmountReceived =Number(Number(val).toFixed(2));
     }
+    
+    var element=document.getElementById('sponsoramount');
+    element.value= this.sponsorInfo.AmountReceived; 
+    element.innerHTML= this.sponsorInfo.AmountReceived; 
+    element.innerText= this.sponsorInfo.AmountReceived; 
+
   }
 
 

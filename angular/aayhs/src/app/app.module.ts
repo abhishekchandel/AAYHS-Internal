@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app.routing.module';
 import { CoreModule } from './core/core.module';
+import { BnNgIdleService } from 'bn-ng-idle';
 
 
 import { HttpClientModule } from '@angular/common/http';
@@ -21,7 +22,7 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
     CoreModule
   ],
-  providers: [],
+  providers: [BnNgIdleService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

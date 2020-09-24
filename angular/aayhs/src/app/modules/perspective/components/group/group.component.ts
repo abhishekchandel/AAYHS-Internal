@@ -96,7 +96,7 @@ export class GroupComponent implements OnInit {
     CityId: null,
     StateId: null,
     ZipCodeId: null,
-    AmountReceived: '0.00',
+    AmountReceived: 0.00,
     GroupId: 0,
     groupStallAssignmentRequests: null
 
@@ -107,7 +107,7 @@ export class GroupComponent implements OnInit {
   StallTypes: any = [];
   horsestalllength: number = 0;
   tackstalllength: number = 0;
-  UnassignedStallNumbers:any=[];
+  UnassignedStallNumbers: any = [];
 
   constructor(private groupService: GroupService,
     private dialog: MatDialog,
@@ -134,8 +134,8 @@ export class GroupComponent implements OnInit {
         if (response.Data != null && response.Data.TotalRecords > 0) {
           this.groupsList = response.Data.groupResponses;
           this.totalItems = response.Data.TotalRecords;
-          if(this.baseRequest.Page === 1){
-            this.paginator.pageIndex =0;
+          if (this.baseRequest.Page === 1) {
+            this.paginator.pageIndex = 0;
           }
           //this.resetForm();
         }
@@ -152,11 +152,11 @@ export class GroupComponent implements OnInit {
 
   getGroupDetails = (id: number, selectedRowIndex) => {
     this.loading = true;
-    this.UnassignedStallNumbers=[];
+    this.UnassignedStallNumbers = [];
     this.groupService.getGroup(id).subscribe(response => {
       if (response.Data != null) {
         this.getCities(response.Data.StateId).then(res => {
-          this.getZipCodes(response.Data.CityName,true).then(res => {
+          this.getZipCodes(response.Data.CityName, true).then(res => {
             this.groupInfo = response.Data;
             debugger
             this.groupStallAssignmentResponses = response.Data.groupStallAssignmentResponses;
@@ -222,7 +222,14 @@ export class GroupComponent implements OnInit {
   AddUpdateGroup = (group) => {
 
     this.loading = true;
-    this.groupInfo.AmountReceived = Number(this.groupInfo.AmountReceived == null ? 0 : this.groupInfo.AmountReceived);
+    this.groupInfo.AmountReceived = this.groupInfo.AmountReceived.replace(",", "");
+
+    this.groupInfo.AmountReceived = Number(Number(this.groupInfo.AmountReceived == null
+      || this.groupInfo.AmountReceived == undefined
+      || this.groupInfo.AmountReceived == NaN ? 0 :
+      this.groupInfo.AmountReceived).toFixed(2));
+
+
     this.StallAssignmentRequestsData = [];
     if (this.groupStallAssignmentResponses.length > 0) {
       this.groupStallAssignmentResponses.forEach(resp => {
@@ -230,7 +237,7 @@ export class GroupComponent implements OnInit {
           SelectedStallId: resp.StallId,
           StallAssignmentId: resp.StallAssignmentId,
           StallAssignmentTypeId: resp.StallAssignmentTypeId,
-          StallAssignmentDate:resp.StallAssignmentDate
+          StallAssignmentDate: resp.StallAssignmentDate
         }
         this.StallAssignmentRequestsData.push(groupstallData);
       });
@@ -296,10 +303,10 @@ export class GroupComponent implements OnInit {
     });
   }
 
-  getZipCodes(event,Notfromhtml) {
+  getZipCodes(event, Notfromhtml) {
 
     var cityname;
-    Notfromhtml==true ?cityname= event : cityname = event.target.options[event.target.options.selectedIndex].text;
+    Notfromhtml == true ? cityname = event : cityname = event.target.options[event.target.options.selectedIndex].text;
 
     return new Promise((resolve, reject) => {
       this.loading = true;
@@ -326,16 +333,16 @@ export class GroupComponent implements OnInit {
     })
 
   }
-  
-  
-  
+
+
+
   getAllFeeTypes() {
     this.loading = true;
     this.FeeTypes = null;
     this.groupService.getGlobalCodes('FeeType').subscribe(response => {
       if (response.Data != null && response.Data.totalRecords > 0) {
-        this.FeeTypes = response.Data.globalCodeResponse.filter(x=>x.CodeName !="Class Entry" 
-        && x.CodeName!="Additional Program" && x.CodeName!="Sponsor Refund");
+        this.FeeTypes = response.Data.globalCodeResponse.filter(x => x.CodeName != "Class Entry"
+          && x.CodeName != "Additional Program" && x.CodeName != "Sponsor Refund");
       }
       this.loading = false;
     }, error => {
@@ -379,9 +386,8 @@ export class GroupComponent implements OnInit {
 
   setUpdatedFinancialAmount(data) {
     this.UpdatedFinancialAmount = Number(data);
-    if(this.UpdatedFinancialAmount <=0)
-    {
-      this.UpdatedFinancialAmount =0;
+    if (this.UpdatedFinancialAmount <= 0) {
+      this.UpdatedFinancialAmount = 0;
     }
   }
 
@@ -420,9 +426,8 @@ export class GroupComponent implements OnInit {
 
   setFinancialsAmount(data) {
     this.FinancialsAmount = Number(data);
-    if(this.FinancialsAmount<=0)
-    {
-      this.FinancialsAmount=0;
+    if (this.FinancialsAmount <= 0) {
+      this.FinancialsAmount = 0;
     }
   }
 
@@ -545,7 +550,7 @@ export class GroupComponent implements OnInit {
     this.groupInfo.CityId = null;
     this.groupInfo.StateId = null;
     this.groupInfo.ZipCodeId = null;
-    this.groupInfo.AmountReceived = 0;
+    this.groupInfo.AmountReceived = 0.00;
     this.groupInfo.GroupId = 0;
     this.tabGroup.selectedIndex = 0
     this.groupInfoForm.resetForm();
@@ -553,8 +558,8 @@ export class GroupComponent implements OnInit {
     this.selectedRowIndex = -1;
     this.FeeTypes = null;
     this.groupStallAssignmentResponses = [];
-    this.horsestalllength=0;
-    this.tackstalllength=0;
+    this.horsestalllength = 0;
+    this.tackstalllength = 0;
     this.groupFinancialsList = null;
     this.groupExhibitorsList = null;
   }
@@ -636,9 +641,11 @@ export class GroupComponent implements OnInit {
       maxWidth: '100vw',
       maxHeight: '100vh',
       panelClass: 'full-screen-modal',
-      data: { groupStallAssignment: this.groupStallAssignmentResponses, 
-        StallTypes: this.StallTypes ,
-        unassignedStallNumbers:this.UnassignedStallNumbers},
+      data: {
+        groupStallAssignment: this.groupStallAssignmentResponses,
+        StallTypes: this.StallTypes,
+        unassignedStallNumbers: this.UnassignedStallNumbers
+      },
 
     };
 
@@ -646,12 +653,12 @@ export class GroupComponent implements OnInit {
 
     );
     dialogRef.afterClosed().subscribe(dialogResult => {
-     
+
       const result: any = dialogResult;
       if (result && result.submitted == true) {
-        this.groupStallAssignmentResponses=[];
+        this.groupStallAssignmentResponses = [];
         this.groupStallAssignmentResponses = result.data.groupAssignedStalls;
-        this.UnassignedStallNumbers=result.data.unassignedStallNumbers;
+        this.UnassignedStallNumbers = result.data.unassignedStallNumbers;
 
         var horseStalltype = this.StallTypes.filter(x => x.CodeName == "HorseStall");
         var tackStalltype = this.StallTypes.filter(x => x.CodeName == "TackStall");
@@ -666,24 +673,30 @@ export class GroupComponent implements OnInit {
           this.tackstalllength = 0;
         }
       }
-      else{
-        this.UnassignedStallNumbers=[];
+      else {
+        this.UnassignedStallNumbers = [];
       }
     });
   }
 
   setAmount(val) {
+
+    val=val.replace(",","");
     if (val <= 0) {
-        this.groupInfo.AmountReceived =Number(0);
-      } 
-      else if (val > 9999.99) {
-        this.groupInfo.AmountReceived = Number(9999.99);
-        this.snackBar.openSnackBar("Amount cannot be greater then 9999.99", 'Close', 'red-snackbar');
-      }
-      else {
-        this.groupInfo.AmountReceived = Number(val);
-      }
+      this.groupInfo.AmountReceived = 0.00;
     }
+    else if (val > 9999.99) {
+      this.groupInfo.AmountReceived = 9999.99;
+      this.snackBar.openSnackBar("Amount cannot be greater then 9999.99", 'Close', 'red-snackbar');
+    }
+    else {
+      this.groupInfo.AmountReceived =Number(Number(val).toFixed(2));
+    }
+    var element=document.getElementById('groupamount');
+    element.value= this.groupInfo.AmountReceived; 
+    element.innerHTML= this.groupInfo.AmountReceived; 
+    element.innerText= this.groupInfo.AmountReceived; 
+  }
 
 
   printGroupFinancials() {
