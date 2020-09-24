@@ -163,6 +163,8 @@ namespace AAYHS.Repository.Repository
 
             getClassesOfExhibitor = (from exhibitorClass in _context.ExhibitorClass
                              join classes in _context.Classes on exhibitorClass.ClassId equals classes.ClassId
+                             join horses in _context.Horses on exhibitorClass.HorseId equals horses.HorseId into horses1
+                             from horse2 in horses1.DefaultIfEmpty()
                              where exhibitorClass.IsActive == true && exhibitorClass.IsDeleted == false
                              && exhibitorClass.ExhibitorId == exhibitorId
                              select new GetClassesOfExhibitor
@@ -171,6 +173,8 @@ namespace AAYHS.Repository.Repository
                                ClassId=classes.ClassId,
                                ClassNumber =classes.ClassNumber,
                                Name=classes.Name,
+                               HorseId=horse2.HorseId,
+                               HorseName=horse2.Name,
                                AgeGroup=classes.AgeGroup,
                                Entries= classes != null ? _context.ExhibitorClass.Where(x => x.ClassId == classes.ClassId && x.IsActive == true && x.IsDeleted == false).Select(x => x.ExhibitorClassId).Count() : 0,
                                Scratch= exhibitorClass.IsScratch,
