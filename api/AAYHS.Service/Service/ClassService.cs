@@ -406,7 +406,15 @@ namespace AAYHS.Service.Service
         }
         public async Task<MainResponse> AddClassResult(AddClassResultRequest addClassResultRequest,string actionBy)
         {
-               var ageGroup = _classRepository.GetSingle(x => x.ClassId == addClassResultRequest.ClassId);
+            var resultCheck = _resultRepository.GetSingle(x => x.ClassId == addClassResultRequest.ClassId && x.ExhibitorId == addClassResultRequest.ExhibitorId
+                              && x.IsActive == true && x.IsDeleted == false);
+            if (resultCheck!=null)
+            {
+                _mainResponse.Message = Constants.RECORD_AlREADY_EXIST;
+                _mainResponse.Success = false;
+                return _mainResponse;
+            }
+            var ageGroup = _classRepository.GetSingle(x => x.ClassId == addClassResultRequest.ClassId);
             
                 var addResult = new Result
                 {
