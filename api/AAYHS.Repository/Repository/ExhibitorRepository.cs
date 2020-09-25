@@ -166,6 +166,7 @@ namespace AAYHS.Repository.Repository
                              join horses in _context.Horses on exhibitorClass.HorseId equals horses.HorseId into horses1
                              from horse2 in horses1.DefaultIfEmpty()
                              where exhibitorClass.IsActive == true && exhibitorClass.IsDeleted == false
+                             && horse2.IsActive==true && horse2.IsDeleted==false
                              && exhibitorClass.ExhibitorId == exhibitorId
                              select new GetClassesOfExhibitor
                              {
