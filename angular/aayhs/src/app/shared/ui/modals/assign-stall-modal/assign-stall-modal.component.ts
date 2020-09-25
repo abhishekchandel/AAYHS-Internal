@@ -1,6 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MatDialogConfig, MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { GroupService } from '../../../../core/services/group.service';
 import { MatSnackbarComponent } from '../../../../shared/ui/mat-snackbar/mat-snackbar.component';
 
 @Component({
@@ -21,7 +20,6 @@ export class AssignStallModalComponent implements OnInit {
   AssignedToName: string;
   DisableHorseType:boolean=false;
   constructor(
-    private groupService: GroupService,
     private snackBar: MatSnackbarComponent,
     public dialogRef: MatDialogRef<AssignStallModalComponent>,
     public dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any) { }

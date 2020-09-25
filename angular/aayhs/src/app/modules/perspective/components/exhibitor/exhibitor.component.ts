@@ -18,6 +18,8 @@ import * as moment from 'moment';
 import { EmailModalComponent } from 'src/app/shared/ui/modals/email-modal/email-modal.component';
 import { HttpEventType } from '@angular/common/http';
 import { MatPaginator } from '@angular/material/paginator';
+import { ExhibitorStallComponent } from '../stall/exhibitorstall.component';
+
 @Component({
   selector: 'app-exhibitor',
   templateUrl: './exhibitor.component.html',
@@ -1111,6 +1113,7 @@ confirmRemoveDocument(id,path): void {
       this.loading = false;
     })
   }
+  
   recalculate(){
     this.getbilledFeesSummary(this.exhibitorInfo.ExhibitorId);
     this.getExhibitorTransactions(this.exhibitorInfo.ExhibitorId);
