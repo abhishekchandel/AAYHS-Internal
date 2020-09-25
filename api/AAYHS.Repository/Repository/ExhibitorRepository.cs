@@ -142,6 +142,7 @@ namespace AAYHS.Repository.Repository
                                select new ExhibitorHorses 
                                { 
                                  ExhibitorHorseId=exhibitorHorse.ExhibitorHorseId,
+                                 HorseId=exhibitorHorse.HorseId,
                                  HorseName=horse.Name,
                                  HorseType=_context.GlobalCodes.Where(x=>x.GlobalCodeId==horse.HorseTypeId).Select(y=>y.CodeName).First(),
                                  BackNumber= exhibitorHorse.BackNumber,
