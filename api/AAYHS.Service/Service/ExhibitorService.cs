@@ -298,7 +298,7 @@ namespace AAYHS.Service.Service
 
                 if (exhibitor.BackNumber==exhibitorHorse.BackNumber)
                 {
-                    exhibitor.BackNumber = 0;
+                    exhibitor.BackNumber = null;
                     _exhibitorRepository.Update(exhibitor);
                 }
                 _exhibitorHorseRepository.Delete(exhibitorHorse);
