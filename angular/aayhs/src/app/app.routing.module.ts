@@ -13,6 +13,13 @@ const routes: Routes = [
     loadChildren: () => import(`./modules/perspective/perspective.module`).then(m => m.PerspectiveModule),
      canActivate:[AuthGuard]
 },
+
+{
+  path: "module",
+  loadChildren: () => import(`./modules/module/module.module`).then(m => m.ModuleModule),
+   canActivate:[AuthGuard]
+},
+
 ];
 @NgModule({
   imports:
