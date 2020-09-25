@@ -296,11 +296,15 @@ namespace AAYHS.Service.Service
             {
                 var exhibitor = _exhibitorRepository.GetSingle(x => x.ExhibitorId == exhibitorHorse.ExhibitorId && x.IsActive == true && x.IsDeleted == false);
 
-                if (exhibitor.BackNumber==exhibitorHorse.BackNumber)
+                if (exhibitor.BackNumber!=null)
                 {
-                    exhibitor.BackNumber = null;
-                    _exhibitorRepository.Update(exhibitor);
+                    if (exhibitor.BackNumber == exhibitorHorse.BackNumber)
+                    {
+                        exhibitor.BackNumber = null;
+                        _exhibitorRepository.Update(exhibitor);
+                    }
                 }
+               
                 _exhibitorHorseRepository.Delete(exhibitorHorse);
                 _mainResponse.Message = Constants.EXHIBITOR_HORSE_DELETED;
                 _mainResponse.Success = true;
