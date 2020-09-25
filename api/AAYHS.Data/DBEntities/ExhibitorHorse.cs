@@ -14,7 +14,7 @@ namespace AAYHS.Data.DBEntities
         public int ExhibitorHorseId { get; set; }
         public int ExhibitorId { get; set; }
         public int HorseId { get; set; }
-        public int BackNumber { get; set; }
+        public int? BackNumber { get; set; }
         public DateTime Date { get; set; }
     }
 }

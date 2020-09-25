@@ -37,7 +37,7 @@ namespace AAYHS.Core.DTOs.Response
         public int ExhibitorHorseId { get; set; }
         public string HorseName { get; set; }
         public string HorseType { get; set; }
-        public int BackNumber { get; set; }
+        public int? BackNumber { get; set; }
         public string Date { get; set; }
     }
     public class ExhibitorHorsesResponse

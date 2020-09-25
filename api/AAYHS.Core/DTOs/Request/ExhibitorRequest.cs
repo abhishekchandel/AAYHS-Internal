@@ -30,7 +30,7 @@ namespace AAYHS.Core.DTOs.Request
    {
         public int ExhibitorId { get; set; }
         public int HorseId { get; set; }
-        public int BackNumber { get; set; }
+        public int? BackNumber { get; set; }
         public DateTime Date { get; set; }
     }
     public class AddExhibitorToClass
