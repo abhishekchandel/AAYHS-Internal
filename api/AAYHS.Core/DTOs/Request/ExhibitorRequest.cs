@@ -12,7 +12,7 @@ namespace AAYHS.Core.DTOs.Request
         public int AddressId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public int BackNumber { get; set; }
+        public int? BackNumber { get; set; }
         public int BirthYear { get; set; }
         public bool IsNSBAMember { get; set; }
         public bool IsDoctorNote { get; set; }
