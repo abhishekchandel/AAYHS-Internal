@@ -272,14 +272,14 @@
                                             </td>
                                             <td>{{horseType}}</td>
                                             <td>
-                                                <span *ngIf="(!isFirstBackNumber && horseType) || (horseType && exhibitorInfo.BackNumber==null)">
+                                                <span *ngIf="(!isFirstBackNumber && horseType)">
                                                 <input appOnlynumber  type="text" [required]="horseType" class="form-control" name="backNumberControl" #backNumberControl="ngModel" [(ngModel)]="backNumberLinked" placeholder="Back Number" />                                               
                                                 <span class="help-block"
 												*ngIf="(horsesForm.submitted || backNumberControl.touched) && backNumberControl.invalid">Please
                                                 enter back number
                                                  </span>
                                                 </span>
-                                                <span *ngIf="(isFirstBackNumber && horseType && exhibitorInfo.BackNumber !=null)"> {{exhibitorInfo.BackNumber}}</span>
+                                                <span *ngIf="(isFirstBackNumber && horseType)"> {{exhibitorInfo.BackNumber}}</span>
                                             </td>
                                             <td>
                                                 <span *ngIf="horseType">
@@ -502,7 +502,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="3">
+                                            <td colspan="2">
                                                 <select class="dynDataSeclect" name="exhibitorClass" required
                                                 [(ngModel)]="linkedClassId" (change)="getClassDetails($event.target.value)" #classControl="ngModel">
                                                 <option [ngValue]="null">

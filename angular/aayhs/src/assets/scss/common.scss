@@ -2193,3 +2193,25 @@ span{
 .comWidth {
     width: 100px;
 }
+
+// Yearly maintenance
+.showDateTable {
+    tr{
+        td{
+            @media(max-width:480px) {
+                display: block !important;  
+            }
+           
+        }
+    }
+}
+.boxShadow {
+    box-shadow: 0 0 10px rgba(0,0,0,0.15);
+    padding: 15px;
+    border-radius: 5px;
+}
+.captionBorder {
+    padding: 5px 0 10px;
+    border-bottom: 2px solid #a0b8f9;
+    font-weight: 600;
+}

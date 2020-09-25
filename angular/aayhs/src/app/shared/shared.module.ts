@@ -50,7 +50,12 @@ import {NgxPrintModule} from 'ngx-print';
 import { SponsorInfoModalComponent } from './ui/modals/sponsor-info-modal/sponsor-info-modal.component';
 import { FilteredFinancialTransactionsComponent } from './ui/modals/filtered-financial-transactions/filtered-financial-transactions.component';
 import { EmailModalComponent } from './ui/modals/email-modal/email-modal.component';
-import {AmountPipe} from '../shared/filters/amount.pipe'
+import {AmountPipe} from '../shared/filters/amount.pipe';
+import { AddSizeFeeModalComponent } from './ui/modals/add-size-fee-modal/add-size-fee-modal.component';
+import { ClassCategoryModalComponent } from './ui/modals/class-category-modal/class-category-modal.component';
+import { GeneralFeeModalComponent } from './ui/modals/general-fee-modal/general-fee-modal.component';
+import { RefundCalculationModalComponent } from './ui/modals/refund-calculation-modal/refund-calculation-modal.component';
+import { ShowLocationsComponent } from './ui/modals/show-locations/show-locations.component'
 
 
 
@@ -64,7 +69,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     ConfirmDialogComponent, AddSplitClassModalComponent, ExportConfirmationModalComponent,
      ConfirmEqualValidatorDirective, SearchPipe, AssignStallModalComponent, FinancialTransactionsComponent,
       OnlynumberDirective, SponsorInfoModalComponent, FilteredFinancialTransactionsComponent, 
-      EmailModalComponent,AmountPipe,OnlyTwoDecimalsDirective,NumericDecimalDirective],
+      EmailModalComponent,AmountPipe,OnlyTwoDecimalsDirective,NumericDecimalDirective, AddSizeFeeModalComponent, ClassCategoryModalComponent, GeneralFeeModalComponent, RefundCalculationModalComponent, ShowLocationsComponent],
   imports: [
     CommonModule,
     RouterModule,
