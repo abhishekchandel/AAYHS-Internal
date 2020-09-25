@@ -385,7 +385,7 @@ getZipCodes(event,exhibitorDetail) {
 addUpdateExhibitor(){
   this.loading = true;
   this.exhibitorInfo.ExhibitorId=this.exhibitorInfo.ExhibitorId !=null ? Number(this.exhibitorInfo.ExhibitorId) :0
-  this.exhibitorInfo.BackNumber=this.exhibitorInfo.BackNumber !=null ? Number(this.exhibitorInfo.BackNumber) :0
+  this.exhibitorInfo.BackNumber=this.exhibitorInfo.BackNumber !=null ? Number(this.exhibitorInfo.BackNumber) :null
   this.exhibitorInfo.GroupId=this.exhibitorInfo.GroupId !=null ? Number(this.exhibitorInfo.GroupId) :0
   this.exhibitorInfo.IsNSBAMember=this.exhibitorInfo.IsNSBAMember !=null ? this.exhibitorInfo.IsNSBAMember :false
   this.exhibitorInfo.IsDoctorNote=this.exhibitorInfo.IsDoctorNote !=null ? this.exhibitorInfo.IsDoctorNote :false
@@ -455,7 +455,9 @@ getAllGroups(){
       this.getCities(response.Data.exhibitorResponses[0].StateId).then(res => {
         this.getZipCodes(response.Data.exhibitorResponses[0].CityName,true).then(res => {
         this.exhibitorInfo = response.Data.exhibitorResponses[0];
-        this.exhibitorInfo.BackNumber=response.Data.exhibitorResponses[0].BackNumber ===0 ? null :response.Data.exhibitorResponses[0].BackNumber;
+        // this.exhibitorInfo.BackNumber=response.Data.exhibitorResponses[0].BackNumber ===0 ? null :response.Data.exhibitorResponses[0].BackNumber;
+        this.exhibitorInfo.BackNumber=response.Data.exhibitorResponses[0].BackNumber;
+
       });
     });
     this.exhibitorInfo.GroupId=this.exhibitorInfo.GroupId >0 ? Number(this.exhibitorInfo.GroupId) :null;
