@@ -42,7 +42,7 @@ namespace AAYHS.Core.DTOs.Response
         public int GroupExhibitorId { get; set; }
         public int ExhibitorId { get; set; }
         public string ExhibitorName { get; set; }       
-        public int BirthYear { get; set; }
+        public int? BirthYear { get; set; }
         public List<GroupExhibitorHorses> getGroupExhibitorHorses { get; set; }
     }
     public class GetAllGroupExhibitors
@@ -108,7 +108,7 @@ namespace AAYHS.Core.DTOs.Response
     }
     public class GetStatementExhibitor
     {
-        public int BackNumber { get; set; }
+        public int? BackNumber { get; set; }
         public string ExhibitorName { get; set; }
         public string HorseName { get; set; }
     }

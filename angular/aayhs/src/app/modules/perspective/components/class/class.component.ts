@@ -552,6 +552,7 @@ export class ClassComponent implements OnInit {
       this.loading = false;
       this.getClassResult(this.classInfo.ClassId);
       this.resultForm.resetForm({ backNumber: null });
+      this.getAllBackNumbers(this.classInfo.ClassId)
       this.resetExhibitorInfo();
       this.initialPostion = 1;
       this.showPosition = false

@@ -34,7 +34,7 @@ namespace AAYHS.Core.DTOs.Response.Common
     {
         public int ExhibitorId { get; set; }
         public string ExhibitorName { get; set; }
-        public int BirthYear { get; set; }
+        public int? BirthYear { get; set; }
     }
     public class GetAllLinkedExhibitors
     {
