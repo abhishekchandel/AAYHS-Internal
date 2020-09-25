@@ -15,7 +15,7 @@ import { MatTableDataSource } from '@angular/material/table/table-data-source';
 import { GroupInformationViewModel } from 'src/app/core/models/group-model';
 
 import PerfectScrollbar from 'perfect-scrollbar';
-import { StallComponent } from '../stall/stall.component';
+import { GroupStallComponent } from '../stall/groupstall.component';
 import { GlobalService } from 'src/app/core/services/global.service';
 
 
@@ -649,7 +649,7 @@ export class GroupComponent implements OnInit {
 
     };
 
-    const dialogRef = this.dialog.open(StallComponent, config,
+    const dialogRef = this.dialog.open(GroupStallComponent, config,
 
     );
     dialogRef.afterClosed().subscribe(dialogResult => {

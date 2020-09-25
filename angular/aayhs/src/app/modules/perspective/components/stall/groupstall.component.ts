@@ -5,11 +5,11 @@ import { MatDialogRef, MatDialogConfig, MatDialog, MAT_DIALOG_DATA } from '@angu
 import { MatSnackbarComponent } from '../../../../shared/ui/mat-snackbar/mat-snackbar.component';
 
 @Component({
-  selector: 'app-stall',
-  templateUrl: './stall.component.html',
-  styleUrls: ['./stall.component.scss']
+  selector: 'app-groupstall',
+  templateUrl: './groupstall.component.html',
+  styleUrls: ['./groupstall.component.scss']
 })
-export class StallComponent implements OnInit {
+export class GroupStallComponent implements OnInit {
   loading = false;
   stallResponse: any
   chunkedData: any
@@ -28,7 +28,7 @@ export class StallComponent implements OnInit {
 
     private stallService: StallService,
     private snackBar: MatSnackbarComponent,
-    public dialogRef: MatDialogRef<StallComponent>,
+    public dialogRef: MatDialogRef<GroupStallComponent>,
     public dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {

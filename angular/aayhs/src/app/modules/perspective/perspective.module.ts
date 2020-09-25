@@ -6,14 +6,15 @@ import { ClassComponent } from './components/class/class.component';
 import { SharedModule } from '../../shared/shared.module';
 import { LayoutComponent } from './components/layout/layout.component';
 import { SponsorComponent } from './components/sponsor/sponsor.component';
-import { StallComponent } from './components/stall/stall.component';
+import { GroupStallComponent } from './components/stall/groupstall.component';
+import { ExhibitorStallComponent } from './components/stall/exhibitorstall.component';
 import { ExhibitorComponent } from './components/exhibitor/exhibitor.component';
 import { HorseComponent } from './components/horse/horse.component';
 import { GroupComponent } from './components/group/group.component';
 
 
 @NgModule({
-  declarations: [ClassComponent, ExhibitorComponent, GroupComponent,LayoutComponent, HorseComponent,SponsorComponent, StallComponent],
+  declarations: [ClassComponent, ExhibitorComponent, GroupComponent,LayoutComponent, HorseComponent,SponsorComponent, GroupStallComponent,ExhibitorStallComponent],
   imports: [
     CommonModule,
     PerspectiveRoutingModule,
