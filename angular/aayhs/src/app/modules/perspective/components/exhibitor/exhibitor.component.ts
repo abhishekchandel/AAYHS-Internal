@@ -61,6 +61,7 @@ export class ExhibitorComponent implements OnInit {
   showScratch:boolean=false;
   sponsors:any;
   linkedSponsorId:number=null;
+  addHorseId:number=null;
   addnumber:number=null;
   addType:string=null;
   sponsorTypes:any
@@ -699,7 +700,8 @@ addClassToExhibitor(){
   var addClass = {
     exhibitorId: this.exhibitorInfo.ExhibitorId,
     classId:Number(this.linkedClassId),
-    date:this.classDate
+    date:this.classDate,
+    horseId:this.addHorseId
   }
   this.exhibitorService.addExhibitorToClass(addClass).subscribe(response => {
     this.loading = false;
@@ -724,6 +726,9 @@ resetLinkClass(){
   this.classDate=null;
 }
 
+setLinkedHorse(value){
+this.addHorseId=Number(value)
+}
 
 getExhibitorSponsors(id){
   return new Promise((resolve, reject) => {

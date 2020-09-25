@@ -80,9 +80,8 @@
                                     <!--label><input #nsbaIndicator="ngModel" name="nsbaIndicator" [(ngModel)]="exhibitorInfo.IsNSBAMember" type="checkbox" value="" class="ciCheckbox">NSBA Indicator</label-->
                                 </div>
                                 <div class="form-group">
-                                    <label>Back Number <span *ngIf="exhibitorInfo.ExhibitorId==null">*</span> </label>	
-                                    <input #backNumber="ngModel" [disabled]="(exhibitorInfo.ExhibitorId !=null) && (exhibitorInfo.BackNumber ==null)" appOnlynumber name="backNumber" [required]="exhibitorInfo.ExhibitorId==null"  [(ngModel)]="exhibitorInfo.BackNumber" type="text" class="form-control" placeholder="Back Number"/>                                
-                                     <span class="help-block" *ngIf="backNumber.errors?.required && (backNumber.touched || exhibitorInfoForm.submitted)">Back Number is required</span>
+                                    <label>Back Number  </label>	
+                                    <input #backNumber="ngModel"  appOnlynumber name="backNumber"   [(ngModel)]="exhibitorInfo.BackNumber" type="text" class="form-control" placeholder="Back Number"/>                                
                                 </div>
                                 <div class="form-group">
                                     <label>First name <span>*</span></label>	
@@ -170,8 +169,8 @@
                                     <!--label><input type="checkbox"  #doctorVetNoteIndicator="ngModel" name="doctorVetNoteIndicator" [(ngModel)]="exhibitorInfo.IsDoctorNote" value="" class="ciCheckbox">Doctor/Vet Note Indicator</label-->
                                 </div>
                                 <div class="form-group">
-                                    <label>Birth Year <span>*</span></label>                                  
-                                    <select required class="form-control" placeholder="Birth Year" name="birthYear" #birthYear="ngModel" [(ngModel)]="exhibitorInfo.BirthYear" (change)="setBirthYear($event)">													
+                                    <label>Birth Year</label>                                  
+                                    <select  class="form-control" placeholder="Birth Year" name="birthYear" #birthYear="ngModel" [(ngModel)]="exhibitorInfo.BirthYear" (change)="setBirthYear($event)">													
                                         <option value="null" disabled="true" [selected]="true">
                                             Select Birth Year
                                         </option>
@@ -179,9 +178,7 @@
                                             [value]="year">{{year}}
                                         </option>                                                                                               
                                     </select>
-                                    <span class="help-block"
-                                    *ngIf="birthYear.errors?.required && (birthYear.touched || exhibitorInfoForm.submitted)">Birth Year
-                                     is required</span>                                    
+                                                                     
                                 </div>
                                 <div class="form-group">
                                     <label>Phone </label>	
@@ -365,7 +362,7 @@
                                         <button type="button" class="icon" (click)="showSponsorInfo(sponsor,false)"><span></span> <i class="fa fa-external-link" aria-hidden="true"></i></button>
                                         </td>
                                         <td>{{sponsor.Email}}</td>
-                                        <td>{{sponsor.Amount |mask :'separator.2':',' }}</td>
+                                        <td>{{sponsor.Amount |currency:'USD':'symbol':'4.2-2' }}</td>
                                         <td>{{sponsor.SponsorTypeName}}</td>
                                         <td>{{sponsor.IdNumber}}</td>
                                         <td>{{sponsor.AdTypeName}}</td>
@@ -520,6 +517,23 @@
                                                 *ngIf="(classesForm.submitted || classControl.touched) && classControl.invalid">Please
                                                 select class</span>
                                             </td>
+                                           
+                                            <td>
+                                                <select class="dynDataSeclect" name="addexhibitorhorse" required
+                                                [(ngModel)]="addHorseId" (change)="setLinkedHorse($event.target.value)" #addHorseControl="ngModel">
+                                                <option [ngValue]="null">
+                                                    Select Horse
+                                                </option>
+                                                <option *ngFor="let horse of exhibitorHorses"
+                                                    [value]="horse.BackNumber">{{horse.HorseName}} /
+                                                    {{horse.HorseType}} / {{horse.BackNumber}}
+                                                </option>
+                                            </select>
+                                            <span class="help-block"
+                                                *ngIf="(classesForm.submitted || addHorseControl.touched) && addHorseControl.invalid">Please
+                                                select horse</span>
+                                            </td>
+
                                             <td>{{classDetails.Entries}}</td>
                                             <td>
                                                 <span *ngIf="(linkedClassId)">
