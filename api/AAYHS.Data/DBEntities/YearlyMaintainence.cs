@@ -19,7 +19,7 @@ namespace AAYHS.Data.DBEntities
         public DateTime PreEntryCutOffDate { get; set; }      
         [Column(TypeName = "varchar(50)")]
         public string Location { get; set; }
-        public DateTime Date { get; set; }
+        //public DateTime Date { get; set; }
 
     }
 }
