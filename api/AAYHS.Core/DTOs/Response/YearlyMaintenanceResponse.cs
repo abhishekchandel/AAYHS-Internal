@@ -35,7 +35,7 @@ namespace AAYHS.Core.DTOs.Response
     public class GetUser
     {
         public int UserId { get; set; }
-        public string Name { get; set; }
+        public string UserName { get; set; }
         public string Email { get; set; }
         public bool Active { get; set; }
         public bool IsApproved { get; set; }
