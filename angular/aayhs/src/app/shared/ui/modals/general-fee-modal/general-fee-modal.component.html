@@ -1,9 +1,12 @@
 <div id="classSplit" class="modal fade trashPopup" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
+            <div class="modal-header">
+                <button (click)="onDismiss()"type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">General fees</h4>
+            </div>
             <div class="modal-body text-center">
                         <div class="table-responsive emTable">
-                            <h3>General fees</h3>
                             <table class="table table-bordered tableBodyScroll">
                                     <thead>
                                         <tr>
@@ -18,147 +21,235 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                <div class="prePostField">
-                                                        <label  class="radioBtn">Pre
-
-                                                            <input type="radio"  checked="checked"
-                                                                name="fee.CodeName"
-                                                               >
-
-                                                            <input type="radio" 
-                                                                name="fee.CodeName"
-                                                                >
-
+                                                    
+                                                    <div class="prePostField">
+                                                        <label class="radioBtn">Pre 
+                                                            <input type="radio" checked="checked" name="fee.CodeName" value="2011">
+                                                            <span class="checkmark"></span>
+                                                        </label>
+                                                        <label class="radioBtn">Post 
+                                                            <input type="radio" name="fee.CodeName" value="2012" >
                                                             <span class="checkmark"></span>
                                                         </label>
                                                     </div>
+                                                
                                             </td>
                                             <td>Administration</td>
                                             <td>5.00</td>
                                             <td>
-                                                <label class="customCheckbox">
+                                                <label class="customCheckbox d-inline">
                                                     <input  name="nsbaIndicator" type="checkbox" value="" class="ciCheckbox">
                                                     <span class="checkmark"></span>
                                                 </label>
                                             </td>
-                                            <td></td>
+                                            <td><div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
                                         </tr>
                                         <tr>
                                             <td>
+                                                <div class="prePostField">
+                                                    <label class="radioBtn">Pre 
+                                                        <input type="radio" checked="checked" name="fee.CodeName" value="2011">
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                    <label class="radioBtn">Post 
+                                                        <input type="radio" name="fee.CodeName" value="2012" >
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                </div>
                                             </td>
                                             <td>Administration</td>
                                             <td>5.00</td>
                                             <td>
-                                                <label class="customCheckbox">
+                                                <label class="customCheckbox d-inline">
                                                     <input  name="nsbaIndicator"  type="checkbox" value="" class="ciCheckbox">
                                                     <span class="checkmark"></span>
                                                 </label>
                                             </td>
-                                            <td></td>
+                                            <td><div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
                                         </tr>
                                         <tr>
                                             <td>
+                                                <div class="prePostField">
+                                                    <label class="radioBtn">Pre 
+                                                        <input type="radio" checked="checked" name="fee.CodeName" value="2011">
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                    <label class="radioBtn">Post 
+                                                        <input type="radio" name="fee.CodeName" value="2012" >
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                </div>
                                             </td>
                                             <td>Class Entry</td>
                                             <td>20.00</td>
                                             <td>
-                                                <label class="customCheckbox">
+                                                <label class="customCheckbox d-inline">
                                                     <input  name="nsbaIndicator"  type="checkbox" value="" class="ciCheckbox">
                                                     <span class="checkmark"></span>
                                                 </label>
                                             </td>
-                                            <td></td>
+                                            <td><div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
                                         </tr>
                                         <tr>
                                             <td>
+                                                <div class="prePostField">
+                                                    <label class="radioBtn">Pre 
+                                                        <input type="radio" checked="checked" name="fee.CodeName" value="2011">
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                    <label class="radioBtn">Post 
+                                                        <input type="radio" name="fee.CodeName" value="2012" >
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                </div>
                                             </td>
                                             <td>Class Entry</td>
                                             <td>30.00</td>
                                             <td>
-                                                <label class="customCheckbox">
+                                                <label class="customCheckbox d-inline">
                                                     <input name="nsbaIndicator" type="checkbox" value="" class="ciCheckbox">
                                                     <span class="checkmark"></span>
                                                 </label>
                                             </td>
-                                            <td></td>
+                                            <td><div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
                                         </tr>
                                         <tr>
                                             <td>
+                                                <div class="prePostField">
+                                                    <label class="radioBtn">Pre 
+                                                        <input type="radio" checked="checked" name="fee.CodeName" value="2011">
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                    <label class="radioBtn">Post 
+                                                        <input type="radio" name="fee.CodeName" value="2012" >
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                </div>
                                             </td>
                                             <td>Horse Stall</td>
                                             <td>80.00</td>
                                             <td>
-                                                <label class="customCheckbox">
+                                                <label class="customCheckbox d-inline">
                                                     <input name="nsbaIndicator" type="checkbox" value="" class="ciCheckbox">
                                                     <span class="checkmark"></span>
                                                 </label>
                                             </td>
-                                            <td></td>
+                                            <td><div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
                                         </tr>
                                         <tr>
                                             <td>
+                                                <div class="prePostField">
+                                                    <label class="radioBtn">Pre 
+                                                        <input type="radio" checked="checked" name="fee.CodeName" value="2011">
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                    <label class="radioBtn">Post 
+                                                        <input type="radio" name="fee.CodeName" value="2012" >
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                </div>
                                             </td>
                                             <td>Horse Stall</td>
                                             <td>95.00</td>
                                             <td>
-                                                <label class="customCheckbox">
+                                                <label class="customCheckbox d-inline">
                                                     <input name="nsbaIndicator" type="checkbox" value="" class="ciCheckbox">
                                                     <span class="checkmark"></span>
                                                 </label>
                                             </td>
-                                            <td></td>
+                                            <td><div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
                                         </tr>
                                         <tr>
                                             <td>
+                                                <div class="prePostField">
+                                                    <label class="radioBtn">Pre 
+                                                        <input type="radio" checked="checked" name="fee.CodeName" value="2011">
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                    <label class="radioBtn">Post 
+                                                        <input type="radio" name="fee.CodeName" value="2012" >
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                </div>
                                             </td>
                                             <td>Program Book</td>
                                             <td>12.00</td>
                                             <td>
-                                                <label class="customCheckbox">
+                                                <label class="customCheckbox d-inline">
                                                     <input name="nsbaIndicator" type="checkbox" value="" class="ciCheckbox">
                                                     <span class="checkmark"></span>
                                                 </label>
                                             </td>
-                                            <td></td>
+                                            <td><div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
                                         </tr>
                                         <tr>
                                             <td>
+                                                <div class="prePostField">
+                                                    <label class="radioBtn">Pre 
+                                                        <input type="radio" checked="checked" name="fee.CodeName" value="2011">
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                    <label class="radioBtn">Post 
+                                                        <input type="radio" name="fee.CodeName" value="2012" >
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                </div>
                                             </td>
                                             <td>Program Book</td>
                                             <td>12.00</td>
                                             <td>
-                                                <label class="customCheckbox">
+                                                <label class="customCheckbox d-inline">
                                                     <input name="nsbaIndicator" type="checkbox" value="" class="ciCheckbox">
                                                     <span class="checkmark"></span>
                                                 </label>
                                             </td>
-                                            <td></td>
+                                            <td><div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
                                         </tr>
                                         <tr>
                                             <td>
+                                                <div class="prePostField">
+                                                    <label class="radioBtn">Pre 
+                                                        <input type="radio" checked="checked" name="fee.CodeName" value="2011">
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                    <label class="radioBtn">Post 
+                                                        <input type="radio" name="fee.CodeName" value="2012" >
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                </div>
                                             </td>
                                             <td>Tack Stall</td>
                                             <td>95.00</td>
                                             <td>
-                                                <label class="customCheckbox">
+                                                <label class="customCheckbox d-inline">
                                                     <input name="nsbaIndicator" type="checkbox" value="" class="ciCheckbox">
                                                     <span class="checkmark"></span>
                                                 </label>
                                             </td>
-                                            <td></td>
+                                            <td><div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
                                         </tr>
                                         <tr>
                                             <td>
+                                                <div class="prePostField">
+                                                    <label class="radioBtn">Pre 
+                                                        <input type="radio" checked="checked" name="fee.CodeName" value="2011">
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                    <label class="radioBtn">Post 
+                                                        <input type="radio" name="fee.CodeName" value="2012" >
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                </div>
                                             </td>
                                             <td>Tack Stall</td>
                                             <td>110.00</td>
                                             <td>
-                                                <label class="customCheckbox">
+                                                <label class="customCheckbox d-inline">
                                                     <input name="nsbaIndicator" type="checkbox" value="" class="ciCheckbox">
                                                     <span class="checkmark"></span>
                                                 </label>
                                             </td>
-                                            <td></td>
+                                            <td><div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
                                         </tr>
                                         
                                     </tbody>
