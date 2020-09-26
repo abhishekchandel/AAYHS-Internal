@@ -2,12 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BaseUrl } from '../../config/url-config';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StallService {
-  api = BaseUrl.baseApiUrl;
+  // api = BaseUrl.baseApiUrl;
+  api =environment.baseApiUrl;
+
   constructor(private http: HttpClient) { }
 
   getAllAssignedStalls(){

@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { BaseUrl } from '../../config/url-config';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HorseService {
 
-  api = BaseUrl.baseApiUrl;
+  // api = BaseUrl.baseApiUrl;
+  api =environment.baseApiUrl;
 
   constructor(private http: HttpClient) { }
 
