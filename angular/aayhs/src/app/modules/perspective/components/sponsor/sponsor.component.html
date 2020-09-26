@@ -165,17 +165,16 @@
 
 											<div class="form-group">
 												<label>Amount Received</label>
-												<input numeric decimals="2"
-												 type="text"  
-												 class="form-control" 
-												 id="sponsoramount"
-												[ngModel]="value"
-												 (ngModelChange)="value=$event"
-												placeholder="Amount Received"
-													name='amount'
-												 />
-
-											</div>
+												
+												<input type="number" 
+												class="form-control"     
+												#amountReceieved="ngModel" 
+												name="amountReceieved"
+												 [(ngModel)]="sponsorInfo.AmountReceived" 
+												 placeholder="Amount Received"
+												 (change)="setAmount($event.target.value)"/>
+											
+												</div> 
 
 											<div class="row">
 												<div class="col-md-7">

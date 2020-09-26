@@ -204,8 +204,8 @@
 
                                             <div class="form-group">
                                                 <label>Amount Received</label>
-                                                <input type="number" class="form-control" id="groupamount"
-                                                    value="{{groupInfo.AmountReceived  | mask :'separator.2':','}}"
+                                                <input type="number" class="form-control" #amountReceieved="ngModel"
+                                                    name="amountReceieved" [(ngModel)]="groupInfo.AmountReceived"
                                                     placeholder="Amount Received"
                                                     (change)="setAmount($event.target.value)" />
                                             </div>

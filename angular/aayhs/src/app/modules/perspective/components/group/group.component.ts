@@ -222,12 +222,12 @@ export class GroupComponent implements OnInit {
   AddUpdateGroup = (group) => {
 
     this.loading = true;
-    this.groupInfo.AmountReceived = this.groupInfo.AmountReceived.replace(",", "");
 
-    this.groupInfo.AmountReceived = Number(Number(this.groupInfo.AmountReceived == null
+
+    this.groupInfo.AmountReceived = Number(this.groupInfo.AmountReceived == null
       || this.groupInfo.AmountReceived == undefined
       || this.groupInfo.AmountReceived == NaN ? 0 :
-      this.groupInfo.AmountReceived).toFixed(2));
+      this.groupInfo.AmountReceived);
 
 
     this.StallAssignmentRequestsData = [];
@@ -681,16 +681,16 @@ export class GroupComponent implements OnInit {
 
   setAmount(val) {
 
-    val = val.replace(",", "");
+     
     if (val <= 0) {
-      this.groupInfo.AmountReceived = 0.00;
+      this.groupInfo.AmountReceived =Number(0);
     }
     else if (val > 9999.99) {
-      this.groupInfo.AmountReceived = 9999.99;
+      this.groupInfo.AmountReceived = Number(9999.99);
       this.snackBar.openSnackBar("Amount cannot be greater then 9999.99", 'Close', 'red-snackbar');
     }
     else {
-      this.groupInfo.AmountReceived = Number(Number(val).toFixed(2));
+      this.groupInfo.AmountReceived =Number(val);
     }
 
   }
