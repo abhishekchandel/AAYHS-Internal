@@ -28,5 +28,17 @@ namespace AAYHS.Core.DTOs.Response
         public string Location { get; set; }
         public DateTime Date { get; set; }
     }
+    public class GetAllUsers
+    {
+        public List<GetUser> getUsers { get; set; }
+    }
+    public class GetUser
+    {
+        public int UserId { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public bool Active { get; set; }
+        public bool IsApproved { get; set; }
+    }
 
 }

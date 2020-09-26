@@ -8,4 +8,9 @@ namespace AAYHS.Core.DTOs.Request
     {
         public int YearlyMaintenanceId { get; set; }
     }
+    public class UserApprovedRequest
+    {
+        public int UserId { get; set; }
+        public bool IsApproved { get; set; }
+    }
 }

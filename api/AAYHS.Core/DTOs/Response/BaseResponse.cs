@@ -74,6 +74,7 @@ namespace AAYHS.Core.DTOs.Response
         public GetAllExhibitorTransactions GetAllExhibitorTransactions { get; set; }   
         public GetAllYearlyMaintenance GetAllYearlyMaintenance { get; set; }   
         public GetYearlyMaintenanceById GetYearlyMaintenanceById { get; set; }   
+        public GetAllUsers GetAllUsers { get; set; }   
 
         
 

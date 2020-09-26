@@ -10,5 +10,8 @@ namespace AAYHS.Service.IService
     {
         MainResponse GetAllYearlyMaintenance(GetAllYearlyMaintenanceRequest getAllYearlyMaintenanceRequest);
         MainResponse GetYearlyMaintenanceById(int yearlyMaintenanceId);
+        MainResponse GetAllUsers();
+        MainResponse ApprovedUser(UserApprovedRequest userApprovedRequest, string actionBy);
+        MainResponse DeleteUser(int userId, string actionBy);
     }
 }

@@ -38,6 +38,8 @@ namespace AAYHS.Core.AutoMapper
             CreateMap<Horses, GetHorses>();
             CreateMap<Classes, GetClassesForExhibitor>();
             CreateMap<Sponsors, GetSponsorForExhibitor>();
+            CreateMap<User, GetUser>();
+
 
 
         }

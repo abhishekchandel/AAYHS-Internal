@@ -53,5 +53,43 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<GetYearlyMaintenanceById>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
+        /// <summary>
+        /// This api used to get all the user which is not approved
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetAllUsers()
+        {
+
+            _mainResponse = _yearlyMaintenanceService.GetAllUsers();
+            _jsonString = Mapper.Convert<GetAllUsers>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to approved and unapproved the user
+        /// </summary>
+        /// <param name="userApprovedRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult ApprovedUser(UserApprovedRequest userApprovedRequest)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _yearlyMaintenanceService.ApprovedUser(userApprovedRequest, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to delete the user
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult DeleteUser(int userId)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _yearlyMaintenanceService.DeleteUser(userId, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
     }
 }
