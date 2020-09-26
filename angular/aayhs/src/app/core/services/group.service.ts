@@ -2,11 +2,14 @@ import { Injectable } from '@angular/core';
 import { BaseUrl } from '../../config/url-config';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class GroupService {
-  api = BaseUrl.baseApiUrl;
+  // api = BaseUrl.baseApiUrl;
+  api =environment.baseApiUrl;
+
   constructor(private http: HttpClient) { }
 
 

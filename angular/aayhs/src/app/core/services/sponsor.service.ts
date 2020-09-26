@@ -4,6 +4,7 @@ import{SponsorInformationViewModel} from '../models/sponsor-model'
 import{SponsorViewModel} from '../models/sponsor-model'
 import { BaseUrl } from '../../config/url-config';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
@@ -11,7 +12,8 @@ import { Observable } from 'rxjs';
 })
 export class SponsorService {
 
-  api = BaseUrl.baseApiUrl;
+  // api = BaseUrl.baseApiUrl;
+  api =environment.baseApiUrl;
 
   constructor(private http: HttpClient) { }
 
