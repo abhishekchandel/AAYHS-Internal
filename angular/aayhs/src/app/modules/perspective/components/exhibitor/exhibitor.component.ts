@@ -19,6 +19,7 @@ import { EmailModalComponent } from 'src/app/shared/ui/modals/email-modal/email-
 import { HttpEventType } from '@angular/common/http';
 import { MatPaginator } from '@angular/material/paginator';
 import { ExhibitorStallComponent } from '../stall/exhibitorstall.component';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-exhibitor',
@@ -96,7 +97,7 @@ export class ExhibitorComponent implements OnInit {
   isRefund:boolean=false;
   minDate=moment( new Date()).format('YYYY-MM-DD');
   //for binding images with server url
-  filesUrl = BaseUrl.filesUrl;
+  filesUrl = environment.filesUrl;
   baseRequest: BaseRecordFilterRequest = {
     Page: 1,
     Limit: 5,

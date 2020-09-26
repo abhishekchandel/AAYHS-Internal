@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { LayoutComponent } from '../perspective/components/layout/layout.component';
 import { Routes, RouterModule } from '@angular/router';
-import { YearlyMaintenanceComponent } from './module/yearly-maintenance/yearly-maintenance.component';
+import { YearlyMaintenanceComponent } from './components/yearly-maintenance/yearly-maintenance.component';
 
 const routes: Routes = [
   {

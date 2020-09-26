@@ -2,13 +2,16 @@ import { Injectable } from '@angular/core';
 import { BaseUrl } from '../../config/url-config';
 import { HttpClient, HttpParams, HttpEvent, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExhibitorService {
 
-  api = BaseUrl.baseApiUrl;
+  // api = BaseUrl.baseApiUrl;
+  api =environment.baseApiUrl;
+
   constructor(private http: HttpClient) { }
 
   // exhibitor info
