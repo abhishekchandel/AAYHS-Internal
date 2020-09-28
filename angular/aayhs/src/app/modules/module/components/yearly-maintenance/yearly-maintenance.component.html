@@ -123,75 +123,74 @@
                         <form #addYearForm="ngForm" name="addYearForm" (ngSubmit)="addYearForm.valid && addUpdateYear()">
                         <div class="card dataEntriesTable">
                             <div class="card-body"> 
-                                <table class="table showDateTable tableBodyScroll">
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <div class="form-group">
-                                                    <label>Show Start Date</label> 
-                                                    <mat-form-field class="dateField">
-                                                        <input matInput [matDatepicker]="showStartDatePicker"
-                                                            placeholder="Show Start Date" class="form-control"
-                                                            name="showStartDate" #showStartDate="ngModel"
-                                                            (dateChange)="handleShowStartDate()" readonly
-                                                            [(ngModel)]="yearlyMaintenanceSummary.ShowStartDate" >
-                                                        <mat-datepicker-toggle matSuffix [for]="showStartDatePicker">
-                                                        </mat-datepicker-toggle>
-                                                        <mat-datepicker #showStartDatePicker></mat-datepicker>													
-                                                    </mat-form-field>
-    
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-group">
-                                                    <label>Show End Date</label> 
-                                                    <mat-form-field class="dateField">
-                                                        <input matInput [matDatepicker]="showEndDatePicker"
-                                                            placeholder="Billing Date" class="form-control"
-                                                            name="showEndDate" #showEndDate="ngModel"
-                                                            (dateChange)="handleShowEndDate()" readonly
-                                                            [(ngModel)]="yearlyMaintenanceSummary.ShowEndDate" >
-                                                        <mat-datepicker-toggle matSuffix [for]="showEndDatePicker">
-                                                        </mat-datepicker-toggle>
-                                                        <mat-datepicker #showEndDatePicker></mat-datepicker>													
-                                                    </mat-form-field>
-    
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-group">
-                                                    <label>Pre Entry Cut OFf Date</label>
-                                                    <mat-form-field class="dateField">
-                                                        <input matInput [matDatepicker]="preEntryCutOffDatePicker"
-                                                            placeholder="Billing Date" class="form-control"
-                                                            name="preEntryCutOffDate" #preEntryCutOffDate="ngModel"
-                                                            (dateChange)="handlePreEntryCutOffDate()"
-                                                            [(ngModel)]="yearlyMaintenanceSummary.PreCutOffDate" readonly>
-                                                        <mat-datepicker-toggle matSuffix [for]="preEntryCutOffDatePicker">
-                                                        </mat-datepicker-toggle>
-                                                        <mat-datepicker #preEntryCutOffDatePicker></mat-datepicker>													
-                                                    </mat-form-field>
-    
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-group">
-                                                    <label>Sponsor Cut Off Date</label>
-                                                    <mat-form-field class="dateField">
-                                                        <input matInput [matDatepicker]="sponsorCutOffDatePicker"
-                                                            placeholder="Billing Date" class="form-control"
-                                                            name="sponsorCutOffDate" #sponsorCutOffDate="ngModel"
-                                                            (dateChange)="handleSponsorCutOffDate()"
-                                                            [(ngModel)]="yearlyMaintenanceSummary.SponcerCutOffDate" readonly>
-                                                        <mat-datepicker-toggle matSuffix [for]="sponsorCutOffDatePicker">
-                                                        </mat-datepicker-toggle>
-                                                        <mat-datepicker #sponsorCutOffDatePicker></mat-datepicker>													
-                                                    </mat-form-field>
-    
-                                                </div>
-                                            </td>
-                                          <td>
-                                            <label>Birth Year</label>                                  
+                                <ul class="showDateTable">
+                                    <li>
+                                        <div class="form-group">
+                                            <label class="smText">Show Start Date</label> 
+                                            <mat-form-field class="dateField">
+                                                <input matInput [matDatepicker]="showStartDatePicker"
+                                                    placeholder="Show Start Date" class="form-control"
+                                                    name="showStartDate" #showStartDate="ngModel"
+                                                    (dateChange)="handleShowStartDate()" readonly
+                                                    [(ngModel)]="yearlyMaintenanceSummary.ShowStartDate" >
+                                                <mat-datepicker-toggle matSuffix [for]="showStartDatePicker">
+                                                </mat-datepicker-toggle>
+                                                <mat-datepicker #showStartDatePicker></mat-datepicker>													
+                                            </mat-form-field>
+
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="form-group">
+                                            <label class="smText">Show End Date</label> 
+                                            <mat-form-field class="dateField">
+                                                <input matInput [matDatepicker]="showEndDatePicker"
+                                                    placeholder="Billing Date" class="form-control"
+                                                    name="showEndDate" #showEndDate="ngModel"
+                                                    (dateChange)="handleShowEndDate()" readonly
+                                                    [(ngModel)]="yearlyMaintenanceSummary.ShowEndDate" >
+                                                <mat-datepicker-toggle matSuffix [for]="showEndDatePicker">
+                                                </mat-datepicker-toggle>
+                                                <mat-datepicker #showEndDatePicker></mat-datepicker>													
+                                            </mat-form-field>
+
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="form-group">
+                                            <label class="smText">Pre Entry Cut OFf Date</label>
+                                            <mat-form-field class="dateField">
+                                                <input matInput [matDatepicker]="preEntryCutOffDatePicker"
+                                                    placeholder="Billing Date" class="form-control"
+                                                    name="preEntryCutOffDate" #preEntryCutOffDate="ngModel"
+                                                    (dateChange)="handlePreEntryCutOffDate()"
+                                                    [(ngModel)]="yearlyMaintenanceSummary.PreCutOffDate" readonly>
+                                                <mat-datepicker-toggle matSuffix [for]="preEntryCutOffDatePicker">
+                                                </mat-datepicker-toggle>
+                                                <mat-datepicker #preEntryCutOffDatePicker></mat-datepicker>													
+                                            </mat-form-field>
+
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="form-group">
+                                            <label class="smText">Sponsor Cut Off Date</label>
+                                            <mat-form-field class="dateField">
+                                                <input matInput [matDatepicker]="sponsorCutOffDatePicker"
+                                                    placeholder="Billing Date" class="form-control"
+                                                    name="sponsorCutOffDate" #sponsorCutOffDate="ngModel"
+                                                    (dateChange)="handleSponsorCutOffDate()"
+                                                    [(ngModel)]="yearlyMaintenanceSummary.SponcerCutOffDate" readonly>
+                                                <mat-datepicker-toggle matSuffix [for]="sponsorCutOffDatePicker">
+                                                </mat-datepicker-toggle>
+                                                <mat-datepicker #sponsorCutOffDatePicker></mat-datepicker>													
+                                            </mat-form-field>
+
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="form-group">
+                                            <label class="smText">Birth Year</label>                                  
                                             <select  class="form-control" placeholder="Year" name="year" #year="ngModel" [(ngModel)]="yearlyMaintenanceSummary.Year" (change)="setYear($event)">													
                                                 <option value="null" disabled="true" [selected]="true">
                                                     Select  Year
@@ -200,11 +199,10 @@
                                                     [value]="year">{{year}}
                                                 </option>                                                                                               
                                             </select>
-                                          </td>
-
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                        </div>
+                                    </li>
+                                </ul>
+                                
                                 <div class="table-responsive tableTab ssReports" id="contentscroll2">
                                     <table class="table table-bordered tableBodyScroll">
                                         <thead>
