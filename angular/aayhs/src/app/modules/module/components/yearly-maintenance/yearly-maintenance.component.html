@@ -28,51 +28,22 @@
                 </thead> 
                 <perfect-scrollbar class="nicescrollBar-1"> 
                     <tbody>
-                        <tr>
-                            <td data-label="Show Year">2018</td>
-                            <td data-label="Pre Entry Cutoff Date">4/15/2018</td>
-                            <td data-label="Pre Entry Free">15:00</td>
-                            <td data-label="Post Entry Free">25:00</td>
-                            <td data-label="Date Created">12/15/2017</td>
+                        <tr *ngFor="let summary of yearlyMaintenanceSummaryList">
+                            <td data-label="Show Year">{{summary.Year}}</td>
+                            <td data-label="Pre Entry Cutoff Date">{{summary.PreEntryCutOffDate | date : 'yyyy/MM/dd'}}</td>
+                            <td data-label="Pre Entry Free">{{summary.PreEntryFee}}</td>
+                            <td data-label="Post Entry Free">{{summary.PostEntryFee}}</td>
+                            <td data-label="Date Created">{{summary.DateCreated | date : 'yyyy/MM/dd'}}</td>
                             <td data-label="Remove">
-                                <div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div>
+                                <button type="button" class="icon" (click)="confirmRemoveYear(summary.YearlyMaintenanceId)"><span></span> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
                             </td>
                         </tr>
-                        <tr>
-                            <td data-label="Show Year">2019</td>
-                            <td data-label="Pre Entry Cutoff Date">4/15/2019</td>
-                            <td data-label="Pre Entry Free">20:00</td>
-                            <td data-label="Post Entry Free">30:00</td>
-                            <td data-label="Date Created">12/30/2018</td>
-                            <td data-label="Remove">
-                                <div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td data-label="Show Year">2020</td>
-                            <td data-label="Pre Entry Cutoff Date">4/15/2020</td>
-                            <td data-label="Pre Entry Free">20:00</td>
-                            <td data-label="Post Entry Free">30:00</td>
-                            <td data-label="Date Created">12/04/2020</td>
-                            <td data-label="Remove">
-                                <div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td data-label="Show Year">2021</td>
-                            <td data-label="Pre Entry Cutoff Date"></td>
-                            <td data-label="Pre Entry Free"></td>
-                            <td data-label="Post Entry Free"></td>
-                            <td data-label="Date Created"></td>
-                            <td data-label="Remove">
-                                <div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div>
-                            </td>
-                        </tr>
+                        
                     </tbody>
                 </perfect-scrollbar> 
             </table> 
             <div >
-                <mat-paginator #paginator  [pageSizeOptions]="[5]">
+                <mat-paginator  #paginator [length]="totalItems" (page)="getNext($event)" [pageSizeOptions]="[5]">
                 </mat-paginator>
             </div>
         </div>
@@ -97,28 +68,140 @@
         <div class="tab-content">
             <div class="tab-pane  active" id="home">
                 <mat-tab-group #tabGroup>
-                    <mat-tab  class="nav-link active nav nav-tabs" label="Fees & Categories">
+
+                    <mat-tab  class="nav-link active nav nav-tabs" label="User Info">
+                        <div class="card dataEntriesTable">
+                            <div class="card-body">                                 
+                                        <div class="table-responsive tableTab" id="contentscroll2">
+                                            <table class="table table-bordered tableBodyScroll">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Name</th> 
+                                                        <th>Email</th> 
+                                                        <th>Active</th>
+                                                        <th>Verified</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <perfect-scrollbar class="nicescrollBar-2">
+                                                    <tbody>
+                                                        
+                                                        <tr *ngFor="let user of registeredUsers">
+                                                            <td>{{user.UserName}}</td>
+                                                            <td>{{user.Email}}</td>
+                                                            <td>
+                                                                <label class="customCheckbox d-inline-block">
+                                                                    <input name="nsbaIndicator"  type="checkbox" value="user.Active" [attr.checked]="user.IsActive === true ? true : null" class="ciCheckbox">
+                                                                    <span class="checkmark"></span>
+                                                                </label>
+                                                            </td>
+                                                            <td>
+                                                             <span *ngIf="user.IsApproved==true"><i class="fa fa-check verifiedSign" aria-hidden="true"></i></span>
+                                                             <span *ngIf="user.IsApproved==false"><i class="fa fa-times-circle verifiedSign" aria-hidden="true"></i></span>
+                                                            </td>
+                                                            <td>
+                                                                <span *ngIf="user.IsApproved==false"><button type="button" (click)="confirmVerifyUnverify(user.UserId,'verify')" class="icon text-success"><span></span> <i class="fa fa-check-square-o darkBlue" aria-hidden="true"></i></button></span>
+                                                                <span *ngIf="user.IsApproved==true"><button type="button" (click)="confirmVerifyUnverify(user.UserId,'unverify')" class="icon text-danger"><span></span> <i class="fa fa-ban verifiedSign" aria-hidden="true"></i></button></span>
+                                                                <button type="button" class="icon" (click)="confirmRemoveUser(user.UserId)"><span></span> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                                            </td>
+                                                        </tr>
+                                                      
+                                                    </tbody> 
+                                                </perfect-scrollbar>
+                                            </table>
+                                        </div>
+                                        
+                                    <div class="actionBtn text-right mb-4 mt-3">
+                                        <button (click)='tabGroup.selectedIndex = 1' class="btn btn-red btnCss roundBtn">Next</button>
+                                        <button type="submit"class="btn btn-red btnCss roundBtn">Submit</button>
+                                    </div>
+                            </div>
+                        </div>
+                    </mat-tab>
+
+                    <mat-tab  class="nav-link  nav nav-tabs" label="Fees & Categories">
+                        <form #addYearForm="ngForm" name="addYearForm" (ngSubmit)="addYearForm.valid && addUpdateYear()">
                         <div class="card dataEntriesTable">
                             <div class="card-body"> 
                                 <table class="table showDateTable tableBodyScroll">
                                     <tbody>
                                         <tr>
                                             <td>
-                                                <label>Show Start Date</label> 
-                                                <input type="date" class="form-control" placeholder="Back Number"/>
+                                                <div class="form-group">
+                                                    <label>Show Start Date</label> 
+                                                    <mat-form-field class="dateField">
+                                                        <input matInput [matDatepicker]="showStartDatePicker"
+                                                            placeholder="Show Start Date" class="form-control"
+                                                            name="showStartDate" #showStartDate="ngModel"
+                                                            (dateChange)="handleShowStartDate()" readonly
+                                                            [(ngModel)]="yearlyMaintenanceSummary.ShowStartDate" >
+                                                        <mat-datepicker-toggle matSuffix [for]="showStartDatePicker">
+                                                        </mat-datepicker-toggle>
+                                                        <mat-datepicker #showStartDatePicker></mat-datepicker>													
+                                                    </mat-form-field>
+    
+                                                </div>
                                             </td>
                                             <td>
-                                                <label>Show End Date</label> 
-                                                <input type="date" class="form-control" placeholder="Back Number"/>
+                                                <div class="form-group">
+                                                    <label>Show End Date</label> 
+                                                    <mat-form-field class="dateField">
+                                                        <input matInput [matDatepicker]="showEndDatePicker"
+                                                            placeholder="Billing Date" class="form-control"
+                                                            name="showEndDate" #showEndDate="ngModel"
+                                                            (dateChange)="handleShowEndDate()" readonly
+                                                            [(ngModel)]="yearlyMaintenanceSummary.ShowEndDate" >
+                                                        <mat-datepicker-toggle matSuffix [for]="showEndDatePicker">
+                                                        </mat-datepicker-toggle>
+                                                        <mat-datepicker #showEndDatePicker></mat-datepicker>													
+                                                    </mat-form-field>
+    
+                                                </div>
                                             </td>
                                             <td>
-                                                <label>Pre Entry Cut OFf Date</label>
-                                                <input type="date" class="form-control" placeholder="Back Number"/>
+                                                <div class="form-group">
+                                                    <label>Pre Entry Cut OFf Date</label>
+                                                    <mat-form-field class="dateField">
+                                                        <input matInput [matDatepicker]="preEntryCutOffDatePicker"
+                                                            placeholder="Billing Date" class="form-control"
+                                                            name="preEntryCutOffDate" #preEntryCutOffDate="ngModel"
+                                                            (dateChange)="handlePreEntryCutOffDate()"
+                                                            [(ngModel)]="yearlyMaintenanceSummary.PreCutOffDate" readonly>
+                                                        <mat-datepicker-toggle matSuffix [for]="preEntryCutOffDatePicker">
+                                                        </mat-datepicker-toggle>
+                                                        <mat-datepicker #preEntryCutOffDatePicker></mat-datepicker>													
+                                                    </mat-form-field>
+    
+                                                </div>
                                             </td>
                                             <td>
-                                                <label>Sponcer Cut Off Date</label>
-                                                <input type="date" class="form-control" placeholder="Back Number"/>
+                                                <div class="form-group">
+                                                    <label>Sponsor Cut Off Date</label>
+                                                    <mat-form-field class="dateField">
+                                                        <input matInput [matDatepicker]="sponsorCutOffDatePicker"
+                                                            placeholder="Billing Date" class="form-control"
+                                                            name="sponsorCutOffDate" #sponsorCutOffDate="ngModel"
+                                                            (dateChange)="handleSponsorCutOffDate()"
+                                                            [(ngModel)]="yearlyMaintenanceSummary.SponcerCutOffDate" readonly>
+                                                        <mat-datepicker-toggle matSuffix [for]="sponsorCutOffDatePicker">
+                                                        </mat-datepicker-toggle>
+                                                        <mat-datepicker #sponsorCutOffDatePicker></mat-datepicker>													
+                                                    </mat-form-field>
+    
+                                                </div>
                                             </td>
+                                          <td>
+                                            <label>Birth Year</label>                                  
+                                            <select  class="form-control" placeholder="Year" name="year" #year="ngModel" [(ngModel)]="yearlyMaintenanceSummary.Year" (change)="setYear($event)">													
+                                                <option value="null" disabled="true" [selected]="true">
+                                                    Select  Year
+                                                </option>
+                                                <option *ngFor="let year of years"
+                                                    [value]="year">{{year}}
+                                                </option>                                                                                               
+                                            </select>
+                                          </td>
+
                                         </tr>
                                     </tbody>
                                 </table>
@@ -152,11 +235,12 @@
                                 </div>
                             </div>
                             <div class="actionBtn text-right mb-3">
-                                <button class="btn btn-red btnCss roundBtn">Select</button>
-                                <button (click)='tabGroup.selectedIndex = 6' class="btn btn-red btnCss roundBtn">Next</button>
-                                <button class="btn btn-red btnCss roundBtn">Submit</button>
+                                <button (click)='tabGroup.selectedIndex = 0' class="btn btn-red btnCss roundBtn">Previous</button>
+                                <button (click)='tabGroup.selectedIndex = 2' class="btn btn-red btnCss roundBtn">Next</button>
+                                <button type="submit"class="btn btn-red btnCss roundBtn">Submit</button>
                             </div>
                         </div>
+                    </form>
                     </mat-tab>
 
                     <mat-tab  class="nav-link nav nav-tabs" label="Aayhs Contact Info">
@@ -311,8 +395,8 @@
                                         </div>
                                     </div>
                                     <div class="actionBtn text-right mb-3">
-                                        <button class="btn btn-red btnCss roundBtn">Previous</button>
-                                        <button (click)='tabGroup.selectedIndex = 6' class="btn btn-red btnCss roundBtn">Next</button>
+                                        <button (click)='tabGroup.selectedIndex = 3' class="btn btn-red btnCss roundBtn">Previous</button>
+                                        <button (click)='tabGroup.selectedIndex = 1' class="btn btn-red btnCss roundBtn">Next</button>
                                         <button class="btn btn-red btnCss roundBtn">Submit</button>
                                     </div>
                                 </div>
@@ -346,4 +430,7 @@
             </div>
         </div>
     </div>
+</div>
+<div class="loaderWrapper" *ngIf="loading">
+	<div class="loader"></div>
 </div>

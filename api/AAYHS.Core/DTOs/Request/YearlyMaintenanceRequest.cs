@@ -6,7 +6,6 @@ namespace AAYHS.Core.DTOs.Request
 {
     public class GetAllYearlyMaintenanceRequest: BaseRecordFilterRequest
     {
-        public int YearlyMaintenanceId { get; set; }
     }
     public class UserApprovedRequest
     {
@@ -15,7 +14,8 @@ namespace AAYHS.Core.DTOs.Request
     }
     public class AddYearlyRequest
     {
-        public DateTime Year { get; set; }
+        public int YearlyMaintainenceId { get; set; }
+        public int Year { get; set; }
         public DateTime ShowStartDate { get; set; }
         public DateTime ShowEndDate { get; set; }
         public DateTime PreCutOffDate { get; set; } 
