@@ -15,5 +15,6 @@ export interface ExhibitorInfoModel
     IsNSBAMember:boolean;
     IsDoctorNote:boolean;
     GroupId:number,
-    GroupName:string
+    GroupName:string,
+    exhibitorStallAssignmentRequests:any;
 }

@@ -120,6 +120,22 @@ namespace AAYHS.Repository.Repository
                                       CityId = address2 != null ? address2.CityId : 0,
                                       CityName = address2 != null ? _context.Cities.Where(x => x.CityId == address2.CityId).Select(x => x.Name).FirstOrDefault():"",
                                       StateId = address2 != null ? _context.Cities.Where(x => x.CityId == address2.CityId).Select(y => y.StateId).FirstOrDefault() : 0,
+
+                                      exhibitorStallAssignmentResponses = (from stallassign in _context.StallAssignment
+                                                                       where stallassign.ExhibitorId == exhibitor.ExhibitorId
+                                                                       && stallassign.IsActive == true
+                                                                       && stallassign.IsDeleted == false
+                                                                       select new ExhibitorStallAssignmentResponse
+                                                                       {
+                                                                           StallAssignmentId = stallassign.StallAssignmentId,
+                                                                           StallId = stallassign.StallId,
+                                                                           StallAssignmentTypeId = stallassign.StallAssignmentTypeId,
+                                                                           GroupId = stallassign.GroupId,
+                                                                           ExhibitorId = stallassign.ExhibitorId,
+                                                                           BookedByType = stallassign.BookedByType,
+                                                                           BookedByName = exhibitor.FirstName+' '+exhibitor.LastName,
+                                                                           StallAssignmentDate = stallassign.Date
+                                                                       }).ToList()
                                   }); ;
             if (exhibitorResponses.Count()!=0)
             {
