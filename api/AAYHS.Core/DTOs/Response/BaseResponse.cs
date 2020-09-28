@@ -72,6 +72,10 @@ namespace AAYHS.Core.DTOs.Response
         public GetAllUploadedDocuments GetAllUploadedDocuments { get; set; }   
         public GetAllFees GetAllFees { get; set; }   
         public GetAllExhibitorTransactions GetAllExhibitorTransactions { get; set; }   
+        public GetAllYearlyMaintenance GetAllYearlyMaintenance { get; set; }   
+        public GetYearlyMaintenanceById GetYearlyMaintenanceById { get; set; }   
+        public GetAllUsers GetAllUsers { get; set; }   
+
         
 
     }
