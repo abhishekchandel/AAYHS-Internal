@@ -270,7 +270,7 @@ namespace AAYHS.Repository.Repository
             IEnumerable<ExhibitorMoneyReceived> data = null;
             GetExhibitorFinancials getExhibitorFinancials = new GetExhibitorFinancials();
 
-            var yearlyMaintainence = _context.YearlyMaintainence.Where(x => x.Year.Year == DateTime.Now.Year && x.IsActive == true &&
+            var yearlyMaintainence = _context.YearlyMaintainence.Where(x => x.Year == DateTime.Now.Year && x.IsActive == true &&
                                                x.IsDeleted == false).FirstOrDefault();
 
             var stallCodes = (from gcc in _context.GlobalCodeCategories
@@ -434,7 +434,7 @@ namespace AAYHS.Repository.Repository
             IEnumerable<GetFees> data = null;
             GetAllFees getAllFees = new GetAllFees();
 
-            var yearlyId = _context.YearlyMaintainence.Where(x => x.Year.Year == DateTime.Now.Year && x.IsActive == true && x.IsDeleted == false).FirstOrDefault();
+            var yearlyId = _context.YearlyMaintainence.Where(x => x.Year == DateTime.Now.Year && x.IsActive == true && x.IsDeleted == false).FirstOrDefault();
             if (yearlyId!=null)
             {
                 if (DateTime.Now.Date <= yearlyId.PreEntryCutOffDate.Date)
