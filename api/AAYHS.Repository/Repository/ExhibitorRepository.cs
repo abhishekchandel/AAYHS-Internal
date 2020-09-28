@@ -346,7 +346,7 @@ namespace AAYHS.Repository.Repository
 
 
             var horseStallFee = _context.YearlyMaintainenceFee.Where(x => x.FeeTypeId == horseStallFeeId && x.YearlyMaintainenceId == yearlyMaintainence.YearlyMaintainenceId).FirstOrDefault();
-
+            
 
             var tackStallFee = _context.YearlyMaintainenceFee.Where(x => x.FeeTypeId == tackStallFeeId && x.YearlyMaintainenceId == yearlyMaintainence.YearlyMaintainenceId).FirstOrDefault();
 
@@ -355,15 +355,56 @@ namespace AAYHS.Repository.Repository
 
             var classEntryFee = _context.YearlyMaintainenceFee.Where(x => x.FeeTypeId == classEntryId && x.YearlyMaintainenceId == yearlyMaintainence.YearlyMaintainenceId).FirstOrDefault();
             
-            decimal preHorseStallAmount = horseStallFee.PreEntryFee * preHorseStall.Count();
-            decimal preTackStallAmount = tackStallFee.PreEntryFee * preTackStall.Count();      
-            decimal preClassAmount = classEntryFee.PreEntryFee * preClasses.Count();
+            decimal preHorseStallAmount = 0;
 
-            decimal additionalAmount = additionalProgramsFee * additionalPrograme;
+            if(horseStallFee != null)
+            {
+                preHorseStallAmount = horseStallFee.PreEntryFee * preHorseStall.Count();
+            }
 
-            decimal postHorseStallAmount = horseStallFee.PostEntryFee * postHorseStall.Count();
-            decimal postTackStallAmount = tackStallFee.PostEntryFee * postTackStall.Count();
-            decimal postClassAmount = classEntryFee.PostEntryFee * postClasses.Count();
+            decimal preTackStallAmount = 0; 
+
+            if(tackStallFee!=null)
+            {
+                preTackStallAmount = tackStallFee.PreEntryFee * preTackStall.Count();
+            }
+            
+            decimal preClassAmount = 0;
+
+            if (classEntryFee != null)
+            {
+                preClassAmount = classEntryFee.PreEntryFee * preClasses.Count();
+            }
+
+            decimal additionalAmount = 0;
+
+            if (additionalProgramsFee != null && additionalPrograme!=null)
+            {
+                additionalAmount = additionalProgramsFee * additionalPrograme;
+            }
+
+            decimal postHorseStallAmount = 0;
+            if (horseStallFee != null)
+            {
+                postHorseStallAmount = horseStallFee.PostEntryFee * postHorseStall.Count();
+            }
+
+
+            decimal postTackStallAmount = 0;
+            if (tackStallFee != null)
+            {
+                postTackStallAmount = tackStallFee.PostEntryFee * postTackStall.Count();
+            }
+
+
+
+
+            decimal postClassAmount =0;
+
+            if (classEntryFee != null)
+            {
+                postClassAmount = classEntryFee.PostEntryFee * postClasses.Count();
+            }
 
             decimal horseStallAmount = preHorseStallAmount + postHorseStallAmount;
             decimal tackStallAmount = preTackStallAmount + postTackStallAmount;

@@ -213,6 +213,29 @@
                                                 </select>
                                                 
                                 </div>
+
+                                <div class="quantityWrapper mt-3">
+                                    <div class="form-group">
+                                        <label>Horse Stall Quantity</label>
+                                        <div class="uantityField stallQuantity">
+                                        <input type="text" class="form-control" placeholder="4" [value]="horsestalllength"/>
+                                        <button type="button" (click)="openStallDiagram()"
+                                        class="btn btn-red btnCss roundBtn whitebg">
+                                        Stall</button>
+                                        </div>
+                                    </div>
+                                    <div class="divideLine"></div>
+                                    <div class="form-group mb-0">
+                                        <label>Tack Stall Quantity</label>
+                                        <div class="uantityField stallQuantity">
+                                        <input type="text" class="form-control" placeholder="2" [value]="tackstalllength"/>
+                                        <button type="button" (click)="openStallDiagram()"
+                                        class="btn btn-red btnCss roundBtn whitebg">
+                                        Stall</button>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                             <div class="col-sm-12">
                                 <div class="buttons text-right mb-3">
@@ -306,25 +329,7 @@
                                 </perfect-scrollbar>
                             </table>
                         </div>
-                        <div class="quantityWrapper mt-3">
-                            <div class="form-group">
-                                <label>Horse Stall Quantity</label>
-                                <div class="uantityField stallQuantity">
-                                <input type="text" class="form-control" placeholder="4" />
-                                <button type="button"
-                                class="btn btn-red btnCss roundBtn whitebg">Stall</button>
-                                </div>
-                            </div>
-                            <div class="divideLine"></div>
-                            <div class="form-group mb-0">
-                                <label>Track Stall Quantity</label>
-                                <div class="uantityField stallQuantity">
-                                <input type="text" class="form-control" placeholder="2" />
-                                <button type="button"
-                                class="btn btn-red btnCss roundBtn whitebg">Stall</button>
-                                </div>
-                            </div>
-                        </div>
+                      
                         
                     </div>
                     <div class="actionBtn text-right mb-4 mt-3">
