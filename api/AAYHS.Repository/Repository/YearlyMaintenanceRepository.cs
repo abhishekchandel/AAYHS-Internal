@@ -115,5 +115,39 @@ namespace AAYHS.Repository.Repository
             }
             return getYearlyMaintenanceById;
         }      
+
+        public int GetCategoryId(string categoryType)
+        {
+            int categoryId = _ObjContext.GlobalCodeCategories.Where(x => x.CategoryName == categoryType).Select(x=>x.GlobalCodeCategoryId).FirstOrDefault();
+
+            return categoryId;
+        }
+
+        public GetAllAdFees GetAllAdFees(int yearlyMaintenanceId)
+        {
+            int adCategoryId = GetCategoryId("AdTypes");
+            IEnumerable<GetAdFees> data;
+            GetAllAdFees getAllAdFees = new GetAllAdFees();
+
+            data = (from fees in _ObjContext.YearlyMaintainenceFee
+                    join adSize in _ObjContext.GlobalCodes on fees.FeeTypeId equals adSize.GlobalCodeId
+                    where fees.IsActive == true && fees.IsDeleted == false
+                    && adSize.IsActive == true && adSize.IsDeleted == false
+                    && fees.YearlyMaintainenceId==yearlyMaintenanceId
+                    && adSize.CategoryId== adCategoryId
+                    select new GetAdFees
+                    { 
+                      YearlyMaintenanceFeeId=fees.YearlyMaintainenceFeeId,
+                      AdSize=adSize.CodeName,
+                      Amount=fees.Amount,
+                      Active=fees.IsActive
+                    });
+
+            if (data.Count()!=0)
+            {
+                getAllAdFees.getAdFees = data.ToList();
+            }
+            return getAllAdFees;
+        }
     }
 }

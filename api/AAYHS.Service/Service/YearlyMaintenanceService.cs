@@ -23,15 +23,17 @@ namespace AAYHS.Service.Service
         private IYearlyMaintenanceRepository _yearlyMaintenanceRepository;
         private IGlobalCodeRepository _globalCodeRepository;
         private IUserRepository _userRepository;
+        private IYearlyMaintenanceFeeRepository _yearlyMaintenanceFeeRepository;
         private MainResponse _mainResponse;
         #endregion
 
         public YearlyMaintenanceService(IYearlyMaintenanceRepository yearlyMaintenanceRepository, IGlobalCodeRepository globalCodeRepository,
-                                       IUserRepository userRepository, IMapper Mapper)
+                                       IUserRepository userRepository,IYearlyMaintenanceFeeRepository yearlyMaintenanceFeeRepository, IMapper Mapper)
         {
             _yearlyMaintenanceRepository = yearlyMaintenanceRepository;
             _globalCodeRepository = globalCodeRepository;
             _userRepository = userRepository;
+            _yearlyMaintenanceFeeRepository = yearlyMaintenanceFeeRepository;
             _mapper = Mapper;
             _mainResponse = new MainResponse();
         }
@@ -238,15 +240,112 @@ namespace AAYHS.Service.Service
             var feeType = _globalCodeRepository.GetCodes("AdTypes");
 
             var checkAdType = feeType.globalCodeResponse.Where(x => x.CodeName.ToLower() == addAdFee.AdSize.ToLower()).FirstOrDefault();
-
-            if (checkAdType!=null)
+           
+            if (checkAdType != null)
             {
-                _mainResponse.Success = false;
-                _mainResponse.Message = Constants.RECORD_AlREADY_EXIST;
-                return _mainResponse;
+                var checkAdFee = _yearlyMaintenanceFeeRepository.GetSingle(x => x.YearlyMaintainenceId == addAdFee.YearlyMaintainenceId &&
+                x.FeeTypeId == checkAdType.GlobalCodeId && x.IsActive == true && x.IsDeleted == false);
+
+                if (checkAdFee == null)
+                {
+                    var addFee = new YearlyMaintainenceFee
+                    {
+                        YearlyMaintainenceId= addAdFee.YearlyMaintainenceId,
+                        FeeTypeId=checkAdType.GlobalCodeId,
+                        PreEntryFee=0,
+                        PostEntryFee=0,
+                        Amount= addAdFee.Amount,
+                        RefundPercentage=40,
+                        IsActive=true,
+                        IsDeleted=false,
+                        CreatedBy=actionBy,
+                        CreatedDate=DateTime.Now
+
+                    };
+
+                    _yearlyMaintenanceFeeRepository.Add(addFee);
+                    _mainResponse.Success = true;
+                    _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
+                }
+                else
+                {
+                    _mainResponse.Success = false;
+                    _mainResponse.Message = Constants.RECORD_AlREADY_EXIST;
+                }
+            }
+            else
+            {
+                int categoryId = _yearlyMaintenanceRepository.GetCategoryId("AdTypes");
+                var addGlobalCode = new GlobalCodes
+                {
+                    CategoryId = categoryId,
+                    CodeName= addAdFee.AdSize,
+                    Description= addAdFee.AdSize,
+                    IsActive=true,
+                    IsDeleted=false,
+                    CreatedBy=actionBy,
+                    CreatedDate=DateTime.Now
+                };
+
+               var codeId= _globalCodeRepository.Add(addGlobalCode);
+
+                var addFee = new YearlyMaintainenceFee
+                {
+                    YearlyMaintainenceId = addAdFee.YearlyMaintainenceId,
+                    FeeTypeId = codeId.GlobalCodeId,
+                    PreEntryFee = 0,
+                    PostEntryFee = 0,
+                    Amount = addAdFee.Amount,
+                    RefundPercentage = 40,
+                    IsActive = true,
+                    IsDeleted = false,
+                    CreatedBy = actionBy,
+                    CreatedDate = DateTime.Now
+                };
+                _yearlyMaintenanceFeeRepository.Add(addFee);
+                _mainResponse.Success = true;
+                _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
             }
 
-            return null;
+            return _mainResponse;
         }
+
+        public MainResponse GetAllAdFees(int yearlyMaintenanceId)
+        {
+            var getallFees = _yearlyMaintenanceRepository.GetAllAdFees(yearlyMaintenanceId);
+
+            if (getallFees.getAdFees!=null)
+            {
+                _mainResponse.GetAllAdFees = getallFees;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Success = false;
+                _mainResponse.Message = Constants.NO_RECORD_EXIST_WITH_ID;
+            }
+            return _mainResponse;
+        }
+
+        public MainResponse DeleteAdFee(int yearlyMaintenanceFeeId, string actionBy)
+        {
+            var deleteAdFee = _yearlyMaintenanceFeeRepository.GetSingle(x => x.YearlyMaintainenceFeeId == yearlyMaintenanceFeeId);
+
+            if (deleteAdFee!=null)
+            {
+                deleteAdFee.IsDeleted = true;
+                deleteAdFee.DeletedBy = actionBy;
+                deleteAdFee.DeletedDate = DateTime.Now;
+
+                _yearlyMaintenanceFeeRepository.Update(deleteAdFee);
+            }
+            else
+            {
+                _mainResponse.Success = false;
+                _mainResponse.Message = Constants.RECORD_DELETE_FAILED;
+            }
+            return _mainResponse;
+        }
+        
     }
 }

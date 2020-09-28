@@ -25,7 +25,7 @@ namespace AAYHS.Core.DTOs.Request
     }
     public class AddAdFee
     {
-        public int YearlyMaintainenceFeeId { get; set; }
+        public int YearlyMaintainenceId { get; set; }
         public int Year { get; set; }
         public string AdSize { get; set; }
         public decimal Amount { get; set; }

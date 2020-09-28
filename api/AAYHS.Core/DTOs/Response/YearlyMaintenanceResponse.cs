@@ -42,4 +42,16 @@ namespace AAYHS.Core.DTOs.Response
         public bool IsApproved { get; set; }
     }
 
+    public class GetAllAdFees
+    {
+        public List<GetAdFees>getAdFees { get; set; }
+    }
+    public class GetAdFees
+    {
+        public int YearlyMaintenanceFeeId { get; set; }
+        public string AdSize  { get; set; }
+        public decimal Amount { get; set; }
+        public bool Active { get; set; }
+ 
+    }
 }

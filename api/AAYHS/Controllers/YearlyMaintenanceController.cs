@@ -83,7 +83,7 @@ namespace AAYHS.API.Controllers
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpDelete]
         public ActionResult DeleteUser(int userId)
         {
             string actionBy = User.Identity.Name;
@@ -109,7 +109,7 @@ namespace AAYHS.API.Controllers
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpDelete]
         public ActionResult DeleteYearly(int yearlyMaintainenceId)
         {
             string actionBy = User.Identity.Name;
@@ -117,6 +117,44 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
-        
+        /// <summary>
+        /// This api used to add ad fee
+        /// </summary>
+        /// <param name="addAdFee"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult AddADFee(AddAdFee addAdFee)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _yearlyMaintenanceService.AddADFee(addAdFee, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to get all ad fees
+        /// </summary>
+        /// <param name="yearlyMaintenanceId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetAllAdFees(int yearlyMaintenanceId)
+        {
+
+            _mainResponse = _yearlyMaintenanceService.GetAllAdFees(yearlyMaintenanceId);
+            _jsonString = Mapper.Convert<GetAllAdFees>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to delete the ad fee
+        /// </summary>
+        /// <param name="yearlyMaintenanceFeeId"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        public ActionResult DeleteAdFee(int yearlyMaintenanceFeeId)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _yearlyMaintenanceService.DeleteAdFee(yearlyMaintenanceFeeId, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
     }
 }
