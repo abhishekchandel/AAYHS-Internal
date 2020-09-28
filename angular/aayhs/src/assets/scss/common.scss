@@ -656,6 +656,7 @@ margin: 0;
         }
         .modal-body {
             padding: 0;
+            
             button {
                 background-color: #7b1124;
                 color: #fff;
@@ -666,7 +667,16 @@ margin: 0;
         }
     }
 }
-
+.dateColumn {
+    button {
+        background-color: transparent !important;
+        text-align: right; 
+        padding-right: 8px;  
+    }
+}
+.mat-button-ripple.mat-ripple, .mat-button-focus-overlay {
+    display: none;
+}
 .modal-header {
 background-color: #273992;
 color: #fff;
@@ -2256,4 +2266,19 @@ span{
 .darkBlue {
     font-size: 22px;
     color: #273992;
+}
+.showDateTable {
+    display: flex;
+    flex-flow: wrap;
+    flex-direction: row;
+    li{
+        width: 20%;
+        padding: 0 5px;
+        @media(max-width:1199px){
+            width: 33.33%;
+        }
+        @media(max-width:767px){
+            width: 100%;
+        }
+    }
 }

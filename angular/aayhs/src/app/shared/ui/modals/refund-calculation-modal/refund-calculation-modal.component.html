@@ -126,18 +126,16 @@
                                         </tr>											
                                         <tr>
                                             <td>
-                                                <div class="form-group">
                                                     <mat-form-field class="dateField">
                                                         <input matInput [matDatepicker]="dayAfterDatePicker"
                                                             placeholder="Day After" class="form-control"
                                                             name="dayAfter" #dayAfter="ngModel"
                                                             (dateChange)="handleAfterDate()"
                                                             [(ngModel)]="afterDate" readonly>
-                                                        <mat-datepicker-toggle matSuffix [for]="dayAfterDatePicker">
+                                                        <mat-datepicker-toggle matSuffix [for]="dayAfterDatePicker" class="dateColumn">
                                                         </mat-datepicker-toggle>
                                                         <mat-datepicker #dayAfterDatePicker></mat-datepicker>													
                                                     </mat-form-field>
-                                                </div>
                                             </td>
                                             <td>
                                                     <mat-form-field class="dateField">
@@ -146,7 +144,7 @@
                                                             name="dayBefore" #dayBefore="ngModel"
                                                             (dateChange)="handleBeforeDate()"
                                                             [(ngModel)]="beforeDate" readonly>
-                                                        <mat-datepicker-toggle matSuffix [for]="dayBeforeDatePicker">
+                                                        <mat-datepicker-toggle matSuffix [for]="dayBeforeDatePicker" class="dateColumn">
                                                         </mat-datepicker-toggle>
                                                         <mat-datepicker #dayBeforeDatePicker></mat-datepicker>													
                                                     </mat-form-field>
