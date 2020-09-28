@@ -70,6 +70,19 @@ namespace AAYHS.Repository.Repository
             return _MainResponse;
         }
 
+        public MainResponse RemoveAllExhibitorAssignedStalls(int ExhibitorId)
+        {
+
+            var list = _ObjContext.StallAssignment.Where(x => x.ExhibitorId == ExhibitorId).ToList();
+            if (list.Count > 0)
+            {
+                _ObjContext.StallAssignment.RemoveRange(list);
+                _ObjContext.SaveChanges();
+                _MainResponse.Success = true;
+                _MainResponse.Message = Constants.RECORD_DELETE_SUCCESS;
+            }
+            return _MainResponse;
+        }
 
     }
 }

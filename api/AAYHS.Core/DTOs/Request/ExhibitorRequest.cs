@@ -25,8 +25,18 @@ namespace AAYHS.Core.DTOs.Request
         public int StateId { get; set; }
         public string Address { get; set; }
         public DateTime Date { get; set; }
+        public List<ExhibitorStallAssignmentRequest> exhibitorStallAssignmentRequests { get; set; }
     }
-   public class AddExhibitorHorseRequest
+
+    public class ExhibitorStallAssignmentRequest
+    {
+        public int StallAssignmentId { get; set; }
+        public int SelectedStallId { get; set; }
+        public int StallAssignmentTypeId { get; set; }
+        public DateTime StallAssignmentDate { get; set; }
+    }
+
+    public class AddExhibitorHorseRequest
    {
         public int ExhibitorId { get; set; }
         public int HorseId { get; set; }
