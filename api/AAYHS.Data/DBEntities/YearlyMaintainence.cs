@@ -13,7 +13,8 @@ namespace AAYHS.Data.DBEntities
         [Key]
         public int YearlyMaintainenceId { get; set; }
         [Column(TypeName = "Date")]
-        public int Year { get; set; }
+        public DateTime Year { get; set; }
+        public int Years { get; set; }
         public DateTime ShowStartDate { get; set; }
         public DateTime ShowEndDate { get; set; }
         public DateTime PreEntryCutOffDate { get; set; }      

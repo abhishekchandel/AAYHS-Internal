@@ -46,7 +46,7 @@ namespace AAYHS.Repository.Repository
                     x.FeeTypeId == feeTypeId && x.IsActive == true && x.IsDeleted == false).FirstOrDefault();
 
                     getYearlyMaintenance.YearlyMaintenanceId = allYear[i].YearlyMaintainenceId;
-                    getYearlyMaintenance.Year = allYear[i].Year;
+                    getYearlyMaintenance.Year = allYear[i].Years;
                     getYearlyMaintenance.PreEntryCutOffDate = allYear[i].PreEntryCutOffDate;
                     getYearlyMaintenance.PreEntryFee = yearlyFee != null ? yearlyFee.PreEntryFee : 0;
                     getYearlyMaintenance.PostEntryFee= yearlyFee != null ? yearlyFee.PostEntryFee : 0;
@@ -99,7 +99,7 @@ namespace AAYHS.Repository.Repository
                     select new GetYearlyMaintenanceById 
                     { 
                        YearlyMaintenanceId=yearlyMaintenance.YearlyMaintainenceId,
-                       Year=yearlyMaintenance.Year,
+                       Year=yearlyMaintenance.Years,
                        PreEntryCutOffDate=yearlyMaintenance.PreEntryCutOffDate,
                        ShowStartDate=yearlyMaintenance.ShowStartDate,
                        ShowEndDate=yearlyMaintenance.ShowEndDate,

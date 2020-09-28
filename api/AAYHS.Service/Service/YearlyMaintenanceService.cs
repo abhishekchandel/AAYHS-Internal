@@ -141,7 +141,7 @@ namespace AAYHS.Service.Service
         {
             if (addYearly.YearlyMaintainenceId == 0)
             {
-                var yearExist = _yearlyMaintenanceRepository.GetSingle(x => x.Year== addYearly.Year && x.IsActive == true && x.IsDeleted == false);
+                var yearExist = _yearlyMaintenanceRepository.GetSingle(x => x.Years== addYearly.Year && x.IsActive == true && x.IsDeleted == false);
                 if (yearExist != null)
                 {
                     _mainResponse.Success = false;
@@ -150,7 +150,7 @@ namespace AAYHS.Service.Service
                 }
                 var newYearly = new YearlyMaintainence
                 {
-                    Year = addYearly.Year,
+                    Years = addYearly.Year,
                     ShowStartDate = addYearly.ShowStartDate,
                     ShowEndDate = addYearly.ShowEndDate,
                     PreEntryCutOffDate = addYearly.PreCutOffDate,
@@ -171,11 +171,11 @@ namespace AAYHS.Service.Service
             }
             else
             {
-                var year = _yearlyMaintenanceRepository.GetSingle(x =>x.YearlyMaintainenceId==addYearly.YearlyMaintainenceId && x.Year == addYearly.Year && x.IsActive == true && x.IsDeleted == false);
+                var year = _yearlyMaintenanceRepository.GetSingle(x =>x.YearlyMaintainenceId==addYearly.YearlyMaintainenceId && x.Years == addYearly.Year && x.IsActive == true && x.IsDeleted == false);
 
                 if (year==null)
                 {
-                    var yearExist = _yearlyMaintenanceRepository.GetSingle(x => x.Year == addYearly.Year && x.IsActive == true && x.IsDeleted == false);
+                    var yearExist = _yearlyMaintenanceRepository.GetSingle(x => x.Years == addYearly.Year && x.IsActive == true && x.IsDeleted == false);
                     if (yearExist != null)
                     {
                         _mainResponse.Success = false;
@@ -188,7 +188,7 @@ namespace AAYHS.Service.Service
 
                 if (updateYear!=null)
                 {
-                    updateYear.Year = addYearly.Year;
+                    updateYear.Years = addYearly.Year;
                     updateYear.ShowStartDate = addYearly.ShowStartDate;
                     updateYear.ShowEndDate = addYearly.ShowEndDate;
                     updateYear.PreEntryCutOffDate = addYearly.PreCutOffDate;
