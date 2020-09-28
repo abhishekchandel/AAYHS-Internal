@@ -137,7 +137,7 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
-        public MainResponse AddYearly(AddYearlyRequest addYearly)
+        public MainResponse AddYearly(AddYearlyRequest addYearly,string actionBy)
         {
             var yearExist = _yearlyMaintenanceRepository.GetSingle(x => x.Year.Year == addYearly.Year.Year && x.IsActive==true && x.IsDeleted==false);
             if (yearExist!=null)
@@ -154,7 +154,12 @@ namespace AAYHS.Service.Service
                 PreEntryCutOffDate = addYearly.PreCutOffDate,
                 SponcerCutOffDate=addYearly.SponcerCutOffDate,
                 Date=addYearly.Date,
-                Location = addYearly.Location
+                Location = addYearly.Location,
+                IsActive=true,
+                IsDeleted=false,
+                CreatedBy=actionBy,
+                CreatedDate=DateTime.Now
+
             };
 
             _yearlyMaintenanceRepository.Add(newYearly);
