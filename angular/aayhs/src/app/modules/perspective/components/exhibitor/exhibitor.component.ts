@@ -1,5 +1,5 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import {FinancialTransactionsComponent} from '../../../../shared/ui/modals/financial-transactions/financial-transactions.component'
 import {ExhibitorService } from '../../../../core/services/exhibitor.service';
 import { BaseRecordFilterRequest } from '../../../../core/models/base-record-filter-request-model'
@@ -20,6 +20,7 @@ import { HttpEventType } from '@angular/common/http';
 import { MatPaginator } from '@angular/material/paginator';
 import { ExhibitorStallComponent } from '../stall/exhibitorstall.component';
 import { environment } from 'src/environments/environment';
+
 
 @Component({
   selector: 'app-exhibitor',
@@ -95,6 +96,18 @@ export class ExhibitorComponent implements OnInit {
   exhibitorTransactions:any;
   feeDetails:any
   isRefund:boolean=false;
+
+
+  StallAssignmentRequestsData: any = [];
+  exhibitorStallAssignmentResponses: any = [];
+  StallTypes: any = [];
+  horsestalllength: number = 0;
+  tackstalllength: number = 0;
+  UnassignedStallNumbers: any = [];
+
+
+
+
   minDate=moment( new Date()).format('YYYY-MM-DD');
   //for binding images with server url
   filesUrl = environment.filesUrl;
@@ -123,7 +136,8 @@ export class ExhibitorComponent implements OnInit {
     IsNSBAMember:false,
     IsDoctorNote:false,
     GroupId:null,
-    GroupName:null
+    GroupName:null,
+    exhibitorStallAssignmentRequests:null
   };
   classDetails:any={
     Entries:null,
@@ -393,6 +407,27 @@ addUpdateExhibitor(){
   this.exhibitorInfo.BirthYear=this.exhibitorInfo.BirthYear !=null ? Number(this.exhibitorInfo.BirthYear) :0
   this.exhibitorInfo.QTYProgram=this.exhibitorInfo.QTYProgram !=null ? Number(this.exhibitorInfo.QTYProgram) :0
 
+
+  this.StallAssignmentRequestsData = [];
+  if (this.exhibitorStallAssignmentResponses.length > 0) {
+    this.exhibitorStallAssignmentResponses.forEach(resp => {
+      var groupstallData = {
+        SelectedStallId: resp.StallId,
+        StallAssignmentId: resp.StallAssignmentId,
+        StallAssignmentTypeId: resp.StallAssignmentTypeId,
+        StallAssignmentDate: resp.StallAssignmentDate
+      }
+      this.StallAssignmentRequestsData.push(groupstallData);
+    });
+  }
+
+  this.exhibitorInfo.exhibitorStallAssignmentRequests = this.StallAssignmentRequestsData;
+
+  
+
+
+
+
   this.exhibitorService.createUpdateExhibitor(this.exhibitorInfo).subscribe(response => {
     this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
     this.loading = false;
@@ -458,6 +493,25 @@ getAllGroups(){
         this.exhibitorInfo = response.Data.exhibitorResponses[0];
         // this.exhibitorInfo.BackNumber=response.Data.exhibitorResponses[0].BackNumber ===0 ? null :response.Data.exhibitorResponses[0].BackNumber;
         this.exhibitorInfo.BackNumber=response.Data.exhibitorResponses[0].BackNumber;
+
+        debugger
+        this.exhibitorStallAssignmentResponses = response.Data.exhibitorStallAssignmentResponses;
+
+        var horseStalltype = this.StallTypes.filter(x => x.CodeName == "HorseStall");
+        var tackStalltype = this.StallTypes.filter(x => x.CodeName == "TackStall");
+        if (this.exhibitorStallAssignmentResponses != null && this.exhibitorStallAssignmentResponses.length > 0) {
+          this.horsestalllength = this.exhibitorStallAssignmentResponses.filter(x => x.StallAssignmentTypeId
+            == horseStalltype[0].GlobalCodeId).length;
+          this.tackstalllength = this.exhibitorStallAssignmentResponses.filter(x => x.StallAssignmentTypeId
+            == tackStalltype[0].GlobalCodeId).length;
+        }
+        else {
+          this.horsestalllength = 0;
+          this.tackstalllength = 0;
+        }
+
+
+
 
       });
     });
@@ -1194,6 +1248,57 @@ this.exhibitorService.downloadFile(url).subscribe(
         this.loading = false;
       }
     );
+  }
+
+
+  openStallDiagram() {
+    let config = new MatDialogConfig();
+    config = {
+      position: {
+        top: '10px',
+        right: '10px'
+      },
+      height: '98%',
+      width: '100vw',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      panelClass: 'full-screen-modal',
+      data: {
+        exhibitorStallAssignment: this.exhibitorStallAssignmentResponses,
+        StallTypes: this.StallTypes,
+        unassignedStallNumbers: this.UnassignedStallNumbers
+      },
+
+    };
+
+    const dialogRef = this.dialog.open(ExhibitorStallComponent, config,
+
+    );
+    dialogRef.afterClosed().subscribe(dialogResult => {
+
+      const result: any = dialogResult;
+      if (result && result.submitted == true) {
+        this.exhibitorStallAssignmentResponses = [];
+        this.exhibitorStallAssignmentResponses = result.data.exhibitorAssignedStalls;
+        this.UnassignedStallNumbers = result.data.unassignedStallNumbers;
+
+        var horseStalltype = this.StallTypes.filter(x => x.CodeName == "HorseStall");
+        var tackStalltype = this.StallTypes.filter(x => x.CodeName == "TackStall");
+        if (this.exhibitorStallAssignmentResponses != null && this.exhibitorStallAssignmentResponses.length > 0) {
+          this.horsestalllength = this.exhibitorStallAssignmentResponses.filter(x => x.StallAssignmentTypeId
+            == horseStalltype[0].GlobalCodeId).length;
+          this.tackstalllength = this.exhibitorStallAssignmentResponses.filter(x => x.StallAssignmentTypeId
+            == tackStalltype[0].GlobalCodeId).length;
+        }
+        else {
+          this.horsestalllength = 0;
+          this.tackstalllength = 0;
+        }
+      }
+      else {
+        this.UnassignedStallNumbers = [];
+      }
+    });
   }
 
 }

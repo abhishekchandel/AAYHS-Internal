@@ -244,6 +244,8 @@ export class GroupComponent implements OnInit {
     }
 
     this.groupInfo.groupStallAssignmentRequests = this.StallAssignmentRequestsData;
+
+    
     this.groupService.addUpdateGroup(this.groupInfo).subscribe(response => {
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
 
