@@ -46,7 +46,7 @@ namespace AAYHS.Repository.Repository
                     x.FeeTypeId == feeTypeId && x.IsActive == true && x.IsDeleted == false).FirstOrDefault();
 
                     getYearlyMaintenance.YearlyMaintenanceId = allYear[i].YearlyMaintainenceId;
-                    getYearlyMaintenance.Year = allYear[i].Year.Year;
+                    getYearlyMaintenance.Year = allYear[i].Year;
                     getYearlyMaintenance.PreEntryCutOffDate = allYear[i].PreEntryCutOffDate;
                     getYearlyMaintenance.PreEntryFee = yearlyFee != null ? yearlyFee.PreEntryFee : 0;
                     getYearlyMaintenance.PostEntryFee= yearlyFee != null ? yearlyFee.PostEntryFee : 0;
@@ -61,9 +61,9 @@ namespace AAYHS.Repository.Repository
             {
                 if (getAllYearlyMaintenanceRequest.SearchTerm != null && getAllYearlyMaintenanceRequest.SearchTerm != "")
                 {
-                    data = data.Where(x => Convert.ToString(x.Year).Contains(getAllYearlyMaintenanceRequest.SearchTerm) || Convert.ToString(x.PreEntryCutOffDate).Contains(getAllYearlyMaintenanceRequest.SearchTerm) ||
+                    data = data.Where(x => Convert.ToString(x.Year).Contains(getAllYearlyMaintenanceRequest.SearchTerm) || Convert.ToString(x.PreEntryCutOffDate.Date).Contains(getAllYearlyMaintenanceRequest.SearchTerm) ||
                                      Convert.ToString(x.PreEntryFee).Contains(getAllYearlyMaintenanceRequest.SearchTerm) || Convert.ToString(x.PostEntryFee).Contains(getAllYearlyMaintenanceRequest.SearchTerm) ||
-                                     Convert.ToString(x.DateCreated).Contains(getAllYearlyMaintenanceRequest.SearchTerm));
+                                     Convert.ToString(x.DateCreated.Date).Contains(getAllYearlyMaintenanceRequest.SearchTerm));
                 }
                 if (getAllYearlyMaintenanceRequest.OrderByDescending == true)
                 {
@@ -99,7 +99,7 @@ namespace AAYHS.Repository.Repository
                     select new GetYearlyMaintenanceById 
                     { 
                        YearlyMaintenanceId=yearlyMaintenance.YearlyMaintainenceId,
-                       Year=yearlyMaintenance.Year.Year,
+                       Year=yearlyMaintenance.Year,
                        PreEntryCutOffDate=yearlyMaintenance.PreEntryCutOffDate,
                        ShowStartDate=yearlyMaintenance.ShowStartDate,
                        ShowEndDate=yearlyMaintenance.ShowEndDate,

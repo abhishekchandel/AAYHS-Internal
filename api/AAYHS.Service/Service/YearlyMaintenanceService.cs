@@ -141,7 +141,7 @@ namespace AAYHS.Service.Service
         {
             if (addYearly.YearlyMaintainenceId == 0)
             {
-                var yearExist = _yearlyMaintenanceRepository.GetSingle(x => x.Year.Year == addYearly.Year.Year && x.IsActive == true && x.IsDeleted == false);
+                var yearExist = _yearlyMaintenanceRepository.GetSingle(x => x.Year== addYearly.Year && x.IsActive == true && x.IsDeleted == false);
                 if (yearExist != null)
                 {
                     _mainResponse.Success = false;
@@ -171,11 +171,11 @@ namespace AAYHS.Service.Service
             }
             else
             {
-                var year = _yearlyMaintenanceRepository.GetSingle(x =>x.YearlyMaintainenceId==addYearly.YearlyMaintainenceId && x.Year.Year == addYearly.Year.Year && x.IsActive == true && x.IsDeleted == false);
+                var year = _yearlyMaintenanceRepository.GetSingle(x =>x.YearlyMaintainenceId==addYearly.YearlyMaintainenceId && x.Year == addYearly.Year && x.IsActive == true && x.IsDeleted == false);
 
                 if (year==null)
                 {
-                    var yearExist = _yearlyMaintenanceRepository.GetSingle(x => x.Year.Year == addYearly.Year.Year && x.IsActive == true && x.IsDeleted == false);
+                    var yearExist = _yearlyMaintenanceRepository.GetSingle(x => x.Year == addYearly.Year && x.IsActive == true && x.IsDeleted == false);
                     if (yearExist != null)
                     {
                         _mainResponse.Success = false;

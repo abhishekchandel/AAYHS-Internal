@@ -15,7 +15,7 @@ namespace AAYHS.Core.DTOs.Request
     public class AddYearlyRequest
     {
         public int YearlyMaintainenceId { get; set; }
-        public DateTime Year { get; set; }
+        public int Year { get; set; }
         public DateTime ShowStartDate { get; set; }
         public DateTime ShowEndDate { get; set; }
         public DateTime PreCutOffDate { get; set; } 
