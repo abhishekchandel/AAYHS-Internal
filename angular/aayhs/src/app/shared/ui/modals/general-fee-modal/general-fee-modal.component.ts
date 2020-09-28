@@ -6,6 +6,9 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./general-fee-modal.component.scss']
 })
 export class GeneralFeeModalComponent implements OnInit {
+feeAmount : any;
+feeType:any;
+timeframe:any;
 
   constructor(public dialogRef: MatDialogRef<GeneralFeeModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
@@ -20,4 +23,7 @@ export class GeneralFeeModalComponent implements OnInit {
     this.dialogRef.close(false);
   }
 
+  addGeneralFee(){
+
+  }
 }

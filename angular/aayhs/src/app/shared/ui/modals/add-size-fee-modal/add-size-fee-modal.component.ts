@@ -6,7 +6,9 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./add-size-fee-modal.component.scss']
 })
 export class AddSizeFeeModalComponent implements OnInit {
-
+  size:any;
+  addAmount:any;
+  
   constructor(public dialogRef: MatDialogRef<AddSizeFeeModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
     

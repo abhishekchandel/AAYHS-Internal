@@ -7,7 +7,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./class-category-modal.component.scss']
 })
 export class ClassCategoryModalComponent implements OnInit {
-
+  name:null;
+  
   constructor(public dialogRef: MatDialogRef<ClassCategoryModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
     
@@ -21,4 +22,8 @@ export class ClassCategoryModalComponent implements OnInit {
     this.dialogRef.close(false);
   }
 
+  addClassCategory(){
+
+  }
+  
 }
