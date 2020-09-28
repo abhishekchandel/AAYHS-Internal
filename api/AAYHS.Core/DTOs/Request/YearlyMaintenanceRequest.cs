@@ -23,4 +23,11 @@ namespace AAYHS.Core.DTOs.Request
         public DateTime Date { get; set; }
         public string Location { get; set; }
     }
+    public class AddAdFee
+    {
+        public int YearlyMaintainenceFeeId { get; set; }
+        public int Year { get; set; }
+        public string AdSize { get; set; }
+        public decimal Amount { get; set; }
+    }
 }
