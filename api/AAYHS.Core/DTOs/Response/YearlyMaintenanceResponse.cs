@@ -24,7 +24,8 @@ namespace AAYHS.Core.DTOs.Response
         public int Year { get; set; }
         public DateTime ShowStartDate { get; set; }
         public DateTime ShowEndDate { get; set; }
-        public DateTime PreEntryCutOffDate { get; set; }       
+        public DateTime PreEntryCutOffDate { get; set; }
+        public DateTime SponcerCutOffDate { get; set; }
         public string Location { get; set; }
         public DateTime Date { get; set; }
     }

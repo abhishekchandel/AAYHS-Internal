@@ -136,5 +136,31 @@ namespace AAYHS.Service.Service
             }
             return _mainResponse;
         }
+
+        public MainResponse AddYearly(AddYearlyRequest addYearly)
+        {
+            var yearExist = _yearlyMaintenanceRepository.GetSingle(x => x.Year.Year == addYearly.Year.Year && x.IsActive==true && x.IsDeleted==false);
+            if (yearExist!=null)
+            {
+                _mainResponse.Success = false;
+                _mainResponse.Message = Constants.RECORD_AlREADY_EXIST;
+                return _mainResponse;
+            }
+            var newYearly = new YearlyMaintainence
+            {
+                Year = addYearly.Year,
+                ShowStartDate = addYearly.ShowStartDate,
+                ShowEndDate = addYearly.ShowEndDate,
+                PreEntryCutOffDate = addYearly.PreCutOffDate,
+                SponcerCutOffDate=addYearly.SponcerCutOffDate,
+                Date=addYearly.Date,
+                Location = addYearly.Location
+            };
+
+            _yearlyMaintenanceRepository.Add(newYearly);
+            _mainResponse.Success = true;
+            _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
+            return _mainResponse;
+        }
     }
 }

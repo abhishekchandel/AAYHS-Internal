@@ -17,9 +17,10 @@ namespace AAYHS.Data.DBEntities
         public DateTime ShowStartDate { get; set; }
         public DateTime ShowEndDate { get; set; }
         public DateTime PreEntryCutOffDate { get; set; }      
+        public DateTime SponcerCutOffDate { get; set; }
         [Column(TypeName = "varchar(50)")]
         public string Location { get; set; }
-        //public DateTime Date { get; set; }
+        public DateTime Date { get; set; }
 
     }
 }

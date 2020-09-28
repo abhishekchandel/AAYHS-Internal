@@ -13,4 +13,14 @@ namespace AAYHS.Core.DTOs.Request
         public int UserId { get; set; }
         public bool IsApproved { get; set; }
     }
+    public class AddYearlyRequest
+    {
+        public DateTime Year { get; set; }
+        public DateTime ShowStartDate { get; set; }
+        public DateTime ShowEndDate { get; set; }
+        public DateTime PreCutOffDate { get; set; } 
+        public DateTime SponcerCutOffDate { get; set; }
+        public DateTime Date { get; set; }
+        public string Location { get; set; }
+    }
 }

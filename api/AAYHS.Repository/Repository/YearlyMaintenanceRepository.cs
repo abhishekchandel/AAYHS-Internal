@@ -48,7 +48,7 @@ namespace AAYHS.Repository.Repository
                         PreEntryCutOffDate = yearlyMaintenance.PreEntryCutOffDate,
                         PreEntryFee = yearlyMaintenanceFee2.PreEntryFee,
                         PostEntryFee = yearlyMaintenanceFee2.PostEntryFee,
-                        //DateCreated = yearlyMaintenance.Date
+                        DateCreated = yearlyMaintenance.Date
                     });
 
             if (data.Count() != 0)
@@ -97,8 +97,10 @@ namespace AAYHS.Repository.Repository
                        PreEntryCutOffDate=yearlyMaintenance.PreEntryCutOffDate,
                        ShowStartDate=yearlyMaintenance.ShowStartDate,
                        ShowEndDate=yearlyMaintenance.ShowEndDate,
+                       SponcerCutOffDate=yearlyMaintenance.SponcerCutOffDate,
                        Location=yearlyMaintenance.Location,
-                       //Date=yearlyMaintenance.Date                    
+                       Date = yearlyMaintenance.Date
+
                     });
 
             if (data.Count()!=0)
