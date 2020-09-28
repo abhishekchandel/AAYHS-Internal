@@ -33,24 +33,30 @@ namespace AAYHS.Repository.Repository
         {
             IEnumerable<GetYearlyMaintenance> data;
             GetAllYearlyMaintenance getAllYearlyMaintenance = new GetAllYearlyMaintenance();
+            
+            List<GetYearlyMaintenance> getYearlyMaintenances = new List<GetYearlyMaintenance>();
+            var allYear = _ObjContext.YearlyMaintainence.Where(x => x.IsActive == true && x.IsDeleted == false).ToList();
 
-            data = (from yearlyMaintenance in _ObjContext.YearlyMaintainence
-                    join yearlyMaintenanceFee in _ObjContext.YearlyMaintainenceFee on yearlyMaintenance.YearlyMaintainenceId equals
-                    yearlyMaintenanceFee.YearlyMaintainenceId into yearlyMaintenanceFee1
-                    from yearlyMaintenanceFee2 in yearlyMaintenanceFee1.DefaultIfEmpty()
-                    where yearlyMaintenance.IsActive == true && yearlyMaintenance.IsDeleted == false
-                    && yearlyMaintenanceFee2.IsActive == true && yearlyMaintenanceFee2.IsDeleted == false
-                    && yearlyMaintenanceFee2.FeeTypeId == feeTypeId
-                    select new GetYearlyMaintenance
-                    {
-                        YearlyMaintenanceId = yearlyMaintenance.YearlyMaintainenceId,
-                        Year = yearlyMaintenance.Year.Year,
-                        PreEntryCutOffDate = yearlyMaintenance.PreEntryCutOffDate,
-                        PreEntryFee = yearlyMaintenanceFee2.PreEntryFee,
-                        PostEntryFee = yearlyMaintenanceFee2.PostEntryFee,
-                        DateCreated = yearlyMaintenance.Date
-                    });
+            if (allYear.Count()!=0)
+            {
+                for (int i = 0; i <= allYear.Count()-1; i++)
+                {
+                    GetYearlyMaintenance getYearlyMaintenance = new GetYearlyMaintenance();
+                    var yearlyFee = _ObjContext.YearlyMaintainenceFee.Where(x => x.YearlyMaintainenceId == allYear[i].YearlyMaintainenceId &&
+                    x.FeeTypeId == feeTypeId && x.IsActive == true && x.IsDeleted == false).FirstOrDefault();
 
+                    getYearlyMaintenance.YearlyMaintenanceId = allYear[i].YearlyMaintainenceId;
+                    getYearlyMaintenance.Year = allYear[i].Year.Year;
+                    getYearlyMaintenance.PreEntryCutOffDate = allYear[i].PreEntryCutOffDate;
+                    getYearlyMaintenance.PreEntryFee = yearlyFee != null ? yearlyFee.PreEntryFee : 0;
+                    getYearlyMaintenance.PostEntryFee= yearlyFee != null ? yearlyFee.PostEntryFee : 0;
+                    getYearlyMaintenance.DateCreated = allYear[i].Date;
+
+                    getYearlyMaintenances.Add(getYearlyMaintenance);
+                }
+
+            }
+            data = getYearlyMaintenances.ToList();
             if (data.Count() != 0)
             {
                 if (getAllYearlyMaintenanceRequest.SearchTerm != null && getAllYearlyMaintenanceRequest.SearchTerm != "")
