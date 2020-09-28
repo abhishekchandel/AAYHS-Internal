@@ -233,9 +233,20 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
-        public MainResponse AddADFee()
+        public MainResponse AddADFee(AddAdFee addAdFee,string actionBy)
         {
-            
+            var feeType = _globalCodeRepository.GetCodes("AdTypes");
+
+            var checkAdType = feeType.globalCodeResponse.Where(x => x.CodeName.ToLower() == addAdFee.AdSize.ToLower()).FirstOrDefault();
+
+            if (checkAdType!=null)
+            {
+                _mainResponse.Success = false;
+                _mainResponse.Message = Constants.RECORD_AlREADY_EXIST;
+                return _mainResponse;
+            }
+
+            return null;
         }
     }
 }
