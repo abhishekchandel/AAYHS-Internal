@@ -252,6 +252,28 @@
                                             <td><div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
                                         </tr>
                                         
+                                        <tr>
+                                            <td>
+                                                <div class="prePostField">
+                                                    <label class="radioBtn">Pre 
+                                                        <input type="radio" checked="checked"  value="timeframe">
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                    <label class="radioBtn">Post 
+                                                        <input type="radio" value="timeframe" >
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <input #type="ngModel"   name="type"   [(ngModel)]="feeType" type="text" class="form-control" placeholder="Fee Type"/>              
+                                            </td>
+                                            <td>
+                                                <input #amount="ngModel"  appOnlynumber name="amount"   [(ngModel)]="feeAmount" type="text" class="form-control" placeholder="Amount"/>   
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
                                     </tbody>
                                     </perfect-scrollbar>
 

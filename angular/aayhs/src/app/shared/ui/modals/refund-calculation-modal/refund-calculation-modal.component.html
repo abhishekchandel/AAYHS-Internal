@@ -12,8 +12,8 @@
                                         <tr>
                                             <th>Date After</th>
                                             <th>Date Before</th>
-                                            <th>Refund</th>
-                                            <th>Active Type</th>
+                                            <th>Refund Type</th>
+                                            <th>Refund </th>
                                             <th>Active?</th>
                                             <th>Remove</th>
                                         </tr>
@@ -124,7 +124,47 @@
                                             </td>
                                             <td><div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
                                         </tr>											
-
+                                        <tr>
+                                            <td>
+                                                <div class="form-group">
+                                                    <mat-form-field class="dateField">
+                                                        <input matInput [matDatepicker]="dayAfterDatePicker"
+                                                            placeholder="Day After" class="form-control"
+                                                            name="dayAfter" #dayAfter="ngModel"
+                                                            (dateChange)="handleAfterDate()"
+                                                            [(ngModel)]="afterDate" readonly>
+                                                        <mat-datepicker-toggle matSuffix [for]="dayAfterDatePicker">
+                                                        </mat-datepicker-toggle>
+                                                        <mat-datepicker #dayAfterDatePicker></mat-datepicker>													
+                                                    </mat-form-field>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                    <mat-form-field class="dateField">
+                                                        <input matInput [matDatepicker]="dayBeforeDatePicker"
+                                                            placeholder="Day Before" class="form-control"
+                                                            name="dayBefore" #dayBefore="ngModel"
+                                                            (dateChange)="handleBeforeDate()"
+                                                            [(ngModel)]="beforeDate" readonly>
+                                                        <mat-datepicker-toggle matSuffix [for]="dayBeforeDatePicker">
+                                                        </mat-datepicker-toggle>
+                                                        <mat-datepicker #dayBeforeDatePicker></mat-datepicker>													
+                                                    </mat-form-field>
+                                                </td>
+                                            <td> 
+                                                <select required class="form-control" placeholder="Refund Type" (change)="setRefundType($event)" name="refundType" #refundType="ngModel" [(ngModel)]="typeOfRefund" >																						
+                                                    <option value="null" disabled="true" [selected]="true">
+                                                        Select Refund Type
+                                                    </option>                                               											
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <input #refund="ngModel"  appOnlynumber name="refund"   [(ngModel)]="refundPercent" type="text" class="form-control" />
+                                            </td>
+                                            <td>                                             
+                                            </td>
+                                            <td></td>
+                                        </tr>
                                     </tbody>
                                     </perfect-scrollbar>
                                 </table>
