@@ -15,5 +15,8 @@ namespace AAYHS.Service.IService
         MainResponse DeleteUser(int userId, string actionBy);
         MainResponse AddUpdateYearly(AddYearlyRequest addYearly, string actionBy);
         MainResponse DeleteYearly(int yearlyMaintainenceId, string actionBy);
+        MainResponse AddADFee(AddAdFee addAdFee, string actionBy);
+        MainResponse GetAllAdFees(int yearlyMaintenanceId);
+        MainResponse DeleteAdFee(int yearlyMaintenanceFeeId, string actionBy);
     }
 }
