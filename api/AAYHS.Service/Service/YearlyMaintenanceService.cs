@@ -211,6 +211,28 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
+        public MainResponse DeleteYearly(int yearlyMaintainenceId,string actionBy)
+        {
+            var deleteYearly = _yearlyMaintenanceRepository.GetSingle(x => x.YearlyMaintainenceId == yearlyMaintainenceId);
+
+            if (deleteYearly!=null)
+            {
+                deleteYearly.IsDeleted = true;
+                deleteYearly.DeletedBy = actionBy;
+                deleteYearly.DeletedDate = DateTime.Now;
+
+                _yearlyMaintenanceRepository.Update(deleteYearly);
+                _mainResponse.Success = true;
+                _mainResponse.Message = Constants.RECORD_DELETE_SUCCESS;
+            }
+            else
+            {
+                _mainResponse.Success = false;
+                _mainResponse.Message = Constants.NO_RECORD_EXIST_WITH_ID;
+            }
+            return _mainResponse;
+        }
+
         public MainResponse AddADFee()
         {
             return null;
