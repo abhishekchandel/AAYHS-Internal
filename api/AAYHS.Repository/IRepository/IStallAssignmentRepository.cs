@@ -12,5 +12,6 @@ namespace AAYHS.Repository.IRepository
     {
         GetAllStall GetAllAssignedStalls();
         MainResponse RemoveAllGroupAssignedStalls(int GroupId);
+        MainResponse RemoveAllExhibitorAssignedStalls(int ExhibitorId);
     }
 }

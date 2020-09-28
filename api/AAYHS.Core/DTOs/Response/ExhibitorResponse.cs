@@ -25,8 +25,22 @@ namespace AAYHS.Core.DTOs.Response
         public string GroupName { get; set; }
         public string Address { get; set; }
         public string CityName { get; set; }
+        public List<ExhibitorStallAssignmentResponse> exhibitorStallAssignmentResponses { get; set; }
 
     }
+
+    public class ExhibitorStallAssignmentResponse
+    {
+        public int StallAssignmentId { get; set; }
+        public int StallId { get; set; }
+        public int StallAssignmentTypeId { get; set; }
+        public int GroupId { get; set; }
+        public int ExhibitorId { get; set; }
+        public string BookedByType { get; set; }
+        public string BookedByName { get; set; }
+        public DateTime StallAssignmentDate { get; set; }
+    }
+
     public class ExhibitorListResponse
     {
         public List<ExhibitorResponse> exhibitorResponses { get; set; }

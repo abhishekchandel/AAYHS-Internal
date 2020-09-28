@@ -37,6 +37,7 @@ namespace AAYHS.Service.Service
         private IClassSponsorRepository _classSponsorRepository;
         private IExhibitorHorseRepository _exhibitorHorseRepository;
         private IHorseRepository _horseRepository;
+        private IStallAssignmentRepository _stallAssignmentRepository;
         #endregion
 
         public ExhibitorService(IExhibitorRepository exhibitorRepository, IAddressRepository addressRepository,
@@ -46,7 +47,7 @@ namespace AAYHS.Service.Service
                                  ISponsorExhibitorRepository sponsorExhibitorRepository, ISponsorRepository sponsorRepository,
                                  IScanRepository scanRepository, IExhibitorPaymentDetailRepository exhibitorPaymentDetailRepository,
                                  IApplicationSettingRepository applicationRepository,IEmailSenderRepository emailSenderRepository ,
-                                 IClassSponsorRepository classSponsorRepository,IMapper mapper)
+                                 IClassSponsorRepository classSponsorRepository,IMapper mapper, IStallAssignmentRepository stallAssignmentRepository)
         {
             _exhibitorRepository = exhibitorRepository;
             _addressRepository = addressRepository;
@@ -65,6 +66,7 @@ namespace AAYHS.Service.Service
             _classSponsorRepository = classSponsorRepository;
             _mapper = mapper;
             _mainResponse = new MainResponse();
+            _stallAssignmentRepository = stallAssignmentRepository;
         }
 
         public MainResponse AddUpdateExhibitor(ExhibitorRequest request, string actionBy)
@@ -90,7 +92,9 @@ namespace AAYHS.Service.Service
                     CreatedBy = actionBy,
                     CreatedDate = DateTime.Now
                 };
+
                 var _address = _addressRepository.Add(address);
+
                 var exhibitor = new Exhibitors
                 {
                     AddressId = _address.AddressId,
@@ -112,6 +116,7 @@ namespace AAYHS.Service.Service
                 };
 
                 var _exhibitor = _exhibitorRepository.Add(exhibitor);
+
                 if (request.GroupId > 0)
                 {
                     var groupExhibitor = new GroupExhibitors
@@ -125,6 +130,27 @@ namespace AAYHS.Service.Service
                     };
                     var _groupExhibitor = _groupExhibitorRepository.Add(groupExhibitor);
                 }
+
+                if (_exhibitor != null && _exhibitor.ExhibitorId > 0 && request.exhibitorStallAssignmentRequests != null && request.exhibitorStallAssignmentRequests.Count > 0)
+                {
+                    StallAssignment stallAssignment;
+                    foreach (var item in request.exhibitorStallAssignmentRequests)
+                    {
+                        stallAssignment = new StallAssignment();
+                        stallAssignment.StallId = item.SelectedStallId;
+                        stallAssignment.StallAssignmentTypeId = item.StallAssignmentTypeId;
+                        stallAssignment.GroupId = 0;
+                        stallAssignment.ExhibitorId = _exhibitor.ExhibitorId;
+                        stallAssignment.BookedByType = "Exhibitor";
+                        stallAssignment.IsActive = true;
+                        stallAssignment.IsDeleted = false;
+                        stallAssignment.CreatedDate = DateTime.Now;
+                        stallAssignment.Date = item.StallAssignmentDate;
+                        _stallAssignmentRepository.Add(stallAssignment);
+
+                    }
+                }
+
                 _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
                 _mainResponse.NewId = _exhibitor.ExhibitorId;
                 _mainResponse.Success = true;
@@ -176,6 +202,28 @@ namespace AAYHS.Service.Service
                         address.ModifiedBy = actionBy;
                         address.ModifiedDate = DateTime.Now;
                         _addressRepository.Update(address);
+                    }
+
+                    var stalls = _stallAssignmentRepository.RemoveAllExhibitorAssignedStalls(exhibitor.ExhibitorId);
+
+
+                    if (request.exhibitorStallAssignmentRequests != null && request.exhibitorStallAssignmentRequests.Count > 0)
+                    {
+
+                        foreach (var assignment in request.exhibitorStallAssignmentRequests)
+                        {
+                            StallAssignment stallAssignment = new StallAssignment();
+                            stallAssignment.StallId = assignment.SelectedStallId;
+                            stallAssignment.StallAssignmentTypeId = assignment.StallAssignmentTypeId;
+                            stallAssignment.GroupId = 0;
+                            stallAssignment.ExhibitorId = exhibitor.ExhibitorId;
+                            stallAssignment.BookedByType = "Exhibitor";
+                            stallAssignment.IsActive = true;
+                            stallAssignment.IsDeleted = false;
+                            stallAssignment.CreatedDate = DateTime.Now;
+                            stallAssignment.Date = assignment.StallAssignmentDate;
+                            _stallAssignmentRepository.Add(stallAssignment);
+                        }
                     }
 
                     if (request.GroupId > 0)
@@ -268,6 +316,7 @@ namespace AAYHS.Service.Service
                 Exhibitor.DeletedDate = DateTime.Now;
                 Exhibitor.DeletedBy = actionBy;
                 _exhibitorRepository.Update(Exhibitor);
+                _stallAssignmentRepository.RemoveAllExhibitorAssignedStalls(Exhibitor.ExhibitorId);
                 _mainResponse.Message = Constants.RECORD_DELETE_SUCCESS;
                 _mainResponse.Success = true;
             }
