@@ -167,6 +167,7 @@ export class ExhibitorComponent implements OnInit {
       this.baseRequest.SearchTerm = searchTerm;
       this.baseRequest.Page = 1;
       this.getAllExhibitors();
+      this.getAllStallTypes();
     });    
     this.getAllStates();
     this.getAllGroups();
@@ -213,6 +214,19 @@ export class ExhibitorComponent implements OnInit {
     resolve();
   });
   }
+
+  getAllStallTypes() {
+
+    this.StallTypes = [];
+    this.exhibitorService.getGlobalCodes('StallType').subscribe(response => {
+      if (response.Data != null && response.Data.totalRecords > 0) {
+        this.StallTypes = response.Data.globalCodeResponse;
+      }
+    }, error => {
+
+    })
+  }
+
 
   highlight(id, i) {
     this.resetForm()
@@ -495,7 +509,7 @@ getAllGroups(){
         this.exhibitorInfo.BackNumber=response.Data.exhibitorResponses[0].BackNumber;
 
         debugger
-        this.exhibitorStallAssignmentResponses = response.Data.exhibitorStallAssignmentResponses;
+        this.exhibitorStallAssignmentResponses = response.Data.exhibitorResponses[0].exhibitorStallAssignmentResponses;
 
         var horseStalltype = this.StallTypes.filter(x => x.CodeName == "HorseStall");
         var tackStalltype = this.StallTypes.filter(x => x.CodeName == "TackStall");

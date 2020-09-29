@@ -56,6 +56,7 @@ import { ClassCategoryModalComponent } from './ui/modals/class-category-modal/cl
 import { GeneralFeeModalComponent } from './ui/modals/general-fee-modal/general-fee-modal.component';
 import { RefundCalculationModalComponent } from './ui/modals/refund-calculation-modal/refund-calculation-modal.component';
 import { ShowLocationsComponent } from './ui/modals/show-locations/show-locations.component'
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 
 
@@ -92,6 +93,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     MatTableModule,
     MatPaginatorModule,
     MatSnackBarModule,
+    MatAutocompleteModule,
     // All third party imports here //
     NgxMaskModule.forRoot(options),
     MatSelectModule,
@@ -126,6 +128,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     MatTableModule,
     MatPaginatorModule,
     MatSnackBarModule,
+    MatAutocompleteModule,
     // All third party exports here //
     NgxMaskModule,
     MatSelectModule,

@@ -69,5 +69,7 @@ export class SponsorService {
     
     return this.http.post<any>(this.api +'ClassSponsorAPI/AddUpdateClassSponsor',data);
   }
+
+ 
 }
 

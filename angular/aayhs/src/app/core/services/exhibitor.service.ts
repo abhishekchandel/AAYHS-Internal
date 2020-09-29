@@ -187,4 +187,8 @@ export class ExhibitorService {
         responseType: 'blob'
       }));
   }
+
+  getGlobalCodes(type: string) {
+    return this.http.get<any>(`${this.api}CommonAPI/GetGlobalCode?categoryName=${type}`);
+  }
 }
