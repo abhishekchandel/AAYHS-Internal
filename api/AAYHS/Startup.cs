@@ -177,6 +177,8 @@ namespace AAYHS
             services.AddTransient<IExhibitorPaymentDetailRepository, ExhibitorPaymentDetailRepository>();
             services.AddTransient<IYearlyMaintenanceRepository, YearlyMaintenanceRepository>();
             services.AddTransient<IYearlyMaintenanceFeeRepository, YearlyMaintenanceFeeRepository>();
+            services.AddTransient<IRoleRepository, RoleRepository>();
+            services.AddTransient<IUserRoleRepository, UserRoleRepository>();
 
             services.AddControllers();
         }

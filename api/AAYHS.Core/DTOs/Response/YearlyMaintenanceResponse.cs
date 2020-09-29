@@ -66,4 +66,13 @@ namespace AAYHS.Core.DTOs.Response
         public string CategoryName { get; set; }
         public bool IsActive { get; set; }
     }
+    public class GetAllRoles
+    {
+        public List<GetRoles> getRoles { get; set; }
+    }
+    public class GetRoles
+    {
+        public int RoleId { get; set; }
+        public string RoleName { get; set; }
+    }
 }

@@ -39,6 +39,8 @@ namespace AAYHS.Core.AutoMapper
             CreateMap<Classes, GetClassesForExhibitor>();
             CreateMap<Sponsors, GetSponsorForExhibitor>();
             CreateMap<User, GetUser>();
+            CreateMap<Roles, GetRoles>();
+            CreateMap<GlobalCodes, GetClassCategory>();
 
 
 
