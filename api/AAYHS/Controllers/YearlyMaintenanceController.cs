@@ -192,5 +192,28 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<GetAllRoles>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
+        [HttpGet]
+        public ActionResult GetAllClassCategory()
+        {
+            _mainResponse = _yearlyMaintenanceService.GetAllClassCategory();
+            _jsonString = Mapper.Convert<GetAllClassCategory>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        [HttpPost]
+        public ActionResult AddClassCategory(AddClassCategoryRequest addClassCategoryRequest)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _yearlyMaintenanceService.AddClassCategory(addClassCategoryRequest, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        [HttpDelete]
+        public ActionResult RemoveClassCategory(int globalCodeId)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _yearlyMaintenanceService.RemoveClassCategory(globalCodeId, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
     }
 }

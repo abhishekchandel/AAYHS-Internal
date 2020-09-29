@@ -467,6 +467,50 @@ namespace AAYHS.Service.Service
             }
             return _mainResponse;
         }
+
+        public MainResponse AddClassCategory(AddClassCategoryRequest addClassCategoryRequest,string actionBy)
+        {
+            int categoryId = _yearlyMaintenanceRepository.GetCategoryId("ClassHeaderType");
+
+            var classCategory = new GlobalCodes
+            {
+                CategoryId = categoryId,
+                CodeName=addClassCategoryRequest.CategoryName,
+                Description=addClassCategoryRequest.CategoryName,
+                IsActive=true,
+                IsDeleted=false,
+                CreatedBy= actionBy,
+                CreatedDate=DateTime.Now
+            };
+
+            _globalCodeRepository.Add(classCategory);
+            _mainResponse.Success = true;
+            _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
+            return _mainResponse;
+        }
+
+        public MainResponse RemoveClassCategory(int globalCodeId, string actionBy)
+        {
+            var classDelete = _globalCodeRepository.GetSingle(x => x.GlobalCodeId == globalCodeId);
+
+            if (classDelete!=null)
+            {
+                classDelete.IsDeleted = true;
+                classDelete.DeletedBy = actionBy;
+                classDelete.DeletedDate = DateTime.Now;
+
+                _globalCodeRepository.Update(classDelete);
+
+                _mainResponse.Success = true;
+                _mainResponse.Message = Constants.RECORD_DELETE_SUCCESS;
+            }
+            else
+            {
+                _mainResponse.Success = false;
+                _mainResponse.Message = Constants.RECORD_DELETE_FAILED;
+            }
+            return _mainResponse;
+        }
         
     }
 }

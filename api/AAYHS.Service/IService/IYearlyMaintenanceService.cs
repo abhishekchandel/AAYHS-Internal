@@ -22,5 +22,7 @@ namespace AAYHS.Service.IService
         MainResponse RemoveApprovedUser(int userId, string actionBy);
         MainResponse GetAllRoles();
         MainResponse GetAllClassCategory();
+        MainResponse AddClassCategory(AddClassCategoryRequest addClassCategoryRequest, string actionBy);
+        MainResponse RemoveClassCategory(int globalCodeId, string actionBy);
     }
 }

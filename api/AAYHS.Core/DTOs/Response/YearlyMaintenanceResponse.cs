@@ -75,4 +75,18 @@ namespace AAYHS.Core.DTOs.Response
         public int RoleId { get; set; }
         public string RoleName { get; set; }
     }
+    public class GetAllGeneralFees
+    {
+        public List<GetGeneralFees> getGeneralFees { get; set; }
+    }
+    public class GetGeneralFees
+    {
+        public int YearlyMaintenanceFeeId { get; set; }
+        public string TimeFrame { get; set; }
+        public string FeeType { get; set; }
+        public decimal PreEntryFee { get; set; }
+        public decimal PostEntryFee { get; set; }
+        public decimal Amount { get; set; }
+        public bool Active { get; set; }
+    }
 }

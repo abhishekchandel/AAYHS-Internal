@@ -149,5 +149,26 @@ namespace AAYHS.Repository.Repository
             }
             return getAllAdFees;
         }
+
+        public GetAllGeneralFees GetAllGeneralFees()
+        {
+            IEnumerable<GetGeneralFees> data;
+            GetAllGeneralFees getAllGeneralFees = new GetAllGeneralFees();
+
+            data = (from yearlyFee in _ObjContext.YearlyMaintainenceFee
+                    join feeType in _ObjContext.GlobalCodes on yearlyFee.FeeTypeId equals feeType.GlobalCodeId
+                    where yearlyFee.IsActive == true && yearlyFee.IsDeleted == false
+                    select new GetGeneralFees
+                    {
+                        YearlyMaintenanceFeeId=yearlyFee.YearlyMaintainenceFeeId,
+                        FeeType=feeType.CodeName,
+                        PreEntryFee=yearlyFee.PreEntryFee,
+                        PostEntryFee=yearlyFee.PostEntryFee,
+                        Amount=yearlyFee.Amount,
+                        //TimeFrame= yearlyFee.PreEntryFee!=0?"Pre":"Post" switch yearlyFee.Amount!=0?"" ,
+                    });
+
+            return null;
+        }
     }
 }

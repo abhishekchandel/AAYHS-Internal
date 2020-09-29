@@ -30,4 +30,8 @@ namespace AAYHS.Core.DTOs.Request
         public string AdSize { get; set; }
         public decimal Amount { get; set; }
     }
+    public class AddClassCategoryRequest
+    {
+        public string CategoryName { get; set; }
+    }
 }
