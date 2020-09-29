@@ -68,7 +68,60 @@
         <div class="tab-content">
             <div class="tab-pane  active" id="home">
                 <mat-tab-group #tabGroup>
-
+                    
+                    <mat-tab  class="nav-link active nav nav-tabs" label="User">
+                        <div class="card dataEntriesTable">
+                            <div class="card-body">
+                                <div class="table-responsive tableTab" id="contentscroll2">
+                                    <table class="table table-bordered tableBodyScroll">
+                                        <thead>
+                                            <tr>
+                                                <th>Firstname</th> 
+                                                <th>Lastname</th> 
+                                                <th>Email</th>
+                                                <th>Active</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <perfect-scrollbar class="nicescrollBar-2">
+                                            <tbody>
+                                                
+                                                <tr>
+                                                    <td>Firstname</td>
+                                                    <td>Lastname</td>
+                                                    <td>info@gmail.com</td>
+                                                    <td>
+                                                        <label class="customCheckbox d-inline-block">
+                                                            <input name="nsbaIndicator"  type="checkbox" value="user.Active" class="ciCheckbox">
+                                                            <span class="checkmark"></span>
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="icon" (click)="confirmRemoveUser(user.UserId)"><span></span> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Firstname</td>
+                                                    <td>Lastname</td>
+                                                    <td>info@gmail.com</td>
+                                                    <td>
+                                                        <label class="customCheckbox d-inline-block">
+                                                            <input name="nsbaIndicator"  type="checkbox" value="user.Active" class="ciCheckbox">
+                                                            <span class="checkmark"></span>
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="icon" (click)="confirmRemoveUser(user.UserId)"><span></span> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                                    </td>
+                                                </tr>
+                                              
+                                            </tbody> 
+                                        </perfect-scrollbar>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-tab>
                     <mat-tab  class="nav-link active nav nav-tabs" label="User Info">
                         <div class="card dataEntriesTable">
                             <div class="card-body">                                 
