@@ -346,6 +346,49 @@ namespace AAYHS.Service.Service
             }
             return _mainResponse;
         }
+
+        public MainResponse GetAllUsersApproved()
+        {
+            var users = _userRepository.GetAll(x => x.IsApproved == true && x.IsActive==true && x.IsDeleted == false);
+
+            if (users.Count() > 0)
+            {
+                var _users = _mapper.Map<List<GetUser>>(users);
+                GetAllUsers getAllUsers = new GetAllUsers();
+                getAllUsers.getUsers = _users;
+                _mainResponse.GetAllUsers = getAllUsers;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Success = false;
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+            }
+            return _mainResponse;
+        }
+
+        public MainResponse RemoveApprovedUser(int userId, string actionBy)
+        {
+            var deleteUser = _userRepository.GetSingle(x => x.UserId == userId);
+
+            if (deleteUser!=null)
+            {
+                deleteUser.IsActive = false;
+                deleteUser.IsDeleted = true;
+                deleteUser.DeletedBy = actionBy;
+                deleteUser.DeletedDate = DateTime.Now;
+
+                _userRepository.Update(deleteUser);
+                _mainResponse.Success = true;
+                _mainResponse.Message = Constants.RECORD_DELETE_SUCCESS;
+            }
+            else
+            {
+                _mainResponse.Success = false;
+                _mainResponse.Message = Constants.RECORD_DELETE_FAILED;
+            }
+            return _mainResponse;
+        }
         
     }
 }
