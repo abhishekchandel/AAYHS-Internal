@@ -63,5 +63,6 @@ namespace AAYHS.Core.Shared.Static
         public const string FINANCIAL_TRANSACTION_ADDED = "Financial Transaction added successfully";
         public const string EMAIL_SENT = "Email sent successfully";
         public const string AD_NUMBER_EXIST = "Ad number already exist";
+        public const string EMAIL_ALREADY_EXIST = "Email already exist";
     }
 }
