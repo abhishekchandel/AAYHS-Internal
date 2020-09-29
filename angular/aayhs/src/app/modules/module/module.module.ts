@@ -4,11 +4,12 @@ import { YearlyMaintenanceComponent } from './components/yearly-maintenance/year
 import { SharedModule } from '../../shared/shared.module';
 import { ModuleRoutingModule } from './module-routing.module';
 import { ReportsComponent } from './components/reports/reports.component';
+import { StallAssignmentComponent } from './components/stall-assignment/stall-assignment/stall-assignment.component';
 
 
 
 @NgModule({
-  declarations: [YearlyMaintenanceComponent, ReportsComponent],
+  declarations: [YearlyMaintenanceComponent, ReportsComponent, StallAssignmentComponent],
   imports: [
     CommonModule,
     SharedModule,
