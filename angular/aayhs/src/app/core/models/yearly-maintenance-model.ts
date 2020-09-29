@@ -1,8 +1,8 @@
 export interface YearlyMaintenanceModel{
     ShowStartDate:string,
     ShowEndDate:string,
-    PreCutOffDate:string,
+    PreEntryCutOffDate:string,
     SponcerCutOffDate:string,
     Year:number,
-    YearlyMaintainenceId:number
+    YearlyMaintenanceId:number
 }

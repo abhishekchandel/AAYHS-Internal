@@ -1,6 +1,7 @@
 <div id="classSplit" class="modal fade trashPopup" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
+            <form #addAdFeeForm="ngForm" (ngSubmit)="addAdFeeForm.valid && addAdFee()" class="formScroll">
             <div class="modal-header">
                 <button (click)="onDismiss()"type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Add Size & Location Fees</h4>
@@ -18,117 +19,35 @@
                                     </thead>
                                     <perfect-scrollbar class="nicescrollBar-2">
                                     <tbody>
-                                        <tr>
-                                            <td>Full Page</td>
-                                            <td>$350.00</td>
+                                                               
+                                        <tr *ngFor="let fee of adFeesList">
+                                            <td>{{fee.AdSize}} </td>
+                                            <td>${{fee.Amount}}</td>
                                             <td>
                                                 <label class="customCheckbox d-inline">
-                                                    <input name="nsbaIndicator"  type="checkbox" value="" class="ciCheckbox">
+                                                    <input name="nsbaIndicator" type="checkbox" value="fee.Active" [attr.checked]="fee.Active === true ? true : null" class="ciCheckbox">
                                                     <span class="checkmark"></span>
                                                 </label>
                                             </td>
                                             <td>
-                                                <div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Half Page</td>
-                                            <td>$175.00</td>
-                                            <td>
-                                                <label class="customCheckbox d-inline">
-                                                    <input  name="nsbaIndicator"  type="checkbox" value="" class="ciCheckbox">
-                                                    <span class="checkmark"></span>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Forth page</td>
-                                            <td>$90.00</td>
-                                            <td>
-                                                <label class="customCheckbox d-inline">
-                                                    <input  name="nsbaIndicator"  type="checkbox" value="" class="ciCheckbox">
-                                                    <span class="checkmark"></span>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Eighth Page</td>
-                                            <td>$90.00</td>
-                                            <td>
-                                                <label class="customCheckbox d-inline">
-                                                    <input name="nsbaIndicator" type="checkbox" value="" class="ciCheckbox">
-                                                    <span class="checkmark"></span>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Special Fee Front</td>
-                                            <td>$350.00</td>
-                                            <td>
-                                                <label class="customCheckbox d-inline">
-                                                    <input name="nsbaIndicator" type="checkbox" value="" class="ciCheckbox">
-                                                    <span class="checkmark"></span>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Special Fee Front Inside</td>
-                                            <td>$175.00</td>
-                                            <td>
-                                                <label class="customCheckbox d-inline">
-                                                    <input name="nsbaIndicator" type="checkbox" value="" class="ciCheckbox">
-                                                    <span class="checkmark"></span>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Special Fee Back Inside</td>
-                                            <td>$90.00</td>
-                                            <td>
-                                                <label class="customCheckbox d-inline">
-                                                    <input name="nsbaIndicator" type="checkbox" value="" class="ciCheckbox">
-                                                    <span class="checkmark"></span>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Special Fee Last Page </td>
-                                            <td>$90.00</td>
-                                            <td>
-                                                <label class="customCheckbox d-inline">
-                                                    <input name="nsbaIndicator" type="checkbox" value="" class="ciCheckbox">
-                                                    <span class="checkmark"></span>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div>
+                                                <button type="button" class="icon" (click)="confirmRemoveFee(fee.YearlyMaintenanceFeeId)"><span></span> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
                                             </td>
                                         </tr>
                                         
                                         <tr>
                                             <td colspan="1">
-                                                <input #addSize="ngModel"   name="addSize"   [(ngModel)]="size" type="text" class="form-control" placeholder="Add Size"/>
+                                                <input #addSize="ngModel"   name="addSize" required  [(ngModel)]="size" type="text" class="form-control" placeholder="Add Size"/>
+                                                <span class="help-block"
+                                                *ngIf="(addAdFeeForm.submitted || addSize.touched) && addSize.invalid">Please
+                                                Please enter add size
+                                            </span>   
                                             </td>
                                             <td colspan="1">
-                                                <input #amount="ngModel"  appOnlynumber name="amount"   [(ngModel)]="addAmount" type="text" class="form-control" placeholder="Amount"/>
+                                                <input #amount="ngModel" required appOnlynumber name="amount"   [(ngModel)]="addAmount" type="text" class="form-control" placeholder="Amount"/>
+                                                <span class="help-block"
+                                                *ngIf="(addAdFeeForm.submitted || amount.touched) && amount.invalid">Please
+                                            Please enter amount
+                                            </span>   
                                             </td>
                                             <td colspan="2"></td>
                                         </tr>
@@ -141,9 +60,13 @@
         <div class="modal-footer text-center">					
             <button type="button" class="btn btn-default" data-dismiss="modal">+ Add Size Fee</button>
             <button type="button" (click)="onDismiss()" class="btn btn-default" data-dismiss="modal">Back</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal">Submit</button>
+            <button type="submit" class="btn btn-default" data-dismiss="modal">Submit</button>
         </div>
+        </form>
         </div>
 
     </div>
+</div>
+<div class="loaderWrapper" *ngIf="loading">
+	<div class="loader"></div>
 </div>

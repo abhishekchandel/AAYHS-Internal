@@ -22,11 +22,21 @@ namespace AAYHS.Repository.Repository
 
         public void SendEmail(EmailRequest request)
         {
+            string Subject="";
+            if (request.TemplateType== "Reset Password")
+            {
+                Subject = "Reset Password";
+            }
+            if (request.TemplateType == "User Approved")
+            {
+                Subject = "User Approved";
+            }
+
             MailMessage mail = new MailMessage();
             mail.To.Add(request.To);
 
             mail.From = new MailAddress(request.CompanyEmail);
-            mail.Subject = "Reset Password";
+            mail.Subject = Subject;
             mail.Body = String.Format(Templates(request), request.To);
             mail.IsBodyHtml = true;
             SmtpClient smtp = new SmtpClient();
@@ -57,6 +67,15 @@ namespace AAYHS.Repository.Repository
                 Body = "<html>" +
                     "<body>" +
                     " <p> Please find the Attached file below from the AAYHS.</p> " + "" +                   
+                    "<p>Thank you </br></p>" +
+                    "</body>" +
+                    "</html>";
+            }
+            if (request.TemplateType == "User Approved")
+            {
+                Body = "<html>" +
+                    "<body>" +
+                    " <p> You request sign up for AAYHS have been approved </p> " + "" +
                     "<p>Thank you </br></p>" +
                     "</body>" +
                     "</html>";

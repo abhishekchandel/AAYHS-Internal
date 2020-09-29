@@ -10,6 +10,7 @@ namespace AAYHS.Core.DTOs.Request
     public class UserApprovedRequest
     {
         public int UserId { get; set; }
+        public int RoleId { get; set; }
         public bool IsApproved { get; set; }
     }
     public class AddYearlyRequest

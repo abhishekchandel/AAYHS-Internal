@@ -23,6 +23,8 @@ namespace AAYHS.Service.Service
         private readonly IUserRepository _userRepository;
         private readonly IEmailSenderRepository _emailRepository;
         private readonly IApplicationSettingRepository _applicationRepository;
+        private readonly IUserRoleRepository _userRoleRepository;
+        private readonly IRoleRepository _roleRepository;
         private readonly IMapper _mapper;
         #endregion
 
@@ -31,12 +33,15 @@ namespace AAYHS.Service.Service
         #endregion
 
         public UserService(IUserRepository userRepository,IEmailSenderRepository emailRepository,
-                          IApplicationSettingRepository applicationRepository, IMapper Mapper)
+                          IApplicationSettingRepository applicationRepository,IUserRoleRepository userRoleRepository ,
+                          IRoleRepository roleRepository,IMapper Mapper)
         {
            
             _userRepository = userRepository;
             _emailRepository = emailRepository;
             _applicationRepository = applicationRepository;
+            _userRoleRepository = userRoleRepository;
+            _roleRepository = roleRepository;
             _mapper = Mapper;
             _mainResponse = new MainResponse();
         }
@@ -49,7 +54,10 @@ namespace AAYHS.Service.Service
             {
                 if (userDetails.IsApproved==true)
                 {
+                    var userRole = _userRoleRepository.GetSingle(x => x.UserId == userDetails.UserId);
+                    var role = _roleRepository.GetSingle(x => x.RoleId == userRole.RoleId);
                     var userResponse = _mapper.Map<UserResponse>(userDetails);
+                    userResponse.Role = role.RoleName;
                     _mainResponse.UserResponse = userResponse;
                     _mainResponse.Message = Constants.LOG_IN;
                     _mainResponse.Success = true;

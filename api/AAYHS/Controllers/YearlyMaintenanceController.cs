@@ -181,5 +181,16 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
+        /// <summary>
+        /// This api used to get all roles
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetAllRoles()
+        {
+            _mainResponse = _yearlyMaintenanceService.GetAllRoles();
+            _jsonString = Mapper.Convert<GetAllRoles>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
     }
 }

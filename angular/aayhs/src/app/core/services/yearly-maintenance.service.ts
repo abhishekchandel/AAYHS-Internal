@@ -35,4 +35,34 @@ export class YearlyMaintenanceService {
   deleteYear(id){
     return this.http.delete<any>(`${this.api}YearlyMaintenance/DeleteYearly?yearlyMaintainenceId=${id}`);
   }
+
+  getAdFees(id){
+    return this.http.get<any>(`${this.api}YearlyMaintenance/GetAllAdFees?yearlyMaintenanceId=${id}`);
+  }
+
+  addAdFee(data){
+    return this.http.post<any>(`${this.api}YearlyMaintenance/AddAdFee`,data);
+  }
+
+  deleteAdFee(id){
+    return this.http.delete<any>(`${this.api}YearlyMaintenance/DeleteAdFee?yearlyMaintenanceFeeId=${id}`);
+  }
+
+  getYearlyMaintenanceById(id){
+    debugger;
+    return this.http.get<any>(`${this.api}YearlyMaintenance/GetYearlyMaintenanceById?yearlyMaintenanceId=${id}`);
+  }
+
+  deleteApprovedUser(id){
+    return this.http.delete<any>(`${this.api}YearlyMaintenance/RemoveApprovedUser?userId=${id}`);
+  }
+
+  getApprovedUser(){
+    return this.http.get<any>(`${this.api}YearlyMaintenance/GetAllUsersApproved`);
+  }
+
+  getRoles(){
+    return this.http.get<any>(`${this.api}YearlyMaintenance/GetAllRoles`);
+
+  }
 }

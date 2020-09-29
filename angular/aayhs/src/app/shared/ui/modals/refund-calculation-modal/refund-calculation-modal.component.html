@@ -1,6 +1,7 @@
 <div id="classSplit" class="modal fade trashPopup" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
+            <form #addRefundForm="ngForm" (ngSubmit)="addRefundForm.valid && addRefund()" class="formScroll">
             <div class="modal-header">
                 <button (click)="onDismiss()"type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Refund Calculations for Cancellations ( Scratch )</h4>
@@ -20,84 +21,7 @@
                                     </thead>
                                     <perfect-scrollbar class="nicescrollBar-2">
                                     <tbody>
-                                        <tr>
-                                            <td>Jan 1st</td>
-                                            <td>April 2nd</td>
-                                            <td>Stalls</td>
-                                            <td>100%</td>
-                                            <td>
-                                                <label class="customCheckbox d-inline">
-                                                    <input name="nsbaIndicator" type="checkbox" value="" class="ciCheckbox">
-                                                    <span class="checkmark"></span>
-                                                </label>
-                                            </td>
-                                            <td><div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Jan 1st</td>
-                                            <td>April 2nd</td>
-                                            <td>Class Entries</td>
-                                            <td>100%</td>
-                                            <td>
-                                                <label class="customCheckbox d-inline">
-                                                    <input name="nsbaIndicator" type="checkbox" value="" class="ciCheckbox">
-                                                    <span class="checkmark"></span>
-                                                </label>
-                                            </td>
-                                            <td><div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>April 1st</td>
-                                            <td>April 16th</td>
-                                            <td>Class Entries</td>
-                                            <td>80%</td>
-                                            <td>
-                                                <label class="customCheckbox d-inline">
-                                                    <input name="nsbaIndicator" type="checkbox" value="" class="ciCheckbox">
-                                                    <span class="checkmark"></span>
-                                                </label>
-                                            </td>
-                                            <td><div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>April 1st</td>
-                                            <td>April 16th</td>
-                                            <td>Stalls</td>
-                                            <td>80%</td>
-                                            <td>
-                                                <label class="customCheckbox d-inline">
-                                                    <input name="nsbaIndicator" type="checkbox" value="" class="ciCheckbox">
-                                                    <span class="checkmark"></span>
-                                                </label>
-                                            </td>
-                                            <td><div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>April 15th</td>
-                                            <td>May 1st</td>
-                                            <td>Class Entries</td>
-                                            <td>60%</td>
-                                            <td>
-                                                <label class="customCheckbox d-inline">
-                                                    <input name="nsbaIndicator" type="checkbox" value="" class="ciCheckbox">
-                                                    <span class="checkmark"></span>
-                                                </label>
-                                            </td>
-                                            <td><div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>April 30th</td>
-                                            <td>Show Start</td>
-                                            <td>Stalls</td>
-                                            <td>40%</td>
-                                            <td>
-                                                <label class="customCheckbox d-inline">
-                                                    <input name="nsbaIndicator" type="checkbox" value="" class="ciCheckbox">
-                                                    <span class="checkmark"></span>
-                                                </label>
-                                            </td>
-                                            <td><div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                        </tr>
+                             
                                         <tr>
                                             <td>April 30th</td>
                                             <td>Show Start</td>
@@ -111,23 +35,11 @@
                                             </td>
                                             <td><div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
                                         </tr>
-                                        <tr>
-                                            <td>Show Start Date</td>
-                                            <td>Show End Date</td>
-                                            <td>Stall</td>
-                                            <td>40%</td>
-                                            <td>
-                                                <label class="customCheckbox d-inline">
-                                                    <input name="nsbaIndicator" type="checkbox" value="" class="ciCheckbox">
-                                                    <span class="checkmark"></span>
-                                                </label>
-                                            </td>
-                                            <td><div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
-                                        </tr>											
+                                       											
                                         <tr>
                                             <td>
                                                     <mat-form-field class="dateField">
-                                                        <input matInput [matDatepicker]="dayAfterDatePicker"
+                                                        <input matInput required [matDatepicker]="dayAfterDatePicker"
                                                             placeholder="Day After" class="form-control"
                                                             name="dayAfter" #dayAfter="ngModel"
                                                             (dateChange)="handleAfterDate()"
@@ -136,10 +48,14 @@
                                                         </mat-datepicker-toggle>
                                                         <mat-datepicker #dayAfterDatePicker></mat-datepicker>													
                                                     </mat-form-field>
+                                                    <span class="help-block"
+                                                    *ngIf="(addRefundForm.submitted || dayAfter.touched) && dayAfter.invalid">
+                                                    Please select day after
+                                                </span>
                                             </td>
                                             <td>
                                                     <mat-form-field class="dateField">
-                                                        <input matInput [matDatepicker]="dayBeforeDatePicker"
+                                                        <input matInput required [matDatepicker]="dayBeforeDatePicker"
                                                             placeholder="Day Before" class="form-control"
                                                             name="dayBefore" #dayBefore="ngModel"
                                                             (dateChange)="handleBeforeDate()"
@@ -148,6 +64,10 @@
                                                         </mat-datepicker-toggle>
                                                         <mat-datepicker #dayBeforeDatePicker></mat-datepicker>													
                                                     </mat-form-field>
+                                                    <span class="help-block"
+                                                    *ngIf="(addRefundForm.submitted || dayBefore.touched) && dayBefore.invalid">
+                                                    Please select day before
+                                                </span>
                                                 </td>
                                             <td> 
                                                 <select required class="form-control" placeholder="Refund Type" (change)="setRefundType($event)" name="refundType" #refundType="ngModel" [(ngModel)]="typeOfRefund" >																						
@@ -155,9 +75,17 @@
                                                         Select Refund Type
                                                     </option>                                               											
                                                 </select>
+                                                <span class="help-block"
+                                                *ngIf="(addRefundForm.submitted || refundType.touched) && refundType.invalid">
+                                                Please select refundType
+                                            </span>
                                             </td>
                                             <td>
-                                                <input #refund="ngModel"  appOnlynumber name="refund"   [(ngModel)]="refundPercent" type="text" class="form-control" />
+                                                <input #refund="ngModel"  appOnlynumber name="refund"  required [(ngModel)]="refundPercent" type="text" class="form-control" />
+                                                <span class="help-block"
+                                                *ngIf="(addRefundForm.submitted || refund.touched) && refund.invalid">
+                                                Please enter refund
+                                            </span>
                                             </td>
                                             <td>                                             
                                             </td>
@@ -171,8 +99,9 @@
         <div class="modal-footer text-center">					
             <button type="button" class="btn btn-default" data-dismiss="modal">+ Refund</button>
             <button type="button"  (click)="onDismiss()" class="btn btn-default" data-dismiss="modal">Back</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal">Submit</button>
+            <button type="submit" class="btn btn-default" data-dismiss="modal">Submit</button>
         </div>
+    </form>
         </div>
 
     </div>

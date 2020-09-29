@@ -51,6 +51,8 @@ namespace AAYHS.Data.DBContext
         public virtual DbSet<ZipCodes> ZipCodes { get; set; }
         public virtual DbSet<ZipCodes2> ZipCodes2 { get; set; }
         public virtual DbSet<Scans> Scans { get; set; }
+        public virtual DbSet<Roles> Roles { get; set; }
+        public virtual DbSet<UserRoles> UserRoles { get; set; }
 
     }
 

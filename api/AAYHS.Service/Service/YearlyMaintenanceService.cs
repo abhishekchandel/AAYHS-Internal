@@ -24,16 +24,27 @@ namespace AAYHS.Service.Service
         private IGlobalCodeRepository _globalCodeRepository;
         private IUserRepository _userRepository;
         private IYearlyMaintenanceFeeRepository _yearlyMaintenanceFeeRepository;
+        private IEmailSenderRepository _emailRepository;
+        private IApplicationSettingRepository _applicationRepository;
+        private IRoleRepository _roleRepository;
+        private IUserRoleRepository _userRoleRepository;
         private MainResponse _mainResponse;
         #endregion
 
         public YearlyMaintenanceService(IYearlyMaintenanceRepository yearlyMaintenanceRepository, IGlobalCodeRepository globalCodeRepository,
-                                       IUserRepository userRepository,IYearlyMaintenanceFeeRepository yearlyMaintenanceFeeRepository, IMapper Mapper)
+                                       IUserRepository userRepository,IYearlyMaintenanceFeeRepository yearlyMaintenanceFeeRepository,
+                                       IEmailSenderRepository emailRepository,
+                          IApplicationSettingRepository applicationRepository,IRoleRepository roleRepository ,
+                          IUserRoleRepository userRoleRepository,IMapper Mapper)
         {
             _yearlyMaintenanceRepository = yearlyMaintenanceRepository;
             _globalCodeRepository = globalCodeRepository;
             _userRepository = userRepository;
             _yearlyMaintenanceFeeRepository = yearlyMaintenanceFeeRepository;
+            _emailRepository = emailRepository;
+            _applicationRepository = applicationRepository;
+            _roleRepository = roleRepository;
+            _userRoleRepository = userRoleRepository;
             _mapper = Mapper;
             _mainResponse = new MainResponse();
         }
@@ -106,6 +117,37 @@ namespace AAYHS.Service.Service
                 user.ModifiedDate = DateTime.Now;
 
                 _userRepository.Update(user);
+
+                if (userApprovedRequest.IsApproved==true)
+                {
+                    string guid = Guid.NewGuid().ToString();
+                  
+                    var settings = _applicationRepository.GetAll().FirstOrDefault();
+
+                    EmailRequest email = new EmailRequest();
+                    email.To = user.Email;
+                    email.SenderEmail = settings.CompanyEmail;
+                    email.CompanyEmail = settings.CompanyEmail;
+                    email.CompanyPassword = settings.CompanyPassword;
+                    email.Url = settings.ResetPasswordUrl;
+                    email.Token = guid;
+                    email.TemplateType = "User Approved";
+
+                    _emailRepository.SendEmail(email);
+
+                    var role = new UserRoles
+                    {
+                        RoleId = userApprovedRequest.RoleId,
+                        UserId = userApprovedRequest.UserId,
+                        IsActive = true,
+                        IsDeleted = false,
+                        CreatedBy = actionBy,
+                        CreatedDate = DateTime.Now
+                    };
+
+                    _userRoleRepository.Add(role);
+                }
+
                 _mainResponse.Success = true;
                 _mainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
             }
@@ -389,6 +431,19 @@ namespace AAYHS.Service.Service
                 _mainResponse.Success = false;
                 _mainResponse.Message = Constants.RECORD_DELETE_FAILED;
             }
+            return _mainResponse;
+        }
+
+        public MainResponse GetAllRoles()
+        {
+            var allRoles = _roleRepository.GetAll(x=>x.IsActive==true && x.IsDeleted==false);
+
+            var _allRoles = _mapper.Map<List<GetRoles>>(allRoles);
+            GetAllRoles getAllRoles = new GetAllRoles();
+            getAllRoles.getRoles = _allRoles;
+            _mainResponse.GetAllRoles = getAllRoles;
+            _mainResponse.Success = true;
+
             return _mainResponse;
         }
 

@@ -28,14 +28,14 @@
                 </thead> 
                 <perfect-scrollbar class="nicescrollBar-1"> 
                     <tbody>
-                        <tr *ngFor="let summary of yearlyMaintenanceSummaryList">
+                        <tr *ngFor="let summary of yearlyMaintenanceSummaryList ;let i = index " (click)="highlight(summary.YearlyMaintenanceId,i)" [ngClass]="{'blueRow': selectedRowIndex == i}">
                             <td data-label="Show Year">{{summary.Year}}</td>
                             <td data-label="Pre Entry Cutoff Date">{{summary.PreEntryCutOffDate | date : 'yyyy/MM/dd'}}</td>
                             <td data-label="Pre Entry Free">{{summary.PreEntryFee}}</td>
                             <td data-label="Post Entry Free">{{summary.PostEntryFee}}</td>
                             <td data-label="Date Created">{{summary.DateCreated | date : 'yyyy/MM/dd'}}</td>
                             <td data-label="Remove">
-                                <button type="button" class="icon" (click)="confirmRemoveYear(summary.YearlyMaintenanceId)"><span></span> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                <button type="button" class="icon" (click)="confirmRemoveYear($event,summary.YearlyMaintenanceId)"><span></span> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
                             </td>
                         </tr>
                         
@@ -76,8 +76,8 @@
                                     <table class="table table-bordered tableBodyScroll">
                                         <thead>
                                             <tr>
-                                                <th>Firstname</th> 
-                                                <th>Lastname</th> 
+                                                <th>First Name</th> 
+                                                <th>Last Name</th> 
                                                 <th>Email</th>
                                                 <th>Active</th>
                                                 <th>Action</th>
@@ -86,32 +86,18 @@
                                         <perfect-scrollbar class="nicescrollBar-2">
                                             <tbody>
                                                 
-                                                <tr>
-                                                    <td>Firstname</td>
-                                                    <td>Lastname</td>
-                                                    <td>info@gmail.com</td>
+                                                <tr *ngFor="let user of verifiedUsers">
+                                                    <td>{{user.FirstName}}</td>
+                                                    <td>{{user.LastName}}</td>
+                                                    <td>{{user.Email}}</td>
                                                     <td>
                                                         <label class="customCheckbox d-inline-block">
-                                                            <input name="nsbaIndicator"  type="checkbox" value="user.Active" class="ciCheckbox">
+                                                            <input name="nsbaIndicator"  type="checkbox" value="user.IsActive" [attr.checked]="user.IsActive === true ? true : null" class="ciCheckbox">
                                                             <span class="checkmark"></span>
                                                         </label>
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="icon" (click)="confirmRemoveUser(user.UserId)"><span></span> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Firstname</td>
-                                                    <td>Lastname</td>
-                                                    <td>info@gmail.com</td>
-                                                    <td>
-                                                        <label class="customCheckbox d-inline-block">
-                                                            <input name="nsbaIndicator"  type="checkbox" value="user.Active" class="ciCheckbox">
-                                                            <span class="checkmark"></span>
-                                                        </label>
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class="icon" (click)="confirmRemoveUser(user.UserId)"><span></span> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                                        <button type="button" class="icon" (click)="confirmRemoveApprovedUser(user.UserId)"><span></span> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
                                                     </td>
                                                 </tr>
                                               
@@ -129,7 +115,8 @@
                                             <table class="table table-bordered tableBodyScroll">
                                                 <thead>
                                                     <tr>
-                                                        <th>Name</th> 
+                                                        <th>First Name</th> 
+                                                        <th>Last Name</th>
                                                         <th>Email</th> 
                                                         <th>Active</th>
                                                         <th>Verified</th>
@@ -140,7 +127,8 @@
                                                     <tbody>
                                                         
                                                         <tr *ngFor="let user of registeredUsers">
-                                                            <td>{{user.UserName}}</td>
+                                                            <td>{{user.FirstName}}</td>
+                                                            <td>{{user.LastName}}</td>
                                                             <td>{{user.Email}}</td>
                                                             <td>
                                                                 <label class="customCheckbox d-inline-block">
@@ -149,12 +137,12 @@
                                                                 </label>
                                                             </td>
                                                             <td>
-                                                             <span *ngIf="user.IsApproved==true"><i class="fa fa-check verifiedSign" aria-hidden="true"></i></span>
+                                                             <!-- <span *ngIf="user.IsApproved==true"><i class="fa fa-check verifiedSign" aria-hidden="true"></i></span> -->
                                                              <span *ngIf="user.IsApproved==false"><i class="fa fa-times-circle verifiedSign" aria-hidden="true"></i></span>
                                                             </td>
                                                             <td>
-                                                                <span *ngIf="user.IsApproved==false"><button type="button" (click)="confirmVerifyUnverify(user.UserId,'verify')" class="icon text-success"><span></span> <i class="fa fa-check-square-o darkBlue" aria-hidden="true"></i></button></span>
-                                                                <span *ngIf="user.IsApproved==true"><button type="button" (click)="confirmVerifyUnverify(user.UserId,'unverify')" class="icon text-danger"><span></span> <i class="fa fa-ban verifiedSign" aria-hidden="true"></i></button></span>
+                                                                <span *ngIf="user.IsApproved==false"><button type="button" (click)="confirmVerifyUnverify(user.UserId)" class="icon text-success"><span></span> <i class="fa fa-check-square-o darkBlue" aria-hidden="true"></i></button></span>
+                                                                <!-- <span *ngIf="user.IsApproved==true"><button type="button" (click)="confirmVerifyUnverify(user.UserId,'unverify')" class="icon text-danger"><span></span> <i class="fa fa-ban verifiedSign" aria-hidden="true"></i></button></span> -->
                                                                 <button type="button" class="icon" (click)="confirmRemoveUser(user.UserId)"><span></span> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
                                                             </td>
                                                         </tr>
@@ -211,13 +199,13 @@
                                     </li>
                                     <li>
                                         <div class="form-group">
-                                            <label class="smText">Pre Entry Cut OFf Date</label>
+                                            <label class="smText">Pre Entry Cut Off Date</label>
                                             <mat-form-field class="dateField">
                                                 <input matInput [matDatepicker]="preEntryCutOffDatePicker"
                                                     placeholder="Billing Date" class="form-control"
                                                     name="preEntryCutOffDate" #preEntryCutOffDate="ngModel"
                                                     (dateChange)="handlePreEntryCutOffDate()"
-                                                    [(ngModel)]="yearlyMaintenanceSummary.PreCutOffDate" readonly>
+                                                    [(ngModel)]="yearlyMaintenanceSummary.PreEntryCutOffDate" readonly>
                                                 <mat-datepicker-toggle matSuffix [for]="preEntryCutOffDatePicker">
                                                 </mat-datepicker-toggle>
                                                 <mat-datepicker #preEntryCutOffDatePicker></mat-datepicker>													
