@@ -156,5 +156,30 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
+        /// <summary>
+        /// This api used to get all the users approved
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetAllUsersApproved()
+        {
+
+            _mainResponse = _yearlyMaintenanceService.GetAllUsersApproved();
+            _jsonString = Mapper.Convert<GetAllUsers>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to remove the approved user
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        public ActionResult RemoveApprovedUser(int userId)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _yearlyMaintenanceService.RemoveApprovedUser(userId, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
     }
 }

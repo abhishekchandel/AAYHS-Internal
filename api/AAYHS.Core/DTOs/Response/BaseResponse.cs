@@ -76,9 +76,8 @@ namespace AAYHS.Core.DTOs.Response
         public GetYearlyMaintenanceById GetYearlyMaintenanceById { get; set; }   
         public GetAllUsers GetAllUsers { get; set; }   
         public GetAllAdFees GetAllAdFees { get; set; }   
-
-        
-
+        public GetAllClassCategory GetAllClassCategory { get; set; }   
+      
     }
    
     public class Response<T> : BaseResponse
