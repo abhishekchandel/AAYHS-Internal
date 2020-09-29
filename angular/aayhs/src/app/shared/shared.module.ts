@@ -57,6 +57,7 @@ import { GeneralFeeModalComponent } from './ui/modals/general-fee-modal/general-
 import { RefundCalculationModalComponent } from './ui/modals/refund-calculation-modal/refund-calculation-modal.component';
 import { ShowLocationsComponent } from './ui/modals/show-locations/show-locations.component'
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { AddRoleModalComponent } from './ui/modals/add-role-modal/add-role-modal.component';
 
 
 
@@ -70,7 +71,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     ConfirmDialogComponent, AddSplitClassModalComponent, ExportConfirmationModalComponent,
      ConfirmEqualValidatorDirective, SearchPipe, AssignStallModalComponent, FinancialTransactionsComponent,
       OnlynumberDirective, SponsorInfoModalComponent, FilteredFinancialTransactionsComponent, 
-      EmailModalComponent,AmountPipe,OnlyTwoDecimalsDirective,NumericDecimalDirective, AddSizeFeeModalComponent, ClassCategoryModalComponent, GeneralFeeModalComponent, RefundCalculationModalComponent, ShowLocationsComponent],
+      EmailModalComponent,AmountPipe,OnlyTwoDecimalsDirective,NumericDecimalDirective, AddSizeFeeModalComponent, ClassCategoryModalComponent, GeneralFeeModalComponent, RefundCalculationModalComponent, ShowLocationsComponent, AddRoleModalComponent],
   imports: [
     CommonModule,
     RouterModule,

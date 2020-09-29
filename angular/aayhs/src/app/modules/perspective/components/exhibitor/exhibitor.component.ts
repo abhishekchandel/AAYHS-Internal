@@ -185,7 +185,6 @@ export class ExhibitorComponent implements OnInit {
       isRefund:this.isRefund
 
     }
-    debugger;
     const dialogRef = this.dialog.open(FinancialTransactionsComponent, {
       maxWidth: "400px",
       data

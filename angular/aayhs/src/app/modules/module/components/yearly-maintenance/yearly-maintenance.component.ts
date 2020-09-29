@@ -14,6 +14,7 @@ import { MatSnackbarComponent } from 'src/app/shared/ui/mat-snackbar/mat-snackba
 import * as moment from 'moment';
 import { NgForm } from '@angular/forms';
 import {YearlyMaintenanceModel} from '../../../../core/models/yearly-maintenance-model'
+import { AddRoleModalComponent } from 'src/app/shared/ui/modals/add-role-modal/add-role-modal.component';
 
 
 @Component({
@@ -37,13 +38,17 @@ export class YearlyMaintenanceComponent implements OnInit {
   maxyear: any;
   minyear:any;
   years=[];
+  selectedRowIndex: any;
+  adFeesList:any;
+  verifiedUsers:any
+  roles:any
 yearlyMaintenanceSummary:YearlyMaintenanceModel={
   ShowStartDate:null,
   ShowEndDate:null,
-  PreCutOffDate:null,
+  PreEntryCutOffDate:null,
   SponcerCutOffDate:null,
   Year:null,
-  YearlyMaintainenceId:null
+  YearlyMaintenanceId:null
 }
 
   baseRequest: BaseRecordFilterRequest = {
@@ -70,10 +75,27 @@ yearlyMaintenanceSummary:YearlyMaintenanceModel={
     });
     this.getNewRegisteredUsers()
     this.setYears();
+    this.getVerifiedUsers();
+    this.getAllRoles();
+
+  }
+
+  highlight(id, i) {
+    this.selectedRowIndex = i;
+    this.getAdFees(id);
+   this.getYearlyMaintenanceByDetails(id);
   }
 
   openAddFeeModal(){
+    debugger;
+    var data={
+      AddFeesList:this.adFeesList,
+      YearlyMaintainenceId:this.yearlyMaintenanceSummary.YearlyMaintenanceId
+    }
+
+
     const dialogRef = this.dialog.open(AddSizeFeeModalComponent, {
+      data
     });
     dialogRef.afterClosed().subscribe(dialogResult => {
 
@@ -117,20 +139,19 @@ yearlyMaintenanceSummary:YearlyMaintenanceModel={
       })
   }
 
-  confirmVerifyUnverify(id,action): void {
-    debugger;
-    const message = action=='verify' ? `Are you sure you want to verify the user?` : `Are you sure you want to unverify the user?`;
-    const dialogData = new ConfirmDialogModel("Confirm Action", message);
-    const verify=action=='verify' ? true :false;
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+  confirmVerifyUnverify(id): void {
+    var  data={
+    UserId:id,
+    Roles:this.roles
+    }
+    const dialogRef = this.dialog.open(AddRoleModalComponent, {
       maxWidth: "400px",
-      data: dialogData
+      data
     });
     dialogRef.afterClosed().subscribe(dialogResult => {
       this.result = dialogResult;
       if (this.result) {
-        debugger
-        this.verifyUser(id,verify)
+        this.getNewRegisteredUsers()
       }
     });
   }
@@ -145,6 +166,7 @@ yearlyMaintenanceSummary:YearlyMaintenanceModel={
     dialogRef.afterClosed().subscribe(dialogResult => {
       this.result = dialogResult;
       if (this.result) {
+        this.deleteUser(id)
       }
     });
 
@@ -174,7 +196,8 @@ yearlyMaintenanceSummary:YearlyMaintenanceModel={
     this.getYearlyMaintenanceSummary()
   }
 
-  confirmRemoveYear(id): void {
+  confirmRemoveYear(e,id): void {
+    e.stopPropagation();
     const message = `Are you sure you want to remove the record?`;
     const dialogData = new ConfirmDialogModel("Confirm Action", message);
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
@@ -318,5 +341,98 @@ deleteYear(id){
     resolve();
   });
 }
-  
+
+
+getYearlyMaintenanceByDetails(id){
+  return new Promise((resolve, reject) => {
+    this.loading = true;
+    this.yearlyService.getYearlyMaintenanceById(id).subscribe(response => {
+      this.yearlyMaintenanceSummary = response.Data;
+      this.loading = false;
+    }, error => {
+      this.loading = false;
+
+    }
+    )
+    resolve();
+  });
+}
+
+
+getAdFees(id){
+  return new Promise((resolve, reject) => {
+    this.loading = true;
+    this.yearlyService.getAdFees(id).subscribe(response => {
+      this.adFeesList = response.Data.getAdFees;
+      this.loading = false;
+    }, error => {
+      this.loading = false;
+
+    }
+    )
+    resolve();
+  });
+}
+
+getVerifiedUsers(){
+  return new Promise((resolve, reject) => {
+    this.loading = true;
+    this.yearlyService.getApprovedUser().subscribe(response => {
+      this.verifiedUsers = response.Data.getUsers;
+      this.loading = false;
+    }, error => {
+      this.loading = false;
+
+    }
+    )
+    resolve();
+  });
+}
+
+confirmRemoveApprovedUser(id){
+  const message = `Are you sure you want to remove the user?`;
+  const dialogData = new ConfirmDialogModel("Confirm Action", message);
+  const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    maxWidth: "400px",
+    data: dialogData
+  });
+  dialogRef.afterClosed().subscribe(dialogResult => {
+    this.result = dialogResult;
+    if (this.result) {
+      this.deleteApprovedUser(id);
+    }
+  });
+}
+
+deleteApprovedUser(id){
+  return new Promise((resolve, reject) => {   
+    this.loading = true;
+    this.yearlyService.deleteApprovedUser(id).subscribe(response => {
+      this.getVerifiedUsers();
+      this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
+      this.loading = false;
+    }, error => {
+      this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
+    this.loading = false;
+    }
+    )
+    resolve();
+  });
+}
+
+getAllRoles(){
+  return new Promise((resolve, reject) => {
+    this.loading = true;
+    this.yearlyService.getRoles().subscribe(response => {
+      this.roles = response.Data.getRoles;
+      this.loading = false;
+    }, error => {
+      this.loading = false;
+
+    }
+    )
+    resolve();
+  });
+}
+
 }
