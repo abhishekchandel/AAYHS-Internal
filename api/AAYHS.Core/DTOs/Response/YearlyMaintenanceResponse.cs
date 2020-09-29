@@ -54,4 +54,14 @@ namespace AAYHS.Core.DTOs.Response
         public bool Active { get; set; }
  
     }
+    public class GetAllClassCategory
+    {
+        public List<GetClassCategory>getClassCategories { get; set; }
+    }
+    public class GetClassCategory
+    {
+        public int GlobalCodeId { get; set; }
+        public string CategoryName { get; set; }
+        public bool IsActive { get; set; }
+    }
 }

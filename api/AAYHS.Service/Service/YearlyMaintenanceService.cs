@@ -338,6 +338,8 @@ namespace AAYHS.Service.Service
                 deleteAdFee.DeletedDate = DateTime.Now;
 
                 _yearlyMaintenanceFeeRepository.Update(deleteAdFee);
+                _mainResponse.Success = true;
+                _mainResponse.Message = Constants.RECORD_DELETE_SUCCESS;
             }
             else
             {
@@ -386,6 +388,27 @@ namespace AAYHS.Service.Service
             {
                 _mainResponse.Success = false;
                 _mainResponse.Message = Constants.RECORD_DELETE_FAILED;
+            }
+            return _mainResponse;
+        }
+
+        public MainResponse GetAllClassCategory()
+        {
+            var classCategory = _globalCodeRepository.GetCodes("ClassHeaderType");
+
+            if (classCategory.globalCodeResponse!=null)
+            {
+                var _classCategory = _mapper.Map<List<GetClassCategory>>(classCategory);
+                GetAllClassCategory getAllClassCategory = new GetAllClassCategory();
+                getAllClassCategory.getClassCategories = _classCategory;
+                _mainResponse.GetAllClassCategory = getAllClassCategory;
+                _mainResponse.Success = true;
+
+            }
+            else
+            {
+                _mainResponse.Success = false;
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
             }
             return _mainResponse;
         }
