@@ -13,5 +13,6 @@ namespace AAYHS.Repository.IRepository
         GetYearlyMaintenanceById GetYearlyMaintenanceById(int yearlyMaintenanceId);
         int GetCategoryId(string categoryType);
         GetAllAdFees GetAllAdFees(int yearlyMaintenanceId);
+        GetAllGeneralFees GetAllGeneralFees(int yearlyMaintenanceId);
     }
 }

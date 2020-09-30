@@ -34,4 +34,11 @@ namespace AAYHS.Core.DTOs.Request
     {
         public string CategoryName { get; set; }
     }
+    public class AddGeneralFeeRequest
+    {
+        public int YearlyMaintainenceId { get; set; }
+        public string TimeFrame { get; set; }
+        public string FeeType { get; set; }
+        public decimal Amount { get; set; }
+    }
 }

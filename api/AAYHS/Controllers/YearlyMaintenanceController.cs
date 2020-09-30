@@ -192,6 +192,10 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<GetAllRoles>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
+        /// <summary>
+        /// This api used to get all class categories
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult GetAllClassCategory()
         {
@@ -199,6 +203,11 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<GetAllClassCategory>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
+        /// <summary>
+        /// This api  used to add class category
+        /// </summary>
+        /// <param name="addClassCategoryRequest"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult AddClassCategory(AddClassCategoryRequest addClassCategoryRequest)
         {
@@ -207,11 +216,54 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
+        /// <summary>
+        /// This api used to remove class category  
+        /// </summary>
+        /// <param name="globalCodeId"></param>
+        /// <returns></returns>
         [HttpDelete]
         public ActionResult RemoveClassCategory(int globalCodeId)
         {
             string actionBy = User.Identity.Name;
             _mainResponse = _yearlyMaintenanceService.RemoveClassCategory(globalCodeId, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to get all general fees
+        /// </summary>
+        /// <param name="yearlyMaintenanceId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetAllGeneralFees(int yearlyMaintenanceId)
+        {
+            _mainResponse = _yearlyMaintenanceService.GetAllGeneralFees(yearlyMaintenanceId);
+            _jsonString = Mapper.Convert<GetAllGeneralFees>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to add general fee
+        /// </summary>
+        /// <param name="addGeneralFeeRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult AddGeneralFees(AddGeneralFeeRequest addGeneralFeeRequest)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _yearlyMaintenanceService.AddGeneralFees(addGeneralFeeRequest, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to remove general fee
+        /// </summary>
+        /// <param name="yearlyMaintenanceFeeId"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        public ActionResult RemoveGeneralFee(int yearlyMaintenanceFeeId)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _yearlyMaintenanceService.RemoveGeneralFee(yearlyMaintenanceFeeId, actionBy);
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
