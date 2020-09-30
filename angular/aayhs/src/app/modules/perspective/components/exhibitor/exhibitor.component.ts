@@ -310,6 +310,9 @@ export class ExhibitorComponent implements OnInit {
       this.documentId=null;
       this.myFiles=null;
       this.scannedDocuments =null;
+      this.exhibitorStallAssignmentResponses = [];
+      this.horsestalllength = 0;
+      this.tackstalllength = 0;
   }
 
   getNext(event) {

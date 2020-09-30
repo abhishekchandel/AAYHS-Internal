@@ -1913,9 +1913,9 @@ span{
     border-radius: 50px;
     padding: 4px 13px;
     margin: 5px;
-    &:hover {
-        background-color: #857b7d;
-    }
+    // &:hover {
+    //     background-color: #857b7d;
+    // }
     @media(max-width:767px){
         margin-bottom: 5px !important;
     }
