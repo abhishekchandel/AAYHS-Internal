@@ -225,13 +225,17 @@ namespace AAYHS.Repository.Repository
 
                     if (getGeneralFees[i].PreEntryFee == 0 && getGeneralFees[i].PostEntryFee == 0)
                     {
-                        getGeneralFeesResponse = new GetGeneralFeesResponse();
-                        getGeneralFeesResponse.YearlyMaintenanceFeeId = getGeneralFees[i].YearlyMaintenanceFeeId;
-                        getGeneralFeesResponse.TimeFrame = "";
-                        getGeneralFeesResponse.FeeType = getGeneralFees[i].FeeType;
-                        getGeneralFeesResponse.Amount = getGeneralFees[i].Amount;
-                        getGeneralFeesResponse.Active = getGeneralFees[i].Active;
-                        getAllGeneral.Add(getGeneralFeesResponse);
+                        if (getGeneralFees[i].Amount!=0)
+                        {
+                            getGeneralFeesResponse = new GetGeneralFeesResponse();
+                            getGeneralFeesResponse.YearlyMaintenanceFeeId = getGeneralFees[i].YearlyMaintenanceFeeId;
+                            getGeneralFeesResponse.TimeFrame = "";
+                            getGeneralFeesResponse.FeeType = getGeneralFees[i].FeeType;
+                            getGeneralFeesResponse.Amount = getGeneralFees[i].Amount;
+                            getGeneralFeesResponse.Active = getGeneralFees[i].Active;
+                            getAllGeneral.Add(getGeneralFeesResponse);
+                        }
+                        
                     }
                 }
                 getAllGeneralFees.getGeneralFeesResponses = getAllGeneral;
