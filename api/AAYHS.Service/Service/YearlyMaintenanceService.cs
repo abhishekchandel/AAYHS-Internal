@@ -643,9 +643,9 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
-        public MainResponse GetContactInfo(int yearlyMaintenanceId)
-        {
+        //public MainResponse GetContactInfo(int yearlyMaintenanceId)
+        //{
 
-        }
+        //}
     }
 }
