@@ -77,7 +77,15 @@ namespace AAYHS.Core.DTOs.Response
     }
     public class GetAllGeneralFees
     {
-        public List<GetGeneralFees> getGeneralFees { get; set; }
+        public List<GetGeneralFeesResponse> getGeneralFeesResponses { get; set; }
+    }
+    public class GetGeneralFeesResponse
+    {
+        public int YearlyMaintenanceFeeId { get; set; }
+        public string TimeFrame { get; set; }
+        public string FeeType { get; set; }
+        public decimal Amount { get; set; }
+        public bool Active { get; set; }
     }
     public class GetGeneralFees
     {
@@ -91,6 +99,7 @@ namespace AAYHS.Core.DTOs.Response
     }
     public class GetContactInfo
     {
+        public int AAYHSContactId { get; set; }
         public DateTime ShowStart{ get; set; }
         public DateTime ShowEnd { get; set; }
         public string ShowLocation { get; set; }

@@ -260,10 +260,10 @@ namespace AAYHS.API.Controllers
         /// <param name="yearlyMaintenanceFeeId"></param>
         /// <returns></returns>
         [HttpDelete]
-        public ActionResult RemoveGeneralFee(int yearlyMaintenanceFeeId)
+        public ActionResult RemoveGeneralFee(RemoveGeneralFee removeGeneralFee)
         {
             string actionBy = User.Identity.Name;
-            _mainResponse = _yearlyMaintenanceService.RemoveGeneralFee(yearlyMaintenanceFeeId, actionBy);
+            _mainResponse = _yearlyMaintenanceService.RemoveGeneralFee(removeGeneralFee, actionBy);
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
