@@ -26,7 +26,12 @@ namespace AAYHS.Service.IService
         MainResponse RemoveClassCategory(int globalCodeId, string actionBy);
         MainResponse GetAllGeneralFees(int yearlyMaintenanceId);
         MainResponse AddGeneralFees(AddGeneralFeeRequest addGeneralFeeRequest, string actionBy);
-        MainResponse RemoveGeneralFee(int yearlyMaintenanceFeeId, string actionBy);
+        MainResponse RemoveGeneralFee(RemoveGeneralFee removeGeneralFee, string actionBy);
+        MainResponse GetRefund(int yearlyMaintenanceId);
+        MainResponse AddRefund(AddRefundRequest addRefundRequest, string actionBy);
+        MainResponse RemoveRefund(int refundId, string actionBy);
         MainResponse GetContactInfo(int yearlyMaintenanceId);
+        MainResponse AddUpdateContactInfo(AddContactInfoRequest addContactInfoRequest, string actionBy);
+
     }
 }

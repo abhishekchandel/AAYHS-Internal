@@ -55,10 +55,20 @@ namespace AAYHS.Service.Service
                 if (userDetails.IsApproved==true)
                 {
                     var userRole = _userRoleRepository.GetSingle(x => x.UserId == userDetails.UserId);
-                    var role = _roleRepository.GetSingle(x => x.RoleId == userRole.RoleId);
-                    var userResponse = _mapper.Map<UserResponse>(userDetails);
-                    userResponse.Role = role.RoleName;
-                    _mainResponse.UserResponse = userResponse;
+                    if (userRole!=null)
+                    {
+                        var role = _roleRepository.GetSingle(x => x.RoleId == userRole.RoleId);
+                        var userResponse = _mapper.Map<UserResponse>(userDetails);
+                        userResponse.Role = role.RoleName;
+                        _mainResponse.UserResponse = userResponse;
+
+                    }
+                    else
+                    {
+                        var userResponse = _mapper.Map<UserResponse>(userDetails);
+                        _mainResponse.UserResponse = userResponse;
+                    }
+                   
                     _mainResponse.Message = Constants.LOG_IN;
                     _mainResponse.Success = true;
                 }

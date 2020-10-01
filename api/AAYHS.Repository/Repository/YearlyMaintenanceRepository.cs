@@ -177,6 +177,7 @@ namespace AAYHS.Repository.Repository
         public GetAllGeneralFees GetAllGeneralFees(int yearlyMaintenanceId)
         {
             IEnumerable<GetGeneralFees> data;
+            List<GetGeneralFees> getGeneralFees = new List<GetGeneralFees>();
             GetAllGeneralFees getAllGeneralFees = new GetAllGeneralFees();
 
             data = (from yearlyFee in _ObjContext.YearlyMaintainenceFee
@@ -194,9 +195,77 @@ namespace AAYHS.Repository.Repository
                     });
             if (data.Count()!=0)
             {
-                getAllGeneralFees.getGeneralFees = data.ToList();
+                getGeneralFees = data.ToList();
+                List<GetGeneralFeesResponse> getAllGeneral = new List<GetGeneralFeesResponse>();
+                for (int i = 0; i <= getGeneralFees.Count()-1; i++)
+                {
+                    GetGeneralFeesResponse getGeneralFeesResponse;
+
+                    if (getGeneralFees[i].PreEntryFee!=0)
+                    {
+                        getGeneralFeesResponse = new GetGeneralFeesResponse();
+                        getGeneralFeesResponse.YearlyMaintenanceFeeId = getGeneralFees[i].YearlyMaintenanceFeeId;
+                        getGeneralFeesResponse.TimeFrame = "Pre";
+                        getGeneralFeesResponse.FeeType= getGeneralFees[i].FeeType;
+                        getGeneralFeesResponse.Amount = getGeneralFees[i].PreEntryFee;
+                        getGeneralFeesResponse.Active= getGeneralFees[i].Active;
+                        getAllGeneral.Add(getGeneralFeesResponse);
+
+                    }
+                    if (getGeneralFees[i].PostEntryFee != 0)
+                    {
+                        getGeneralFeesResponse = new GetGeneralFeesResponse();
+                        getGeneralFeesResponse.YearlyMaintenanceFeeId = getGeneralFees[i].YearlyMaintenanceFeeId;
+                        getGeneralFeesResponse.TimeFrame = "Post";
+                        getGeneralFeesResponse.FeeType = getGeneralFees[i].FeeType;
+                        getGeneralFeesResponse.Amount = getGeneralFees[i].PostEntryFee;
+                        getGeneralFeesResponse.Active = getGeneralFees[i].Active;
+                        getAllGeneral.Add(getGeneralFeesResponse);
+                    }
+
+                    if (getGeneralFees[i].PreEntryFee == 0 && getGeneralFees[i].PostEntryFee == 0)
+                    {
+                        if (getGeneralFees[i].Amount!=0)
+                        {
+                            getGeneralFeesResponse = new GetGeneralFeesResponse();
+                            getGeneralFeesResponse.YearlyMaintenanceFeeId = getGeneralFees[i].YearlyMaintenanceFeeId;
+                            getGeneralFeesResponse.TimeFrame = "";
+                            getGeneralFeesResponse.FeeType = getGeneralFees[i].FeeType;
+                            getGeneralFeesResponse.Amount = getGeneralFees[i].Amount;
+                            getGeneralFeesResponse.Active = getGeneralFees[i].Active;
+                            getAllGeneral.Add(getGeneralFeesResponse);
+                        }
+                        
+                    }
+                }
+                getAllGeneralFees.getGeneralFeesResponses = getAllGeneral;
             }
             return getAllGeneralFees;
+        }
+
+        public GetAllRefund GetAllRefund(int yearlyMaintenanceId)
+        {
+            IEnumerable<GetRefund> data;
+            GetAllRefund getAllRefund = new GetAllRefund();
+
+            data = (from refund in _ObjContext.RefundDetail
+                    join feeType in _ObjContext.GlobalCodes on refund.FeeTypeId equals feeType.GlobalCodeId
+                    where refund.IsActive == true && refund.IsDeleted == false
+                    select new GetRefund
+                    {
+                        RefundId = refund.RefundDetailId,
+                        DateAfter = refund.DateAfter,
+                        DateBefore = refund.DateBefore,
+                        Refund = refund.RefundPercentage,
+                        Active = refund.IsActive
+                    });
+
+            if (data.Count()!=0)
+            {
+                getAllRefund.getRefunds = data.ToList();
+            }
+
+            return getAllRefund;
         }
 
         public GetContactInfo GetContactInfo(int yearlyMaintenanceId)
@@ -211,6 +280,7 @@ namespace AAYHS.Repository.Repository
                     where contactInfo.YearlyMaintainenceId == yearlyMaintenanceId
                     select new GetContactInfo 
                     { 
+                      AAYHSContactId=contactInfo.AAYHSContactId,
                       ShowStart= yearlyMaintenance2.ShowStartDate,
                       ShowEnd=yearlyMaintenance2.ShowEndDate,
                       ShowLocation=yearlyMaintenance2.Location,

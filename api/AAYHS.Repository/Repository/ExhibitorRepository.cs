@@ -396,9 +396,6 @@ namespace AAYHS.Repository.Repository
                 postTackStallAmount = tackStallFee.PostEntryFee * postTackStall.Count();
             }
 
-
-
-
             decimal postClassAmount =0;
 
             if (classEntryFee != null)

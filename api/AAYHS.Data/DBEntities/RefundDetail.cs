@@ -12,14 +12,11 @@ namespace AAYHS.Data.DBEntities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public int RefundDetailId { get; set; }
-        public int ExhibitorId { get; set; }
-        public int RefundTypeId { get; set; }
+        public int YearlyMaintenanceId { get; set; }
+        public DateTime DateAfter { get; set; }
+        public DateTime DateBefore { get; set; }
+        public int FeeTypeId { get; set; }
         public decimal RefundPercentage { get; set; }
-        public decimal TotalPaid { get; set; }
-        public decimal RefundAmount { get; set; }
-        [Column(TypeName = "varchar(50)")]
-        public string CheckNumber { get; set; }
-        [Column(TypeName = "varchar(500)")]
-        public string Description { get; set; }
+        
     }
 }

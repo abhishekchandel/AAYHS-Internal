@@ -41,4 +41,25 @@ namespace AAYHS.Core.DTOs.Request
         public string FeeType { get; set; }
         public decimal Amount { get; set; }
     }
+    public class AddContactInfoRequest
+    {
+        public int AAYHSContactId { get; set; }
+        public string Email1 { get; set; }
+        public string Email2 { get; set; }
+        public string Phone1 { get; set; }
+        public string Phone2 { get; set; }
+    }
+    public class RemoveGeneralFee
+    {
+        public int yearlyMaintenanceFeeId { get; set; }
+        public string TimeFrame { get; set; }
+    }
+    public class AddRefundRequest
+    {
+        public int  yearlyMaintenanceId { get; set; }
+        public DateTime DateAfter { get; set; }
+        public DateTime DateBefore { get; set; }
+        public int FeeTypeId { get; set; }
+        public decimal Refund { get; set; }
+    }
 }

@@ -80,6 +80,7 @@ namespace AAYHS.Core.DTOs.Response
         public GetAllRoles GetAllRoles { get; set; }   
         public GetAllGeneralFees GetAllGeneralFees { get; set; }   
         public GetContactInfo GetContactInfo { get; set; }   
+        public GetAllRefund GetAllRefund { get; set; }   
       
     }
    
