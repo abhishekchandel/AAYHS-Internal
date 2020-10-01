@@ -26,11 +26,14 @@ border-radius: 10px;
 
 
 .stallDiagram {
-  margin-right: 20px; }
+  margin-right: 20px; 
+  &:last-child{
+    padding-right: 15px;
+  }
+}
   
   .stallWrapper {
   display: flex;
-  overflow-x: auto;
   padding-bottom: 10px; }
   .stallWrapper::-webkit-scrollbar {
     width: 6px; }
@@ -144,7 +147,7 @@ border-radius: 10px;
       background-color: #fff;
       box-shadow: 0 0 10px rgba(0,0,0,0.2);
       border-radius: 5px;
-      max-width: 270px;
+      max-width: 370px;
       width: 100%;
       //background-color: #a7bfff;
       border: 1px solid #7ea6f6;
