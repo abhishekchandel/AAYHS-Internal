@@ -54,4 +54,12 @@ namespace AAYHS.Core.DTOs.Request
         public int yearlyMaintenanceFeeId { get; set; }
         public string TimeFrame { get; set; }
     }
+    public class AddRefundRequest
+    {
+        public int  yearlyMaintenanceId { get; set; }
+        public DateTime DateAfter { get; set; }
+        public DateTime DateBefore { get; set; }
+        public int FeeTypeId { get; set; }
+        public decimal Refund { get; set; }
+    }
 }

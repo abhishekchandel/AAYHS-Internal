@@ -239,6 +239,31 @@ namespace AAYHS.Repository.Repository
             return getAllGeneralFees;
         }
 
+        public GetAllRefund GetAllRefund(int yearlyMaintenanceId)
+        {
+            IEnumerable<GetRefund> data;
+            GetAllRefund getAllRefund = new GetAllRefund();
+
+            data = (from refund in _ObjContext.RefundDetail
+                    join feeType in _ObjContext.GlobalCodes on refund.FeeTypeId equals feeType.GlobalCodeId
+                    where refund.IsActive == true && refund.IsDeleted == false
+                    select new GetRefund
+                    {
+                        RefundId = refund.RefundDetailId,
+                        DateAfter = refund.DateAfter,
+                        DateBefore = refund.DateBefore,
+                        Refund = refund.RefundPercentage,
+                        Active = refund.IsActive
+                    });
+
+            if (data.Count()!=0)
+            {
+                getAllRefund.getRefunds = data.ToList();
+            }
+
+            return getAllRefund;
+        }
+
         public GetContactInfo GetContactInfo(int yearlyMaintenanceId)
         {
             GetContactInfo getContactInfo = new GetContactInfo();

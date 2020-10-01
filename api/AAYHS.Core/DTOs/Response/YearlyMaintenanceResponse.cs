@@ -97,6 +97,19 @@ namespace AAYHS.Core.DTOs.Response
         public decimal Amount { get; set; }
         public bool Active { get; set; }
     }
+
+    public class GetAllRefund
+    {
+        public List<GetRefund> getRefunds { get; set; }
+    }
+    public class GetRefund
+    {
+        public int RefundId { get; set; }
+        public DateTime DateAfter { get; set; }
+        public DateTime DateBefore { get; set; }
+        public decimal Refund { get; set; }
+        public bool Active { get; set; }
+    }
     public class GetContactInfo
     {
         public int AAYHSContactId { get; set; }

@@ -29,6 +29,7 @@ namespace AAYHS.Service.Service
         private IRoleRepository _roleRepository;
         private IUserRoleRepository _userRoleRepository;
         private IAAYHSContactRepository _aAYHSContactRepository;
+        private IRefundRepository _refundRepository;
         private MainResponse _mainResponse;
         #endregion
 
@@ -36,7 +37,8 @@ namespace AAYHS.Service.Service
                                        IUserRepository userRepository,IYearlyMaintenanceFeeRepository yearlyMaintenanceFeeRepository,
                                        IEmailSenderRepository emailRepository,
                           IApplicationSettingRepository applicationRepository,IRoleRepository roleRepository ,
-                          IUserRoleRepository userRoleRepository,IAAYHSContactRepository aAYHSContactRepository,IMapper Mapper)
+                          IUserRoleRepository userRoleRepository,IAAYHSContactRepository aAYHSContactRepository,
+                          IRefundRepository refundRepository,IMapper Mapper)
         {
             _yearlyMaintenanceRepository = yearlyMaintenanceRepository;
             _globalCodeRepository = globalCodeRepository;
@@ -47,6 +49,7 @@ namespace AAYHS.Service.Service
             _roleRepository = roleRepository;
             _userRoleRepository = userRoleRepository;
             _aAYHSContactRepository = aAYHSContactRepository;
+            _refundRepository = refundRepository;
             _mapper = Mapper;
             _mainResponse = new MainResponse();
         }
@@ -774,6 +777,66 @@ namespace AAYHS.Service.Service
                     getGeneralFee.Amount = 0;
                     _yearlyMaintenanceFeeRepository.Update(getGeneralFee);
                 }
+                _mainResponse.Success = true;
+                _mainResponse.Message = Constants.RECORD_DELETE_SUCCESS;
+            }
+            else
+            {
+                _mainResponse.Success = false;
+                _mainResponse.Message = Constants.RECORD_DELETE_FAILED;
+            }
+            return _mainResponse;
+        }
+
+        public MainResponse  GetRefund(int yearlyMaintenanceId)
+        {
+            var getRefund = _yearlyMaintenanceRepository.GetAllRefund(yearlyMaintenanceId);
+
+            if (getRefund.getRefunds!=null )
+            {
+                _mainResponse.GetAllRefund = getRefund;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Success = false;
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+            }
+
+            return _mainResponse;
+        }
+
+        public MainResponse AddRefund(AddRefundRequest addRefundRequest, string actionBy)
+        {
+            var addRefund = new RefundDetail
+            {
+                YearlyMaintenanceId=addRefundRequest.yearlyMaintenanceId,
+                DateAfter= addRefundRequest.DateAfter,
+                DateBefore=addRefundRequest.DateBefore,
+                FeeTypeId=addRefundRequest.FeeTypeId,
+                RefundPercentage=addRefundRequest.Refund,
+                IsActive=true,
+                IsDeleted=false,
+                CreatedBy=actionBy,
+                CreatedDate=DateTime.Now
+            };
+
+            _refundRepository.Add(addRefund);
+
+            return _mainResponse;
+        }
+
+        public MainResponse RemoveRefund(int refundId,string actionBy)
+        {
+            var getRefund = _refundRepository.GetSingle(x => x.RefundDetailId == refundId);
+
+            if (getRefund!=null)
+            {
+                getRefund.IsDeleted = true;
+                getRefund.DeletedBy = actionBy;
+                getRefund.DeletedDate = DateTime.Now;
+
+                _refundRepository.Update(getRefund);
                 _mainResponse.Success = true;
                 _mainResponse.Message = Constants.RECORD_DELETE_SUCCESS;
             }

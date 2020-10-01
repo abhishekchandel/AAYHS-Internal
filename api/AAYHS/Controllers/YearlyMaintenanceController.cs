@@ -259,11 +259,49 @@ namespace AAYHS.API.Controllers
         /// </summary>
         /// <param name="yearlyMaintenanceFeeId"></param>
         /// <returns></returns>
-        [HttpDelete]
+        [HttpPost]
         public ActionResult RemoveGeneralFee(RemoveGeneralFee removeGeneralFee)
         {
             string actionBy = User.Identity.Name;
             _mainResponse = _yearlyMaintenanceService.RemoveGeneralFee(removeGeneralFee, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to get refund detail
+        /// </summary>
+        /// <param name="yearlyMaintenanceId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetRefund(int yearlyMaintenanceId)
+        {
+            _mainResponse = _yearlyMaintenanceService.GetRefund(yearlyMaintenanceId);
+            _jsonString = Mapper.Convert<GetAllRefund>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to add refund 
+        /// </summary>
+        /// <param name="addRefundRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult AddRefund(AddRefundRequest addRefundRequest)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _yearlyMaintenanceService.AddRefund(addRefundRequest, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to remove the refund
+        /// </summary>
+        /// <param name="refundId"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        public ActionResult RemoveRefund(int refundId)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _yearlyMaintenanceService.RemoveRefund(refundId, actionBy);
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
@@ -277,6 +315,19 @@ namespace AAYHS.API.Controllers
         {
             _mainResponse = _yearlyMaintenanceService.GetContactInfo(yearlyMaintenanceId);
             _jsonString = Mapper.Convert<GetContactInfo>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to add the contact info
+        /// </summary>
+        /// <param name="addContactInfoRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult AddUpdateContactInfo(AddContactInfoRequest addContactInfoRequest)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _yearlyMaintenanceService.AddUpdateContactInfo(addContactInfoRequest, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
     }
