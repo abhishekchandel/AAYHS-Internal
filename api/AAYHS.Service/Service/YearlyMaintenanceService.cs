@@ -449,14 +449,11 @@ namespace AAYHS.Service.Service
 
         public MainResponse GetAllClassCategory()
         {
-            var classCategory = _globalCodeRepository.GetCodes("ClassHeaderType");
+            var classCategory =_yearlyMaintenanceRepository.GetAllClassCategory();
 
-            if (classCategory.globalCodeResponse!=null)
-            {
-                var _classCategory = _mapper.Map<List<GetClassCategory>>(classCategory);
-                GetAllClassCategory getAllClassCategory = new GetAllClassCategory();
-                getAllClassCategory.getClassCategories = _classCategory;
-                _mainResponse.GetAllClassCategory = getAllClassCategory;
+            if (classCategory.getClassCategories!=null)
+            {                
+                _mainResponse.GetAllClassCategory = classCategory;
                 _mainResponse.Success = true;
 
             }
@@ -643,9 +640,22 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
-        //public MainResponse GetContactInfo(int yearlyMaintenanceId)
-        //{
+        public MainResponse GetContactInfo(int yearlyMaintenanceId)
+        {
+            var getContactInfo = _yearlyMaintenanceRepository.GetContactInfo(yearlyMaintenanceId);
 
-        //}
+            if (getContactInfo != null)
+            {
+                _mainResponse.GetContactInfo = getContactInfo;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Success = false;
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+            }
+
+            return _mainResponse;
+        }
     }
 }

@@ -27,5 +27,6 @@ namespace AAYHS.Service.IService
         MainResponse GetAllGeneralFees(int yearlyMaintenanceId);
         MainResponse AddGeneralFees(AddGeneralFeeRequest addGeneralFeeRequest, string actionBy);
         MainResponse RemoveGeneralFee(int yearlyMaintenanceFeeId, string actionBy);
+        MainResponse GetContactInfo(int yearlyMaintenanceId);
     }
 }

@@ -79,6 +79,7 @@ namespace AAYHS.Core.DTOs.Response
         public GetAllClassCategory GetAllClassCategory { get; set; }   
         public GetAllRoles GetAllRoles { get; set; }   
         public GetAllGeneralFees GetAllGeneralFees { get; set; }   
+        public GetContactInfo GetContactInfo { get; set; }   
       
     }
    

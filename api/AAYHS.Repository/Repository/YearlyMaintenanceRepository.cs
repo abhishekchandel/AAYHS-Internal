@@ -150,6 +150,30 @@ namespace AAYHS.Repository.Repository
             return getAllAdFees;
         }
 
+        public GetAllClassCategory GetAllClassCategory()
+        {
+            IEnumerable<GetClassCategory> data;
+            GetAllClassCategory getAllClassCategory = new GetAllClassCategory();
+
+            data = (from globalCategory in _ObjContext.GlobalCodeCategories
+                    join globalCode in _ObjContext.GlobalCodes on globalCategory.GlobalCodeCategoryId equals globalCode.CategoryId
+                    where globalCode.IsActive == true && globalCode.IsDeleted == false
+                    && globalCategory.CategoryName=="ClassHeaderType"
+                    select new GetClassCategory
+                    {
+                        GlobalCodeId=globalCode.GlobalCodeId,
+                        CodeName= globalCode.CodeName,
+                        IsActive=globalCode.IsActive
+                    });
+
+            if (data.Count()!=0)
+            {
+                getAllClassCategory.getClassCategories = data.ToList();
+            }
+
+            return getAllClassCategory;
+        }
+
         public GetAllGeneralFees GetAllGeneralFees(int yearlyMaintenanceId)
         {
             IEnumerable<GetGeneralFees> data;
