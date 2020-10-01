@@ -63,7 +63,7 @@ namespace AAYHS.Core.DTOs.Response
     public class GetClassCategory
     {
         public int GlobalCodeId { get; set; }
-        public string CategoryName { get; set; }
+        public string CodeName { get; set; }
         public bool IsActive { get; set; }
     }
     public class GetAllRoles

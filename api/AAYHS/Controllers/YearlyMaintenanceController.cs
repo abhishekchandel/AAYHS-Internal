@@ -267,5 +267,17 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
+        /// <summary>
+        /// This api used to get contact info
+        /// </summary>
+        /// <param name="yearlyMaintenanceId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetContactInfo(int yearlyMaintenanceId)
+        {
+            _mainResponse = _yearlyMaintenanceService.GetContactInfo(yearlyMaintenanceId);
+            _jsonString = Mapper.Convert<GetContactInfo>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
     }
 }
