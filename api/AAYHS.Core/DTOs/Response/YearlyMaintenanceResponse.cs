@@ -63,7 +63,7 @@ namespace AAYHS.Core.DTOs.Response
     public class GetClassCategory
     {
         public int GlobalCodeId { get; set; }
-        public string CategoryName { get; set; }
+        public string CodeName { get; set; }
         public bool IsActive { get; set; }
     }
     public class GetAllRoles
@@ -88,5 +88,15 @@ namespace AAYHS.Core.DTOs.Response
         public decimal PostEntryFee { get; set; }
         public decimal Amount { get; set; }
         public bool Active { get; set; }
+    }
+    public class GetContactInfo
+    {
+        public DateTime ShowStart{ get; set; }
+        public DateTime ShowEnd { get; set; }
+        public string ShowLocation { get; set; }
+        public string Email1 { get; set; }
+        public string Email2 { get; set; }
+        public string Phone1 { get; set; }
+        public string Phone2 { get; set; }
     }
 }

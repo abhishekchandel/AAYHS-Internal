@@ -150,7 +150,31 @@ namespace AAYHS.Repository.Repository
             return getAllAdFees;
         }
 
-        public GetAllGeneralFees GetAllGeneralFees()
+        public GetAllClassCategory GetAllClassCategory()
+        {
+            IEnumerable<GetClassCategory> data;
+            GetAllClassCategory getAllClassCategory = new GetAllClassCategory();
+
+            data = (from globalCategory in _ObjContext.GlobalCodeCategories
+                    join globalCode in _ObjContext.GlobalCodes on globalCategory.GlobalCodeCategoryId equals globalCode.CategoryId
+                    where globalCode.IsActive == true && globalCode.IsDeleted == false
+                    && globalCategory.CategoryName=="ClassHeaderType"
+                    select new GetClassCategory
+                    {
+                        GlobalCodeId=globalCode.GlobalCodeId,
+                        CodeName= globalCode.CodeName,
+                        IsActive=globalCode.IsActive
+                    });
+
+            if (data.Count()!=0)
+            {
+                getAllClassCategory.getClassCategories = data.ToList();
+            }
+
+            return getAllClassCategory;
+        }
+
+        public GetAllGeneralFees GetAllGeneralFees(int yearlyMaintenanceId)
         {
             IEnumerable<GetGeneralFees> data;
             GetAllGeneralFees getAllGeneralFees = new GetAllGeneralFees();
@@ -158,6 +182,7 @@ namespace AAYHS.Repository.Repository
             data = (from yearlyFee in _ObjContext.YearlyMaintainenceFee
                     join feeType in _ObjContext.GlobalCodes on yearlyFee.FeeTypeId equals feeType.GlobalCodeId
                     where yearlyFee.IsActive == true && yearlyFee.IsDeleted == false
+                    && yearlyFee.YearlyMaintainenceId==yearlyMaintenanceId
                     select new GetGeneralFees
                     {
                         YearlyMaintenanceFeeId=yearlyFee.YearlyMaintainenceFeeId,
@@ -165,10 +190,41 @@ namespace AAYHS.Repository.Repository
                         PreEntryFee=yearlyFee.PreEntryFee,
                         PostEntryFee=yearlyFee.PostEntryFee,
                         Amount=yearlyFee.Amount,
-                        //TimeFrame= yearlyFee.PreEntryFee!=0?"Pre":"Post" switch yearlyFee.Amount!=0?"" ,
+                        Active=yearlyFee.IsActive
+                    });
+            if (data.Count()!=0)
+            {
+                getAllGeneralFees.getGeneralFees = data.ToList();
+            }
+            return getAllGeneralFees;
+        }
+
+        public GetContactInfo GetContactInfo(int yearlyMaintenanceId)
+        {
+            GetContactInfo getContactInfo = new GetContactInfo();
+            IEnumerable<GetContactInfo> data;
+
+            data = (from contactInfo in _ObjContext.AAYHSContact
+                    join yearlyMaintenance in _ObjContext.YearlyMaintainence on contactInfo.YearlyMaintainenceId equals
+                    yearlyMaintenance.YearlyMaintainenceId into yearlyMaintenance1
+                    from yearlyMaintenance2 in yearlyMaintenance1.DefaultIfEmpty()
+                    where contactInfo.YearlyMaintainenceId == yearlyMaintenanceId
+                    select new GetContactInfo 
+                    { 
+                      ShowStart= yearlyMaintenance2.ShowStartDate,
+                      ShowEnd=yearlyMaintenance2.ShowEndDate,
+                      ShowLocation=yearlyMaintenance2.Location,
+                      Email1= contactInfo.Email1,
+                      Email2= contactInfo.Email2,
+                      Phone1= contactInfo.Phone1,
+                      Phone2=contactInfo.Phone2
                     });
 
-            return null;
+            if (data.Count()!=0)
+            {
+                getContactInfo = data.FirstOrDefault();
+            }
+            return getContactInfo;
         }
     }
 }
