@@ -180,6 +180,7 @@ namespace AAYHS
             services.AddTransient<IRoleRepository, RoleRepository>();
             services.AddTransient<IUserRoleRepository, UserRoleRepository>();
             services.AddTransient<IAAYHSContactRepository, AAYHSContactRepository>();
+            services.AddTransient<IRefundRepository, RefundRepository>();
 
             services.AddControllers();
         }
