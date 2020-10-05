@@ -21,6 +21,8 @@ namespace AAYHS.Data.DBEntities
         public string Phone1 { get; set; }
         [Column(TypeName = "varchar(15)")]
         public string Phone2 { get; set; }
-        public int StreetReturnAddressId { get; set; }
+        public int ExhibitorSponsorConfirmationAddressId { get; set; }
+        public int ExhibitorSponsorRefundStatementAddressId { get; set; }
+        public int ExhibitorConfirmationEntriesAddressId { get; set; }
     }
 }
