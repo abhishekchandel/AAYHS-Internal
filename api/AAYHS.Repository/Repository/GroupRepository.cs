@@ -312,7 +312,7 @@ namespace AAYHS.Repository.Repository
             IEnumerable<AAYHSInfo> data;
 
             data = (from aayhs in _context.AAYHSContact
-                    join address in _context.Addresses on aayhs.StreetReturnAddressId equals address.AddressId into address1
+                    join address in _context.Addresses on aayhs.ExhibitorConfirmationEntriesAddressId equals address.AddressId into address1
                     from address2 in address1.DefaultIfEmpty()
                     join city in _context.Cities on address2.CityId equals city.CityId into city1
                     from city2 in city1.DefaultIfEmpty()
