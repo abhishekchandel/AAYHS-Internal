@@ -30,6 +30,7 @@ namespace AAYHS.Service.Service
         private IUserRoleRepository _userRoleRepository;
         private IAAYHSContactRepository _aAYHSContactRepository;
         private IRefundRepository _refundRepository;
+        private IAAYHSContactAddressRepository _aAYHSContactAddressRepository;
         private MainResponse _mainResponse;
         #endregion
 
@@ -38,7 +39,7 @@ namespace AAYHS.Service.Service
                                        IEmailSenderRepository emailRepository,
                           IApplicationSettingRepository applicationRepository,IRoleRepository roleRepository ,
                           IUserRoleRepository userRoleRepository,IAAYHSContactRepository aAYHSContactRepository,
-                          IRefundRepository refundRepository,IMapper Mapper)
+                          IRefundRepository refundRepository,IAAYHSContactAddressRepository aAYHSContactAddressRepository,IMapper Mapper)
         {
             _yearlyMaintenanceRepository = yearlyMaintenanceRepository;
             _globalCodeRepository = globalCodeRepository;
@@ -50,6 +51,7 @@ namespace AAYHS.Service.Service
             _userRoleRepository = userRoleRepository;
             _aAYHSContactRepository = aAYHSContactRepository;
             _refundRepository = refundRepository;
+            _aAYHSContactAddressRepository = aAYHSContactAddressRepository;
             _mapper = Mapper;
             _mainResponse = new MainResponse();
         }
@@ -756,7 +758,7 @@ namespace AAYHS.Service.Service
 
         public MainResponse RemoveGeneralFee(RemoveGeneralFee removeGeneralFee, string actionBy)
         {
-            var getGeneralFee = _yearlyMaintenanceFeeRepository.GetSingle(x => x.YearlyMaintainenceFeeId == removeGeneralFee.yearlyMaintenanceFeeId);
+            var getGeneralFee = _yearlyMaintenanceFeeRepository.GetSingle(x => x.YearlyMaintainenceFeeId == removeGeneralFee.YearlyMaintenanceFeeId);
 
             if (getGeneralFee!=null)
             {
@@ -810,7 +812,7 @@ namespace AAYHS.Service.Service
         {
             var addRefund = new RefundDetail
             {
-                YearlyMaintenanceId=addRefundRequest.yearlyMaintenanceId,
+                YearlyMaintenanceId=addRefundRequest.YearlyMaintenanceId,
                 DateAfter= addRefundRequest.DateAfter,
                 DateBefore=addRefundRequest.DateBefore,
                 FeeTypeId=addRefundRequest.FeeTypeId,
@@ -822,7 +824,8 @@ namespace AAYHS.Service.Service
             };
 
             _refundRepository.Add(addRefund);
-
+            _mainResponse.Success = true;
+            _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
             return _mainResponse;
         }
 
@@ -868,14 +871,72 @@ namespace AAYHS.Service.Service
 
         public MainResponse AddUpdateContactInfo(AddContactInfoRequest addContactInfoRequest, string actionBy)
         {
+            int exhibitorSponsorConfirmation=0;
+            int exhibitorSponsorRefundStatement=0 ;
+            int exhibitorConfirmationEntries=0;
             if (addContactInfoRequest.AAYHSContactId==0)
             {
+
+                if (addContactInfoRequest.exhibitorSponsorConfirmationAddress!=null)
+                {
+                    var address = new AAYHSContactAddresses
+                    {
+                        Address = addContactInfoRequest.exhibitorSponsorConfirmationAddress.Address,
+                        City = addContactInfoRequest.exhibitorSponsorConfirmationAddress.City,
+                        StateId = addContactInfoRequest.exhibitorSponsorConfirmationAddress.StateId,
+                        ZipCode = addContactInfoRequest.exhibitorSponsorConfirmationAddress.ZipCode,
+                        IsActive=true,
+                        IsDeleted=false,
+                        CreatedBy = actionBy,
+                        CreatedDate=DateTime.Now
+                    };
+
+                    exhibitorSponsorConfirmation= _aAYHSContactAddressRepository.Add(address).AAYHSContactAddressId;
+                }
+                if (addContactInfoRequest.exhibitorSponsorRefundStatementAddress != null)
+                {
+                    var address = new AAYHSContactAddresses
+                    {
+                        Address = addContactInfoRequest.exhibitorSponsorRefundStatementAddress.Address,
+                        City = addContactInfoRequest.exhibitorSponsorRefundStatementAddress.City,
+                        StateId= addContactInfoRequest.exhibitorSponsorRefundStatementAddress.StateId,
+                        ZipCode = addContactInfoRequest.exhibitorSponsorRefundStatementAddress.ZipCode,
+                        IsActive = true,
+                        IsDeleted = false,
+                        CreatedBy = actionBy,
+                        CreatedDate = DateTime.Now
+
+                    };
+
+                    exhibitorSponsorRefundStatement = _aAYHSContactAddressRepository.Add(address).AAYHSContactAddressId;
+                }
+                if (addContactInfoRequest.exhibitorConfirmationEntriesAddress != null)
+                {
+                    var address = new AAYHSContactAddresses
+                    {
+                        Address = addContactInfoRequest.exhibitorSponsorRefundStatementAddress.Address,
+                        City = addContactInfoRequest.exhibitorSponsorRefundStatementAddress.City,
+                        StateId= addContactInfoRequest.exhibitorSponsorRefundStatementAddress.StateId,
+                        ZipCode = addContactInfoRequest.exhibitorSponsorRefundStatementAddress.ZipCode,
+                        IsActive = true,
+                        IsDeleted = false,
+                        CreatedBy = actionBy,
+                        CreatedDate = DateTime.Now
+
+                    };
+
+                    exhibitorConfirmationEntries = _aAYHSContactAddressRepository.Add(address).AAYHSContactAddressId;
+                }
                 var contactInfo = new AAYHSContact
                 {
+                    YearlyMaintainenceId=addContactInfoRequest.YearlyMaintainenceId,
                     Email1=addContactInfoRequest.Email1,
                     Email2=addContactInfoRequest.Email2,
                     Phone1 = addContactInfoRequest.Phone1,
                     Phone2= addContactInfoRequest.Phone2,
+                    ExhibitorSponsorConfirmationAddressId=exhibitorSponsorConfirmation,
+                    ExhibitorSponsorRefundStatementAddressId=exhibitorSponsorRefundStatement,
+                    ExhibitorConfirmationEntriesAddressId=exhibitorConfirmationEntries,
                     IsActive=true,
                     IsDeleted=false,
                     CreatedBy=actionBy,
@@ -888,15 +949,71 @@ namespace AAYHS.Service.Service
             }
             else
             {
+                if (addContactInfoRequest.exhibitorSponsorConfirmationAddress != null)
+                {
+                    var address = _aAYHSContactAddressRepository.GetSingle(x => x.AAYHSContactAddressId == 
+                    addContactInfoRequest.exhibitorSponsorConfirmationAddress.AAYHSContactAddressId);
+
+                    if (address!=null)
+                    {
+                        address.Address = addContactInfoRequest.exhibitorSponsorConfirmationAddress.Address;
+                        address.City = addContactInfoRequest.exhibitorSponsorConfirmationAddress.City;
+                        address.StateId= addContactInfoRequest.exhibitorSponsorConfirmationAddress.StateId;
+                        address.ZipCode = addContactInfoRequest.exhibitorSponsorConfirmationAddress.ZipCode;
+                        address.ModifiedBy = actionBy;
+                        address.ModifiedDate = DateTime.Now;
+
+                        _aAYHSContactAddressRepository.Update(address);
+                    }
+                                       
+                }
+                if (addContactInfoRequest.exhibitorSponsorRefundStatementAddress != null)
+                {
+                    var address = _aAYHSContactAddressRepository.GetSingle(x => x.AAYHSContactAddressId ==
+                     addContactInfoRequest.exhibitorSponsorRefundStatementAddress.AAYHSContactAddressId);
+
+                    if (address != null)
+                    {
+                        address.Address = addContactInfoRequest.exhibitorSponsorRefundStatementAddress.Address;
+                        address.City= addContactInfoRequest.exhibitorSponsorRefundStatementAddress.City;
+                        address.StateId = addContactInfoRequest.exhibitorSponsorRefundStatementAddress.StateId;
+                        address.ZipCode = addContactInfoRequest.exhibitorSponsorRefundStatementAddress.ZipCode;
+                        address.ModifiedBy = actionBy;
+                        address.ModifiedDate = DateTime.Now;
+
+                        _aAYHSContactAddressRepository.Update(address);
+                    }
+                }
+                if (addContactInfoRequest.exhibitorConfirmationEntriesAddress != null)
+                {
+                    var address = _aAYHSContactAddressRepository.GetSingle(x => x.AAYHSContactAddressId ==
+                    addContactInfoRequest.exhibitorConfirmationEntriesAddress.AAYHSContactAddressId);
+
+                    if (address != null)
+                    {
+                        address.Address = addContactInfoRequest.exhibitorConfirmationEntriesAddress.Address;
+                        address.City= addContactInfoRequest.exhibitorConfirmationEntriesAddress.City;
+                        address.StateId= addContactInfoRequest.exhibitorConfirmationEntriesAddress.StateId;
+                        address.ZipCode = addContactInfoRequest.exhibitorConfirmationEntriesAddress.ZipCode;
+                        address.ModifiedBy = actionBy;
+                        address.ModifiedDate = DateTime.Now;
+
+                        _aAYHSContactAddressRepository.Update(address);
+                    }
+                }
                 var contactInfo = _aAYHSContactRepository.GetSingle(x => x.AAYHSContactId == addContactInfoRequest.AAYHSContactId &&
                 x.IsActive==true && x.IsDeleted==false);
 
                 if (contactInfo!=null)
                 {
+                    contactInfo.YearlyMaintainenceId = addContactInfoRequest.YearlyMaintainenceId;
                     contactInfo.Email1 = addContactInfoRequest.Email1;
                     contactInfo.Email2 = addContactInfoRequest.Email2;
                     contactInfo.Phone1 = addContactInfoRequest.Phone1;
                     contactInfo.Phone2 = addContactInfoRequest.Phone2;
+                    contactInfo.ExhibitorSponsorConfirmationAddressId = addContactInfoRequest.exhibitorSponsorConfirmationAddress.AAYHSContactAddressId;
+                    contactInfo.ExhibitorSponsorRefundStatementAddressId = addContactInfoRequest.exhibitorSponsorRefundStatementAddress.AAYHSContactAddressId;
+                    contactInfo.ExhibitorConfirmationEntriesAddressId = addContactInfoRequest.exhibitorConfirmationEntriesAddress.AAYHSContactAddressId;
                     contactInfo.ModifiedBy = actionBy;
                     contactInfo.ModifiedDate = DateTime.Now;
 
@@ -906,6 +1023,89 @@ namespace AAYHS.Service.Service
                     _mainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
                 }
                 
+            }
+            return _mainResponse;
+        }
+
+        public MainResponse AddUpdateLocation(AddLocationRequest addLocationRequest, string actionBy)
+        {
+            int addressId = 0;
+            var yearly = _yearlyMaintenanceRepository.GetSingle(x => x.YearlyMaintainenceId == addLocationRequest.YearlyMaintenanceId);
+            if (yearly.LocationAddressId == null)
+            {
+                var address = new AAYHSContactAddresses
+                {
+                    Address = addLocationRequest.Address,
+                    City = addLocationRequest.City,
+                    StateId = addLocationRequest.StateId,
+                    ZipCode = addLocationRequest.ZipCode,
+                    Phone = addLocationRequest.Phone,
+                    IsActive=true,
+                    IsDeleted=false,
+                    CreatedBy=actionBy,
+                    CreatedDate=DateTime.Now
+
+                };
+                addressId = _aAYHSContactAddressRepository.Add(address).AAYHSContactAddressId;              
+                if (yearly != null)
+                {
+                    yearly.Location = addLocationRequest.Name;
+                    yearly.LocationAddressId = addressId;
+                    yearly.ModifiedBy = actionBy;
+                    yearly.ModifiedDate = DateTime.Now;
+
+                    _yearlyMaintenanceRepository.Update(yearly);
+                }
+                _mainResponse.Success = true;
+                _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
+            }
+            else
+            {
+                var addressUpdate = _aAYHSContactAddressRepository.GetSingle(x => x.AAYHSContactAddressId == yearly.LocationAddressId);
+
+                if (addressUpdate!=null)
+                {
+                    addressUpdate.Address = addLocationRequest.Address;
+                    addressUpdate.City = addLocationRequest.City;
+                    addressUpdate.StateId = addLocationRequest.StateId;
+                    addressUpdate.ZipCode = addLocationRequest.ZipCode;
+                    addressUpdate.Phone = addLocationRequest.Phone;
+                    addressUpdate.ModifiedBy = actionBy;
+                    addressUpdate.ModifiedDate = DateTime.Now;
+
+                    _aAYHSContactAddressRepository.Update(addressUpdate);
+                }
+
+                if (yearly != null)
+                {
+                    yearly.Location = addLocationRequest.Name;
+                    yearly.LocationAddressId = yearly.LocationAddressId;
+                    yearly.ModifiedBy = actionBy;
+                    yearly.ModifiedDate = DateTime.Now;
+
+                    _yearlyMaintenanceRepository.Update(yearly);
+                }
+
+                _mainResponse.Success = true;
+                _mainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
+            }
+
+            return _mainResponse;
+        }
+
+        public MainResponse GetLocation(int yearlyMaintenanceId)
+        {
+            var getLocation = _yearlyMaintenanceRepository.GetLocation(yearlyMaintenanceId);
+
+            if (getLocation!=null)
+            {
+                _mainResponse.GetLocation = getLocation;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Success = false;
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
             }
             return _mainResponse;
         }

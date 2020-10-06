@@ -278,23 +278,82 @@ namespace AAYHS.Repository.Repository
                     yearlyMaintenance.YearlyMaintainenceId into yearlyMaintenance1
                     from yearlyMaintenance2 in yearlyMaintenance1.DefaultIfEmpty()
                     where contactInfo.YearlyMaintainenceId == yearlyMaintenanceId
-                    select new GetContactInfo 
-                    { 
-                      AAYHSContactId=contactInfo.AAYHSContactId,
-                      ShowStart= yearlyMaintenance2.ShowStartDate,
-                      ShowEnd=yearlyMaintenance2.ShowEndDate,
-                      ShowLocation=yearlyMaintenance2.Location,
-                      Email1= contactInfo.Email1,
-                      Email2= contactInfo.Email2,
-                      Phone1= contactInfo.Phone1,
-                      Phone2=contactInfo.Phone2
-                    });
+                    select new GetContactInfo
+                    {
+                        AAYHSContactId = contactInfo.AAYHSContactId,
+                        ShowStart = yearlyMaintenance2.ShowStartDate,
+                        ShowEnd = yearlyMaintenance2.ShowEndDate,
+                        ShowLocation = yearlyMaintenance2.Location,
+                        Email1 = contactInfo.Email1,
+                        Email2 = contactInfo.Email2,
+                        Phone1 = contactInfo.Phone1,
+                        Phone2 = contactInfo.Phone2,
+                        exhibitorSponsorConfirmationResponse = (from address in _ObjContext.AAYHSContactAddresses
+                                           where contactInfo.ExhibitorSponsorConfirmationAddressId == address.AAYHSContactAddressId                                          
+                                           && address.IsDeleted == false
+                                           select new ExhibitorSponsorConfirmationResponse
+                                           { 
+                                             AAYHSContactAddressId=address.AAYHSContactAddressId,
+                                             Address=address.Address,
+                                             City=address.City,
+                                             StateId=address.StateId,
+                                             ZipCode=address.ZipCode                                       
+                                           }).FirstOrDefault(),
+                        exhibitorSponsorRefundStatementResponse = (from address in _ObjContext.AAYHSContactAddresses
+                                                                   where contactInfo.ExhibitorSponsorRefundStatementAddressId == address.AAYHSContactAddressId
+                                                                   && address.IsDeleted == false
+                                                                   select new ExhibitorSponsorRefundStatementResponse
+                                                                   {
+                                                                       AAYHSContactAddressId = address.AAYHSContactAddressId,
+                                                                       Address = address.Address,
+                                                                       City = address.City,
+                                                                       StateId = address.StateId,
+                                                                       ZipCode = address.ZipCode
+                                                                   }).FirstOrDefault(),
+                        exhibitorConfirmationEntriesResponse = (from address in _ObjContext.AAYHSContactAddresses
+                                                                where contactInfo.ExhibitorConfirmationEntriesAddressId == address.AAYHSContactAddressId
+                                                                && address.IsDeleted == false
+                                                                select new ExhibitorConfirmationEntriesResponse
+                                                                {
+                                                                    AAYHSContactAddressId = address.AAYHSContactAddressId,
+                                                                    Address = address.Address,
+                                                                    City = address.City,
+                                                                    StateId = address.StateId,
+                                                                    ZipCode = address.ZipCode
+                                                                }).FirstOrDefault()
+                    }); 
 
             if (data.Count()!=0)
             {
                 getContactInfo = data.FirstOrDefault();
             }
             return getContactInfo;
+        }
+
+        public GetLocation GetLocation(int yearlyMaintenanceId)
+        {
+            GetLocation getLocation = new GetLocation();
+            IEnumerable<GetLocation> data;
+
+            data = (from yearly in _ObjContext.YearlyMaintainence
+                    join address in _ObjContext.AAYHSContactAddresses on yearly.LocationAddressId equals address.AAYHSContactAddressId
+                    where yearly.YearlyMaintainenceId == yearlyMaintenanceId
+                    select new GetLocation 
+                    { 
+                      AAYHSContactAddressId=address.AAYHSContactAddressId,
+                      Name=yearly.Location,
+                      Address=address.Address,
+                      City=address.City,
+                      StateId=address.StateId,
+                      ZipCode=address.ZipCode,
+                      Phone=address.Phone                  
+                    });
+
+            if (data.Count()!=0)
+            {
+                getLocation = data.FirstOrDefault();
+            }
+            return getLocation;
         }
     }
 }

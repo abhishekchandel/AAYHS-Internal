@@ -120,5 +120,43 @@ namespace AAYHS.Core.DTOs.Response
         public string Email2 { get; set; }
         public string Phone1 { get; set; }
         public string Phone2 { get; set; }
+        public ExhibitorSponsorConfirmationResponse exhibitorSponsorConfirmationResponse { get; set; }
+        public ExhibitorSponsorRefundStatementResponse exhibitorSponsorRefundStatementResponse { get; set; }
+        public ExhibitorConfirmationEntriesResponse exhibitorConfirmationEntriesResponse { get; set; }
+    }
+    public class ExhibitorSponsorConfirmationResponse
+    {
+        public int AAYHSContactAddressId { get; set; }
+        public string Address { get; set; }
+        public string City { get; set; }
+        public int StateId { get; set; }
+        public string ZipCode { get; set; }
+    }
+    public class ExhibitorSponsorRefundStatementResponse
+    {
+        public int AAYHSContactAddressId { get; set; }
+        public string Address { get; set; }
+        public string City { get; set; }
+        public int StateId { get; set; }
+        public string ZipCode { get; set; }
+    }
+    public class ExhibitorConfirmationEntriesResponse
+    {
+        public int AAYHSContactAddressId { get; set; }
+        public string Address { get; set; }
+        public string City { get; set; }
+        public int StateId { get; set; }
+        public string ZipCode { get; set; }
+    }
+
+    public class GetLocation
+    {
+        public int AAYHSContactAddressId { get; set; }
+        public string Name { get; set; }
+        public string Address { get; set; }
+        public string City { get; set; }
+        public int StateId { get; set; }
+        public string ZipCode { get; set; }
+        public string Phone { get; set; }
     }
 }

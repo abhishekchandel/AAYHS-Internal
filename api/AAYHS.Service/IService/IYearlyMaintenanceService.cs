@@ -32,6 +32,8 @@ namespace AAYHS.Service.IService
         MainResponse RemoveRefund(int refundId, string actionBy);
         MainResponse GetContactInfo(int yearlyMaintenanceId);
         MainResponse AddUpdateContactInfo(AddContactInfoRequest addContactInfoRequest, string actionBy);
+        MainResponse AddUpdateLocation(AddLocationRequest addLocationRequest, string actionBy);
+        MainResponse GetLocation(int yearlyMaintenanceId);
 
     }
 }

@@ -301,7 +301,8 @@ namespace AAYHS.Repository.Repository
             int horseStallTypeId = stallCodes.Where(x => x.CodeName == "HorseStall").Select(x => x.GlobalCodeId).FirstOrDefault();
             int tackStallTypeId= stallCodes.Where(x => x.CodeName == "TackStall").Select(x => x.GlobalCodeId).FirstOrDefault();
 
-            var preHorseStall = _context.ExhibitorHorse.Where(x => x.ExhibitorId == exhibitorId && x.Date.Date<yearlyMaintainence.PreEntryCutOffDate.Date
+            var preHorseStall = _context.StallAssignment.Where(x => x.ExhibitorId == exhibitorId && x.StallAssignmentTypeId==horseStallTypeId && 
+                                                      x.Date.Date<yearlyMaintainence.PreEntryCutOffDate.Date
                                                     && x.IsActive == true && x.IsDeleted == false).ToList();
 
             var preTackStall= _context.StallAssignment.Where(x => x.ExhibitorId == exhibitorId && x.StallAssignmentTypeId == tackStallTypeId
@@ -316,7 +317,8 @@ namespace AAYHS.Repository.Repository
                                                         ).Select(x => x.QTYProgram).FirstOrDefault();
 
 
-            var postHorseStall= _context.ExhibitorHorse.Where(x => x.ExhibitorId == exhibitorId && x.Date.Date > yearlyMaintainence.PreEntryCutOffDate.Date
+            var postHorseStall= _context.StallAssignment.Where(x => x.ExhibitorId == exhibitorId && x.StallAssignmentTypeId == horseStallTypeId && 
+                                                               x.Date.Date > yearlyMaintainence.PreEntryCutOffDate.Date
                                                      && x.IsActive == true && x.IsDeleted == false).ToList();
 
 

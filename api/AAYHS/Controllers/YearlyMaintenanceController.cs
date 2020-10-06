@@ -330,5 +330,30 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
+        /// <summary>
+        /// This api used to add update location
+        /// </summary>
+        /// <param name="addLocationRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult AddUpdateLocation(AddLocationRequest addLocationRequest)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _yearlyMaintenanceService.AddUpdateLocation(addLocationRequest, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to get location
+        /// </summary>
+        /// <param name="yearlyMaintenanceId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetLocation(int yearlyMaintenanceId)
+        {
+            _mainResponse = _yearlyMaintenanceService.GetLocation(yearlyMaintenanceId);
+            _jsonString = Mapper.Convert<GetLocation>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
     }
 }
