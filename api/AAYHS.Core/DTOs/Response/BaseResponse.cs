@@ -81,6 +81,7 @@ namespace AAYHS.Core.DTOs.Response
         public GetAllGeneralFees GetAllGeneralFees { get; set; }   
         public GetContactInfo GetContactInfo { get; set; }   
         public GetAllRefund GetAllRefund { get; set; }   
+        public GetLocation GetLocation { get; set; }   
       
     }
    

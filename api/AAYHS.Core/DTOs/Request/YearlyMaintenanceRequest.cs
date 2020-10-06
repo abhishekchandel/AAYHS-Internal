@@ -44,22 +44,61 @@ namespace AAYHS.Core.DTOs.Request
     public class AddContactInfoRequest
     {
         public int AAYHSContactId { get; set; }
+        public int YearlyMaintainenceId { get; set; }
         public string Email1 { get; set; }
         public string Email2 { get; set; }
         public string Phone1 { get; set; }
         public string Phone2 { get; set; }
+        public ExhibitorSponsorConfirmationAddress exhibitorSponsorConfirmationAddress { get; set; }
+        public ExhibitorSponsorRefundStatementAddress exhibitorSponsorRefundStatementAddress { get; set; }
+        public ExhibitorConfirmationEntriesAddress exhibitorConfirmationEntriesAddress { get; set; }
+
+    }
+    public class ExhibitorSponsorConfirmationAddress
+    {
+        public int AAYHSContactAddressId { get; set; }
+        public string Address { get; set; }
+        public string City { get; set; }
+        public int StateId { get; set; }
+        public string ZipCode { get; set; }
+    }
+    public class ExhibitorSponsorRefundStatementAddress
+    {
+        public int AAYHSContactAddressId { get; set; }
+        public string Address { get; set; }
+        public string City { get; set; }
+        public int StateId { get; set; }
+        public string ZipCode { get; set; }
+    }
+    public class ExhibitorConfirmationEntriesAddress
+    {
+        public int AAYHSContactAddressId { get; set; }
+        public string Address { get; set; }
+        public string City { get; set; }
+        public int StateId { get; set; }
+        public string ZipCode { get; set; }
     }
     public class RemoveGeneralFee
     {
-        public int yearlyMaintenanceFeeId { get; set; }
+        public int YearlyMaintenanceFeeId { get; set; }
         public string TimeFrame { get; set; }
     }
     public class AddRefundRequest
     {
-        public int  yearlyMaintenanceId { get; set; }
+        public int  YearlyMaintenanceId { get; set; }
         public DateTime DateAfter { get; set; }
         public DateTime DateBefore { get; set; }
         public int FeeTypeId { get; set; }
         public decimal Refund { get; set; }
+    }
+    public class AddLocationRequest
+    {
+        public int YearlyMaintenanceId { get; set; }        
+        public string Name { get; set; }
+        public string Address { get; set; }
+        public string City { get; set; }
+        public int StateId { get; set; }
+        public string ZipCode { get; set; }
+        public string Phone { get; set; }
     }
 }

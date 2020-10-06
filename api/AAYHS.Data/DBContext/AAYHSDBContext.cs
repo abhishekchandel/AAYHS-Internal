@@ -53,6 +53,8 @@ namespace AAYHS.Data.DBContext
         public virtual DbSet<Scans> Scans { get; set; }
         public virtual DbSet<Roles> Roles { get; set; }
         public virtual DbSet<UserRoles> UserRoles { get; set; }
+        public virtual DbSet<AAYHSContactAddresses> AAYHSContactAddresses { get; set; }
+
 
     }
 

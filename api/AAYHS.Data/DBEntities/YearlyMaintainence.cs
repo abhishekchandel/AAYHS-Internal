@@ -21,6 +21,7 @@ namespace AAYHS.Data.DBEntities
         public DateTime SponcerCutOffDate { get; set; }
         [Column(TypeName = "varchar(50)")]
         public string Location { get; set; }
+        public int? LocationAddressId { get; set; }
         public DateTime Date { get; set; }
 
     }
