@@ -56,7 +56,6 @@ namespace AAYHS.Core.DTOs.Request
     }
     public class ExhibitorSponsorConfirmationAddress
     {
-        public int AAYHSContactAddressId { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
         public int StateId { get; set; }
@@ -64,7 +63,6 @@ namespace AAYHS.Core.DTOs.Request
     }
     public class ExhibitorSponsorRefundStatementAddress
     {
-        public int AAYHSContactAddressId { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
         public int StateId { get; set; }
@@ -72,7 +70,6 @@ namespace AAYHS.Core.DTOs.Request
     }
     public class ExhibitorConfirmationEntriesAddress
     {
-        public int AAYHSContactAddressId { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
         public int StateId { get; set; }

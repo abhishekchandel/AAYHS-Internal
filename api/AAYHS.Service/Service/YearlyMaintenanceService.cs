@@ -876,7 +876,6 @@ namespace AAYHS.Service.Service
             int exhibitorConfirmationEntries=0;
             if (addContactInfoRequest.AAYHSContactId==0)
             {
-
                 if (addContactInfoRequest.exhibitorSponsorConfirmationAddress!=null)
                 {
                     var address = new AAYHSContactAddresses
@@ -949,10 +948,11 @@ namespace AAYHS.Service.Service
             }
             else
             {
+                var contact = _aAYHSContactRepository.GetSingle(x => x.AAYHSContactId == addContactInfoRequest.AAYHSContactId);
                 if (addContactInfoRequest.exhibitorSponsorConfirmationAddress != null)
                 {
-                    var address = _aAYHSContactAddressRepository.GetSingle(x => x.AAYHSContactAddressId == 
-                    addContactInfoRequest.exhibitorSponsorConfirmationAddress.AAYHSContactAddressId);
+                    var address = _aAYHSContactAddressRepository.GetSingle(x => x.AAYHSContactAddressId ==
+                    contact.ExhibitorSponsorConfirmationAddressId);
 
                     if (address!=null)
                     {
@@ -970,7 +970,7 @@ namespace AAYHS.Service.Service
                 if (addContactInfoRequest.exhibitorSponsorRefundStatementAddress != null)
                 {
                     var address = _aAYHSContactAddressRepository.GetSingle(x => x.AAYHSContactAddressId ==
-                     addContactInfoRequest.exhibitorSponsorRefundStatementAddress.AAYHSContactAddressId);
+                    contact.ExhibitorSponsorRefundStatementAddressId);
 
                     if (address != null)
                     {
@@ -987,7 +987,7 @@ namespace AAYHS.Service.Service
                 if (addContactInfoRequest.exhibitorConfirmationEntriesAddress != null)
                 {
                     var address = _aAYHSContactAddressRepository.GetSingle(x => x.AAYHSContactAddressId ==
-                    addContactInfoRequest.exhibitorConfirmationEntriesAddress.AAYHSContactAddressId);
+                    contact.ExhibitorConfirmationEntriesAddressId);
 
                     if (address != null)
                     {
@@ -1011,9 +1011,9 @@ namespace AAYHS.Service.Service
                     contactInfo.Email2 = addContactInfoRequest.Email2;
                     contactInfo.Phone1 = addContactInfoRequest.Phone1;
                     contactInfo.Phone2 = addContactInfoRequest.Phone2;
-                    contactInfo.ExhibitorSponsorConfirmationAddressId = addContactInfoRequest.exhibitorSponsorConfirmationAddress.AAYHSContactAddressId;
-                    contactInfo.ExhibitorSponsorRefundStatementAddressId = addContactInfoRequest.exhibitorSponsorRefundStatementAddress.AAYHSContactAddressId;
-                    contactInfo.ExhibitorConfirmationEntriesAddressId = addContactInfoRequest.exhibitorConfirmationEntriesAddress.AAYHSContactAddressId;
+                    contactInfo.ExhibitorSponsorConfirmationAddressId = contact.ExhibitorSponsorConfirmationAddressId;
+                    contactInfo.ExhibitorSponsorRefundStatementAddressId = contact.ExhibitorSponsorRefundStatementAddressId;
+                    contactInfo.ExhibitorConfirmationEntriesAddressId = contact.ExhibitorConfirmationEntriesAddressId;
                     contactInfo.ModifiedBy = actionBy;
                     contactInfo.ModifiedDate = DateTime.Now;
 
