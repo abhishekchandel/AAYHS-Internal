@@ -617,7 +617,6 @@ border-radius: 10px;
 }
 .formScroll{
     overflow-y: auto;
-    margin-top:25px;
     .card-body{
         margin-top:0;
     }
@@ -2285,4 +2284,16 @@ span{
 }
     ._mat-animation-noopable .mat-button-focus-overlay {
         display: none;
+    }
+
+    // for ie tab
+    .cdk-focused{
+        &.cdk-program-focused{
+            background-color: #7b1124 !important;
+        }
+    }
+    .shlModal {
+        max-width: 480px;
+        margin: 20px auto;
+        text-align: left;
     }
