@@ -1350,6 +1350,10 @@ this.exhibitorService.downloadFile(url).subscribe(
     this.cityfilteredOptions=null;
     this.seletedCityName="";
     this.exhibitorInfo.CityId=null;
+
+    this.exhibitorInfo.ZipCodeId=null;
+    this.zipCodesResponse=null;
+
     this.exhibitorInfo.StateId =id;
 
     return new Promise((resolve, reject) => {
@@ -1366,28 +1370,17 @@ this.exhibitorService.downloadFile(url).subscribe(
     });
   }
 
-  // getZipCodes(event,exhibitorDetail) {
-  //   var name;
-  //   exhibitorDetail==true ?name= event : name = event.target.options[event.target.options.selectedIndex].text;
-  //   return new Promise((resolve, reject) => {
-  //     this.loading = true;
-  //     this.zipCodesResponse=null;
-  //     this.exhibitorService.getZipCodes(name).subscribe(response => {
-  //         this.zipCodesResponse = response.Data.ZipCode;
-  //         this.loading = false;
-  //     }, error => {
-  //       this.loading = false;
-  //     })
-  //       resolve();
-  //   });
-  // }
+ 
 
   getFileredZipCodes(cityName,cityId) {
+    debugger
     this.exhibitorInfo.ZipCodeId=null;
+    this.zipCodesResponse=null;
     return new Promise((resolve, reject) => {
+    
       this.exhibitorInfo.CityId =cityId;
       this.loading = true;
-      this.zipCodesResponse=null;
+      
       this.exhibitorService.getZipCodes(cityName).subscribe(response => {
           this.zipCodesResponse = response.Data.ZipCode;
           this.loading = false;
