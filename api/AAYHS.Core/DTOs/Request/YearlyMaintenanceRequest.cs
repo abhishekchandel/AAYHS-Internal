@@ -44,23 +44,23 @@ namespace AAYHS.Core.DTOs.Request
     public class AddContactInfoRequest
     {
         public int AAYHSContactId { get; set; }
-        public int YearlyMaintainenceId { get; set; }
+        public int YearlyMaintenanceId { get; set; }
         public string Email1 { get; set; }
         public string Email2 { get; set; }
         public string Phone1 { get; set; }
         public string Phone2 { get; set; }
-        public string ExhibitorSponsorConfirmationAddress { get; set; }
-        public string ExhibitorSponsorConfirmationCity { get; set; }
-        public int ExhibitorSponsorConfirmationStateId { get; set; }
-        public string ExhibitorSponsorConfirmationZipCode { get; set; }
-        public string ExhibitorSponsorRefundStatementAddress { get; set; }
-        public string ExhibitorSponsorRefundStatementCity { get; set; }
-        public int ExhibitorSponsorRefundStatementStateId { get; set; }
-        public string ExhibitorSponsorRefundStatementZipCode { get; set; }
-        public string ExhibitorConfirmationEntriesAddress { get; set; }
-        public string ExhibitorConfirmationEntriesCity { get; set; }
-        public int ExhibitorConfirmationEntriesStateId { get; set; }
-        public string ExhibitorConfirmationEntriesZipCode { get; set; }
+        public string ExhibitorSponsorAddress { get; set; }
+        public string ExhibitorSponsorCity { get; set; }
+        public int ExhibitorSponsorState{ get; set; }
+        public string ExhibitorSponsorZip { get; set; }
+        public string ExhibitorRefundAddress { get; set; }
+        public string ExhibitorRefundCity { get; set; }
+        public int ExhibitorRefundState { get; set; }
+        public string ExhibitorRefundZip { get; set; }
+        public string ReturnAddress { get; set; }
+        public string ReturnCity { get; set; }
+        public int ReturnState { get; set; }
+        public string ReturnZip { get; set; }
 
     }
 
