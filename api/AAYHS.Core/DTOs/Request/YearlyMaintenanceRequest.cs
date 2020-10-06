@@ -49,35 +49,21 @@ namespace AAYHS.Core.DTOs.Request
         public string Email2 { get; set; }
         public string Phone1 { get; set; }
         public string Phone2 { get; set; }
-        public ExhibitorSponsorConfirmationAddress exhibitorSponsorConfirmationAddress { get; set; }
-        public ExhibitorSponsorRefundStatementAddress exhibitorSponsorRefundStatementAddress { get; set; }
-        public ExhibitorConfirmationEntriesAddress exhibitorConfirmationEntriesAddress { get; set; }
+        public string ExhibitorSponsorConfirmationAddress { get; set; }
+        public string ExhibitorSponsorConfirmationCity { get; set; }
+        public int ExhibitorSponsorConfirmationStateId { get; set; }
+        public string ExhibitorSponsorConfirmationZipCode { get; set; }
+        public string ExhibitorSponsorRefundStatementAddress { get; set; }
+        public string ExhibitorSponsorRefundStatementCity { get; set; }
+        public int ExhibitorSponsorRefundStatementStateId { get; set; }
+        public string ExhibitorSponsorRefundStatementZipCode { get; set; }
+        public string ExhibitorConfirmationEntriesAddress { get; set; }
+        public string ExhibitorConfirmationEntriesCity { get; set; }
+        public int ExhibitorConfirmationEntriesStateId { get; set; }
+        public string ExhibitorConfirmationEntriesZipCode { get; set; }
 
     }
-    public class ExhibitorSponsorConfirmationAddress
-    {
-        public int AAYHSContactAddressId { get; set; }
-        public string Address { get; set; }
-        public string City { get; set; }
-        public int StateId { get; set; }
-        public string ZipCode { get; set; }
-    }
-    public class ExhibitorSponsorRefundStatementAddress
-    {
-        public int AAYHSContactAddressId { get; set; }
-        public string Address { get; set; }
-        public string City { get; set; }
-        public int StateId { get; set; }
-        public string ZipCode { get; set; }
-    }
-    public class ExhibitorConfirmationEntriesAddress
-    {
-        public int AAYHSContactAddressId { get; set; }
-        public string Address { get; set; }
-        public string City { get; set; }
-        public int StateId { get; set; }
-        public string ZipCode { get; set; }
-    }
+
     public class RemoveGeneralFee
     {
         public int YearlyMaintenanceFeeId { get; set; }
