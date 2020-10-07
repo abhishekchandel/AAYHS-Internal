@@ -1,6 +1,6 @@
 <div class="innerContent">
 	<div class="sortData">
-	   <div class="sponBtn"><button class="btn btn-red btnCss" >Add new Year</button></div>						   
+	   <div class="sponBtn"><button class="btn btn-red btnCss" (click)="resetForm()" >Add new Year</button></div>						   
    </div>
 
    <div class="gridTable addBlueStrip">
@@ -55,9 +55,8 @@
 		<table class="table table-bordered tableBodyScroll">
 			<tbody>
 				<tr>
-					<td><span class="blueBox"></span><b>Horse Show Year:</b> 2020 </td>
-					<td><span class="blueBox"></span><b>Horse Show Location:</b> <span class="classNameExt1">Ohio Expo Center</span>
-						<p class="toolTipText">Ohio Expo Center</p>
+                    <td><span class="blueBox"></span><b>Horse Show Year:</b> {{yearlyMaintenanceSummary.Year}} </td>
+					<td><span class="blueBox"></span><b>Horse Show Location:</b> <span class="classNameExt1"></span>
 					</td>
 				</tr>
 			</tbody>
@@ -69,7 +68,7 @@
             <div class="tab-pane  active" id="home">
                 <mat-tab-group #tabGroup>
                     
-                    <mat-tab  class="nav-link active nav nav-tabs" label="User">
+                    <mat-tab  class="nav-link active nav nav-tabs" label="Users">
                         <div class="card dataEntriesTable">
                             <div class="card-body">
                                 <div class="table-responsive tableTab" id="contentscroll2">
@@ -105,6 +104,11 @@
                                         </perfect-scrollbar>
                                     </table>
                                 </div>
+
+                                <div class="actionBtn text-right mb-4 mt-3">
+                                    <button (click)='tabGroup.selectedIndex = 1' class="btn btn-red btnCss roundBtn">Next</button>
+                                </div>
+
                             </div>
                         </div>
                     </mat-tab>
@@ -153,7 +157,8 @@
                                         </div>
                                         
                                     <div class="actionBtn text-right mb-4 mt-3">
-                                        <button (click)='tabGroup.selectedIndex = 1' class="btn btn-red btnCss roundBtn">Next</button>
+                                        <button (click)='tabGroup.selectedIndex = 0' class="btn btn-red btnCss roundBtn">Previous</button>
+                                        <button (click)='tabGroup.selectedIndex = 2' class="btn btn-red btnCss roundBtn">Next</button>
                                         <button type="submit"class="btn btn-red btnCss roundBtn">Submit</button>
                                     </div>
                             </div>
@@ -167,9 +172,9 @@
                                 <ul class="showDateTable">
                                     <li>
                                         <div class="form-group">
-                                            <label class="smText">Show Start Date</label> 
-                                            <mat-form-field class="dateField">
-                                                <input matInput [matDatepicker]="showStartDatePicker"
+                                            <label class="smText">Show Start Date <span>*</span></label> 
+                                            <mat-form-field class="dateField"> 
+                                                <input matInput required [matDatepicker]="showStartDatePicker" 
                                                     placeholder="Show Start Date" class="form-control"
                                                     name="showStartDate" #showStartDate="ngModel"
                                                     (dateChange)="handleShowStartDate()" readonly
@@ -178,14 +183,17 @@
                                                 </mat-datepicker-toggle>
                                                 <mat-datepicker #showStartDatePicker></mat-datepicker>													
                                             </mat-form-field>
-
+                                            <span class="help-block"
+                                            *ngIf="(addYearForm.submitted || showStartDate.touched) && showStartDate.invalid">
+                                            Please enter Show Start Date
+                                        </span>
                                         </div>
                                     </li>
                                     <li>
                                         <div class="form-group">
-                                            <label class="smText">Show End Date</label> 
+                                            <label class="smText">Show End Date <span>*</span></label> 
                                             <mat-form-field class="dateField">
-                                                <input matInput [matDatepicker]="showEndDatePicker"
+                                                <input required matInput [matDatepicker]="showEndDatePicker"
                                                     placeholder="Billing Date" class="form-control"
                                                     name="showEndDate" #showEndDate="ngModel"
                                                     (dateChange)="handleShowEndDate()" readonly
@@ -194,14 +202,17 @@
                                                 </mat-datepicker-toggle>
                                                 <mat-datepicker #showEndDatePicker></mat-datepicker>													
                                             </mat-form-field>
-
+                                            <span class="help-block"
+                                            *ngIf="(addYearForm.submitted || showEndDate.touched) && showEndDate.invalid">
+                                            Please enter Show End Date
+                                        </span>
                                         </div>
                                     </li>
                                     <li>
                                         <div class="form-group">
-                                            <label class="smText">Pre Entry Cut Off Date</label>
+                                            <label class="smText">Pre Entry Cut Off Date <span>*</span></label>
                                             <mat-form-field class="dateField">
-                                                <input matInput [matDatepicker]="preEntryCutOffDatePicker"
+                                                <input required matInput [matDatepicker]="preEntryCutOffDatePicker"
                                                     placeholder="Billing Date" class="form-control"
                                                     name="preEntryCutOffDate" #preEntryCutOffDate="ngModel"
                                                     (dateChange)="handlePreEntryCutOffDate()"
@@ -210,14 +221,17 @@
                                                 </mat-datepicker-toggle>
                                                 <mat-datepicker #preEntryCutOffDatePicker></mat-datepicker>													
                                             </mat-form-field>
-
+                                            <span class="help-block"
+                                            *ngIf="(addYearForm.submitted || preEntryCutOffDate.touched) && preEntryCutOffDate.invalid">
+                                            Please enter Pre Entry Cut Off Date
+                                        </span>
                                         </div>
                                     </li>
                                     <li>
                                         <div class="form-group">
-                                            <label class="smText">Sponsor Cut Off Date</label>
-                                            <mat-form-field class="dateField">
-                                                <input matInput [matDatepicker]="sponsorCutOffDatePicker"
+                                            <label class="smText">Sponsor Cut Off Date <span>*</span></label>
+                                            <mat-form-field  class="dateField">
+                                                <input matInput required [matDatepicker]="sponsorCutOffDatePicker"
                                                     placeholder="Billing Date" class="form-control"
                                                     name="sponsorCutOffDate" #sponsorCutOffDate="ngModel"
                                                     (dateChange)="handleSponsorCutOffDate()"
@@ -226,13 +240,16 @@
                                                 </mat-datepicker-toggle>
                                                 <mat-datepicker #sponsorCutOffDatePicker></mat-datepicker>													
                                             </mat-form-field>
-
+                                            <span class="help-block"
+                                            *ngIf="(addYearForm.submitted || sponsorCutOffDate.touched) && sponsorCutOffDate.invalid">
+                                            Please enter Sponsor Cut Off Date
+                                        </span>
                                         </div>
                                     </li>
                                     <li>
                                         <div class="form-group">
-                                            <label class="smText">Show Year</label>                                  
-                                            <select  class="form-control" placeholder="Year" name="year" #year="ngModel" [(ngModel)]="yearlyMaintenanceSummary.Year" (change)="setYear($event)">													
+                                            <label class="smText">Show Year <span>*</span></label>                                  
+                                            <select  class="form-control" required placeholder="Year" name="year" #year="ngModel" [(ngModel)]="yearlyMaintenanceSummary.Year" (change)="setYear($event)">													
                                                 <option value="null" disabled="true" [selected]="true">
                                                     Select  Year
                                                 </option>
@@ -240,6 +257,10 @@
                                                     [value]="year">{{year}}
                                                 </option>                                                                                               
                                             </select>
+                                            <span class="help-block"
+                                            *ngIf="(addYearForm.submitted || year.touched) && year.invalid">
+                                            Please select year
+                                        </span>
                                         </div>
                                     </li>
                                 </ul>
@@ -274,40 +295,55 @@
                                 </div>
                             </div>
                             <div class="actionBtn text-right mb-3">
-                                <button (click)='tabGroup.selectedIndex = 0' class="btn btn-red btnCss roundBtn">Previous</button>
-                                <button (click)='tabGroup.selectedIndex = 2' class="btn btn-red btnCss roundBtn">Next</button>
+                                <button (click)='tabGroup.selectedIndex = 1' class="btn btn-red btnCss roundBtn">Previous</button>
+                                <button (click)='tabGroup.selectedIndex = 3' class="btn btn-red btnCss roundBtn">Next</button>
                                 <button type="submit"class="btn btn-red btnCss roundBtn">Submit</button>
                             </div>
                         </div>
                     </form>
                     </mat-tab>
-
                     <mat-tab  class="nav-link nav nav-tabs" label="Aayhs Contact Info">
-                        <form>
-                            <div class="card">
+                        <form #addContactForm="ngForm" (ngSubmit)="addContactForm.valid && addUpdateContactInfo()">
+                                <div class="card">
                                 <div class="card-body">
                                     <div class="boxShadow mb-4"> 
                                         <div class="row">
                                             <div class="col-sm-6">
-                                                <div class="row">
-                                                    <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label>Show Date</label> 
-                                                            <input type="text" class="form-control" placeholder="Show Date"/>
+                                                            <label>Show Date <span>*</span></label> 
+                                                            <mat-form-field class="dateField">
+                                                                <input matInput [matDatepicker]="showDatePicker" name="showDate"
+                                                                    placeholder="Show Start Date" class="form-control" required
+                                                                    name="showStartDate"#showDate="ngModel" [(ngModel)]="contactInfo.ShowDate"
+                                                                    (dateChange)="handleShowStartDate()" readonly
+                                                                    >
+                                                                <mat-datepicker-toggle matSuffix [for]="showDatePicker">
+                                                                </mat-datepicker-toggle>
+                                                                <mat-datepicker #showDatePicker></mat-datepicker>													
+                                                            </mat-form-field>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
+                                                        <span class="help-block"*ngIf="(addContactForm.submitted || showDate.touched) && showDate.invalid">Please enter Show date </span>                                                          
+                                            </div>
+                                            <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label>Show End</label> 
-                                                            <input type="text" class="form-control" placeholder="Show End"/>
-                                                        </div>
-                                                    </div>
-                                                </div>                                            
+                                                            <label>Show End <span>*</span></label> 
+                                                            <mat-form-field class="dateField">
+                                                                <input matInput [matDatepicker]="showEndPicker" name="showEnd"
+                                                                    placeholder="Show Start Date" class="form-control" required
+                                                                    name="showStartDate"#showEnd="ngModel" [(ngModel)]="contactInfo.ShowEnd"
+                                                                    (dateChange)="handleShowStartDate()" readonly
+                                                                    >
+                                                                <mat-datepicker-toggle matSuffix [for]="showEndPicker">
+                                                                </mat-datepicker-toggle>
+                                                                <mat-datepicker #showEndPicker></mat-datepicker>													
+                                                            </mat-form-field>   
+                                                             </div>
+                                                             <span class="help-block"*ngIf="(addContactForm.submitted || showEnd.touched) && showEnd.invalid">Please enter Show end date </span>
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label>Show Location</label> 
-                                                    <select required class="form-control" placeholder="Show Location" name="Show Location">													
+                                                    <label>Show Location <span>*</span></label> 
+                                                    <select required class="form-control" required placeholder="Show Location" name="location"  #location="ngModel" [(ngModel)]="contactInfo.ShowLocation" name="Show Location">													
                                                         <option value="null">Show Location</option>
                                                         <option>Show Location 1</option>                                                                                               
                                                     </select>
@@ -315,59 +351,72 @@
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label>Email Contact 1</label> 
-                                                    <input type="text" class="form-control" placeholder="Email Contact 1"/>
+                                                    <label>Email Contact 1 <span>*</span></label> 
+                                                    <input type="text" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" class="form-control" required name="emailContact1" #emailContact1="ngModel" [(ngModel)]="contactInfo.Email1" placeholder="Email Contact 1"/>
                                                 </div>
-                                            </div>
+                                                <span class="help-block" *ngIf="emailContact1.errors?.required && (emailContact1.touched || addContactForm.submitted)">Please enter Email contact 1</span>
+                                                <span class="help-block" *ngIf="!emailContact1.errors?.required && emailContact1.errors?.pattern"> Email contact 1 is invalid</span>                                              
+                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label>Email Contact 2</label> 
-                                                    <input type="text" class="form-control" placeholder="Email Contact 2"/>
+                                                    <label>Email Contact 2 <span>*</span></label> 
+                                                    <input pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" type="text" class="form-control" required name="emailContact2" #emailContact2="ngModel" [(ngModel)]="contactInfo.Email2" placeholder="Email Contact 2"/>
+                                                    <span class="help-block" *ngIf="emailContact2.errors?.required && (emailContact2.touched || addContactForm.submitted)">Please enter Email contact 2</span>                                             
+                                                    <span class="help-block" *ngIf="!emailContact2.errors?.required && emailContact2.errors?.pattern"> Email contact 2 is invalid</span>
                                                 </div>
                                             </div>
+                                         
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label>Phone Contact 1</label> 
-                                                    <input type="text" class="form-control" placeholder="Phone Contact 1"/>
+                                                    <label>Phone Contact 1 <span>*</span></label> 
+                                                    <input mask="(000) 000-0000" type="text" class="form-control" required name="phoneContact1" #phoneContact1="ngModel" [(ngModel)]="contactInfo.Phone1" placeholder="Phone Contact 1"/>
                                                 </div>
+                                                <span class="help-block"*ngIf="(addContactForm.submitted || phoneContact1.touched) && phoneContact1.invalid">Please enter Phone Contact 1 </span>                                                
                                             </div>
-                                            <div class="col-sm-6">
+                                        <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label>Phone Contact 2</label> 
-                                                    <input type="text" class="form-control" placeholder="Phone Contact 2"/>
+                                                    <label>Phone Contact 2 <span>*</span></label> 
+                                                    <input mask="(000) 000-0000" type="text" required class="form-control" name="phoneContact2" #phoneContact2="ngModel" [(ngModel)]="contactInfo.Phone2" placeholder="Phone Contact 2"/>
                                                 </div>
-                                            </div>
+                                                <span class="help-block"*ngIf="(addContactForm.submitted || phoneContact2.touched) && phoneContact2.invalid">Please enter Phone Contact 2 </span>                                               
                                         </div>
                                     </div>
-
                                     <div class="row">
                                         <div class="col-sm-6 mb-4">
                                             <div class="boxShadow">
                                                 <h6 class="captionBorder">Return Address: Exhibitor Sponsor Confirmation - Report #3</h6>
                                                 <div class="form-group">
-                                                    <label>Address</label> 
-                                                    <input type="text" class="form-control" placeholder="Address"/>
-                                                </div>
+                                                    <label>Address <span>*</span></label> 
+                                                    <input type="text" #exhibitorSponsorAddress="ngModel" name="exhibitorSponsorAddress" [(ngModel)]="contactInfo.exhibitorSponsorAddress" required class="form-control" placeholder="Address"/>
+                                                    <span class="help-block"*ngIf="(addContactForm.submitted || exhibitorSponsorAddress.touched) && exhibitorSponsorAddress.invalid">Please enter Address </span>                                             
+                                                   </div>
                                                 <div class="form-group">
-                                                    <label>City</label> 
-                                                    <input type="text" class="form-control" placeholder="City"/>
-                                                </div>
+                                                    <label>City <span>*</span></label> 
+                                                    <input type="text" #exhibitorSponsorCity="ngModel" name="exhibitorSponsorCity" [(ngModel)]="contactInfo.exhibitorSponsorCity" required class="form-control" placeholder="City"/>
+                                                    <span class="help-block"*ngIf="(addContactForm.submitted || exhibitorSponsorCity.touched) && exhibitorSponsorCity.invalid">Please enter City </span>                                               
+                                                 </div>
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label>State</label> 
-                                                            <select required class="form-control" placeholder="State" name="State">													
-                                                                <option value="null">State</option>
-                                                                <option>State 1</option>                                                                                               
+                                                            <label>State <span>*</span></label> 
+                                                            <select required class="form-control" #exhibitorSponsorState="ngModel" [(ngModel)]="contactInfo.exhibitorSponsorState" required placeholder="State" name="exhibitorSponsorState">													
+                                                                <option value="null" disabled="true" [selected]="true">
+                                                                    Select State
+                                                                </option>
+                                                                <option *ngFor="let state of statesResponse"
+                                                                    [value]="state.StateId">{{state.Name}} -
+                                                                    {{state.Code}}
+                                                                </option>                                                                                                
                                                             </select>
                                                         </div>
+                                                        <span class="help-block"*ngIf="(addContactForm.submitted || exhibitorSponsorState.touched) && exhibitorSponsorState.invalid">Please select State </span>
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label> Zip</label> 
-                                                            <input type="text" class="form-control" placeholder="Zip"/>
+                                                            <label> Zip <span>*</span></label> 
+                                                            <input type="text" maxlength="5" #exhibitorSponsorZip="ngModel" name="exhibitorSponsorZip" [(ngModel)]="contactInfo.exhibitorSponsorZip" required class="form-control" placeholder="Zip"/>                                                        </div>
+                                                            <span class="help-block"*ngIf="(addContactForm.submitted || exhibitorSponsorZip.touched) && exhibitorSponsorZip.invalid">Please enter Zip </span>
                                                         </div>
-                                                    </div>
                                                 </div> 
                                                 
                                             </div>
@@ -376,29 +425,35 @@
                                             <div class="boxShadow">
                                                 <h6 class="captionBorder">Return Address: Exhibitor Refund Statement - Report 3a</h6>
                                                 <div class="form-group">
-                                                    <label>Address</label> 
-                                                    <input type="text" class="form-control" placeholder="Address"/>
-                                                </div>
+                                                    <label>Address <span>*</span></label> 
+                                                    <input type="text" name="exhibitorRefundAddress" #exhibitorRefundAddress="ngModel" required [(ngModel)]="contactInfo.exhibitorRefundAddress" class="form-control" placeholder="Address"/>
+                                                    <span class="help-block"*ngIf="(addContactForm.submitted || exhibitorRefundAddress.touched) && exhibitorRefundAddress.invalid">Please enter Address </span>                                                </div>
                                                 <div class="form-group">
-                                                    <label>City</label> 
-                                                    <input type="text" class="form-control" placeholder="City"/>
-                                                </div>
+                                                    <label>City <span>*</span></label> 
+                                                    <input type="text" class="form-control" name="exhibitorRefundCity" #exhibitorRefundCity="ngModel" [(ngModel)]="contactInfo.exhibitorRefundCity" required placeholder="City"/>
+                                                    <span class="help-block"*ngIf="(addContactForm.submitted || exhibitorRefundCity.touched) && exhibitorRefundCity.invalid">Please enter City </span>                                                </div>
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label>State</label> 
-                                                            <select required class="form-control" placeholder="State" name="State">													
-                                                                <option value="null">State</option>
-                                                                <option>State 1</option>                                                                                               
+                                                            <label>State <span>*</span></label> 
+                                                            <select required class="form-control" #exhibitorRefundState="ngModel" [(ngModel)]="contactInfo.exhibitorRefundState" required placeholder="State"  name="exhibitorRefundState">													
+                                                                <option value="null" disabled="true" [selected]="true">
+                                                                    Select State
+                                                                </option>
+                                                                <option *ngFor="let state of statesResponse"
+                                                                    [value]="state.StateId">{{state.Name}} -
+                                                                    {{state.Code}}
+                                                                </option>                                                                                                 
                                                             </select>
                                                         </div>
+                                                        <span class="help-block"*ngIf="(addContactForm.submitted || exhibitorRefundState.touched) && exhibitorRefundState.invalid">Please select State </span>
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label> Zip</label> 
-                                                            <input type="text" class="form-control" placeholder="Zip"/>
+                                                            <label> Zip <span>*</span></label> 
+                                                            <input type="text" maxlength="5" #exhibitorRefundZip="ngModel" name="exhibitorRefundZip" [(ngModel)]="contactInfo.exhibitorRefundZip" required class="form-control" placeholder="Zip"/>                                                        </div>
+                                                            <span class="help-block"*ngIf="(addContactForm.submitted || exhibitorRefundZip.touched) && exhibitorRefundZip.invalid">Please enter Zip </span>
                                                         </div>
-                                                    </div>
                                                 </div> 
                                             </div>
                                         </div>
@@ -406,41 +461,47 @@
                                             <div class="boxShadow">
                                                 <h6 class="captionBorder">Return Address: Confirmation for Entries and Atalls - Reports #17, #15</h6>
                                                 <div class="form-group">
-                                                    <label>Address</label> 
-                                                    <input type="text" class="form-control" placeholder="Address"/>
-                                                </div>
+                                                    <label>Address <span>*</span></label> 
+                                                    <input type="text" #returnAddress="ngModel" name="returnAddress" [(ngModel)]="contactInfo.returnAddress" required class="form-control" placeholder="Address"/>
+                                                    <span class="help-block"*ngIf="(addContactForm.submitted || returnAddress.touched) && returnAddress.invalid">Please enter Address </span>                                                </div>
                                                 <div class="form-group">
-                                                    <label>City</label> 
-                                                    <input type="text" class="form-control" placeholder="City"/>
-                                                </div>
+                                                    <label>City <span>*</span></label> 
+                                                    <input type="text" #returnCity="ngModel" [(ngModel)]="contactInfo.returnCity" name="returnCity" required class="form-control" placeholder="City"/>
+                                                    <span class="help-block"*ngIf="(addContactForm.submitted || returnCity.touched) && returnCity.invalid">Please enter City</span>                                                </div>
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label>State</label> 
-                                                            <select required class="form-control" placeholder="State" name="State">													
-                                                                <option value="null">State</option>
-                                                                <option>State 1</option>                                                                                               
+                                                            <label>State <span>*</span></label> 
+                                                            <select required class="form-control" #returnState="ngModel" [(ngModel)]="contactInfo.returnState" required placeholder="State" name="returnState">													
+                                                                <option value="null" disabled="true" [selected]="true">
+                                                                    Select State
+                                                                </option>
+                                                                <option *ngFor="let state of statesResponse"
+                                                                    [value]="state.StateId">{{state.Name}} -
+                                                                    {{state.Code}}
+                                                                </option>                                                                                     
                                                             </select>
                                                         </div>
+                                                        <span class="help-block"*ngIf="(addContactForm.submitted || returnState.touched) && returnState.invalid">Please select state </span>
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label> Zip</label> 
-                                                            <input type="text" class="form-control" placeholder="Zip"/>
+                                                            <label> Zip <span>*</span></label> 
+                                                            <input type="text" maxlength="5" #returnZip="ngModel" name="returnZip" [(ngModel)]="contactInfo.returnZip" required class="form-control" placeholder="Zip"/>                                                        </div>
+                                                            <span class="help-block"*ngIf="(addContactForm.submitted || returnZip.touched) && returnZip.invalid">Please enter Zip </span>
                                                         </div>
-                                                    </div>
                                                 </div> 
                                             </div>
                                         </div>
                                     </div>
                                     <div class="actionBtn text-right mb-3">
-                                        <button (click)='tabGroup.selectedIndex = 3' class="btn btn-red btnCss roundBtn">Previous</button>
-                                        <button (click)='tabGroup.selectedIndex = 1' class="btn btn-red btnCss roundBtn">Next</button>
-                                        <button class="btn btn-red btnCss roundBtn">Submit</button>
+                                        <button (click)='tabGroup.selectedIndex = 2' class="btn btn-red btnCss roundBtn">Previous</button>
+                                        <button (click)='tabGroup.selectedIndex = 4' class="btn btn-red btnCss roundBtn">Next</button>
+                                        <button type="submit" class="btn btn-red btnCss roundBtn">Submit</button>
                                     </div>
-                                </div>
                             </div>
-                            
+                        </div>
+                                </div>
                         </form>
                     </mat-tab>
                     <mat-tab  class="nav-link nav nav-tabs" label="Purge Routine">
@@ -448,7 +509,29 @@
                             <div class="card">
                                 <div class="card-body"> 
                                     <div class="row">
-
+                                        <div class="col-sm-12">
+                                            <h3 class="commonCaption font-weight-bold">Remove or Restore data in database tables</h3>
+                                            <h6 class="font-weight-bold">Current Software/Database Version/Release V1A1</h6>
+                                        </div>
+                                        <div class="col-sm-12 mb-3 mt-3 cbdRadio">
+                                            <div class="prePostField">
+                                                <label class="radioBtn"><strong>Purge Data</strong> = Remove Data from database table(s)
+                                                    <input type="radio" checked="checked" name="fee.CodeName" value="2011">
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                                <label class="radioBtn"><strong>Restore Data</strong> = Restore Data from a previous backup to the current Database
+                                                    <input type="radio" name="fee.CodeName" value="2012" >
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </div>
+                                            <hr />
+                                            <div class="actionBtn text-right mb-3">
+                                                <button (click)='tabGroup.selectedIndex = 3' class="btn btn-red btnCss roundBtn">Previous</button>
+                                                <button (click)='tabGroup.selectedIndex = 5' class="btn btn-red btnCss roundBtn">Next</button>
+                                                <button type="submit"class="btn btn-red btnCss roundBtn">Submit</button>
+                                            </div>
+                                        </div>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -459,6 +542,91 @@
                             <div class="card">
                                 <div class="card-body"> 
                                     <div class="row">
+                                        <div class="col-sm-12">
+                                            <h3 class="commonCaption font-weight-bold">Back Up information in Current database tables</h3>
+                                            <h6 class="font-weight-bold">Current Software/Database Version/Release V1A1</h6>
+                                            <p>When backing up data, the application will be frozen so that No user's will be able to access the
+                                                application or its data. When the back up is complete, the application and data will be released so that user's will be able to access the application and data.
+                                            </p>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="table-responsive tableTab" id="contentscroll2">
+                                                <table class="table table-bordered tableBodyScroll">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Saved Database Data</th> 
+                                                            <th>Version/Release</th>
+                                                            <th class="comWidth">Remove</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <perfect-scrollbar class="nicescrollBar-2">
+                                                        <tbody>
+                                                            
+                                                            <tr>
+                                                                <td>BackupHorses_V1R1_20200701_050000</td>
+                                                                <td>V1R1</td>
+                                                                <td class="comWidth">
+                                                                    <button type="button" class="icon" (click)="confirmRemoveUser(user.UserId)"><span></span> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>BackupSponsors_V1R1_20200723_101500</td>
+                                                                <td>V1R1</td>
+                                                                <td class="comWidth">
+                                                                    <button type="button" class="icon" (click)="confirmRemoveUser(user.UserId)"><span></span> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>BackupClasses_V1R1_20200902_053000</td>
+                                                                <td>V1R1</td>
+                                                                <td class="comWidth">
+                                                                    <button type="button" class="icon" (click)="confirmRemoveUser(user.UserId)"><span></span> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>BackupAll_V1R1_20201002_023000</td>
+                                                                <td>V1R1</td>
+                                                                <td class="comWidth">
+                                                                    <button type="button" class="icon" (click)="confirmRemoveUser(user.UserId)"><span></span> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                                                </td>
+                                                            </tr>
+                                                        
+                                                        </tbody> 
+                                                    </perfect-scrollbar>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 mb-3 mt-3 cbdRadio">
+                                            <div class="prePostField">
+                                                <label class="radioBtn"><strong>Back Up</strong> =  Back up Data from all Current database table
+
+                                                    <input type="radio" checked="checked" name="fee.CodeName" value="2011">
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                                <label class="radioBtn"><strong>Back Up All Exhibitors Only</strong> = Back up Exhibitor Data only
+                                                    <input type="radio" name="fee.CodeName" value="2012" >
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                                <label class="radioBtn"><strong>Back Up Horses Only</strong> = Back up Horses Data Only
+                                                    <input type="radio" name="fee.CodeName" value="2012" >
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                                <label class="radioBtn"><strong>Back Up Classes Only</strong> = Back up Class Data Only
+                                                    <input type="radio" name="fee.CodeName" value="2012" >
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                                <label class="radioBtn"><strong>Back Up Sponsors Only</strong> = Back up Sponsor Data Only
+                                                    <input type="radio" name="fee.CodeName" value="2012" >
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </div>
+                                            <hr />
+                                            <div class="actionBtn text-right mb-3">
+                                                <button (click)='tabGroup.selectedIndex = 4' class="btn btn-red btnCss roundBtn">Previous</button>
+                                                <button type="submit"class="btn btn-red btnCss roundBtn">Submit</button>
+                                            </div>
+                                        </div>
+                                        
 
                                     </div>
                                 </div>

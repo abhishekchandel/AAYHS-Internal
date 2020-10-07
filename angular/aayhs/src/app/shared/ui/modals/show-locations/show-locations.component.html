@@ -1,7 +1,7 @@
 <div id="classSplit" class="modal fade trashPopup" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form #addGeneralFeeForm="ngForm" (ngSubmit)="addGeneralFeeForm.valid" class="formScroll">
+            <form #addLocationForm="ngForm" (ngSubmit)="addLocationForm.valid && addUpdateLocation()" class="formScroll">
                 <div class="modal-header">
                     <button (click)="onDismiss()"type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Horse Show Location</h4>
@@ -12,38 +12,65 @@
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <label>Name</label> 
-                                    <input type="text" class="form-control" placeholder="Name"/>
+                                    <input type="text" #name="ngModel" [(ngModel)]="showLocation.Name" name="name" required class="form-control" />
+                                    <span class="help-block"
+                                    *ngIf="(addLocationForm.submitted || name.touched) && name.invalid">
+                                Please enter name
+                                </span>  
                                 </div>
                                 <div class="form-group">
                                     <label>Address</label> 
-                                    <input type="text" class="form-control" placeholder="Address"/>
+                                    <input type="text" #address="ngModel" [(ngModel)]="showLocation.Address" name="address" required class="form-control"/>
+                                    <span class="help-block"
+                                    *ngIf="(addLocationForm.submitted || address.touched) && address.invalid">
+                                Please enter address
+                                </span>  
                                 </div>
                             </div>  
                             <div class="col-sm-12 col-md-9">
                                 <div class="form-group">
                                     <label>City</label> 
-                                    <input type="text" class="form-control" placeholder="City"/>
+                                    <input type="text" class="form-control" #city="ngModel" [(ngModel)]="showLocation.City" name="city" required />
+                                    <span class="help-block"
+                                    *ngIf="(addLocationForm.submitted || city.touched) && city.invalid">
+                                Please enter city
+                                </span>  
                                 </div>
                             </div>  
                             <div class="col-sm-12 col-md-3">
                                 <div class="form-group">
                                     <label>State</label> 
-                                    <select required class="form-control" placeholder="Show Location" name="Show Location">													
-                                        <option value="null">Ohio</option>
-                                        <option>Ohio 1</option>                                                                                               
+                                    <select  class="form-control" placeholder="Show Location"   #state="ngModel" [(ngModel)]="showLocation.StateId" name="state" required>													
+                                        <option value="null" disabled="true" [selected]="true">
+                                            Select State
+                                        </option>
+                                        <option *ngFor="let state of statesResponse"
+                                            [value]="state.StateId">{{state.Name}} -
+                                            {{state.Code}}
+                                        </option>                                                                                                
                                     </select>
+                                    <span class="help-block" *ngIf="state.errors?.required && (state.touched || addLocationForm.submitted)" >State is
+                                        required</span>
                                 </div>
                             </div> 
                             <div class="col-sm-12 col-md-6">
                                 <div class="form-group">
                                     <label>Zip</label> 
-                                    <input type="text" class="form-control" placeholder="43211"/>
+                                    <input type="text" appOnlynumber class="form-control" maxlength="5" #zip="ngModel" [(ngModel)]="showLocation.ZipCode" name="zip" required />
+                                    <span class="help-block"
+                                    *ngIf="(addLocationForm.submitted || zip.touched) && zip.invalid">
+                                Please enter zip
+                                </span>  
                                 </div>
                             </div> 
                             <div class="col-sm-12 col-md-6">
                                 <div class="form-group">
                                     <label>Phone</label> 
-                                    <input type="text" class="form-control" placeholder="614-644-3247"/>
+                                    <input type="text" class="form-control" mask="(000) 000-0000" #phone="ngModel" [(ngModel)]="showLocation.Phone" name="phone" required />
+                                    <span class="help-block"
+                                    *ngIf="(addLocationForm.submitted || phone.touched) && phone.invalid">
+                                Please enter phone
+                                </span> 
                                 </div>
                             </div>        
                         </div>            
@@ -51,8 +78,8 @@
                 </div>
                 <hr />
                 <div class="modal-footer text-center">					
-                    <button type="button" class="btn btn-default" data-dismiss="modal">+ Refund</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Back</button>
+                    <!-- <button type="button" class="btn btn-default" data-dismiss="modal">+ Refund</button> -->
+                    <button type="button" (click)="onDismiss()" class="btn btn-default" data-dismiss="modal">Back</button>
                     <button type="submit" class="btn btn-default" data-dismiss="modal">Submit</button>
                 </div>
             </form>
@@ -60,3 +87,6 @@
 
     </div>
 </div>	
+<div class="loaderWrapper" *ngIf="loading">
+	<div class="loader"></div>
+</div>

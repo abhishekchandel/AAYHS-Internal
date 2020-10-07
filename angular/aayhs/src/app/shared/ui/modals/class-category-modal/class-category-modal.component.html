@@ -18,15 +18,17 @@
                                     </thead>
                                     <perfect-scrollbar class="nicescrollBar-2">
                                     <tbody>                               
-                                        <tr>
-                                            <td>Men's Western Riding</td>
+                                        <tr *ngFor="let category of classCategoryList">
+                                            <td>{{category.CodeName}}</td>
                                             <td>
                                                 <label class="customCheckbox d-inline">
-                                                    <input name="nsbaIndicator" type="checkbox" value="" class="ciCheckbox">
+                                                    <input name="nsbaIndicator" type="checkbox" value="category.IsActive" [attr.checked]="category.IsActive === true ? true : null" class="ciCheckbox">
                                                     <span class="checkmark"></span>
                                                 </label>
                                             </td>
-                                            <td><div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+                                            <td>
+                                                <button type="button" class="icon" (click)="confirmRemoveFee(category.GlobalCodeId)"><span></span> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                            </td>
                                         </tr>
                                         <tr>
                                         <td colspan="2">
@@ -53,4 +55,7 @@
         </div>
 
     </div>
+</div>
+<div class="loaderWrapper" *ngIf="loading">
+	<div class="loader"></div>
 </div>

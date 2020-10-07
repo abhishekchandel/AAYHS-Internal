@@ -13,9 +13,9 @@ import { GlobalService } from 'src/app/core/services/global.service';
 import { MatSnackbarComponent } from 'src/app/shared/ui/mat-snackbar/mat-snackbar.component';
 import * as moment from 'moment';
 import { NgForm } from '@angular/forms';
-import {YearlyMaintenanceModel} from '../../../../core/models/yearly-maintenance-model'
 import { AddRoleModalComponent } from 'src/app/shared/ui/modals/add-role-modal/add-role-modal.component';
-
+import {YearlyMaintenanceModel, ContactInfo} from '../../../../core/models/yearly-maintenance-model'
+import { ExhibitorService } from 'src/app/core/services/exhibitor.service';
 
 @Component({
   selector: 'app-yearly-maintenance',
@@ -25,7 +25,7 @@ import { AddRoleModalComponent } from 'src/app/shared/ui/modals/add-role-modal/a
 export class YearlyMaintenanceComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('addYearForm') addYearForm: NgForm;
-  
+  @ViewChild('addContactForm') addContactForm: NgForm;
   result: string = ''
   loading = false;
   totalItems: number = 0;
@@ -40,8 +40,12 @@ export class YearlyMaintenanceComponent implements OnInit {
   years=[];
   selectedRowIndex: any;
   adFeesList:any;
-  verifiedUsers:any
-  roles:any
+  verifiedUsers:any;
+  roles:any;
+  classCategoryList:any;
+  generalFeesList:any;
+  feeDetails:any;
+  statesResponse: any;
 yearlyMaintenanceSummary:YearlyMaintenanceModel={
   ShowStartDate:null,
   ShowEndDate:null,
@@ -61,9 +65,34 @@ yearlyMaintenanceSummary:YearlyMaintenanceModel={
 
   };
   
+  contactInfo : ContactInfo ={
+    ShowDate:null,
+    ShowEnd:null,
+    ShowLocation:null,
+    Email1:null,
+    Email2:null,
+    Phone1:null,
+    Phone2:null,
+    exhibitorSponsorAddress:null,
+    exhibitorSponsorCity:null,
+    exhibitorSponsorZip:null,
+    exhibitorSponsorState:null,
+    exhibitorRefundAddress:null,
+    exhibitorRefundCity:null,
+    exhibitorRefundZip:null,
+    exhibitorRefundState:null,
+    returnAddress:null,
+    returnCity:null,
+    returnZip:null,
+    returnState:null,
+    AAYHSContactId:null,
+    yearlyMaintenanceId:null
+  }
+
   constructor(public dialog: MatDialog,
              private yearlyService: YearlyMaintenanceService,
              private data: GlobalService,
+             private exhibitorService: ExhibitorService,
              private snackBar: MatSnackbarComponent
             ) { }
 
@@ -77,66 +106,93 @@ yearlyMaintenanceSummary:YearlyMaintenanceModel={
     this.setYears();
     this.getVerifiedUsers();
     this.getAllRoles();
-
+    this.getFees();
+    this.getAllStates()
   }
 
   highlight(id, i) {
+    this.resetForm();
     this.selectedRowIndex = i;
     this.getAdFees(id);
    this.getYearlyMaintenanceByDetails(id);
+   this.selectedRowIndex = i;
+   this.getAdFees(id);
+  this.getClassCategory();
+   this.getGeneralFees(id);
+   this.getContactInfo(id);
   }
 
   openAddFeeModal(){
-    debugger;
+    if(this.validateyear())
+    {
     var data={
-      AddFeesList:this.adFeesList,
       YearlyMaintainenceId:this.yearlyMaintenanceSummary.YearlyMaintenanceId
     }
-
-
     const dialogRef = this.dialog.open(AddSizeFeeModalComponent, {
       data
     });
     dialogRef.afterClosed().subscribe(dialogResult => {
 
       })
-    
+    }
   }
 
   openClassCategoryModal(){
+    if(this.validateyear())
+    {
     const dialogRef = this.dialog.open(ClassCategoryModalComponent, {
-      maxWidth: "400px",
     });
     dialogRef.afterClosed().subscribe(dialogResult => {
 
       })
+    }
   }
 
   openGeneralFeeModal(){
+    if(this.validateyear())
+    {
+    var data={
+      YearlyMaintainenceId:this.yearlyMaintenanceSummary.YearlyMaintenanceId
+    }
     const dialogRef = this.dialog.open(GeneralFeeModalComponent, {
-      maxWidth: "400px",
+      data
     });
     dialogRef.afterClosed().subscribe(dialogResult => {
 
       })
+    }
   }
 
   openRefundCalculationFeeModal(){
+    if(this.validateyear())
+    {
+    var data={
+      YearlyMaintainenceId:this.yearlyMaintenanceSummary.YearlyMaintenanceId,
+    }
+
     const dialogRef = this.dialog.open(RefundCalculationModalComponent, {
-      maxWidth: "400px",
+      data
     });
     dialogRef.afterClosed().subscribe(dialogResult => {
 
       })
+    }
   }
 
   openShowLocationModal(){
+    if(this.validateyear())
+    {
+    var data={
+      YearlyMaintainenceId:this.yearlyMaintenanceSummary.YearlyMaintenanceId,
+      StatesResponse:this.statesResponse
+    }
     const dialogRef = this.dialog.open(ShowLocationsComponent, {
-      maxWidth: "400px",
+      data
     });
     dialogRef.afterClosed().subscribe(dialogResult => {
 
       })
+    }
   }
 
   confirmVerifyUnverify(id): void {
@@ -152,6 +208,8 @@ yearlyMaintenanceSummary:YearlyMaintenanceModel={
       this.result = dialogResult;
       if (this.result) {
         this.getNewRegisteredUsers()
+        this.getVerifiedUsers()
+
       }
     });
   }
@@ -221,7 +279,7 @@ yearlyMaintenanceSummary:YearlyMaintenanceModel={
         this.loading = false;
       }, error => {
         this.loading = false;
-
+        this.registeredUsers =null
       }
       )
       resolve();
@@ -265,23 +323,20 @@ yearlyMaintenanceSummary:YearlyMaintenanceModel={
   }
 
   handleShowStartDate(){
-    this.startDate = moment(this.startDate).format('YYYY-MM-DD');
-
+    this.startDate = moment(this.yearlyMaintenanceSummary.ShowStartDate).format('YYYY-MM-DD');
   }
 
   handleShowEndDate(){
-    this.endDate = moment(this.endDate).format('YYYY-MM-DD');
+    this.endDate = moment(this.yearlyMaintenanceSummary.ShowEndDate).format('YYYY-MM-DD');
 
   }
 
   handlePreEntryCutOffDate(){
-    this.entryCutOffDate = moment(this.entryCutOffDate).format('YYYY-MM-DD');
-
+    this.entryCutOffDate = moment(this.yearlyMaintenanceSummary.PreEntryCutOffDate).format('YYYY-MM-DD');
   }
 
   handleSponsorCutOffDate(){
-    this.sponsorDate = moment(this.sponsorDate).format('YYYY-MM-DD');
-
+    this.sponsorDate = moment(this.yearlyMaintenanceSummary.SponcerCutOffDate).format('YYYY-MM-DD');
   }
 
   addUpdateYear(){
@@ -292,15 +347,31 @@ yearlyMaintenanceSummary:YearlyMaintenanceModel={
         showEndDate:this.endDate,
         preCutOffDate:this.entryCutOffDate,
         sponcerCutOffDate:this.sponsorDate,
-        year:this.yearlyMaintenanceSummary.Year
-      }
-      this.yearlyService.addYear(yearlyRequest).subscribe(response => {
-        this.reserYearForm();
-        this.getYearlyMaintenanceSummary();
+        year:this.yearlyMaintenanceSummary.Year,
+        yearlyMaintainenceId : this.yearlyMaintenanceSummary.YearlyMaintenanceId ==null ? 0 : this.yearlyMaintenanceSummary.YearlyMaintenanceId      }
+        this.yearlyService.addYear(yearlyRequest).subscribe(response => {
+        // this.reserYearForm();
+        // this.getYearlyMaintenanceSummary();
         this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
         this.loading = false;
+
+        this.getYearlyMaintenanceSummary().then(res =>{ 
+          if(response.NewId !=null && response.NewId>0)
+          {
+            if(this.yearlyMaintenanceSummary.YearlyMaintenanceId>0)
+            {
+              this.highlight(response.NewId,this.selectedRowIndex);
+            }
+            else{
+              this.highlight(response.NewId,0);
+            }
+          
+          }
+        });
+
+
       }, error => {
-        this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
+        this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
       this.loading = false;
       }
       )
@@ -433,6 +504,171 @@ getAllRoles(){
     )
     resolve();
   });
+}
+
+getClassCategory(){
+  return new Promise((resolve, reject) => {
+    this.loading = true;
+    this.yearlyService.getClassCategory().subscribe(response => {
+      this.classCategoryList = response.Data.getClassCategories;
+      this.loading = false;
+    }, error => {
+      this.loading = false;
+
+    }
+    )
+    resolve();
+  });
+}
+
+getGeneralFees(id){
+  return new Promise((resolve, reject) => {
+    this.loading = true;
+    this.yearlyService.getGeneralFees(id).subscribe(response => {
+      this.generalFeesList = response.Data.getGeneralFeesResponses;
+      this.loading = false;
+    }, error => {
+      this.loading = false;
+
+    }
+    )
+    resolve();
+  });
+}
+
+
+getContactInfo(id){
+  return new Promise((resolve, reject) => {
+    this.loading = true;
+    this.yearlyService.getContactInfo(id).subscribe(response => {
+      this.contactInfo.ShowDate=response.Data.ShowStart,
+      this.contactInfo.ShowEnd=response.Data.ShowEnd,
+      this.contactInfo.ShowLocation=response.Data.ShowLocation,
+      this.contactInfo.Email1=response.Data.Email1,
+      this.contactInfo.Email2=response.Data.Email2,
+      this.contactInfo.Phone1=response.Data.Phone1,
+      this.contactInfo.Phone2=response.Data.Phone2,
+      this.contactInfo.exhibitorSponsorAddress=response.Data.exhibitorSponsorConfirmationResponse.Address,
+      this.contactInfo.exhibitorSponsorCity=response.Data.exhibitorSponsorConfirmationResponse.City,
+      this.contactInfo.exhibitorSponsorZip=response.Data.exhibitorSponsorConfirmationResponse.ZipCode,
+      this.contactInfo.exhibitorSponsorState=response.Data.exhibitorSponsorConfirmationResponse.StateId,
+      this.contactInfo.exhibitorRefundAddress=response.Data.exhibitorSponsorRefundStatementResponse.Address,
+      this.contactInfo.exhibitorRefundCity=response.Data.exhibitorSponsorRefundStatementResponse.City,
+      this.contactInfo.exhibitorRefundZip=response.Data.exhibitorSponsorRefundStatementResponse.ZipCode,
+      this.contactInfo.exhibitorRefundState=response.Data.exhibitorSponsorRefundStatementResponse.StateId,
+      this.contactInfo.returnAddress=response.Data.exhibitorConfirmationEntriesResponse.Address,
+      this.contactInfo.returnCity=response.Data.exhibitorConfirmationEntriesResponse.City,
+      this.contactInfo.returnZip=response.Data.exhibitorConfirmationEntriesResponse.ZipCode,
+      this.contactInfo.returnState=response.Data.exhibitorConfirmationEntriesResponse.StateId
+      this.contactInfo.AAYHSContactId=response.Data.AAYHSContactId
+    
+      this.loading = false;
+    }, error => {
+      this.loading = false;
+
+    }
+    )
+    resolve();
+  });
+}
+
+resetForm(){
+
+  this.contactInfo.ShowDate=null,
+  this.contactInfo.ShowEnd=null,
+  this.contactInfo.ShowLocation=null,
+  this.contactInfo.Email1=null,
+  this.contactInfo.Email2=null,
+  this.contactInfo.Phone1=null,
+  this.contactInfo.Phone2=null,
+  this.contactInfo.exhibitorSponsorAddress=null,
+  this.contactInfo.exhibitorSponsorCity=null,
+  this.contactInfo.exhibitorSponsorZip=null,
+  this.contactInfo.exhibitorSponsorState=null,
+  this.contactInfo.exhibitorRefundAddress=null,
+  this.contactInfo.exhibitorRefundCity=null,
+  this.contactInfo.exhibitorRefundZip=null,
+  this.contactInfo.exhibitorRefundState=null,
+  this.contactInfo.returnAddress=null,
+  this.contactInfo.returnCity=null,
+  this.contactInfo.returnZip=null,
+  this.contactInfo.returnState=null,
+  this.contactInfo.AAYHSContactId=null,
+  this.contactInfo.yearlyMaintenanceId=null
+
+
+  this.adFeesList=null,
+  this.classCategoryList=null,
+  this.generalFeesList=null,
+
+ this.yearlyMaintenanceSummary.ShowStartDate=null
+ this.yearlyMaintenanceSummary.ShowEndDate=null
+ this.yearlyMaintenanceSummary.PreEntryCutOffDate=null
+ this.yearlyMaintenanceSummary.SponcerCutOffDate=null
+ this.yearlyMaintenanceSummary.YearlyMaintenanceId=null
+ this.yearlyMaintenanceSummary.Year=null
+ this.selectedRowIndex = null;
+
+}
+
+
+getFees(){
+  this.loading = true;
+  this.yearlyService.getFees().subscribe(response => {    
+   this.feeDetails = response.Data.getFees;
+    this.loading = false;
+  }, error => {
+    this.loading = false;
+  })
+}
+
+
+addUpdateContactInfo(){
+  if(this.yearlyMaintenanceSummary.YearlyMaintenanceId ==null)
+  {
+    this.snackBar.openSnackBar("Please select a year", 'Close', 'red-snackbar');
+    return false;
+  }
+  return new Promise((resolve, reject) => {   
+    this.loading = true;
+    this.contactInfo.AAYHSContactId=this.contactInfo.AAYHSContactId==null ? 0 :this.contactInfo.AAYHSContactId,
+    this.contactInfo.exhibitorSponsorState=Number(this.contactInfo.exhibitorSponsorState)
+    this.contactInfo.exhibitorRefundState=Number(this.contactInfo.exhibitorRefundState),
+    this.contactInfo.returnState=Number(this.contactInfo.returnState)
+    this.contactInfo.yearlyMaintenanceId=this.yearlyMaintenanceSummary.YearlyMaintenanceId
+    this.yearlyService.addUpdateContact(this.contactInfo).subscribe(response => {
+      this.getContactInfo(this.yearlyMaintenanceSummary.YearlyMaintenanceId);
+      this.addContactForm.resetForm();
+      this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
+      this.loading = false;
+    }, error => {
+      this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
+    this.loading = false;
+    }
+    )
+    resolve();
+  });
+}
+
+getAllStates() {
+    
+  this.loading = true;
+  this.exhibitorService.getAllStates().subscribe(response => {
+      this.statesResponse = response.Data.State;
+      this.loading = false;
+  }, error => {
+    this.loading = false;
+  })
+ 
+}
+
+validateyear(){
+  if(this.yearlyMaintenanceSummary.YearlyMaintenanceId ==null)
+  {
+    this.snackBar.openSnackBar("Please select a year", 'Close', 'red-snackbar');
+    return false;
+  }
+  return true;
 }
 
 }
