@@ -215,8 +215,9 @@ namespace AAYHS.Service.Service
 
                 };
 
-                _yearlyMaintenanceRepository.Add(newYearly);
+               int newId= _yearlyMaintenanceRepository.Add(newYearly).YearlyMaintainenceId;
                 _mainResponse.Success = true;
+                _mainResponse.NewId = newId;
                 _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
 
             }
