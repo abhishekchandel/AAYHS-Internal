@@ -4,7 +4,7 @@ import { MatSnackbarComponent } from '../../../../shared/ui/mat-snackbar/mat-sna
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { GroupService } from 'src/app/core/services/group.service';
 import { ConfirmDialogComponent, ConfirmDialogModel } from '../../../../shared/ui/modals/confirmation-modal/confirm-dialog.component';
-
+import { Observable } from "rxjs";
 
 
 import { MatPaginator } from '@angular/material/paginator';
@@ -109,6 +109,12 @@ export class GroupComponent implements OnInit {
   tackstalllength: number = 0;
   UnassignedStallNumbers: any = [];
 
+  seletedStateName: string="";
+  seletedCityName: string="";
+  statefilteredOptions: Observable<string[]>;
+  cityfilteredOptions: Observable<string[]>;
+
+
   constructor(private groupService: GroupService,
     private dialog: MatDialog,
     private snackBar: MatSnackbarComponent,
@@ -158,7 +164,28 @@ export class GroupComponent implements OnInit {
         this.getCities(response.Data.StateId).then(res => {
           this.getZipCodes(response.Data.CityName, true).then(res => {
             this.groupInfo = response.Data;
+            
             debugger
+            var seletedState = this.statesResponse.filter(x => x.StateId == this.groupInfo.StateId);
+
+            if (seletedState != null && seletedState != undefined && seletedState.length > 0) {
+              this.seletedStateName = seletedState[0].Name;
+              this.filterStates(this.seletedStateName, false);
+            }
+            else {
+              this.seletedStateName = "";
+              this.filterStates(this.seletedStateName, true);
+            }
+            if (response.Data.CityName != null && response.Data.CityName != undefined && response.Data.CityName != "") {
+              this.seletedCityName = response.Data.CityName;
+              this.filterCities(this.seletedCityName, false);
+            }
+            else {
+              this.seletedCityName = "";
+              this.filterCities(this.seletedCityName, true);
+            }
+
+
             this.groupStallAssignmentResponses = response.Data.groupStallAssignmentResponses;
 
             var horseStalltype = this.StallTypes.filter(x => x.CodeName == "HorseStall");
@@ -221,9 +248,13 @@ export class GroupComponent implements OnInit {
 
   AddUpdateGroup = (group) => {
 
+    if (this.groupInfo.StateId == null || this.groupInfo.StateId == undefined || this.groupInfo.StateId <= 0) {
+      return;
+    }
+    if (this.groupInfo.CityId == null || this.groupInfo.CityId == undefined || this.groupInfo.CityId <= 0) {
+      return;
+    }
     this.loading = true;
-
-
     this.groupInfo.AmountReceived = Number(this.groupInfo.AmountReceived == null
       || this.groupInfo.AmountReceived == undefined
       || this.groupInfo.AmountReceived == NaN ? 0 :
@@ -290,52 +321,6 @@ export class GroupComponent implements OnInit {
     })
 
   }
-
-  getCities(id: number) {
-    return new Promise((resolve, reject) => {
-      this.loading = true;
-      this.citiesResponse = null;
-      this.groupService.getCities(Number(id)).subscribe(response => {
-        this.citiesResponse = response.Data.City;
-        this.loading = false;
-      }, error => {
-        this.loading = false;
-      })
-      resolve();
-    });
-  }
-
-  getZipCodes(event, Notfromhtml) {
-
-    var cityname;
-    Notfromhtml == true ? cityname = event : cityname = event.target.options[event.target.options.selectedIndex].text;
-
-    return new Promise((resolve, reject) => {
-      this.loading = true;
-      this.zipCodesResponse = null;
-      this.groupService.getZipCodes(cityname).subscribe(response => {
-
-        this.zipCodesResponse = response.Data.ZipCode;
-        this.loading = false;
-      }, error => {
-        this.loading = false;
-      })
-      resolve();
-    });
-  }
-
-  getAllStates() {
-
-    this.loading = true;
-    this.groupService.getAllStates().subscribe(response => {
-      this.statesResponse = response.Data.State;
-      this.loading = false;
-    }, error => {
-      this.loading = false;
-    })
-
-  }
-
 
 
   getAllFeeTypes() {
@@ -564,6 +549,8 @@ export class GroupComponent implements OnInit {
     this.tackstalllength = 0;
     this.groupFinancialsList = null;
     this.groupExhibitorsList = null;
+    this.cityfilteredOptions=null;
+    this.zipCodesResponse=null;
   }
 
   getNext(event) {
@@ -997,6 +984,137 @@ export class GroupComponent implements OnInit {
   }
 
 
+
+
+
+  getAllStates() {
+    return new Promise((resolve, reject) => {
+      this.loading = true;
+      this.groupService.getAllStates().subscribe(response => {
+        this.statesResponse = response.Data.State;
+        this.statefilteredOptions = response.Data.State;
+        this.loading = false;
+      }, error => {
+        this.loading = false;
+      })
+      resolve();
+    });
+  }
+
+  getCities(id: number) {
+
+    this.cityfilteredOptions = null;
+    this.seletedCityName = "";
+    this.groupInfo.CityId = null;
+
+    this.groupInfo.ZipCodeId = null;
+    this.zipCodesResponse = null;
+
+    this.groupInfo.StateId = id;
+
+    return new Promise((resolve, reject) => {
+      this.loading = true;
+      this.citiesResponse = null;
+      this.groupService.getCities(Number(id)).subscribe(response => {
+        this.citiesResponse = response.Data.City;
+        this.cityfilteredOptions = response.Data.City;
+        this.loading = false;
+      }, error => {
+        this.loading = false;
+      })
+      resolve();
+    });
+  }
+
+  getFilteredCities(id: number, event: any) {
+    if (event.isUserInput) {
+
+
+      this.cityfilteredOptions = null;
+      this.seletedCityName = "";
+      this.groupInfo.CityId = null;
+
+      this.groupInfo.ZipCodeId = null;
+      this.zipCodesResponse = null;
+
+      this.groupInfo.StateId = id;
+
+      return new Promise((resolve, reject) => {
+        this.loading = true;
+        this.citiesResponse = null;
+        this.groupService.getCities(Number(id)).subscribe(response => {
+          this.citiesResponse = response.Data.City;
+          this.cityfilteredOptions = response.Data.City;
+          this.loading = false;
+        }, error => {
+          this.loading = false;
+        })
+        resolve();
+      });
+    }
+  }
+
+
+
+  getZipCodes(cityName, cityId) {
+
+    this.groupInfo.ZipCodeId = null;
+    this.zipCodesResponse = null;
+    return new Promise((resolve, reject) => {
+
+      this.groupInfo.CityId = cityId;
+      this.loading = true;
+
+      this.groupService.getZipCodes(cityName).subscribe(response => {
+        this.zipCodesResponse = response.Data.ZipCode;
+        this.loading = false;
+      }, error => {
+        this.loading = false;
+      })
+      resolve();
+    });
+  }
+
+  getFileredZipCodes(cityName, cityId, event: any) {
+    if (event.isUserInput) {
+      this.groupInfo.ZipCodeId = null;
+      this.zipCodesResponse = null;
+      return new Promise((resolve, reject) => {
+
+        this.groupInfo.CityId = cityId;
+        this.loading = true;
+
+        this.groupService.getZipCodes(cityName).subscribe(response => {
+          this.zipCodesResponse = response.Data.ZipCode;
+          this.loading = false;
+        }, error => {
+          this.loading = false;
+        })
+        resolve();
+      });
+    }
+  }
+
+  filterStates(val: string, makestatenull: boolean) {
+    if (makestatenull == true) {
+      this.groupInfo.StateId = null;
+    }
+    if (this.statesResponse != null && this.statesResponse != undefined && this.statesResponse.length > 0) {
+      this.statefilteredOptions = this.statesResponse.filter(option =>
+        option.Name.toLowerCase().includes(val.toLowerCase()));
+    }
+  }
+
+  filterCities(val: string, makecitynull: boolean) {
+    if (makecitynull == true) {
+      this.groupInfo.CityId = null;
+    }
+
+    if (this.citiesResponse != null && this.citiesResponse != undefined && this.citiesResponse.length > 0) {
+      this.cityfilteredOptions = this.citiesResponse.filter(option =>
+        option.Name.toLowerCase().includes(val.toLowerCase()));
+    }
+  }
 }
 
 

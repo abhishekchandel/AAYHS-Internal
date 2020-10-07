@@ -112,29 +112,12 @@
                                                     Name is required</span>
                                             </div>
 
-                                            <!-- <div class="form-group">
-                                                <label>State <span>*</span></label>
-                                                <select required class="form-control" placeholder="State" name="state"
-                                                    #state="ngModel" [(ngModel)]="exhibitorInfo.StateId"
-                                                    (change)="getCities($event.target.value);getStateName($event)">
-                                                    <option value="null" disabled="true" [selected]="true">
-                                                        Select State
-                                                    </option>
-                                                    <option *ngFor="let state of statesResponse"
-                                                        [value]="state.StateId">{{state.Name}} -
-                                                        {{state.Code}}
-                                                    </option>
-                                                </select>
-                                                <span class="help-block"
-                                                    *ngIf="state.errors?.required && (state.touched || exhibitorInfoForm.submitted)">State
-                                                    is
-                                                    required</span>
-                                            </div> -->
+                                           
 
 
                                             <div class="form-group">
                                                 <label>State <span>*</span></label>
-                                                <input matInput  
+                                                <input  
                                                 class="form-control" 
                                                 required
                                                 placeholder="state" name="state"
@@ -162,28 +145,11 @@
 
                                             <div class="row">
                                                 <div class="col-md-7">
-                                                    <!-- <div class="form-group">
-                                                        <label>City <span>*</span></label>
-                                                        <select required class="form-control" placeholder="city"
-                                                            (change)="getZipCodes($event,false);getCityName($event)"
-                                                            name="city" #city="ngModel"
-                                                            [(ngModel)]="exhibitorInfo.CityId">
-                                                            <option value="null" disabled="true" [selected]="true">
-                                                                Select City
-                                                            </option>
-                                                            <option *ngFor="let city of citiesResponse"
-                                                                [value]="city.CityId">{{city.Name}}
-                                                            </option>
-                                                        </select>
-                                                        <span class="help-block"
-                                                            *ngIf="city.errors?.required && (city.touched || exhibitorInfoForm.submitted)">City
-                                                            is
-                                                            required</span>
-                                                    </div> -->
+                                                    
 
                                                     <div class="form-group">
                                                         <label>City <span>*</span></label>
-                                                        <input matInput  
+                                                        <input  
                                                         class="form-control" 
                                                         required
                                                         placeholder="city" name="city"
@@ -389,22 +355,32 @@
 
                                                     <tr>
                                                         <td>
-                                                            <select class="dynDataSeclect" name="horse" required
-                                                                [(ngModel)]="linkedHorseId"
-                                                                (change)="getHorseType($event.target.value)"
-                                                                #horseControl="ngModel">
-                                                                <option [ngValue]="null">
-                                                                    Select Horse
-                                                                </option>
-                                                                <option *ngFor="let horse of horses"
-                                                                    [value]="horse.HorseId">{{horse.HorseId}} -
-                                                                    {{horse.Name}}
-                                                                </option>
-                                                            </select>
+
+                                                            <div class="form-group">  <input   
+                                                            class="form-control" 
+                                                            required
+                                                            placeholder="horse name" name="horsename"
+                                                            #horsename="ngModel" [(ngModel)]="seletedhorseName"
+                                                            value="{{seletedhorseName}}"
+                                                            (keyup)="filterhorses($event.target.value,true)"
+                                                            [matAutocomplete]="horseauto">
                                                             <span class="help-block"
-                                                                *ngIf="(horsesForm.submitted || horseControl.touched) && horseControl.invalid">Please
-                                                                select horse</span>
+                                                            *ngIf="linkedHorseId==null && (horsesForm.submitted || horsename.touched)">
+                                                            Please select horse</span>
+                                                        </div>
+            
+                                                            <mat-autocomplete #horseauto="matAutocomplete">
+                                                                <mat-option *ngFor="let horse of filteredHorsesOption"
+                                                                [value]="horse.Name" (onSelectionChange)="setFilteredHorse(horse.HorseId,$event);">
+                                                                {{horse.HorseId}}-{{horse.Name}} 
+                                                                </mat-option>
+                                                            </mat-autocomplete>
+                                                           
+                                                       
                                                         </td>
+
+
+
                                                         <td>{{horseType}}</td>
                                                         <td>
                                                             <span *ngIf="(!isFirstBackNumber && horseType)">
@@ -508,7 +484,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <select class="dynDataSeclect" name="exhibitorSponsor"
+                                                            <!-- <select class="dynDataSeclect" name="exhibitorSponsor"
                                                                 required [(ngModel)]="linkedSponsorId"
                                                                 (change)="getSponsorDetails($event.target.value)"
                                                                 #sponsorControl="ngModel">
@@ -521,7 +497,30 @@
                                                             </select>
                                                             <span class="help-block"
                                                                 *ngIf="(sponsorsForm.submitted || sponsorControl.touched) && sponsorControl.invalid">Please
-                                                                select sponsor</span>
+                                                                select sponsor</span> -->
+
+                                                                <div class="form-group">  <input   
+                                                                    class="form-control" 
+                                                                    required
+                                                                    placeholder="sponsor name" name="sponsorname"
+                                                                    #sponsorname="ngModel" [(ngModel)]="seletedsponsorName"
+                                                                    value="{{seletedsponsorName}}"
+                                                                    (keyup)="filtersponsor($event.target.value,true)"
+                                                                    [matAutocomplete]="sponsorauto">
+                                                                    <span class="help-block"
+                                                                    *ngIf="linkedSponsorId==null && (sponsorsForm.submitted || sponsorname.touched)">
+                                                                    Please select sponsor</span>
+                                                                </div>
+                    
+                                                                    <mat-autocomplete #sponsorauto="matAutocomplete">
+                                                                        <mat-option *ngFor="let sponsor of filteredSponsorOption"
+                                                                        [value]="sponsor.SponsorName" (onSelectionChange)="setFilteredSponsor(sponsor.SponsorId,$event);">
+                                                                        {{sponsor.SponsorName}} 
+                                                                        </mat-option>
+                                                                    </mat-autocomplete>
+
+
+
                                                         </td>
                                                         <td>
                                                             <button *ngIf="linkedSponsorId" type="button" class="icon"
@@ -667,21 +666,28 @@
                                                     </tr>
                                                     <tr>
                                                         <td colspan="2">
-                                                            <select class="dynDataSeclect" name="exhibitorClass"
-                                                                required [(ngModel)]="linkedClassId"
-                                                                (change)="getClassDetails($event.target.value)"
-                                                                #classControl="ngModel">
-                                                                <option [ngValue]="null">
-                                                                    Select Class
-                                                                </option>
-                                                                <option *ngFor="let class of classes"
-                                                                    [value]="class.ClassId">{{class.ClassNumber}} /
-                                                                    {{class.Name}} / {{class.AgeGroup}}
-                                                                </option>
-                                                            </select>
-                                                            <span class="help-block"
-                                                                *ngIf="(classesForm.submitted || classControl.touched) && classControl.invalid">Please
-                                                                select class</span>
+                                                                <div class="form-group">  <input   
+                                                                    class="form-control" 
+                                                                    required
+                                                                    placeholder="class name" name="classname"
+                                                                    #classname="ngModel" [(ngModel)]="seletedclassName"
+                                                                    value="{{seletedclassName}}"
+                                                                    (keyup)="filterclass($event.target.value,true)"
+                                                                    [matAutocomplete]="classauto">
+                                                                    <span class="help-block"
+                                                                    *ngIf="linkedClassId==null && (classesForm.submitted || classname.touched)">
+                                                                    Please select class</span>
+                                                                </div>
+                    
+                                                                    <mat-autocomplete #classauto="matAutocomplete">
+                                                                        <mat-option *ngFor="let class of filteredClassesOption"
+                                                                        [value]="class.Name" 
+                                                                        (onSelectionChange)="setFilteredClass(class.ClassId,$event);">
+                                                                        {{class.ClassNumber}} / {{class.Name}} / {{class.AgeGroup}}
+                                                                        </mat-option>
+                                                                    </mat-autocomplete>
+
+
                                                         </td>
 
                                                         <td>

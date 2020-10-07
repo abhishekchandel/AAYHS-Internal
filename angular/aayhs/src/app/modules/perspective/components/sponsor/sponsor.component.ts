@@ -14,7 +14,8 @@ import { BaseRecordFilterRequest } from '../../../../core/models/base-record-fil
 import { SponsorViewModel } from '../../../../core/models/sponsor-model'
 import PerfectScrollbar from 'perfect-scrollbar';
 import { GlobalService } from '../../../../core/services/global.service'
-
+import { Observable } from "rxjs";
+import { ThrowStmt } from '@angular/compiler';
 
 
 @Component({
@@ -70,7 +71,7 @@ export class SponsorComponent implements OnInit {
   selectedSponsorId: number = 0;
   value:any;
   exhibitorId: number = null;
-  sponsortypeId: number = null;
+  sponsortypeId= null;
   adTypeId: number = null;
   typeId: string = null;
   sponsorClassId: number = null;
@@ -103,6 +104,14 @@ export class SponsorComponent implements OnInit {
 
   sponsors: SponsorInformationViewModel[];
 
+  seletedStateName: string="";
+  seletedCityName: string="";
+  seletedsponsorexhibitorname: string="";
+  seletedsponsorclassname: string="";
+  statefilteredOptions: Observable<string[]>;
+  cityfilteredOptions: Observable<string[]>;
+  UnassignedSponsorExhibitorfilteredOptions: Observable<string[]>;
+  UnassignedSponsorClassesfilteredOptions: Observable<string[]>;
   constructor(private sponsorService: SponsorService,
     private dialog: MatDialog,
     private snackBar: MatSnackbarComponent,
@@ -177,6 +186,27 @@ export class SponsorComponent implements OnInit {
         this.getCities(response.Data.StateId).then(res => {
           this.getZipCodes(response.Data.CityName, true).then(res => {
             this.sponsorInfo = response.Data;
+            debugger
+            var seletedState = this.statesResponse.filter(x => x.StateId == this.sponsorInfo.StateId);
+
+            if (seletedState != null && seletedState != undefined && seletedState.length > 0) {
+              this.seletedStateName = seletedState[0].Name;
+              this.filterStates(this.seletedStateName, false);
+            }
+            else {
+              this.seletedStateName = "";
+              this.filterStates(this.seletedStateName, true);
+            }
+            if (response.Data.CityName != null && response.Data.CityName != undefined && response.Data.CityName != "") {
+              this.seletedCityName = response.Data.CityName;
+              this.filterCities(this.seletedCityName, false);
+            }
+            else {
+              this.seletedCityName = "";
+              this.filterCities(this.seletedCityName, true);
+            }
+
+
             this.selectedRowIndex = selectedRowIndex;
             this.sponsorInfo.AmountReceived = Number(this.sponsorInfo.AmountReceived.toFixed(2));
           });
@@ -199,6 +229,7 @@ export class SponsorComponent implements OnInit {
         this.sponsorsExhibitorsList = response.Data.SponsorExhibitorResponses;
       }
       this.UnassignedSponsorExhibitor = response.Data.UnassignedSponsorExhibitor;
+      this.UnassignedSponsorExhibitorfilteredOptions = response.Data.UnassignedSponsorExhibitor;
       this.loading = false;
     }, error => {
       this.loading = false;
@@ -220,6 +251,7 @@ export class SponsorComponent implements OnInit {
         this.setSponsorType(this.sponsortypeId)
       }
       this.UnassignedSponsorClasses = response.Data.unassignedSponsorClasses;
+      this.UnassignedSponsorClassesfilteredOptions = response.Data.unassignedSponsorClasses;
       this.loading = false;
     }, error => {
       this.loading = false;
@@ -232,7 +264,14 @@ export class SponsorComponent implements OnInit {
 
 
   AddUpdateSponsor = (sponsor) => {
-    console.log(this.sponsorInfo);
+    
+    if (this.sponsorInfo.StateId == null || this.sponsorInfo.StateId == undefined || this.sponsorInfo.StateId <= 0) {
+      return;
+    }
+    if (this.sponsorInfo.CityId == null || this.sponsorInfo.CityId == undefined || this.sponsorInfo.CityId <= 0) {
+      return;
+    }
+
     this.loading = true;
     this.sponsorInfo.AmountReceived =Number(this.sponsorInfo.AmountReceived == null 
                                     || this.sponsorInfo.AmountReceived == undefined
@@ -261,6 +300,11 @@ export class SponsorComponent implements OnInit {
   }
 
   AddUpdateSponsorExhibitor() {
+    debugger
+    if( this.exhibitorId==null ||  this.exhibitorId==undefined)
+    {
+      return;
+    }
     this.loading = true;
     this.sponsorExhibitorRequest.SponsorExhibitorId = 0;
     this.sponsorExhibitorRequest.SponsorId = this.selectedSponsorId;
@@ -272,9 +316,10 @@ export class SponsorComponent implements OnInit {
     this.sponsorService.AddUpdateSponsorExhibitor(this.sponsorExhibitorRequest).subscribe(response => {
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
       this.GetSponsorExhibitorBySponsorId(this.selectedSponsorId).then(res => {
+       
+        this.sponsorExhibitorForm.resetForm({ exhibitorId: null, sponsortypeId: null });
         this.exhibitorId = null;
         this.sponsortypeId = null;
-        this.sponsorExhibitorForm.resetForm({ exhibitorId: null, sponsortypeId: null });
         this.GetSponsorClasses(this.selectedSponsorId);
       });
 
@@ -286,6 +331,10 @@ export class SponsorComponent implements OnInit {
   }
 
   AddUpdateSponsorClass() {
+    if(this.sponsorClassId==null ||  this.sponsorClassId==undefined)
+    {
+      return;
+    }
     this.loading = true;
     this.sponsorClassRequest.ClassSponsorId = 0;
     this.sponsorClassRequest.SponsorId = this.selectedSponsorId;
@@ -293,8 +342,8 @@ export class SponsorComponent implements OnInit {
     this.sponsorService.AddUpdateSponsorClass(this.sponsorClassRequest).subscribe(response => {
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
       this.GetSponsorClasses(this.selectedSponsorId).then(res => {
-        this.sponsorClassId = null;
         this.sponsorClassForm.resetForm({ sponsorClassId: null });
+        this.sponsorClassId = null;
         this.GetSponsorExhibitorBySponsorId(this.selectedSponsorId);
       });
     }, error => {
@@ -318,14 +367,14 @@ export class SponsorComponent implements OnInit {
     this.sponsortypeId = Number(id);
     this.typeList = [];
     this.typeId = null;
-    if (this.SponsorTypes != null && this.SponsorTypes != undefined && this.sponsortypeId != null && this.sponsortypeId > 0) {
+    if (this.SponsorTypes != null && this.SponsorTypes != undefined && id != null && this.sponsortypeId > 0) {
 
       var sponsorTypename = this.SponsorTypes.filter((x) => { return x.GlobalCodeId == this.sponsortypeId; });
 
       if (sponsorTypename[0].CodeName == "Class") {
         this.showClasses = true;
         this.showAds = false;
-        debugger
+        
         this.sponsorClassesList.forEach((data) => {
           var listdata: TypesList = {
             Id: data.ClassId,
@@ -338,6 +387,10 @@ export class SponsorComponent implements OnInit {
         this.showClasses = false;
         this.showAds = true;
       }
+    }
+    if(this.sponsortypeId<=0)
+    {
+      this.sponsortypeId=null;
     }
   }
 
@@ -485,6 +538,13 @@ export class SponsorComponent implements OnInit {
     this.exhibitorId = null;
     this.sponsortypeId = null;
     this.sponsorClassId = null;
+    this.cityfilteredOptions=null;
+    this.zipCodesResponse=null;
+    this.UnassignedSponsorExhibitorfilteredOptions=null;
+    this.UnassignedSponsorClassesfilteredOptions=null;
+
+    this.seletedsponsorexhibitorname="";
+    this.seletedsponsorclassname="";
   }
 
   getNext(event) {
@@ -519,12 +579,14 @@ export class SponsorComponent implements OnInit {
     this.GetSponsorExhibitorBySponsorId(selectedSponsorId);
     this.getAllSponsorTypes();
     this.getAllAdTypes();
+   
+   
+    this.GetSponsorClasses(selectedSponsorId);
+    this.sponsorClassForm.resetForm({ sponsorClassId: null });
+    // this.sponsorExhibitorForm.resetForm({ exhibitorId: null, sponsortypeId: null });
     this.exhibitorId = null;
     this.sponsortypeId = null;
     this.sponsorClassId = null;
-    this.GetSponsorClasses(selectedSponsorId);
-    this.sponsorClassForm.resetForm({ sponsorClassId: null });
-    this.sponsorExhibitorForm.resetForm({ exhibitorId: null, sponsortypeId: null });
   }
 
   sortData(column) {
@@ -544,49 +606,49 @@ export class SponsorComponent implements OnInit {
   }
 
 
-  getCities(id: number) {
-    return new Promise((resolve, reject) => {
-      this.loading = true;
-      this.citiesResponse = null;
-      this.sponsorService.getCities(Number(id)).subscribe(response => {
-        this.citiesResponse = response.Data.City;
-        this.loading = false;
-      }, error => {
-        this.loading = false;
-      })
-      resolve();
-    });
-  }
+  // getCities(id: number) {
+  //   return new Promise((resolve, reject) => {
+  //     this.loading = true;
+  //     this.citiesResponse = null;
+  //     this.sponsorService.getCities(Number(id)).subscribe(response => {
+  //       this.citiesResponse = response.Data.City;
+  //       this.loading = false;
+  //     }, error => {
+  //       this.loading = false;
+  //     })
+  //     resolve();
+  //   });
+  // }
 
-  getAllStates() {
+  // getAllStates() {
 
-    this.loading = true;
-    this.sponsorService.getAllStates().subscribe(response => {
-      this.statesResponse = response.Data.State;
-      this.loading = false;
-    }, error => {
-      this.loading = false;
-    })
+  //   this.loading = true;
+  //   this.sponsorService.getAllStates().subscribe(response => {
+  //     this.statesResponse = response.Data.State;
+  //     this.loading = false;
+  //   }, error => {
+  //     this.loading = false;
+  //   })
 
-  }
+  // }
 
-  getZipCodes(event, Notfromhtml) {
+  // getZipCodes(event, Notfromhtml) {
 
-    var cityname;
-    Notfromhtml == true ? cityname = event : cityname = event.target.options[event.target.options.selectedIndex].text;
-    return new Promise((resolve, reject) => {
-      this.loading = true;
-      this.zipCodesResponse = null;
-      this.sponsorService.getZipCodes(cityname).subscribe(response => {
-        debugger
-        this.zipCodesResponse = response.Data.ZipCode;
-        this.loading = false;
-      }, error => {
-        this.loading = false;
-      })
-      resolve();
-    });
-  }
+  //   var cityname;
+  //   Notfromhtml == true ? cityname = event : cityname = event.target.options[event.target.options.selectedIndex].text;
+  //   return new Promise((resolve, reject) => {
+  //     this.loading = true;
+  //     this.zipCodesResponse = null;
+  //     this.sponsorService.getZipCodes(cityname).subscribe(response => {
+  //       debugger
+  //       this.zipCodesResponse = response.Data.ZipCode;
+  //       this.loading = false;
+  //     }, error => {
+  //       this.loading = false;
+  //     })
+  //     resolve();
+  //   });
+  // }
 
   getStateName(e) {
     this.sponsorInfo.StateId = Number(e.target.options[e.target.selectedIndex].value)
@@ -913,6 +975,172 @@ table.pdfTable tbody tr td{
   }
 
 
+  getAllStates() {
+    return new Promise((resolve, reject) => {
+      this.loading = true;
+      this.sponsorService.getAllStates().subscribe(response => {
+        this.statesResponse = response.Data.State;
+        this.statefilteredOptions = response.Data.State;
+        this.loading = false;
+      }, error => {
+        this.loading = false;
+      })
+      resolve();
+    });
+  }
+
+  getCities(id: number) {
+
+    this.cityfilteredOptions = null;
+    this.seletedCityName = "";
+    this.sponsorInfo.CityId = null;
+
+    this.sponsorInfo.ZipCodeId = null;
+    this.zipCodesResponse = null;
+
+    this.sponsorInfo.StateId = id;
+
+    return new Promise((resolve, reject) => {
+      this.loading = true;
+      this.citiesResponse = null;
+      this.sponsorService.getCities(Number(id)).subscribe(response => {
+        this.citiesResponse = response.Data.City;
+        this.cityfilteredOptions = response.Data.City;
+        this.loading = false;
+      }, error => {
+        this.loading = false;
+      })
+      resolve();
+    });
+  }
+
+  getFilteredCities(id: number, event: any) {
+    if (event.isUserInput) {
+
+
+      this.cityfilteredOptions = null;
+      this.seletedCityName = "";
+      this.sponsorInfo.CityId = null;
+
+      this.sponsorInfo.ZipCodeId = null;
+      this.zipCodesResponse = null;
+
+      this.sponsorInfo.StateId = id;
+
+      return new Promise((resolve, reject) => {
+        this.loading = true;
+        this.citiesResponse = null;
+        this.sponsorService.getCities(Number(id)).subscribe(response => {
+          this.citiesResponse = response.Data.City;
+          this.cityfilteredOptions = response.Data.City;
+          this.loading = false;
+        }, error => {
+          this.loading = false;
+        })
+        resolve();
+      });
+    }
+  }
+
+
+
+  getZipCodes(cityName, cityId) {
+
+    this.sponsorInfo.ZipCodeId = null;
+    this.zipCodesResponse = null;
+    return new Promise((resolve, reject) => {
+
+      this.sponsorInfo.CityId = cityId;
+      this.loading = true;
+
+      this.sponsorService.getZipCodes(cityName).subscribe(response => {
+        this.zipCodesResponse = response.Data.ZipCode;
+        this.loading = false;
+      }, error => {
+        this.loading = false;
+      })
+      resolve();
+    });
+  }
+
+  getFileredZipCodes(cityName, cityId, event: any) {
+    if (event.isUserInput) {
+      this.sponsorInfo.ZipCodeId = null;
+      this.zipCodesResponse = null;
+      return new Promise((resolve, reject) => {
+
+        this.sponsorInfo.CityId = cityId;
+        this.loading = true;
+
+        this.sponsorService.getZipCodes(cityName).subscribe(response => {
+          this.zipCodesResponse = response.Data.ZipCode;
+          this.loading = false;
+        }, error => {
+          this.loading = false;
+        })
+        resolve();
+      });
+    }
+  }
+
+  filterStates(val: string, makestatenull: boolean) {
+    if (makestatenull == true) {
+      this.sponsorInfo.StateId = null;
+    }
+    if (this.statesResponse != null && this.statesResponse != undefined && this.statesResponse.length > 0) {
+      this.statefilteredOptions = this.statesResponse.filter(option =>
+        option.Name.toLowerCase().includes(val.toLowerCase()));
+    }
+  }
+
+  filterCities(val: string, makecitynull: boolean) {
+    if (makecitynull == true) {
+      this.sponsorInfo.CityId = null;
+    }
+
+    if (this.citiesResponse != null && this.citiesResponse != undefined && this.citiesResponse.length > 0) {
+      this.cityfilteredOptions = this.citiesResponse.filter(option =>
+        option.Name.toLowerCase().includes(val.toLowerCase()));
+    }
+  }
+
+  filtersponsorexhibitor(val: any, makeexhibitornull: boolean) {
+
+    if (makeexhibitornull == true) {
+      this.exhibitorId = null;
+    }
+
+    if (this.UnassignedSponsorExhibitor != null && this.UnassignedSponsorExhibitor != undefined && this.UnassignedSponsorExhibitor.length > 0) {
+      this.UnassignedSponsorExhibitorfilteredOptions = this.UnassignedSponsorExhibitor.filter(option =>
+        option.Name.toLowerCase().includes(val.toLowerCase())
+        || (option.ExhibitorId.toString()).includes(val.toLowerCase()));
+    }
+  }
+
+  setFilteredsponsorexhibitor(id: number, event: any) {
+    if (event.isUserInput) {
+      this.exhibitorId = Number(id);
+    }
+  }
+
+  filtersponsorclass(val: any, makeclassnull: boolean) {
+    debugger
+    if (makeclassnull == true) {
+      this.sponsorClassId = null;
+    }
+
+    if (this.UnassignedSponsorClasses != null && this.UnassignedSponsorClasses != undefined && this.UnassignedSponsorClasses.length > 0) {
+      this.UnassignedSponsorClassesfilteredOptions = this.UnassignedSponsorClasses.filter(option =>
+        option.Name.toLowerCase().includes(val.toLowerCase())
+        || (option.ClassNumber.toString()).includes(val.toLowerCase()));
+    }
+  }
+
+  setFilteredsponsorclass(id: number, event: any) {
+    if (event.isUserInput) {
+      this.sponsorClassId = Number(id);
+    }
+  }
 
 }
 

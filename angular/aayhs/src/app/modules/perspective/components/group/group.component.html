@@ -125,23 +125,17 @@
 
                                             <div class="form-group">
                                                 <label>State <span>*</span></label>
-                                                <select required class="form-control" placeholder="State" name="state"
-                                                    #state="ngModel" [(ngModel)]="groupInfo.StateId"
-                                                    (change)="getCities($event.target.value);getStateName($event)">
+                                                <input   class="form-control" required placeholder="state" name="state"
+                                                #state="ngModel" [(ngModel)]="seletedStateName" (keyup)="filterStates($event.target.value,true)"
+                                                value="{{seletedStateName}}" [matAutocomplete]="stateauto">
 
-                                                    <option value="null" disabled="true" [selected]="true">
-                                                        Select State
-                                                    </option>
-                                                    <option *ngFor="let state of statesResponse"
-                                                        [value]="state.StateId">{{state.Name}} -
-                                                        {{state.Code}}
-                                                    </option>
-
-                                                </select>
+                                                <mat-autocomplete #stateauto="matAutocomplete">
+                                                    <mat-option *ngFor="let option of statefilteredOptions"
+                                                    [value]="option.Name" (onSelectionChange)="getFilteredCities(option.StateId,$event);">
+                                                        {{ option.Name }} </mat-option></mat-autocomplete>
                                                 <span class="help-block"
-                                                    *ngIf="state.errors?.required && (state.touched || groupInfoForm.submitted)">State
-                                                    is
-                                                    required</span>
+                                                *ngIf="groupInfo.StateId==null && (state.touched || groupInfoForm.submitted)">
+                                                State is required</span>
                                             </div>
 
 
@@ -149,21 +143,16 @@
                                                 <div class="col-md-7">
                                                     <div class="form-group">
                                                         <label>City <span>*</span></label>
-                                                        <select required class="form-control" placeholder="city"
-                                                            (change)="getZipCodes($event,false);getCityName($event)"
-                                                            name="city" #city="ngModel" [(ngModel)]="groupInfo.CityId">
-                                                            <option value="null" disabled="true" [selected]="true">
-                                                                Select City
-                                                            </option>
-                                                            <option *ngFor="let city of citiesResponse"
-                                                                [value]="city.CityId">
-                                                                {{city.Name}}
-                                                            </option>
-                                                        </select>
-                                                        <span class="help-block"
-                                                            *ngIf="city.errors?.required && (city.touched || groupInfoForm.submitted)">City
-                                                            is
-                                                            required</span>
+                                                        <input   class="form-control" required placeholder="city" name="city"
+                                                        #city="ngModel" [(ngModel)]="seletedCityName" (keyup)="filterCities($event.target.value,true)"
+                                                        value="{{seletedCityName}}" [matAutocomplete]="cityauto">
+        
+                                                        <mat-autocomplete #cityauto="matAutocomplete">
+                                                            <mat-option *ngFor="let option of cityfilteredOptions"
+                                                            [value]="option.Name" (onSelectionChange)="getFileredZipCodes(option.Name,option.CityId,$event);">
+                                                                {{ option.Name }}  </mat-option> </mat-autocomplete>
+                                                        <span class="help-block" *ngIf="groupInfo.CityId==null && (city.touched || groupInfoForm.submitted)">
+                                                            City is required</span>
                                                     </div>
                                                 </div>
 
@@ -171,10 +160,8 @@
                                                 <div class="col-md-5">
                                                     <div class="form-group">
                                                         <label>Zip Code<span>*</span></label>
-                                                        <select required class="form-control" placeholder="Zip Code"
-                                                            #zipcodeid="ngModel" name="zipcodeid"
-                                                            [(ngModel)]="groupInfo.ZipCodeId"
-                                                            (change)="getZipNumber($event)">
+                                                        <select required class="form-control" placeholder="Zip Code" #zipcodeid="ngModel" name="zipcodeid"
+                                                             [(ngModel)]="groupInfo.ZipCodeId" (change)="getZipNumber($event)">
                                                             <option value="null" disabled="true" [selected]="true">
                                                                 Select Zip Code
                                                             </option>
