@@ -251,11 +251,13 @@ namespace AAYHS.Repository.Repository
             data = (from refund in _ObjContext.RefundDetail
                     join feeType in _ObjContext.GlobalCodes on refund.FeeTypeId equals feeType.GlobalCodeId
                     where refund.IsActive == true && refund.IsDeleted == false
+                    && refund.YearlyMaintenanceId==yearlyMaintenanceId
                     select new GetRefund
                     {
                         RefundId = refund.RefundDetailId,
                         DateAfter = refund.DateAfter,
                         DateBefore = refund.DateBefore,
+                        RefundType=feeType.CodeName,
                         Refund = refund.RefundPercentage,
                         Active = refund.IsActive
                     });
