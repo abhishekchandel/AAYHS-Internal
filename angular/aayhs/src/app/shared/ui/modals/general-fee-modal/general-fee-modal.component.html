@@ -14,36 +14,39 @@
                                             <th>Time Frame</th>
                                             <th>Fee Type</th>
                                             <th>Amount</th>
-                                            <th>Active?</th>
+                                            <th>Active</th>
                                             <th>Remove</th>
                                         </tr>
                                     </thead>
                                     <perfect-scrollbar class="nicescrollBar-2">
                                     <tbody>
-                                        <tr>
+                                        <tr *ngFor="let fee of generalFeesList ; let i=index">
                                             <td>
                                                     
                                                     <div class="prePostField">
                                                         <label class="radioBtn">Pre 
-                                                            <input type="radio" checked="checked" name="fee.CodeName" value="2011">
+                                                            <input type="radio"  [(ngModel)]="fee.TimeFrame"  value="Pre" name="timeframe{{i}}">
                                                             <span class="checkmark"></span>
                                                         </label>
                                                         <label class="radioBtn">Post 
-                                                            <input type="radio" name="fee.CodeName" value="2012" >
+                                                            <input type="radio"  [(ngModel)]="fee.TimeFrame" value="Post" name="timeframe{{i}}">
                                                             <span class="checkmark"></span>
                                                         </label>
                                                     </div>
                                                 
                                             </td>
-                                            <td>Administration</td>
-                                            <td>5.00</td>
+                                            
+                                            <td>{{fee.FeeType}}</td>
+                                            <td>${{fee.Amount}}</td>
                                             <td>
                                                 <label class="customCheckbox d-inline">
-                                                    <input  name="nsbaIndicator" type="checkbox" value="" class="ciCheckbox">
+                                                    <input  name="nsbaIndicator" type="checkbox" value="fee.Active" [attr.checked]="fee.Active === true ? true : null"  class="ciCheckbox">
                                                     <span class="checkmark"></span>
                                                 </label>
                                             </td>
-                                            <td><div class="icon"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+                                            <td>
+                                                <button type="button" class="icon" (click)="confirmRemoveFee(fee.YearlyMaintenanceFeeId,fee.TimeFrame)"><span></span> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                            </td>
                                         </tr>
                                                                             
                                         <tr>
@@ -88,7 +91,6 @@
                         </div>	
         </div>
         <div class="modal-footer text-center">					
-            <button type="button" class="btn btn-default" data-dismiss="modal">+ Category</button>
             <button type="button"  (click)="onDismiss()" class="btn btn-default" data-dismiss="modal">Back</button>
             <button type="submit" class="btn btn-default" data-dismiss="modal">Submit</button>
         </div>
@@ -97,3 +99,6 @@
 
     </div>
 </div>	
+<div class="loaderWrapper" *ngIf="loading">
+	<div class="loader"></div>
+</div>

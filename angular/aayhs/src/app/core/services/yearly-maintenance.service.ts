@@ -49,7 +49,6 @@ export class YearlyMaintenanceService {
   }
 
   getYearlyMaintenanceById(id){
-    debugger;
     return this.http.get<any>(`${this.api}YearlyMaintenance/GetYearlyMaintenanceById?yearlyMaintenanceId=${id}`);
   }
 
@@ -64,5 +63,63 @@ export class YearlyMaintenanceService {
   getRoles(){
     return this.http.get<any>(`${this.api}YearlyMaintenance/GetAllRoles`);
 
+  }
+
+  getClassCategory(){
+    return this.http.get<any>(`${this.api}YearlyMaintenance/GetAllClassCategory`);
+  }
+
+  addClassCategory(data){
+    return this.http.post<any>(`${this.api}YearlyMaintenance/AddClassCategory`,data);
+  }
+
+  deleteClassCategory(id){
+    return this.http.delete<any>(`${this.api}YearlyMaintenance/RemoveClassCategory?globalCodeId=${id}`);
+  }
+
+
+  getGeneralFees(id){
+    return this.http.get<any>(`${this.api}YearlyMaintenance/GetAllGeneralFees?yearlyMaintenanceId=${id}`);
+  }
+
+  addGeneralFees(data){
+    return this.http.post<any>(`${this.api}YearlyMaintenance/AddGeneralFees`,data);
+  }
+
+  deleteGeneralFee(data){
+    return this.http.post<any>(`${this.api}YearlyMaintenance/RemoveGeneralFee?yearlyMaintenanceFeeId`,data);
+  }
+
+  getContactInfo(id){
+    return this.http.get<any>(`${this.api}YearlyMaintenance/GetContactInfo?yearlyMaintenanceId=${id}`);
+  }
+
+  addUpdateContact(data){
+    return this.http.post<any>(`${this.api}YearlyMaintenance/AddUpdateContactInfo`,data);
+  }
+
+  getRefunds(id){
+    return this.http.get<any>(`${this.api}YearlyMaintenance/GetRefund?yearlyMaintenanceId=${id}`);
+  }
+
+  addRefund(data){
+    return this.http.post<any>(`${this.api}YearlyMaintenance/AddRefund`,data);
+  }
+
+  deleteRefund(id){
+    return this.http.delete<any>(`${this.api}YearlyMaintenance/RemoveRefund?refundId=${id}`);
+  }
+
+  getFees(){
+    return this.http.get<any>(`${this.api}ExhibitorAPI/GetFees`);
+  }
+
+
+  getLocation(id){
+    return this.http.get<any>(`${this.api}YearlyMaintenance/GetLocation?yearlyMaintenanceId=${id}`);
+  }
+
+  addUpdateLocation(data){
+    return this.http.post<any>(`${this.api}YearlyMaintenance/AddUpdateLocation`,data);
   }
 }
