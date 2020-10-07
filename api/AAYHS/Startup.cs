@@ -136,8 +136,8 @@ namespace AAYHS
             services.AddTransient<IGroupService, GroupService>();
             services.AddTransient<IStallAssignmentService, StallAssignmentService>();
             services.AddTransient<IAdvertisementService, AdvertisementService>();
-            services.AddTransient<IYearlyMaintenanceService, YearlyMaintenanceService>();
-            services.AddTransient<IYearlyMaintenanceFeeRepository, YearlyMaintenanceFeeRepository>();
+            services.AddTransient<IYearlyMaintenanceService, YearlyMaintenanceService>();         
+            services.AddTransient<IReportService, ReportService>();
 
 
 
@@ -182,6 +182,8 @@ namespace AAYHS
             services.AddTransient<IAAYHSContactRepository, AAYHSContactRepository>();
             services.AddTransient<IRefundRepository, RefundRepository>();
             services.AddTransient<IAAYHSContactAddressRepository, AAYHSContactAddressRepository>();
+            services.AddTransient<IYearlyMaintenanceFeeRepository, YearlyMaintenanceFeeRepository>();
+            services.AddTransient<IReportRepository, ReportRepository>();
 
             services.AddControllers();
         }

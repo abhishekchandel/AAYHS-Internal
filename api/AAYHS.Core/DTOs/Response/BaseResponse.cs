@@ -82,6 +82,7 @@ namespace AAYHS.Core.DTOs.Response
         public GetContactInfo GetContactInfo { get; set; }   
         public GetAllRefund GetAllRefund { get; set; }   
         public GetLocation GetLocation { get; set; }   
+        public GetExhibitorRegistrationReport GetExhibitorRegistrationReport { get; set; }   
       
     }
    
