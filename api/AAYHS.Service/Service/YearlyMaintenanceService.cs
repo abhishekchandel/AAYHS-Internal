@@ -879,10 +879,10 @@ namespace AAYHS.Service.Service
 
                 var address1 = new AAYHSContactAddresses
                 {
-                    Address = addContactInfoRequest.ExhibitorSponsorConfirmationAddress,
-                    City = addContactInfoRequest.ExhibitorSponsorConfirmationCity,
-                    StateId = addContactInfoRequest.ExhibitorSponsorConfirmationStateId,
-                    ZipCode = addContactInfoRequest.ExhibitorSponsorConfirmationZipCode,
+                    Address = addContactInfoRequest.ExhibitorSponsorAddress,
+                    City = addContactInfoRequest.ExhibitorSponsorCity,
+                    StateId = addContactInfoRequest.ExhibitorSponsorState,
+                    ZipCode = addContactInfoRequest.ExhibitorSponsorZip,
                     IsActive = true,
                     IsDeleted = false,
                     CreatedBy = actionBy,
@@ -894,10 +894,10 @@ namespace AAYHS.Service.Service
               
                     var address2 = new AAYHSContactAddresses
                     {
-                        Address = addContactInfoRequest.ExhibitorSponsorRefundStatementAddress,
-                        City = addContactInfoRequest.ExhibitorSponsorRefundStatementCity,
-                        StateId= addContactInfoRequest.ExhibitorSponsorRefundStatementStateId,
-                        ZipCode = addContactInfoRequest.ExhibitorSponsorRefundStatementZipCode,
+                        Address = addContactInfoRequest.ExhibitorRefundAddress,
+                        City = addContactInfoRequest.ExhibitorRefundCity,
+                        StateId= addContactInfoRequest.ExhibitorRefundState,
+                        ZipCode = addContactInfoRequest.ExhibitorRefundZip,
                         IsActive = true,
                         IsDeleted = false,
                         CreatedBy = actionBy,
@@ -910,10 +910,10 @@ namespace AAYHS.Service.Service
 
                 var address3 = new AAYHSContactAddresses
                 {
-                    Address = addContactInfoRequest.ExhibitorSponsorRefundStatementAddress,
-                    City = addContactInfoRequest.ExhibitorSponsorRefundStatementCity,
-                    StateId = addContactInfoRequest.ExhibitorSponsorRefundStatementStateId,
-                    ZipCode = addContactInfoRequest.ExhibitorSponsorRefundStatementZipCode,
+                    Address = addContactInfoRequest.ReturnAddress,
+                    City = addContactInfoRequest.ReturnCity,
+                    StateId = addContactInfoRequest.ReturnState,
+                    ZipCode = addContactInfoRequest.ReturnZip,
                     IsActive = true,
                     IsDeleted = false,
                     CreatedBy = actionBy,
@@ -925,7 +925,7 @@ namespace AAYHS.Service.Service
 
                 var contactInfo = new AAYHSContact
                 {
-                    YearlyMaintainenceId = addContactInfoRequest.YearlyMaintainenceId,
+                    YearlyMaintainenceId = addContactInfoRequest.YearlyMaintenanceId,
                     Email1 = addContactInfoRequest.Email1,
                     Email2 = addContactInfoRequest.Email2,
                     Phone1 = addContactInfoRequest.Phone1,
@@ -952,10 +952,10 @@ namespace AAYHS.Service.Service
 
                 if (address1 != null)
                 {
-                    address1.Address = addContactInfoRequest.ExhibitorSponsorConfirmationAddress;
-                    address1.City = addContactInfoRequest.ExhibitorSponsorConfirmationCity;
-                    address1.StateId = addContactInfoRequest.ExhibitorSponsorConfirmationStateId;
-                    address1.ZipCode = addContactInfoRequest.ExhibitorSponsorConfirmationZipCode;
+                    address1.Address = addContactInfoRequest.ExhibitorSponsorAddress;
+                    address1.City = addContactInfoRequest.ExhibitorSponsorCity;
+                    address1.StateId = addContactInfoRequest.ExhibitorSponsorState;
+                    address1.ZipCode = addContactInfoRequest.ExhibitorSponsorZip;
                     address1.ModifiedBy = actionBy;
                     address1.ModifiedDate = DateTime.Now;
 
@@ -968,10 +968,10 @@ namespace AAYHS.Service.Service
 
                     if (address2 != null)
                     {
-                    address2.Address = addContactInfoRequest.ExhibitorSponsorRefundStatementAddress;
-                    address2.City= addContactInfoRequest.ExhibitorSponsorRefundStatementCity;
-                    address2.StateId = addContactInfoRequest.ExhibitorSponsorRefundStatementStateId;
-                    address2.ZipCode = addContactInfoRequest.ExhibitorSponsorRefundStatementZipCode;
+                    address2.Address = addContactInfoRequest.ExhibitorRefundAddress;
+                    address2.City= addContactInfoRequest.ExhibitorRefundCity;
+                    address2.StateId = addContactInfoRequest.ExhibitorRefundState;
+                    address2.ZipCode = addContactInfoRequest.ExhibitorRefundZip;
                     address2.ModifiedBy = actionBy;
                     address2.ModifiedDate = DateTime.Now;
 
@@ -984,10 +984,10 @@ namespace AAYHS.Service.Service
 
                 if (address != null)
                 {
-                    address.Address = addContactInfoRequest.ExhibitorConfirmationEntriesAddress;
-                    address.City = addContactInfoRequest.ExhibitorConfirmationEntriesCity;
-                    address.StateId = addContactInfoRequest.ExhibitorConfirmationEntriesStateId;
-                    address.ZipCode = addContactInfoRequest.ExhibitorConfirmationEntriesZipCode;
+                    address.Address = addContactInfoRequest.ReturnAddress;
+                    address.City = addContactInfoRequest.ReturnCity;
+                    address.StateId = addContactInfoRequest.ReturnState;
+                    address.ZipCode = addContactInfoRequest.ReturnZip;
                     address.ModifiedBy = actionBy;
                     address.ModifiedDate = DateTime.Now;
 
@@ -998,7 +998,7 @@ namespace AAYHS.Service.Service
 
                 if (contactInfo!=null)
                 {
-                    contactInfo.YearlyMaintainenceId = addContactInfoRequest.YearlyMaintainenceId;
+                    contactInfo.YearlyMaintainenceId = addContactInfoRequest.YearlyMaintenanceId;
                     contactInfo.Email1 = addContactInfoRequest.Email1;
                     contactInfo.Email2 = addContactInfoRequest.Email2;
                     contactInfo.Phone1 = addContactInfoRequest.Phone1;
