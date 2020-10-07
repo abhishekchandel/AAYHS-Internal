@@ -489,7 +489,7 @@ getAllGroups(){
       {
       this.getCities(response.Data.exhibitorResponses[0].StateId).then(res => {
         
-        this.getFileredZipCodes(response.Data.exhibitorResponses[0].CityName,response.Data.exhibitorResponses[0].CityId).then(res => {
+        this.getZipCodes(response.Data.exhibitorResponses[0].CityName,response.Data.exhibitorResponses[0].CityId).then(res => {
         this.exhibitorInfo = response.Data.exhibitorResponses[0];
         // this.exhibitorInfo.BackNumber=response.Data.exhibitorResponses[0].BackNumber ===0 ? null :response.Data.exhibitorResponses[0].BackNumber;
         this.exhibitorInfo.BackNumber=response.Data.exhibitorResponses[0].BackNumber;
@@ -1344,9 +1344,35 @@ this.exhibitorService.downloadFile(url).subscribe(
     resolve();
   });
   }
-
   getCities(id: number) {
+   
+        this.cityfilteredOptions=null;
+        this.seletedCityName="";
+        this.exhibitorInfo.CityId=null;
+    
+        this.exhibitorInfo.ZipCodeId=null;
+        this.zipCodesResponse=null;
+    
+        this.exhibitorInfo.StateId =id;
+    
+        return new Promise((resolve, reject) => {
+          this.loading = true;
+          this.citiesResponse=null;
+          this.exhibitorService.getCities(Number(id)).subscribe(response => {
+              this.citiesResponse = response.Data.City;
+              this.cityfilteredOptions=response.Data.City;
+              this.loading = false;
+          }, error => {
+            this.loading = false;
+          })
+            resolve();
+        });
+      }
 
+  getFilteredCities(id: number,event:any) {
+    if (event.isUserInput) {
+     
+    
     this.cityfilteredOptions=null;
     this.seletedCityName="";
     this.exhibitorInfo.CityId=null;
@@ -1369,10 +1395,11 @@ this.exhibitorService.downloadFile(url).subscribe(
         resolve();
     });
   }
+}
 
  
 
-  getFileredZipCodes(cityName,cityId) {
+  getZipCodes(cityName,cityId) {
     debugger
     this.exhibitorInfo.ZipCodeId=null;
     this.zipCodesResponse=null;
@@ -1391,6 +1418,25 @@ this.exhibitorService.downloadFile(url).subscribe(
     });
   }
 
+  getFileredZipCodes(cityName,cityId,event:any) {
+    if (event.isUserInput) {
+    this.exhibitorInfo.ZipCodeId=null;
+    this.zipCodesResponse=null;
+    return new Promise((resolve, reject) => {
+    
+      this.exhibitorInfo.CityId =cityId;
+      this.loading = true;
+      
+      this.exhibitorService.getZipCodes(cityName).subscribe(response => {
+          this.zipCodesResponse = response.Data.ZipCode;
+          this.loading = false;
+      }, error => {
+        this.loading = false;
+      })
+        resolve();
+    });
+  }
+  }
 
   filterStates(val: string,makestatenull:boolean) {
     if(makestatenull==true){

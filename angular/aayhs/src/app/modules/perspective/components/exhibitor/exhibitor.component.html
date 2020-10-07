@@ -146,7 +146,7 @@
 
                                                 <mat-autocomplete #stateauto="matAutocomplete">
                                                     <mat-option *ngFor="let option of statefilteredOptions"
-                                                    [value]="option.Name" (onSelectionChange)="getCities(option.StateId)">
+                                                    [value]="option.Name" (onSelectionChange)="getFilteredCities(option.StateId,$event);">
                                                         {{ option.Name }}
                                                     </mat-option>
                                                 </mat-autocomplete>
@@ -195,7 +195,7 @@
         
                                                         <mat-autocomplete #cityauto="matAutocomplete">
                                                             <mat-option *ngFor="let option of cityfilteredOptions"
-                                                            [value]="option.Name" (onSelectionChange)="getFileredZipCodes(option.Name,option.CityId)">
+                                                            [value]="option.Name" (onSelectionChange)="getFileredZipCodes(option.Name,option.CityId,$event);">
                                                                 {{ option.Name }}
                                                             </mat-option>
                                                         </mat-autocomplete>
