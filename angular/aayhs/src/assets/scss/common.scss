@@ -2266,10 +2266,12 @@ span{
     font-size: 22px;
     color: #273992;
 }
+
 .showDateTable {
     display: flex;
     flex-flow: wrap;
     flex-direction: row;
+    margin-bottom: 22px;
     li{
         width: 20%;
         padding: 0 5px;
@@ -2287,6 +2289,13 @@ span{
     }
 
     // for ie tab
+    button{
+        &.cdk-focused{
+            &.cdk-program-focused{
+                background-color: transparent !important;
+            }
+        }
+    }
     .cdk-focused{
         &.cdk-program-focused{
             background-color: #7b1124 !important;
@@ -2296,4 +2305,18 @@ span{
         max-width: 480px;
         margin: 20px auto;
         text-align: left;
+    }
+    
+    .mat-datepicker-content {
+        
+        .mat-calendar-content{
+            background-color: #fff !important;
+        }
+        .mat-calendar {
+            width: 296px;
+            height: 315px !important;
+        }
+        td{
+            background-color: #fff !important;
+        }
     }
