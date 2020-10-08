@@ -8,7 +8,8 @@ namespace AAYHS.Repository.IRepository
 {
     public interface IReportRepository
     {
-        GetExhibitorRegistrationReport GetExhibitorRegistrationReport(RegistrationReportRequest registrationReportRequest);
+        GetExhibitorRegistrationReport GetExhibitorRegistrationReport(int exhibitorId);
         GetProgramReport GetProgramsReport(int classId);
+        GetPaddockReport GetPaddockReport(int classId);
     }
 }

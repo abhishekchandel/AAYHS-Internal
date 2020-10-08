@@ -18,12 +18,13 @@ feeType:any;
 timeframe:any;
 loading = false;
 result:string;
-generalFeesList={
-  FeeType:null,
-  Amount:null,
-  Active:null,
-  TimeFrame:null
-};
+// generalFeesList={
+//   FeeType:null,
+//   Amount:null,
+//   Active:null,
+//   TimeFrame:null
+// };
+generalFeesList:any;
 yearlyMaintainenceId:any;
   constructor(public dialogRef: MatDialogRef<GeneralFeeModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -64,7 +65,7 @@ yearlyMaintainenceId:any;
         this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
         this.loading = false;
       }, error => {
-        this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
+        this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
       this.loading = false;
       }
       )
@@ -102,7 +103,7 @@ yearlyMaintainenceId:any;
          this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
         this.loading = false;
       }, error => {
-        this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
+        this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
       this.loading = false;
       }
       )

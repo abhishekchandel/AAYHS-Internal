@@ -21,13 +21,14 @@ export class RefundCalculationModalComponent implements OnInit {
  refundPercent:number;
  yearlyMaintainenceId:number;
  loading = false;
- refundList={
-   DateAfter:null,
-   DateBefore:null,
-   RefundType:null,
-   Refund:null,
-   Active:null
- };
+//  refundList={
+//    DateAfter:null,
+//    DateBefore:null,
+//    RefundType:null,
+//    Refund:null,
+//    Active:null
+//  };
+refundList:any
  result:string;
 
   constructor(public dialogRef: MatDialogRef<RefundCalculationModalComponent>,
@@ -79,7 +80,7 @@ export class RefundCalculationModalComponent implements OnInit {
         this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
         this.loading = false;
       }, error => {
-        this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
+        this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
       this.loading = false;
       }
       )
@@ -87,8 +88,8 @@ export class RefundCalculationModalComponent implements OnInit {
     });
   }
 
-  setFeeType(e){
-  this.feeTypeId=Number(e.target.value);
+  setFeeType(value){
+  this.feeTypeId=Number(value);
   }
 
   getRefunds(id){
@@ -113,7 +114,7 @@ export class RefundCalculationModalComponent implements OnInit {
          this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
         this.loading = false;
       }, error => {
-        this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
+        this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
       this.loading = false;
       }
       )

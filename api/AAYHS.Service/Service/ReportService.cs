@@ -27,9 +27,9 @@ namespace AAYHS.Service.Service
             _mainResponse = new MainResponse();
         }
 
-        public MainResponse GetExhibitorRegistrationReport(RegistrationReportRequest registrationReportRequest)
+        public MainResponse GetExhibitorRegistrationReport(int exhibitorId)
         {
-            var getReport = _reportRepository.GetExhibitorRegistrationReport(registrationReportRequest);
+            var getReport = _reportRepository.GetExhibitorRegistrationReport(exhibitorId);
 
             _mainResponse.GetExhibitorRegistrationReport = getReport;
             _mainResponse.Success = true;
@@ -41,6 +41,15 @@ namespace AAYHS.Service.Service
             var getProgramReport = _reportRepository.GetProgramsReport(classId);
 
             _mainResponse.GetProgramReport = getProgramReport;
+            _mainResponse.Success = true;
+            return _mainResponse;
+        }
+
+        public MainResponse GetPaddockReport(int classId)
+        {
+            var getPaddockReport = _reportRepository.GetPaddockReport(classId);
+
+            _mainResponse.GetPaddockReport = getPaddockReport;
             _mainResponse.Success = true;
             return _mainResponse;
         }

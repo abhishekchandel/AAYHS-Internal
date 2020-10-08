@@ -28,7 +28,7 @@ namespace AAYHS.Repository.Repository
             _MainResponse = new MainResponse();
         }
 
-        public GetExhibitorRegistrationReport GetExhibitorRegistrationReport(RegistrationReportRequest registrationReportRequest)
+        public GetExhibitorRegistrationReport GetExhibitorRegistrationReport(int exhibitorId)
         {
             IEnumerable<GetExhibitorRegistrationReport> data;
             GetExhibitorRegistrationReport getExhibitorRegistrationReport = new GetExhibitorRegistrationReport();
@@ -55,7 +55,7 @@ namespace AAYHS.Repository.Repository
                                          join city in _ObjContext.Cities on address.CityId equals city.CityId
                                          join state in _ObjContext.States on city.StateId equals state.StateId
                                          join zipcode in _ObjContext.ZipCodes2 on address.ZipCodeId equals zipcode.ZipCodeId
-                                         where exhibtor.ExhibitorId == registrationReportRequest.ExhibitorId
+                                         where exhibtor.ExhibitorId == exhibitorId
                                          select new ExhibitorInfo 
                                          { 
                                            ExhibitorName=exhibtor.FirstName+" "+exhibtor.LastName,
@@ -68,15 +68,15 @@ namespace AAYHS.Repository.Repository
 
                       horseDetail=(from horseExhibitor in _ObjContext.ExhibitorHorse
                                    join horse in _ObjContext.Horses on horseExhibitor.HorseId equals horse.HorseId
-                                   where horseExhibitor.ExhibitorId== registrationReportRequest.ExhibitorId
-                                   && horseExhibitor.HorseId== registrationReportRequest.HorseId
+                                   where horseExhibitor.ExhibitorId== exhibitorId
+                                   && horseExhibitor.IsDeleted==false
                                     select new HorseDetail 
                                     { 
                                       HorseName=horse.Name,
                                       BackNumber= horseExhibitor.BackNumber,
-                                      ExhibitorId= registrationReportRequest.ExhibitorId,
+                                      ExhibitorId= exhibitorId,
                                       NSBAIndicator=horse.NSBAIndicator
-                                    }).FirstOrDefault()
+                                    }).ToList()
                     }) ;
 
             getExhibitorRegistrationReport = data.FirstOrDefault();
@@ -87,27 +87,35 @@ namespace AAYHS.Repository.Repository
                               select new
                               {
                                   gc.GlobalCodeId,
-                                  gc.CodeName
+                                  gc.CodeName,
+                                  gc.IsDeleted
 
                               }).ToList();
-            int horseStallTypeId = stallCodes.Where(x => x.CodeName == "HorseStall").Select(x => x.GlobalCodeId).FirstOrDefault();
-            int tackStallTypeId = stallCodes.Where(x => x.CodeName == "TackStall").Select(x => x.GlobalCodeId).FirstOrDefault();
+            int horseStallTypeId = stallCodes.Where(x => x.CodeName == "HorseStall"&& x.IsDeleted==false).Select(x => x.GlobalCodeId).FirstOrDefault();
+            int tackStallTypeId = stallCodes.Where(x => x.CodeName == "TackStall" && x.IsDeleted == false).Select(x => x.GlobalCodeId).FirstOrDefault();
 
-            var preHorseStall = _ObjContext.StallAssignment.Where(x => x.ExhibitorId == registrationReportRequest.ExhibitorId && x.StallAssignmentTypeId == horseStallTypeId &&
+            var preHorseStall = _ObjContext.StallAssignment.Where(x => x.ExhibitorId == exhibitorId && x.StallAssignmentTypeId == horseStallTypeId &&
                                                      x.Date.Date < yearlyMainId.PreEntryCutOffDate.Date
                                                    && x.IsActive == true && x.IsDeleted == false).ToList();
 
-            var preTackStall = _ObjContext.StallAssignment.Where(x => x.ExhibitorId == registrationReportRequest.ExhibitorId && x.StallAssignmentTypeId == tackStallTypeId
+            var preTackStall = _ObjContext.StallAssignment.Where(x => x.ExhibitorId == exhibitorId && x.StallAssignmentTypeId == tackStallTypeId
                                                        && x.Date.Date < yearlyMainId.PreEntryCutOffDate.Date
                                                       && x.IsActive == true && x.IsDeleted == false).ToList();
 
+            var preClasses = _ObjContext.ExhibitorClass.Where(x => x.ExhibitorId == exhibitorId
+                                                     && x.Date.Date < yearlyMainId.PreEntryCutOffDate.Date
+                                                    && x.IsActive == true && x.IsDeleted == false).ToList();
 
-            var postHorseStall = _ObjContext.StallAssignment.Where(x => x.ExhibitorId == registrationReportRequest.ExhibitorId && x.StallAssignmentTypeId == horseStallTypeId &&
+            var postHorseStall = _ObjContext.StallAssignment.Where(x => x.ExhibitorId == exhibitorId && x.StallAssignmentTypeId == horseStallTypeId &&
                                                                 x.Date.Date > yearlyMainId.PreEntryCutOffDate.Date
                                                       && x.IsActive == true && x.IsDeleted == false).ToList();
 
 
-            var postTackStall = _ObjContext.StallAssignment.Where(x => x.ExhibitorId == registrationReportRequest.ExhibitorId && x.StallAssignmentTypeId == tackStallTypeId
+            var postTackStall = _ObjContext.StallAssignment.Where(x => x.ExhibitorId == exhibitorId && x.StallAssignmentTypeId == tackStallTypeId
+                                                        && x.Date.Date > yearlyMainId.PreEntryCutOffDate.Date
+                                                       && x.IsActive == true && x.IsDeleted == false).ToList();
+
+            var postClasses = _ObjContext.ExhibitorClass.Where(x => x.ExhibitorId == exhibitorId
                                                         && x.Date.Date > yearlyMainId.PreEntryCutOffDate.Date
                                                        && x.IsActive == true && x.IsDeleted == false).ToList();
 
@@ -117,17 +125,22 @@ namespace AAYHS.Repository.Repository
                             select new
                             {
                                 gc.GlobalCodeId,
-                                gc.CodeName
+                                gc.CodeName,
+                                gc.IsDeleted
 
                             }).ToList();
 
-            int horseStallFeeId = feeCodes.Where(x => x.CodeName == "Stall").Select(x => x.GlobalCodeId).FirstOrDefault();
-            int tackStallFeeId = feeCodes.Where(x => x.CodeName == "Tack").Select(x => x.GlobalCodeId).FirstOrDefault();
+            int horseStallFeeId = feeCodes.Where(x => x.CodeName == "Stall" && x.IsDeleted == false).Select(x => x.GlobalCodeId).FirstOrDefault();
+            int tackStallFeeId = feeCodes.Where(x => x.CodeName == "Tack" && x.IsDeleted == false).Select(x => x.GlobalCodeId).FirstOrDefault();
+            int classEntryId = feeCodes.Where(x => x.CodeName == "Class Entry" && x.IsDeleted == false).Select(x => x.GlobalCodeId).FirstOrDefault();
+
 
             var horseStallFee = _ObjContext.YearlyMaintainenceFee.Where(x => x.FeeTypeId == horseStallFeeId && x.YearlyMaintainenceId == yearlyMainId.YearlyMaintainenceId).FirstOrDefault();
 
-
             var tackStallFee = _ObjContext.YearlyMaintainenceFee.Where(x => x.FeeTypeId == tackStallFeeId && x.YearlyMaintainenceId == yearlyMainId.YearlyMaintainenceId).FirstOrDefault();
+
+            var classEntryFee = _ObjContext.YearlyMaintainenceFee.Where(x => x.FeeTypeId == classEntryId && x.YearlyMaintainenceId == yearlyMainId.YearlyMaintainenceId).FirstOrDefault();
+
             decimal preHorseStallAmount = 0;
             if (horseStallFee != null)
             {
@@ -169,7 +182,7 @@ namespace AAYHS.Repository.Repository
             financialsDetail.TackStallAmount = tackStallAmount;
             financialsDetail.AmountDue = horseStallAmount + tackStallAmount;
             financialsDetail.ReceivedAmount= _ObjContext.ExhibitorPaymentDetails.Where(x => x.ExhibitorId ==
-            registrationReportRequest.ExhibitorId && x.IsActive == true && x.IsDeleted == false).Select(x => x.AmountPaid).Sum();
+            exhibitorId && x.IsActive == true && x.IsDeleted == false).Select(x => x.AmountPaid).Sum();
 
             decimal overPayment = (financialsDetail.ReceivedAmount)-(horseStallAmount + tackStallAmount);
             if (overPayment < 0)
@@ -243,6 +256,47 @@ namespace AAYHS.Repository.Repository
 
             getProgramReport = data.FirstOrDefault();
             return getProgramReport;
+        }
+
+        public GetPaddockReport GetPaddockReport(int classId)
+        {
+            IEnumerable<GetPaddockReport> data;
+            GetPaddockReport getPaddockReport = new GetPaddockReport();
+
+            data = (from classes in _ObjContext.Classes
+                    where classes.IsActive == true && classes.IsDeleted == false
+                    && classes.ClassId == classId
+                    select new GetPaddockReport
+                    { 
+                      ClassNumber=classes.ClassNumber,
+                      ClassName=classes.Name,
+                      Age=classes.AgeGroup,
+
+                      classDetails=(from exhibitorClass in _ObjContext.ExhibitorClass
+                                     join horse in _ObjContext.Horses on exhibitorClass.HorseId equals horse.HorseId
+                                     join exhibitor in _ObjContext.Exhibitors on exhibitorClass.ExhibitorId equals exhibitor.ExhibitorId
+                                     join address in _ObjContext.Addresses on exhibitor.AddressId equals address.AddressId
+                                     join city in _ObjContext.Cities on address.CityId equals city.CityId
+                                     join state in _ObjContext.States on city.StateId equals state.StateId
+                                     join zipcode in _ObjContext.ZipCodes2 on address.ZipCodeId equals zipcode.ZipCodeId
+                                     where exhibitorClass.IsActive == true && exhibitorClass.IsDeleted == false
+                                     && horse.IsDeleted == false && exhibitor.IsDeleted == false
+                                     && exhibitorClass.ClassId == classId
+                                    select new ClassDetail 
+                                    { 
+                                      BackNumber=exhibitor.BackNumber,
+                                      Scratch=exhibitorClass.IsScratch,
+                                      NSBA=exhibitor.IsNSBAMember,
+                                      HorseName=horse.Name,
+                                      ExhibitorName=exhibitor.FirstName+" "+exhibitor.LastName,
+                                      City=city.Name,
+                                      StateZipcode=state.Code+", "+zipcode.ZipCode,
+                                      Split=_ObjContext.ClassSplits.Where(x=>x.ClassId==exhibitorClass.ClassId).Select(x=>x.SplitNumber).FirstOrDefault()
+                                    }).ToList()
+                    });
+
+            getPaddockReport = data.FirstOrDefault();
+            return getPaddockReport;
         }
     }
 }

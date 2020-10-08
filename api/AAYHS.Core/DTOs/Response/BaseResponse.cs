@@ -84,6 +84,7 @@ namespace AAYHS.Core.DTOs.Response
         public GetLocation GetLocation { get; set; }   
         public GetExhibitorRegistrationReport GetExhibitorRegistrationReport { get; set; }   
         public GetProgramReport GetProgramReport { get; set; }   
+        public GetPaddockReport GetPaddockReport { get; set; }   
       
     }
    
