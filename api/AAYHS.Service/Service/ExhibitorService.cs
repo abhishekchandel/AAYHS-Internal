@@ -311,6 +311,34 @@ namespace AAYHS.Service.Service
             var Exhibitor = _exhibitorRepository.GetSingle(x => x.ExhibitorId == exhibitorId);
             if (Exhibitor != null && Exhibitor.ExhibitorId > 0)
             {
+                var getExhibitorClass = _exhibitorClassRepository.GetAll(x => x.ExhibitorId == exhibitorId && x.IsDeleted == false);
+                if (getExhibitorClass.Count()!=0)
+                {
+                    getExhibitorClass.ForEach(x=>x.IsDeleted=true);
+                    foreach (var item in getExhibitorClass)
+                    {
+                        _exhibitorClassRepository.Update(item);
+                    }
+                    
+                }
+                var getExhibitorHorse = _exhibitorHorseRepository.GetAll(x => x.ExhibitorId == exhibitorId && x.IsDeleted == false);
+                if (getExhibitorHorse.Count()!=0)
+                {
+                    getExhibitorHorse.ForEach(x => x.IsDeleted = true);
+                    foreach (var item in getExhibitorHorse)
+                    {
+                        _exhibitorHorseRepository.Update(item);
+                    }
+                }
+                var getExhibitorSponsor = _sponsorExhibitorRepository.GetAll(x => x.ExhibitorId == exhibitorId && x.IsDeleted == false);
+                if (getExhibitorSponsor.Count()!=0)
+                {
+                    getExhibitorSponsor.ForEach(x => x.IsDeleted = true);
+                    foreach (var item in getExhibitorSponsor)
+                    {
+                        _sponsorExhibitorRepository.Update(item);
+                    }
+                }
                 Exhibitor.IsDeleted = true;
                 Exhibitor.IsActive = false;
                 Exhibitor.DeletedDate = DateTime.Now;

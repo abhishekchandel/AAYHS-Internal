@@ -22,6 +22,7 @@ namespace AAYHS.Service.Service
         private ISplitClassRepository _splitClassRepository;
         private readonly IResultRepository _resultRepository;
         private IExhibitorRepository _exhibitorRepository;
+        private IClassSponsorRepository _classSponsorRepository;
         private IMapper _mapper;
         #endregion
 
@@ -30,7 +31,8 @@ namespace AAYHS.Service.Service
         #endregion
 
         public ClassService(IClassRepository classRepository,IScheduleDateRepository scheduleDateRepository,IExhibitorClassRepository exhibitorClassRepository,
-                            ISplitClassRepository splitClassRepository,IResultRepository resultRepository,IExhibitorRepository exhibitorRepository, IMapper Mapper)
+                            ISplitClassRepository splitClassRepository,IResultRepository resultRepository,IExhibitorRepository exhibitorRepository, 
+                            IClassSponsorRepository classSponsorRepository,IMapper Mapper)
         {
             _classRepository = classRepository;
             _scheduleDateRepository = scheduleDateRepository;
@@ -38,6 +40,7 @@ namespace AAYHS.Service.Service
             _splitClassRepository = splitClassRepository;
             _resultRepository = resultRepository;
             _exhibitorRepository = exhibitorRepository;
+            _classSponsorRepository = classSponsorRepository;
             _mapper = Mapper;
             _mainResponse = new MainResponse();
         }
@@ -345,6 +348,24 @@ namespace AAYHS.Service.Service
             var _class = _classRepository.GetSingle(x => x.ClassId == ClassId);
             if (_class != null)
             {
+                var getClassExhibitor = _exhibitorClassRepositor.GetAll(x => x.ClassId == ClassId && x.IsDeleted == false);
+                if (getClassExhibitor.Count()!=0)
+                {
+                    getClassExhibitor.ForEach(x => x.IsDeleted = true);
+                    foreach (var item in getClassExhibitor)
+                    {
+                        _exhibitorClassRepositor.Update(item);
+                    }
+                }
+                var getClassSponsor = _classSponsorRepository.GetAll(x => x.ClassId == x.ClassId && x.IsDeleted == false);
+                if (getClassExhibitor.Count()!=0)
+                {
+                    getClassSponsor.ForEach(x => x.IsDeleted = true);
+                    foreach (var item in getClassSponsor)
+                    {
+                        _classSponsorRepository.Update(item);
+                    }
+                }
                 _class.IsDeleted = true;
                 _class.DeletedBy = actionBy;
                 _class.DeletedDate = DateTime.Now;

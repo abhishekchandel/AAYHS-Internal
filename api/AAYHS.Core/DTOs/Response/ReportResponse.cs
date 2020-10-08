@@ -13,7 +13,7 @@ namespace AAYHS.Core.DTOs.Response
         public string Phone1 { get; set; }
         public ExhibitorInfo exhibitorInfo { get; set; }
         public StallAndTackStallNumber stallAndTackStallNumber { get; set; }
-        public HorseDetail horseDetail { get; set; }
+        public List< HorseDetail> horseDetail { get; set; }
         public FinancialsDetail financialsDetail { get; set; }
 
     }
@@ -75,5 +75,24 @@ namespace AAYHS.Core.DTOs.Response
         public string ExhibitorName { get; set; }
         public string City { get; set; }
         public string StateZipcode { get; set; }
+    }
+
+    public class GetPaddockReport
+    {
+        public string ClassNumber { get; set; }
+        public string ClassName { get; set; }
+        public string Age { get; set; }
+        public List<ClassDetail> classDetails { get; set; }
+    }
+    public class ClassDetail
+    {
+        public int? BackNumber { get; set; }
+        public bool Scratch { get; set; }
+        public bool NSBA { get; set; }
+        public string HorseName { get; set; }
+        public string ExhibitorName { get; set; }
+        public string City { get; set; }
+        public string StateZipcode { get; set; }
+        public int Split { get; set; }
     }
 }

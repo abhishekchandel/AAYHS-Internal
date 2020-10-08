@@ -21,7 +21,9 @@ namespace AAYHS.Service.Service
         private readonly IHorseRepository _horseRepository;
         private readonly IStallAssignmentRepository _stallAssignmentRepository;
       
-        private readonly IGroupRepository _groupRepository;      
+        private readonly IGroupRepository _groupRepository;
+        private readonly IExhibitorHorseRepository _exhibitorHorseRepository;
+        private readonly IExhibitorClassRepository _exhibitorClassRepository;
         #endregion
 
         #region private
@@ -29,12 +31,14 @@ namespace AAYHS.Service.Service
         #endregion
 
         public HorseService(IHorseRepository horseRepository,IStallAssignmentRepository stallAssignmentRepository,
-                           IGroupRepository groupRepository, IMapper Mapper)
+                           IGroupRepository groupRepository,IExhibitorHorseRepository exhibitorHorseRepository ,
+                           IExhibitorClassRepository exhibitorClassRepository,IMapper Mapper)
         {
             _horseRepository = horseRepository;
-            _stallAssignmentRepository = stallAssignmentRepository;
-           
+            _stallAssignmentRepository = stallAssignmentRepository;           
             _groupRepository = groupRepository;
+            _exhibitorHorseRepository = exhibitorHorseRepository;
+            _exhibitorClassRepository = exhibitorClassRepository;
             _mapper = Mapper;
             _mainResponse = new MainResponse();
         }
@@ -79,6 +83,24 @@ namespace AAYHS.Service.Service
 
             if (horse!=null)
             {
+                var getExhibitorHorse = _exhibitorHorseRepository.GetAll(x => x.HorseId == HorseId && x.IsDeleted == false);
+                if (getExhibitorHorse.Count!=0)
+                {
+                    getExhibitorHorse.ForEach(x => x.IsDeleted=true);
+                    foreach (var item in getExhibitorHorse)
+                    {
+                        _exhibitorHorseRepository.Update(item);
+                    }
+                }
+                var getClassHorse = _exhibitorClassRepository.GetAll(x => x.HorseId == HorseId && x.IsDeleted == false);
+                if (getClassHorse.Count!=0)
+                {
+                    getClassHorse.ForEach(x => x.IsDeleted=true);
+                    foreach (var item in getClassHorse)
+                    {
+                        _exhibitorClassRepository.Update(item);
+                    }
+                }
                 horse.IsDeleted = true;
                 horse.DeletedBy = actionBy;
                 horse.DeletedDate = DateTime.Now;

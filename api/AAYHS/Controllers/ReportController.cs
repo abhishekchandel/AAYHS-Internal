@@ -37,10 +37,10 @@ namespace AAYHS.API.Controllers
         /// </summary>
         /// <param name="registrationReportRequest"></param>
         /// <returns></returns>
-        [HttpPost]
-        public ActionResult GetExhibitorRegistrationReport(RegistrationReportRequest registrationReportRequest)
+        [HttpGet]
+        public ActionResult GetExhibitorRegistrationReport(int exhibitorIdst)
         {
-            _mainResponse = _reportService.GetExhibitorRegistrationReport(registrationReportRequest);
+            _mainResponse = _reportService.GetExhibitorRegistrationReport(exhibitorIdst);
             _jsonString = Mapper.Convert<GetExhibitorRegistrationReport>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
@@ -54,6 +54,18 @@ namespace AAYHS.API.Controllers
         {
             _mainResponse = _reportService.GetProgramsReport(classId);
             _jsonString = Mapper.Convert<GetProgramReport>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to get paddock report 
+        /// </summary>
+        /// <param name="classId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetPaddockReport(int classId)
+        {
+            _mainResponse = _reportService.GetPaddockReport(classId);
+            _jsonString = Mapper.Convert<GetPaddockReport>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
     }
