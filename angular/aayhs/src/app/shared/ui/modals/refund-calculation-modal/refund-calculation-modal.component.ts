@@ -80,7 +80,7 @@ refundList:any
         this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
         this.loading = false;
       }, error => {
-        this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
+        this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
       this.loading = false;
       }
       )
@@ -114,7 +114,7 @@ refundList:any
          this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
         this.loading = false;
       }, error => {
-        this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
+        this.snackBar.openSnackBar(error, 'Close', 'red-snackbar');
       this.loading = false;
       }
       )

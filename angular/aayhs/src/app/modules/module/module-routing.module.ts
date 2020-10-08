@@ -3,6 +3,7 @@ import { LayoutComponent } from '../perspective/components/layout/layout.compone
 import { Routes, RouterModule } from '@angular/router';
 import { YearlyMaintenanceComponent } from './components/yearly-maintenance/yearly-maintenance.component';
 import { StallAssignmentComponent } from './components/stall-assignment/stall-assignment.component';
+import { ReportsComponent } from './components/reports/reports.component';
 
 const routes: Routes = [
   {
@@ -24,7 +25,13 @@ const routes: Routes = [
         }
       },
      
-     
+      {
+        path: "reports",
+        component: ReportsComponent,
+        data: {
+          title: "Reports"
+        }
+      },
       
     ],
   }
