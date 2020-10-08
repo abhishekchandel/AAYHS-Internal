@@ -18,12 +18,13 @@ feeType:any;
 timeframe:any;
 loading = false;
 result:string;
-generalFeesList={
-  FeeType:null,
-  Amount:null,
-  Active:null,
-  TimeFrame:null
-};
+// generalFeesList={
+//   FeeType:null,
+//   Amount:null,
+//   Active:null,
+//   TimeFrame:null
+// };
+generalFeesList:any;
 yearlyMaintainenceId:any;
   constructor(public dialogRef: MatDialogRef<GeneralFeeModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,

@@ -77,12 +77,12 @@
                                                         Select Refund Type
                                                     </option>
                                                     <option *ngFor="let fee of feeDetails"
-                                                        [value]="fee.FeeTypeId">{{fee.FeeType}} -
+                                                        [value]="fee.FeeTypeId">{{fee.FeeType}} 
                                                     </option>                                                                                                
                                                 </select>
 
                                                 <span class="help-block"  *ngIf="(addRefundForm.submitted || feeType.touched) && feeType.invalid">
-                                                Please select refundType
+                                                Please select refund Type
                                             </span>
                                             </td>
                                             <td>
