@@ -31,6 +31,9 @@ namespace AAYHS.Service.Service
         private IAAYHSContactRepository _aAYHSContactRepository;
         private IRefundRepository _refundRepository;
         private IAAYHSContactAddressRepository _aAYHSContactAddressRepository;
+        private IExhibitorPaymentDetailRepository _exhibitorPaymentDetailRepository;
+        private IClassRepository _classRepository;
+        private ISponsorExhibitorRepository _sponsorExhibitorRepository;
         private MainResponse _mainResponse;
         #endregion
 
@@ -39,7 +42,9 @@ namespace AAYHS.Service.Service
                                        IEmailSenderRepository emailRepository,
                           IApplicationSettingRepository applicationRepository,IRoleRepository roleRepository ,
                           IUserRoleRepository userRoleRepository,IAAYHSContactRepository aAYHSContactRepository,
-                          IRefundRepository refundRepository,IAAYHSContactAddressRepository aAYHSContactAddressRepository,IMapper Mapper)
+                          IRefundRepository refundRepository,IAAYHSContactAddressRepository aAYHSContactAddressRepository,
+                          IExhibitorPaymentDetailRepository exhibitorPaymentDetailRepository,
+                          IClassRepository classRepository,ISponsorExhibitorRepository sponsorExhibitorRepository,IMapper Mapper)
         {
             _yearlyMaintenanceRepository = yearlyMaintenanceRepository;
             _globalCodeRepository = globalCodeRepository;
@@ -52,6 +57,9 @@ namespace AAYHS.Service.Service
             _aAYHSContactRepository = aAYHSContactRepository;
             _refundRepository = refundRepository;
             _aAYHSContactAddressRepository = aAYHSContactAddressRepository;
+            _exhibitorPaymentDetailRepository = exhibitorPaymentDetailRepository;
+            _classRepository = classRepository;
+            _sponsorExhibitorRepository = sponsorExhibitorRepository;
             _mapper = Mapper;
             _mainResponse = new MainResponse();
         }
@@ -383,6 +391,15 @@ namespace AAYHS.Service.Service
 
             if (deleteAdFee!=null)
             {
+                var checkFeeType = _sponsorExhibitorRepository.GetSingle(x => x.AdTypeId == deleteAdFee.FeeTypeId && x.IsDeleted == false);
+
+                if (checkFeeType!=null)
+                {
+                    _mainResponse.Success = false;
+                    _mainResponse.Message = Constants.FEE_ALREADY_IN_USE;
+                    return _mainResponse;
+                }
+
                 deleteAdFee.IsDeleted = true;
                 deleteAdFee.DeletedBy = actionBy;
                 deleteAdFee.DeletedDate = DateTime.Now;
@@ -508,6 +525,15 @@ namespace AAYHS.Service.Service
 
             if (classDelete!=null)
             {
+                var checkClassCategory = _classRepository.GetSingle(x => x.ClassHeaderId == classDelete.GlobalCodeId && x.IsDeleted == false);
+
+                if (checkClassCategory!=null)
+                {
+                    _mainResponse.Success = false;
+                    _mainResponse.Message = Constants.CLASS_CATEGORY_ALREADY_IN_USE;
+                    return _mainResponse;
+                }
+
                 classDelete.IsDeleted = true;
                 classDelete.DeletedBy = actionBy;
                 classDelete.DeletedDate = DateTime.Now;
@@ -763,6 +789,14 @@ namespace AAYHS.Service.Service
 
             if (getGeneralFee!=null)
             {
+                var checkFee = _exhibitorPaymentDetailRepository.GetSingle(x => x.FeeTypeId == getGeneralFee.FeeTypeId && x.IsDeleted == false);
+
+                if (checkFee!=null)
+                {
+                    _mainResponse.Success = false;
+                    _mainResponse.Message = Constants.FEE_ALREADY_IN_USE;
+                    return _mainResponse;
+                }
                 if (removeGeneralFee.TimeFrame=="Pre")
                 {
                     getGeneralFee.PreEntryFee = 0;

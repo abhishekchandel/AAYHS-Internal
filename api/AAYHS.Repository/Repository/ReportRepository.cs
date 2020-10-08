@@ -187,5 +187,62 @@ namespace AAYHS.Repository.Repository
             getExhibitorRegistrationReport.financialsDetail = financialsDetail;
             return getExhibitorRegistrationReport;
         }
+
+        public GetProgramReport GetProgramsReport(int classId)
+        {
+            IEnumerable<GetProgramReport> data;
+            GetProgramReport getProgramReport = new GetProgramReport();
+
+            data = (from classes in _ObjContext.Classes
+                    where classes.IsActive == true && classes.IsDeleted == false
+                    && classes.ClassId == classId
+                    select new GetProgramReport
+                    {
+                        ClassNumber = classes.ClassNumber,
+                        ClassName = classes.Name,
+                        Age = classes.AgeGroup,
+
+                        sponsorInfo = (from sponsorsClass in _ObjContext.ClassSponsor
+                                       join sponsor in _ObjContext.Sponsors on sponsorsClass.SponsorId equals sponsor.SponsorId
+                                       join address in _ObjContext.Addresses on sponsor.AddressId equals address.AddressId
+                                       join city in _ObjContext.Cities on address.CityId equals city.CityId
+                                       join state in _ObjContext.States on city.StateId equals state.StateId
+                                       join zipcode in _ObjContext.ZipCodes2 on address.ZipCodeId equals zipcode.ZipCodeId
+                                       where sponsorsClass.IsActive == true && sponsorsClass.IsDeleted == false
+                                       && sponsor.IsActive == true && sponsor.IsDeleted == false
+                                       && sponsorsClass.ClassId == classId
+                                       orderby sponsorsClass.CreatedDate
+                                       select new SponsorInfo
+                                       {
+                                           SponsorName = sponsor.SponsorName,
+                                           City = city.Name,
+                                           StateZipcode = state.Code + ", " + zipcode.ZipCode
+
+                                       }).Take(4).ToList(),
+
+                        classInfo = (from exhibitorClass in _ObjContext.ExhibitorClass
+                                     join horse in _ObjContext.Horses on exhibitorClass.HorseId equals horse.HorseId
+                                     join exhibitor in _ObjContext.Exhibitors on exhibitorClass.ExhibitorId equals exhibitor.ExhibitorId
+                                     join address in _ObjContext.Addresses on exhibitor.AddressId equals address.AddressId
+                                     join city in _ObjContext.Cities on address.CityId equals city.CityId
+                                     join state in _ObjContext.States on city.StateId equals state.StateId
+                                     join zipcode in _ObjContext.ZipCodes2 on address.ZipCodeId equals zipcode.ZipCodeId
+                                     where exhibitorClass.IsActive == true && exhibitorClass.IsDeleted == false
+                                     && horse.IsDeleted == false && exhibitor.IsDeleted == false
+                                     && exhibitorClass.ClassId==classId
+                                     select new ClassInfo 
+                                     { 
+                                       BackNumber= exhibitor.BackNumber,
+                                       HorseName=horse.Name,
+                                       ExhibitorName=exhibitor.FirstName+" "+exhibitor.LastName,
+                                       City=city.Name,
+                                       StateZipcode=state.Code+", "+zipcode.ZipCode
+                                     }).ToList()
+
+                    }) ;
+
+            getProgramReport = data.FirstOrDefault();
+            return getProgramReport;
+        }
     }
 }

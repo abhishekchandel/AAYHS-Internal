@@ -9,5 +9,6 @@ namespace AAYHS.Service.IService
     public interface IReportService
     {
         MainResponse GetExhibitorRegistrationReport(RegistrationReportRequest registrationReportRequest);
+        MainResponse GetProgramsReport(int classId);
     }
 }

@@ -44,5 +44,17 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<GetExhibitorRegistrationReport>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
+        /// <summary>
+        /// This api used to get single program report
+        /// </summary>
+        /// <param name="classId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetProgramsReport(int classId)
+        {
+            _mainResponse = _reportService.GetProgramsReport(classId);
+            _jsonString = Mapper.Convert<GetProgramReport>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
     }
 }

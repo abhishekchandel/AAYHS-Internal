@@ -35,5 +35,14 @@ namespace AAYHS.Service.Service
             _mainResponse.Success = true;
             return _mainResponse;
         }
+
+        public MainResponse GetProgramsReport(int classId)
+        {
+            var getProgramReport = _reportRepository.GetProgramsReport(classId);
+
+            _mainResponse.GetProgramReport = getProgramReport;
+            _mainResponse.Success = true;
+            return _mainResponse;
+        }
     }
 }

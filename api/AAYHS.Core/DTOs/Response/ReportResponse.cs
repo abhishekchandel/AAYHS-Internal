@@ -53,4 +53,27 @@ namespace AAYHS.Core.DTOs.Response
         public decimal BalanceDue { get; set; }
 
     }
+    public class GetProgramReport
+    {
+        public string ClassNumber { get; set; }
+        public string ClassName { get; set; }
+        public string Age { get; set; }
+        public List< SponsorInfo> sponsorInfo { get; set; }
+        public List< ClassInfo> classInfo { get; set; }
+    }
+    public class SponsorInfo
+    {
+        public string SponsorName { get; set; }
+        public string City { get; set; }
+        public string StateZipcode { get; set; }
+    }
+    public class ClassInfo
+    {
+        public int? BackNumber { get; set; }
+        public bool NSBA { get; set; }
+        public string HorseName { get; set; }
+        public string ExhibitorName { get; set; }
+        public string City { get; set; }
+        public string StateZipcode { get; set; }
+    }
 }

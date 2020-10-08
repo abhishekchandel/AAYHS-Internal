@@ -9,5 +9,6 @@ namespace AAYHS.Repository.IRepository
     public interface IReportRepository
     {
         GetExhibitorRegistrationReport GetExhibitorRegistrationReport(RegistrationReportRequest registrationReportRequest);
+        GetProgramReport GetProgramsReport(int classId);
     }
 }
