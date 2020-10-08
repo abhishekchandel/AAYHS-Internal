@@ -24,23 +24,23 @@
 							<span [ngClass]="getSort('Entries')">
 							</span>
 						</th>
-						<th  class="comWidth">Remove</th>
+						<th class="comWidth">Remove</th>
 					</tr>
 				</thead>
-					<tbody>
-						<tr *ngFor="let class of classesList;let i = index " (click)="highlight(class.ClassId,i)"
-							[ngClass]="{'blueRow': selectedRowIndex == i}">
-							<td data-label="Class No." class="comWidth">{{class.ClassNumber}}</td>
-							<td data-label="Class Name">{{class.Name}}</td>
-							<td data-label="Age Group">{{class.AgeGroup}}</td>
-							<td data-label="Enteries" class="comWidth">{{class.Entries}}</td>
-							<td data-label="Remove" class="comWidth">
-								<button class="icon" (click)="confirmRemoveClass($event, i,class.ClassId)"><span></span>
-									<i class="fa fa-trash-o" aria-hidden="true"></i></button>
-							</td>
-						</tr>
+				<tbody>
+					<tr *ngFor="let class of classesList;let i = index " (click)="highlight(class.ClassId,i)"
+						[ngClass]="{'blueRow': selectedRowIndex == i}">
+						<td data-label="Class No." class="comWidth">{{class.ClassNumber}}</td>
+						<td data-label="Class Name">{{class.Name}}</td>
+						<td data-label="Age Group">{{class.AgeGroup}}</td>
+						<td data-label="Enteries" class="comWidth">{{class.Entries}}</td>
+						<td data-label="Remove" class="comWidth">
+							<button class="icon" (click)="confirmRemoveClass($event, i,class.ClassId)"><span></span>
+								<i class="fa fa-trash-o" aria-hidden="true"></i></button>
+						</td>
+					</tr>
 
-					</tbody>
+				</tbody>
 			</table>
 			<div [hidden]="totalItems == 0">
 				<mat-paginator #paginator [length]="totalItems" (page)="getNext($event)" [pageSizeOptions]="[5]">
@@ -55,7 +55,8 @@
 			<tbody>
 				<tr>
 					<td><span class="blueBox"></span><b>Class Number:</b> {{classInfo.ClassNumber}} </td>
-					<td><span class="blueBox"></span><b>Class Name:</b> <span class="classNameExt">{{classInfo.Name}}</span>
+					<td><span class="blueBox"></span><b>Class Name:</b> <span
+							class="classNameExt">{{classInfo.Name}}</span>
 						<p class="toolTipText">{{classInfo.Name}}</p>
 					</td>
 					<td><span class="blueBox"></span><b>Class Age Group:</b> {{classInfo.AgeGroup}}</td>
@@ -141,7 +142,7 @@
 														[(ngModel)]="classInfo.ScheduleDate" readonly>
 													<mat-datepicker-toggle matSuffix [for]="scheduleDatePicker">
 													</mat-datepicker-toggle>
-													<mat-datepicker #scheduleDatePicker></mat-datepicker>													
+													<mat-datepicker #scheduleDatePicker></mat-datepicker>
 												</mat-form-field>
 
 											</div>
@@ -173,8 +174,7 @@
 							<form #entriesForm="ngForm" (ngSubmit)="entriesForm.valid && addExhibitorToClass()">
 								<div class="card-body">
 									<div id="print-entries" class="table-responsive">
-										<table id="gridTableDescPrint" style="display: none;"
-											class="table pdfTable">
+										<table id="gridTableDescPrint" style="display: none;" class="table pdfTable">
 											<tbody>
 												<tr>
 													<td><span class="blueBox"></span><b>Class Number:</b>
@@ -215,16 +215,21 @@
 														<td data-label="Scratch">
 															<div class="scratchimage"
 																(click)="confirmScratch(i,!entry.Scratch,entry.ExhibitorClassId)">
-																<img class="non-print-element" [src]="entry.Scratch===true ? 'assets/images/sizzer-icon.png' : 'assets/images/sizzer-icon-1.png'">
-																<img class="print-element" [src]="entry.Scratch===true ? '../assets/images/sizzer-icon.png' : '../assets/images/sizzer-icon-1.png'">
+																<img class="non-print-element"
+																	[src]="entry.Scratch===true ? 'assets/images/sizzer-icon.png' : 'assets/images/sizzer-icon-1.png'">
+																<img class="print-element"
+																	[src]="entry.Scratch===true ? '../assets/images/sizzer-icon.png' : '../assets/images/sizzer-icon-1.png'">
 															</div>
 														</td>
 
 														<td data-label="Remove" class="non-print-element">
 															<div [ngClass]="icon"
 																(click)="confirmRemoveExhibitor(i,entry.ExhibitorClassId)">
-																<img class="actionButton non-print-element" src='assets/images/delete-icon.png' alt="image" />
-																<img class="actionButton print-element" src='../assets/images/delete-icon.png' alt="image" />
+																<img class="actionButton non-print-element"
+																	src='assets/images/delete-icon.png' alt="image" />
+																<img class="actionButton print-element"
+																	src='../assets/images/delete-icon.png'
+																	alt="image" />
 															</div>
 															<!-- <button class="icon" (click)="confirmRemoveExhibitor(i,entry.ExhibitorClassId)"><span></span>
 																<i class="fa fa-trash-o" aria-hidden="true"></i></button> -->
@@ -236,21 +241,28 @@
 
 													<tr id="classEntries">
 														<td colspan="2">
-															<select class="dynDataSeclect" name="exhibitor" required
-																[(ngModel)]="exhibitorId" #exhibitorControl="ngModel"
-																(change)="getExhibitorHorses($event.target.value)">
-																<option [ngValue]="null" class="selectDropdown">
-																	Select Exhibitor
-																</option>
-																<option class="selectDropdown"
-																	*ngFor="let exhibitor of exhibitorsResponse"
-																	[value]="exhibitor.ExhibitorId">
-																	{{exhibitor.Exhibitor}}
-																</option>
-															</select>
-															<span class="help-block"
-																*ngIf="(entriesForm.submitted || exhibitorControl.touched) && exhibitorControl.invalid">Please
-																select exhibitor</span>
+																<div class="form-group"> 
+																	<input class="form-control" 
+																   required
+																   placeholder="select exhibitor" name="classexhibitor"
+																   #classexhibitor="ngModel" [(ngModel)]="seletedclassexhibitorname"
+																   value="{{seletedclassexhibitorname}}"
+																   (keyup)="filterclassexhibitor($event.target.value,true)"
+																   [matAutocomplete]="classexhibitorauto">
+																   <span class="help-block"
+																   *ngIf="exhibitorId==null && (entriesForm.submitted || classexhibitor.touched)">
+																   Please select exhibitor</span>
+															   </div>
+				   
+																   <mat-autocomplete #classexhibitorauto="matAutocomplete">
+																	   <mat-option *ngFor="let exhibitor of exhibitorsResponsefilteredOptions"
+																	   [value]="exhibitor.Exhibitor" (onSelectionChange)="setFilteredclassexhibitor(exhibitor.ExhibitorId,$event);">
+																	   {{exhibitor.Exhibitor}}
+																	   </mat-option>
+																   </mat-autocomplete>
+
+
+
 
 														</td>
 														<td colspan="2">
@@ -285,7 +297,7 @@
 										class="btn btn-red btnCss">Next</button>
 									<button (click)="print()" id="inputprintbutton" type="button"
 										class="btn btn-red btnCss">Display/Print</button>
-										<button type="submit" class="btn btn-red btnCss">Submit</button>
+									<button type="submit" class="btn btn-red btnCss">Submit</button>
 								</div>
 							</form>
 						</div>
@@ -297,8 +309,7 @@
 							<form #resultForm="ngForm" name="resultForm" (ngSubmit)="resultForm.valid && addResult()">
 								<div class="card-body">
 									<div id="print-section" #content class="table-responsive tableTab">
-										<table id="gridTableSectionPrint" style="display: none;"
-											class="table pdfTable">
+										<table id="gridTableSectionPrint" style="display: none;" class="table pdfTable">
 											<tbody>
 												<tr>
 													<td><span class="blueBox"></span><b>Class Number:</b>
@@ -306,9 +317,9 @@
 													<td><span class="blueBox"></span><b>Class Name:</b>
 														{{classInfo.Name}}</td>
 													<td><span class="blueBox"></span><b>Class Age Group:</b>
-														{{classInfo.AgeGroup}}</td>																									
-												</tr>												
-												
+														{{classInfo.AgeGroup}}</td>
+												</tr>
+
 											</tbody>
 										</table>
 										<table id="results" class="table table-bordered tableBodyScroll pdfdataTable">
@@ -327,70 +338,88 @@
 											<perfect-scrollbar class="nicescrollBar-2">
 												<tbody>
 													<tr *ngFor="let result of resultResponse;let i=index">
-														<td  data-label="Result" *ngIf="updatemode==false || (updatemode==true && updateRowIndex!=i)">
+														<td data-label="Result"
+															*ngIf="updatemode==false || (updatemode==true && updateRowIndex!=i)">
 															{{result.Place +ordinal_suffix_of(result.Place)}}
 														</td>
-														<td *ngIf="updatemode==true && updateRowIndex==i"> 
-															<input 
-															appOnlynumber 
-															
-															type="text" class="form-control" placeholder="Place" #placement="ngModel" (change)="setPlace($event.target.value)" name="placement" [(ngModel)]="place" required />
+														<td *ngIf="updatemode==true && updateRowIndex==i">
+															<input appOnlynumber type="text" class="form-control"
+																placeholder="Place" #placement="ngModel"
+																(change)="setPlace($event.target.value)"
+																name="placement" [(ngModel)]="place" required />
 														</td>
 
 
-														<td data-label="Back No" *ngIf="updatemode==false || (updatemode==true && updateRowIndex!=i)">{{result.BackNumber}}</td>
+														<td data-label="Back No"
+															*ngIf="updatemode==false || (updatemode==true && updateRowIndex!=i)">
+															{{result.BackNumber}}</td>
 
-														<td  *ngIf="updatemode==true && updateRowIndex==i">
-															<select class="dynDataSeclect" name="backNumberEdit" required
-															[(ngModel)]="editBackNumber" #backNumberEdit="ngModel"
-															(change)="getEditExhibitorDetail($event.target.value)">
-															
-															<option *ngFor="let backNumber of backNumbersResponse"
-																[value]="backNumber.BackNumber">
-																{{backNumber.BackNumber}}
-															</option>
-														</select>	
+														<td *ngIf="updatemode==true && updateRowIndex==i">
+															<select class="dynDataSeclect" name="backNumberEdit"
+																required [(ngModel)]="editBackNumber"
+																#backNumberEdit="ngModel"
+																(change)="getEditExhibitorDetail($event.target.value)">
+
+																<option *ngFor="let backNumber of backNumbersResponse"
+																	[value]="backNumber.BackNumber">
+																	{{backNumber.BackNumber}}
+																</option>
+															</select>
 														</td>
-														<td *ngIf="!showEditInfo || (updatemode==true && updateRowIndex!=i)" data-label="Exhibitor Name">{{result.ExhibitorName}}</td>
-														<td *ngIf="showEditInfo && updatemode==true && updateRowIndex==i" data-label="Exhibitor Name">{{editExhibitorInfo.ExhibitorName}}</td>
+														<td *ngIf="!showEditInfo || (updatemode==true && updateRowIndex!=i)"
+															data-label="Exhibitor Name">{{result.ExhibitorName}}</td>
+														<td *ngIf="showEditInfo && updatemode==true && updateRowIndex==i"
+															data-label="Exhibitor Name">
+															{{editExhibitorInfo.ExhibitorName}}</td>
 
 
-														<td *ngIf="!showEditInfo || (updatemode==true && updateRowIndex!=i)" data-label="Birth Year">{{result.BirthYear}}</td>
-														<td *ngIf="showEditInfo && updatemode==true && updateRowIndex==i" data-label="Birth Year">{{editExhibitorInfo.BirthYear}}</td>
+														<td *ngIf="!showEditInfo || (updatemode==true && updateRowIndex!=i)"
+															data-label="Birth Year">{{result.BirthYear}}</td>
+														<td *ngIf="showEditInfo && updatemode==true && updateRowIndex==i"
+															data-label="Birth Year">{{editExhibitorInfo.BirthYear}}</td>
 
 
-														<td *ngIf="!showEditInfo || (updatemode==true && updateRowIndex!=i)" data-label="Horse Name">{{result.HorseName}}</td>
-														<td *ngIf="showEditInfo && updatemode==true && updateRowIndex==i" data-label="Horse Name">{{editExhibitorInfo.HorseName}}</td>
+														<td *ngIf="!showEditInfo || (updatemode==true && updateRowIndex!=i)"
+															data-label="Horse Name">{{result.HorseName}}</td>
+														<td *ngIf="showEditInfo && updatemode==true && updateRowIndex==i"
+															data-label="Horse Name">{{editExhibitorInfo.HorseName}}</td>
 
 
-														<td *ngIf="!showEditInfo || (updatemode==true && updateRowIndex!=i)" data-label="City, St. Zip">{{result.Address}}</td>
-														<td *ngIf="showEditInfo && updatemode==true && updateRowIndex==i" data-label="City, St. Zip">{{editExhibitorInfo.Address}}</td>
+														<td *ngIf="!showEditInfo || (updatemode==true && updateRowIndex!=i)"
+															data-label="City, St. Zip">{{result.Address}}</td>
+														<td *ngIf="showEditInfo && updatemode==true && updateRowIndex==i"
+															data-label="City, St. Zip">{{editExhibitorInfo.Address}}
+														</td>
 
 														<td data-label="Update" class="non-print-element">
-                                                            <button
-                                                                *ngIf="updatemode==false  || (updatemode==true && updateRowIndex!=i)"
-                                                                type="button" class="icon"
-                                                                (click)="editResult(i,result)">
-                                                                <span></span> <i class="fa fa-edit"
-                                                                    aria-hidden="true"></i>
-                                                            </button>
+															<button
+																*ngIf="updatemode==false  || (updatemode==true && updateRowIndex!=i)"
+																type="button" class="icon"
+																(click)="editResult(i,result)">
+																<span></span> <i class="fa fa-edit"
+																	aria-hidden="true"></i>
+															</button>
 
-                                                            <button [disabled]="!place || !editBackNumber" *ngIf="updatemode==true && updateRowIndex==i"
-                                                                type="button" class="icon"
-                                                                (click)="updateResult(result.ResultId)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                                            </button>
-                                                            <button *ngIf="updatemode==true && updateRowIndex==i"
-                                                                type="button" class="icon"
-                                                                (click)="cancelEdit()"><i class="fa fa-times-circle" aria-hidden="true"></i>
-                                                            </button>
+															<button [disabled]="!place || !editBackNumber"
+																*ngIf="updatemode==true && updateRowIndex==i"
+																type="button" class="icon"
+																(click)="updateResult(result.ResultId)"><i
+																	class="fa fa-pencil-square-o"
+																	aria-hidden="true"></i>
+															</button>
+															<button *ngIf="updatemode==true && updateRowIndex==i"
+																type="button" class="icon" (click)="cancelEdit()"><i
+																	class="fa fa-times-circle" aria-hidden="true"></i>
+															</button>
 
-                                                        </td>
+														</td>
 														<td data-label="Remove" class="non-print-element">
-															 <button (click)="confirmRemoveResult(i,result.ResultId)" type="button" class="icon">
-															<span></span> <i class="fa fa-trash-o"
-																aria-hidden="true"></i>
-														</button>
-													</td>
+															<button (click)="confirmRemoveResult(i,result.ResultId)"
+																type="button" class="icon">
+																<span></span> <i class="fa fa-trash-o"
+																	aria-hidden="true"></i>
+															</button>
+														</td>
 													</tr>
 
 													<tr id="addResultRow">
@@ -401,7 +430,7 @@
 														<td data-label="Back No">
 
 
-															<select class="dynDataSeclect" name="backNumber" required
+															<!-- <select class="dynDataSeclect" name="backNumber" required
 																[(ngModel)]="backNumber" #backNumberControl="ngModel"
 																(change)="getExhibitorDetail($event.target.value)">
 																<option [ngValue]="null">
@@ -414,14 +443,36 @@
 															</select>
 															<span class="error"
 																*ngIf="(resultForm.submitted || backNumberControl.touched) && backNumberControl.invalid">Please
-																select back number</span>
+																select back number</span> -->
+
+
+																<div class="form-group"> 
+																	<input class="form-control" 
+																   required
+																   placeholder="Select Back Number" name="backnumber"
+																   #backnumber="ngModel" [(ngModel)]="seletedbacknumbername"
+																   value="{{seletedbacknumbername}}"
+																   (keyup)="filterbacknumber($event.target.value,true)"
+																   [matAutocomplete]="backnumberauto">
+																   <span class="help-block"
+																   *ngIf="backNumber==null && (entriesForm.submitted || backnumber.touched)">
+																   Please select back number</span>
+															   </div>
+				   
+																   <mat-autocomplete #backnumberauto="matAutocomplete">
+																	   <mat-option *ngFor="let backNumber of backNumbersFilteredOptions"
+																	   [value]="backNumber.BackNumber" (onSelectionChange)="setFilteredbacknumber(backNumber.BackNumber,$event);">
+																	   {{backNumber.BackNumber}}
+																	   </mat-option>
+																   </mat-autocomplete>
+
 
 														</td>
 														<td>{{exhibitorInfo.ExhibitorName}}</td>
 														<td>{{exhibitorInfo.BirthYear}}</td>
 														<td>{{exhibitorInfo.HorseName}}</td>
 														<td>{{exhibitorInfo.Address}}</td>
-														<td> 
+														<td>
 														</td>
 														<td></td>
 													</tr>

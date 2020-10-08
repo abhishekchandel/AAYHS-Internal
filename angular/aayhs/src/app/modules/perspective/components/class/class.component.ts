@@ -21,6 +21,7 @@ import { GlobalService } from '../../../../core/services/global.service'
 import { Workbook } from 'exceljs';
 import * as fs from 'file-saver';
 import { analyzeAndValidateNgModules } from '@angular/compiler';
+import { Observable } from "rxjs";
 
 interface jsPDFWithPlugin extends jsPDF {
   autoTable: (options: UserOptions) => jsPDF;
@@ -127,6 +128,14 @@ export class ClassComponent implements OnInit {
     SplitNumber: 0,
     ChampionShipIndicator: false
   }
+
+
+  seletedclassexhibitorname: string="";
+  exhibitorsResponsefilteredOptions: Observable<string[]>;
+
+  seletedbacknumbername: string="";
+  backNumbersFilteredOptions: Observable<string[]>;
+
   constructor(
     public dialog: MatDialog,
     private classService: ClassService,
@@ -291,6 +300,7 @@ export class ClassComponent implements OnInit {
     this.getClassExhibitors(id)
     this.getClassResult(id)
     this.getAllBackNumbers(id)
+    this.exhibitorId=null;
   }
   getClassDetails = (id: number) => {
     this.loading = true;
@@ -354,6 +364,11 @@ export class ClassComponent implements OnInit {
     this.initialPostion = 1;
     this.selectedRowIndex = null
     this.cancelEdit()
+
+    this.exhibitorsResponsefilteredOptions=null;
+    this.seletedclassexhibitorname="";
+    this.backNumbersFilteredOptions=null;
+    this.seletedbacknumbername="";
   }
 
   getClassEntries(id: number) {
@@ -388,9 +403,11 @@ export class ClassComponent implements OnInit {
     this.loading = true;
     this.classService.getClassExhibitors(id).subscribe(response => {
       this.exhibitorsResponse = response.Data.getClassExhibitors;
+      this.exhibitorsResponsefilteredOptions = response.Data.getClassExhibitors;
       this.loading = false;
     }, error => {
       this.exhibitorsResponse = null;
+      this.exhibitorsResponsefilteredOptions = null;
       this.loading = false;
     })
   }
@@ -413,6 +430,12 @@ export class ClassComponent implements OnInit {
   }
 
   addExhibitorToClass() {
+debugger
+    if( this.exhibitorId==null ||  this.exhibitorId==undefined)
+    {
+      return;
+    }
+
     if (this.classInfo.ClassId == null) {
       this.snackBar.openSnackBar("Please select a class to add exhibitor", 'Close', 'red-snackbar');
 
@@ -426,12 +449,14 @@ export class ClassComponent implements OnInit {
     this.classService.addExhibitorToClass(addClassExhibitor).subscribe(response => {
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
       this.loading = false;
+      this.exhibitorId==null;
       this.getClassEntries(this.classInfo.ClassId);
       this.getClassExhibitors(this.classInfo.ClassId);
       this.entriesForm.resetForm({ exhibitorId: null, horseId: null });
     }, error => {
       this.snackBar.openSnackBar(error.error.Message, 'Close', 'red-snackbar');
       this.loading = false;
+      this.exhibitorId==null;
 
     })
   }
@@ -499,11 +524,17 @@ export class ClassComponent implements OnInit {
   getAllBackNumbers(id: number) {
     this.loading = true;
     this.classService.getAllBackNumbers(id).subscribe(response => {
-      this.backNumbersResponse = response.Data.getBackNumbers;
+      if(response.Data.getBackNumbers!=null && response.Data.getBackNumbers!=undefined && response.Data.getBackNumbers.length>0)
+      {
+        this.backNumbersResponse = response.Data.getBackNumbers.filter(x=>x.BackNumber!=null);
+        this.backNumbersFilteredOptions = response.Data.getBackNumbers.filter(x=>x.BackNumber!=null);
+      }
+    
       this.loading = false;
     }, error => {
       this.loading = false;
       this.backNumbersResponse = null;
+      this.backNumbersFilteredOptions = null;
     })
   }
   getExhibitorDetail(id) {
@@ -541,7 +572,10 @@ export class ClassComponent implements OnInit {
     })
   }
   addResult() {
-
+if(this.backNumber==null || this.backNumber==undefined)
+{
+  return;
+}
     this.loading = true;
     var addClassResult = {
       ClassId: this.classInfo.ClassId,
@@ -1117,4 +1151,71 @@ table.pdfTable tbody tr td{
       fs.saveAs(blob, 'Class Result' + '.xlsx');
     })
   }
+
+
+  filterclassexhibitor(val: any, makeexhibitornull: boolean) {
+    debugger
+    if (makeexhibitornull == true) {
+      this.exhibitorId = null;
+    }
+
+    if (this.exhibitorsResponse != null && this.exhibitorsResponse != undefined && this.exhibitorsResponse.length > 0) {
+      this.exhibitorsResponsefilteredOptions = this.exhibitorsResponse.filter(option =>
+        option.Exhibitor.toLowerCase().includes(val.toLowerCase()));
+    }
+  }
+
+
+  setFilteredclassexhibitor(id,event:any) {
+    if (event.isUserInput) {
+    this.loading = true;
+    this.classService.getExhibitorHorses(id).subscribe(response => {
+      this.exhibitorsHorsesResponse = response.Data.getExhibitorHorses;
+      this.exhibitorId = id
+      this.loading = false;
+    }, error => {
+      this.exhibitorsHorsesResponse = null;
+      this.loading = false;
+    })
+
+  }
+  }
+
+
+
+  filterbacknumber(val: any, makebacknumbernull: boolean) {
+    debugger
+    if (makebacknumbernull == true) {
+      this.backNumber = null;
+    }
+
+    if (this.backNumbersResponse != null && this.backNumbersResponse != undefined && this.backNumbersResponse.length > 0) {
+      // this.backNumbersResponse=this.backNumbersResponse.filter(x=>x.BackNumber!=null);
+      this.backNumbersFilteredOptions = this.backNumbersResponse.filter(option =>
+        (option.BackNumber.toString()).includes(val.toLowerCase()));
+    }
+  }
+
+
+  setFilteredbacknumber(id,event:any) {
+    if (event.isUserInput) {
+      var exhibitordetailRequest = {
+        ClassId: this.classInfo.ClassId,
+        BackNumber: Number(id)
+      }
+      this.backNumber=Number(id);
+      this.loading=true;
+      this.classService.getExhibitorDetails(exhibitordetailRequest).subscribe(response => {
+        this.exhibitorInfo = response.Data;
+        this.showPosition = true;
+        this.loading=false;
+      }, error => {
+        this.exhibitorInfo = null;
+        this.loading=false;
+      })
+
+  }
+  }
+
+
 }

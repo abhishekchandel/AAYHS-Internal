@@ -606,49 +606,7 @@ export class SponsorComponent implements OnInit {
   }
 
 
-  // getCities(id: number) {
-  //   return new Promise((resolve, reject) => {
-  //     this.loading = true;
-  //     this.citiesResponse = null;
-  //     this.sponsorService.getCities(Number(id)).subscribe(response => {
-  //       this.citiesResponse = response.Data.City;
-  //       this.loading = false;
-  //     }, error => {
-  //       this.loading = false;
-  //     })
-  //     resolve();
-  //   });
-  // }
-
-  // getAllStates() {
-
-  //   this.loading = true;
-  //   this.sponsorService.getAllStates().subscribe(response => {
-  //     this.statesResponse = response.Data.State;
-  //     this.loading = false;
-  //   }, error => {
-  //     this.loading = false;
-  //   })
-
-  // }
-
-  // getZipCodes(event, Notfromhtml) {
-
-  //   var cityname;
-  //   Notfromhtml == true ? cityname = event : cityname = event.target.options[event.target.options.selectedIndex].text;
-  //   return new Promise((resolve, reject) => {
-  //     this.loading = true;
-  //     this.zipCodesResponse = null;
-  //     this.sponsorService.getZipCodes(cityname).subscribe(response => {
-  //       debugger
-  //       this.zipCodesResponse = response.Data.ZipCode;
-  //       this.loading = false;
-  //     }, error => {
-  //       this.loading = false;
-  //     })
-  //     resolve();
-  //   });
-  // }
+ 
 
   getStateName(e) {
     this.sponsorInfo.StateId = Number(e.target.options[e.target.selectedIndex].value)
@@ -1141,6 +1099,9 @@ table.pdfTable tbody tr td{
       this.sponsorClassId = Number(id);
     }
   }
+
+  
+  
 
 }
 

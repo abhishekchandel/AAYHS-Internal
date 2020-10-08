@@ -436,6 +436,7 @@
 														<td data-label="Class Name">{{list.Name}}</td>
 														<td data-label="Age Group">{{list.AgeGroup}}</td>
 														<td data-label="Exhibitor" class="non-print-element">
+														
 															<select class="dynDataSeclect">
 																<option disabled=true selected>Exh Name/Horse Name
 																</option>
@@ -443,7 +444,25 @@
 																	*ngFor="let item of list.ClassExhibitorsAndHorses">
 																	{{item}}</option>
 															</select>
+
+
+															<!-- <div class="form-group"> 
+																<input class="form-control" 
+															   required
+															   placeholder="Exh Name/Horse Name" 
+															   (keyup)="filterclassexhibitorhorse($event.target.value,true)"
+															   [matAutocomplete]="exhibitorhorseclassauto">
+														   </div>
+			   
+															   <mat-autocomplete #exhibitorhorseclassauto="matAutocomplete">
+																   <mat-option *ngFor="let item of list.ClassExhibitorsAndHorses"
+																   [value]="item">
+																   {{item}}
+																   </mat-option>
+															   </mat-autocomplete> -->
+
 														</td>
+														
 														<td data-label="Remove" class="non-print-element">
 															<button type="button" class="icon"
 																(click)="confirmRemoveSponsorClass($event,i,list.ClassSponsorId)">
