@@ -86,7 +86,8 @@ yearlyMaintenanceSummary:YearlyMaintenanceModel={
     returnZip:null,
     returnState:null,
     AAYHSContactId:null,
-    yearlyMaintenanceId:null
+    yearlyMaintenanceId:null,
+    location:null
   }
 
   constructor(public dialog: MatDialog,

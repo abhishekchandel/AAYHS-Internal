@@ -343,11 +343,9 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Show Location <span>*</span></label> 
-                                                    <select required class="form-control" required placeholder="Show Location" name="location"  #location="ngModel" [(ngModel)]="contactInfo.ShowLocation" name="Show Location">													
-                                                        <option value="null">Show Location</option>
-                                                        <option>Show Location 1</option>                                                                                               
-                                                    </select>
+                                                    <input type="text"  class="form-control" required name="location" #location="ngModel" [(ngModel)]="contactInfo.location" placeholder="Location"/>
                                                 </div>
+                                                <span class="help-block"*ngIf="(addContactForm.submitted || location.touched) && location.invalid">Please enter location </span>                                                
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
