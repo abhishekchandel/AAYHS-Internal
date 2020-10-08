@@ -107,6 +107,7 @@ namespace AAYHS.Core.DTOs.Response
         public int RefundId { get; set; }
         public DateTime DateAfter { get; set; }
         public DateTime DateBefore { get; set; }
+        public string RefundType { get; set; }
         public decimal Refund { get; set; }
         public bool Active { get; set; }
     }
