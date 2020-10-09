@@ -115,10 +115,15 @@ namespace AAYHS.Core.DTOs.Response
     }
     public class GetContactInfo
     {
-        public int AAYHSContactId { get; set; }
-        public DateTime ShowStart{ get; set; }
+        public DateTime ShowStart { get; set; }
         public DateTime ShowEnd { get; set; }
         public string ShowLocation { get; set; }
+        public ContactInfo contactInfo { get; set; }
+        
+    }
+    public class ContactInfo
+    {
+        public int AAYHSContactId { get; set; }
         public string Email1 { get; set; }
         public string Email2 { get; set; }
         public string Phone1 { get; set; }

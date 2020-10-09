@@ -973,18 +973,8 @@ namespace AAYHS.Service.Service
         public MainResponse GetContactInfo(int yearlyMaintenanceId)
         {
             var getContactInfo = _yearlyMaintenanceRepository.GetContactInfo(yearlyMaintenanceId);
-
-            if (getContactInfo != null)
-            {
-                _mainResponse.GetContactInfo = getContactInfo;
-                _mainResponse.Success = true;
-            }
-            else
-            {
-                _mainResponse.Success = false;
-                _mainResponse.Message = Constants.NO_RECORD_FOUND;
-            }
-
+            _mainResponse.GetContactInfo = getContactInfo;
+            _mainResponse.Success = true;         
             return _mainResponse;
         }
 
