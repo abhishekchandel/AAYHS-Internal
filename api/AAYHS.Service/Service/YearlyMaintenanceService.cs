@@ -385,9 +385,9 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
-        public MainResponse DeleteAdFee(int yearlyMaintenanceFeeId, string actionBy)
+        public MainResponse DeleteAdFee(DeleteAdFee deleteAd ,string actionBy)
         {
-            var deleteAdFee = _yearlyMaintenanceFeeRepository.GetSingle(x => x.YearlyMaintainenceFeeId == yearlyMaintenanceFeeId);
+            var deleteAdFee = _yearlyMaintenanceFeeRepository.GetSingle(x => x.YearlyMaintainenceFeeId == deleteAd.YearlyMaintenanceFeeId);
 
             if (deleteAdFee!=null)
             {
@@ -399,12 +399,22 @@ namespace AAYHS.Service.Service
                     _mainResponse.Message = Constants.FEE_ALREADY_IN_USE;
                     return _mainResponse;
                 }
-
+               
                 deleteAdFee.IsDeleted = true;
                 deleteAdFee.DeletedBy = actionBy;
                 deleteAdFee.DeletedDate = DateTime.Now;
-
                 _yearlyMaintenanceFeeRepository.Update(deleteAdFee);
+
+                var getGlobalCode = _globalCodeRepository.GetSingle(x => x.GlobalCodeId == deleteAd.AdSizeId);
+                if (getGlobalCode != null)
+                {
+                    getGlobalCode.IsDeleted = true;
+                    getGlobalCode.DeletedBy = actionBy;
+                    getGlobalCode.DeletedDate = DateTime.Now;
+
+                    _globalCodeRepository.Update(getGlobalCode);
+                }
+               
                 _mainResponse.Success = true;
                 _mainResponse.Message = Constants.RECORD_DELETE_SUCCESS;
             }
@@ -870,7 +880,7 @@ namespace AAYHS.Service.Service
                     getGeneralFee.DeletedDate = DateTime.Now;
                     _yearlyMaintenanceFeeRepository.Update(getGeneralFee);
 
-                    var getGlobalCode = _globalCodeRepository.GetSingle(x => x.GlobalCodeId == removeGeneralFee.GlobalCodeId);
+                    var getGlobalCode = _globalCodeRepository.GetSingle(x => x.GlobalCodeId == removeGeneralFee.FeeTypeId);
                     getGlobalCode.IsDeleted = true;
                     getGlobalCode.DeletedBy = actionBy;
                     getGlobalCode.DeletedDate = DateTime.Now;

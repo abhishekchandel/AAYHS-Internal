@@ -138,6 +138,7 @@ namespace AAYHS.Repository.Repository
                     select new GetAdFees
                     { 
                       YearlyMaintenanceFeeId=fees.YearlyMaintainenceFeeId,
+                      AdSizeId=adSize.GlobalCodeId,
                       AdSize=adSize.CodeName,
                       Amount=fees.Amount,
                       Active=fees.IsActive
@@ -187,6 +188,7 @@ namespace AAYHS.Repository.Repository
                     select new GetGeneralFees
                     {
                         YearlyMaintenanceFeeId=yearlyFee.YearlyMaintainenceFeeId,
+                        FeeTypeId=feeType.GlobalCodeId,
                         FeeType=feeType.CodeName,
                         PreEntryFee=yearlyFee.PreEntryFee,
                         PostEntryFee=yearlyFee.PostEntryFee,

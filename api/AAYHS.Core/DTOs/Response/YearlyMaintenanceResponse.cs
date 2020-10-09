@@ -51,6 +51,7 @@ namespace AAYHS.Core.DTOs.Response
     public class GetAdFees
     {
         public int YearlyMaintenanceFeeId { get; set; }
+        public int AdSizeId { get; set; }
         public string AdSize  { get; set; }
         public decimal Amount { get; set; }
         public bool Active { get; set; }
@@ -90,6 +91,7 @@ namespace AAYHS.Core.DTOs.Response
     public class GetGeneralFees
     {
         public int YearlyMaintenanceFeeId { get; set; }
+        public int FeeTypeId { get; set; }
         public string TimeFrame { get; set; }
         public string FeeType { get; set; }
         public decimal PreEntryFee { get; set; }
