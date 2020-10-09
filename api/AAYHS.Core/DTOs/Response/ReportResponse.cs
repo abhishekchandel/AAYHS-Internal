@@ -6,26 +6,26 @@ namespace AAYHS.Core.DTOs.Response
 {
     public class GetExhibitorRegistrationReport
     {
-        public string Email1 { get; set; }
+        public string ExhibitorName { get; set; }
         public string Address { get; set; }
         public string CityName { get; set; }
         public string StateZipcode { get; set; }
-        public string Phone1 { get; set; }
-        public ExhibitorInfo exhibitorInfo { get; set; }
+        public string Phone { get; set; }
+        public string Email { get; set; }       
+        public GetAAYHSContactInfo getAAYHSContactInfo { get; set; }
         public StallAndTackStallNumber stallAndTackStallNumber { get; set; }
         public List<HorseClassDetail> horseClassDetails { get; set; }
         public FinancialsDetail financialsDetail { get; set; }
 
     }
 
-    public class ExhibitorInfo
+    public class GetAAYHSContactInfo
     {
-        public string ExhibitorName { get; set; }
+        public string Email1 { get; set; }
         public string Address { get; set; }
         public string CityName { get; set; }
         public string StateZipcode { get; set; }
-        public string Phone { get; set; }
-        public string Email { get; set; }
+        public string Phone1 { get; set; }
     }
     public class StallAndTackStallNumber
     {

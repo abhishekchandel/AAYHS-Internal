@@ -50,36 +50,21 @@ namespace AAYHS.Repository.Repository
             int tackStallTypeId = stallCodes.Where(x => x.CodeName == "TackStall" && x.IsDeleted == false).Select(x => x.GlobalCodeId).FirstOrDefault();
 
 
-            data = (from contactInfo in _ObjContext.AAYHSContact
-                    join address in _ObjContext.AAYHSContactAddresses on contactInfo.ExhibitorConfirmationEntriesAddressId equals
-                    address.AAYHSContactAddressId
-                    join states in _ObjContext.States on address.StateId equals states.StateId
-                    where contactInfo.YearlyMaintainenceId == yearlyMainId.YearlyMaintainenceId
-                    && contactInfo.IsActive == true && contactInfo.IsDeleted == false
-                    select new GetExhibitorRegistrationReport
-                    {
-                        Email1 = contactInfo.Email1,
-                        Address = address.Address,
-                        CityName = address.City,
-                        StateZipcode = states.Code + ", " + address.ZipCode,
-                        Phone1 = contactInfo.Phone1,
-
-                        exhibitorInfo = (from exhibtor in _ObjContext.Exhibitors
+            data = (from exhibtor in _ObjContext.Exhibitors
                                          join address in _ObjContext.Addresses on exhibtor.AddressId equals address.AddressId
                                          join city in _ObjContext.Cities on address.CityId equals city.CityId
                                          join state in _ObjContext.States on city.StateId equals state.StateId
                                          join zipcode in _ObjContext.ZipCodes2 on address.ZipCodeId equals zipcode.ZipCodeId
                                          where exhibtor.ExhibitorId == exhibitorId
-                                         select new ExhibitorInfo
-                                         {
-                                             ExhibitorName = exhibtor.FirstName + " " + exhibtor.LastName,
-                                             Address = address.Address,
-                                             CityName = city.Name,
-                                             StateZipcode = state.Code + ", " + zipcode.ZipCode,
-                                             Email = exhibtor.PrimaryEmail,
-                                             Phone = exhibtor.Phone
-                                         }).FirstOrDefault(),
-
+                    select new GetExhibitorRegistrationReport
+                    {
+                        ExhibitorName = exhibtor.FirstName + " " + exhibtor.LastName,
+                        Address = address.Address,
+                        CityName = city.Name,
+                        StateZipcode = state.Code + ", " + zipcode.ZipCode,
+                        Email = exhibtor.PrimaryEmail,
+                        Phone = exhibtor.Phone,
+                      
                         horseClassDetails = (from classExhibitor in _ObjContext.ExhibitorClass
                                              join classes in _ObjContext.Classes on classExhibitor.ClassId equals classes.ClassId
                                              where classExhibitor.ExhibitorId == exhibitorId
@@ -95,6 +80,26 @@ namespace AAYHS.Repository.Repository
                     });
 
             getExhibitorRegistrationReport = data.FirstOrDefault();
+
+            IEnumerable<GetAAYHSContactInfo> getAAYHSContactInfo;
+
+            getAAYHSContactInfo = (from contactInfo in _ObjContext.AAYHSContact
+                                   join address in _ObjContext.AAYHSContactAddresses on contactInfo.ExhibitorConfirmationEntriesAddressId equals
+                                   address.AAYHSContactAddressId
+                                   join states in _ObjContext.States on address.StateId equals states.StateId
+                                   where contactInfo.YearlyMaintainenceId == yearlyMainId.YearlyMaintainenceId
+                                   && contactInfo.IsActive == true && contactInfo.IsDeleted == false
+                                   select new GetAAYHSContactInfo
+                                   {
+                                       Email1 = contactInfo.Email1,
+                                       Address = address.Address,
+                                       CityName = address.City,
+                                       StateZipcode = states.Code + ", " + address.ZipCode,
+                                       Phone1 = contactInfo.Phone1,
+                                   });
+
+
+            getExhibitorRegistrationReport.getAAYHSContactInfo = getAAYHSContactInfo.FirstOrDefault();
 
             var stallAndTack = (from exhibitor in _ObjContext.Exhibitors
                                 where exhibitor.IsDeleted == false
