@@ -576,52 +576,139 @@ namespace AAYHS.Service.Service
 
             var checkFeeTypeExist = _globalCodeRepository.GetSingle(x => x.CodeName.ToLower() == addGeneralFeeRequest.FeeType.ToLower() && 
             x.CategoryId == catgeoryId && x.IsActive == true && x.IsDeleted == false);
-
-            if (checkFeeTypeExist!=null)
+            if (addGeneralFeeRequest.YearlyMaintainenceFeeId==0)
             {
-                var checkFee = _yearlyMaintenanceFeeRepository.GetSingle(x => x.FeeTypeId == checkFeeTypeExist.GlobalCodeId && 
-                x.YearlyMaintainenceId == addGeneralFeeRequest.YearlyMaintainenceId && x.IsActive == true && x.IsDeleted == false);
-
-                if (checkFee!=null)
+                if (checkFeeTypeExist != null)
                 {
-                    if (addGeneralFeeRequest.TimeFrame == "Pre")
-                    {
-                        checkFee.PreEntryFee = addGeneralFeeRequest.Amount;
-                        checkFee.ModifiedBy = actionBy;
-                        checkFee.ModifiedDate = DateTime.Now;
-                    
-                        _yearlyMaintenanceFeeRepository.Update(checkFee);
-                        _mainResponse.Success = true;
-                        _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
+                    var checkFee = _yearlyMaintenanceFeeRepository.GetSingle(x => x.FeeTypeId == checkFeeTypeExist.GlobalCodeId &&
+                    x.YearlyMaintainenceId == addGeneralFeeRequest.YearlyMaintainenceId && x.IsActive == true && x.IsDeleted == false);
 
+                    if (checkFee != null)
+                    {
+                        if (addGeneralFeeRequest.TimeFrame == "Pre")
+                        {
+                            checkFee.PreEntryFee = addGeneralFeeRequest.Amount;
+                            checkFee.ModifiedBy = actionBy;
+                            checkFee.ModifiedDate = DateTime.Now;
+
+                            _yearlyMaintenanceFeeRepository.Update(checkFee);
+                            _mainResponse.Success = true;
+                            _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
+
+                        }
+                        if (addGeneralFeeRequest.TimeFrame == "Post")
+                        {
+
+                            checkFee.PostEntryFee = addGeneralFeeRequest.Amount;
+                            checkFee.ModifiedBy = actionBy;
+                            checkFee.ModifiedDate = DateTime.Now;
+
+                            _yearlyMaintenanceFeeRepository.Update(checkFee);
+                            _mainResponse.Success = true;
+                            _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
+
+                        }
+                        if (addGeneralFeeRequest.TimeFrame == "")
+                        {
+
+                            checkFee.Amount = addGeneralFeeRequest.Amount;
+                            checkFee.ModifiedBy = actionBy;
+                            checkFee.ModifiedDate = DateTime.Now;
+
+                            _yearlyMaintenanceFeeRepository.Update(checkFee);
+                            _mainResponse.Success = true;
+                            _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
+
+                        }
                     }
-                    if (addGeneralFeeRequest.TimeFrame == "Post")
+                    else
                     {
+                        if (addGeneralFeeRequest.TimeFrame == "Pre")
+                        {
 
-                        checkFee.PostEntryFee = addGeneralFeeRequest.Amount;
-                        checkFee.ModifiedBy = actionBy;
-                        checkFee.ModifiedDate = DateTime.Now;
+                            var addGeneralFee = new YearlyMaintainenceFee
+                            {
+                                YearlyMaintainenceId = addGeneralFeeRequest.YearlyMaintainenceId,
+                                FeeTypeId = feeTypeId,
+                                PreEntryFee = addGeneralFeeRequest.Amount,
+                                PostEntryFee = 0,
+                                Amount = 0,
+                                RefundPercentage = 40,
+                                IsActive = true,
+                                IsDeleted = false,
+                                CreatedBy = actionBy,
+                                CreatedDate = DateTime.Now
+                            };
 
-                        _yearlyMaintenanceFeeRepository.Update(checkFee);
-                        _mainResponse.Success = true;
-                        _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
+                            _yearlyMaintenanceFeeRepository.Add(addGeneralFee);
+                            _mainResponse.Success = true;
+                            _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
 
-                    }
-                    if (addGeneralFeeRequest.TimeFrame == "")
-                    {
+                        }
+                        if (addGeneralFeeRequest.TimeFrame == "Post")
+                        {
 
-                        checkFee.Amount = addGeneralFeeRequest.Amount;
-                        checkFee.ModifiedBy = actionBy;
-                        checkFee.ModifiedDate = DateTime.Now;
+                            var addGeneralFee = new YearlyMaintainenceFee
+                            {
+                                YearlyMaintainenceId = addGeneralFeeRequest.YearlyMaintainenceId,
+                                FeeTypeId = feeTypeId,
+                                PreEntryFee = 0,
+                                PostEntryFee = addGeneralFeeRequest.Amount,
+                                Amount = 0,
+                                RefundPercentage = 40,
+                                IsActive = true,
+                                IsDeleted = false,
+                                CreatedBy = actionBy,
+                                CreatedDate = DateTime.Now
 
-                        _yearlyMaintenanceFeeRepository.Update(checkFee);
-                        _mainResponse.Success = true;
-                        _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
+                            };
 
+                            _yearlyMaintenanceFeeRepository.Add(addGeneralFee);
+                            _mainResponse.Success = true;
+                            _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
+
+                        }
+                        if (addGeneralFeeRequest.TimeFrame == "")
+                        {
+
+                            var addGeneralFee = new YearlyMaintainenceFee
+                            {
+                                YearlyMaintainenceId = addGeneralFeeRequest.YearlyMaintainenceId,
+                                FeeTypeId = feeTypeId,
+                                PreEntryFee = 0,
+                                PostEntryFee = 0,
+                                Amount = addGeneralFeeRequest.Amount,
+                                RefundPercentage = 40,
+                                IsActive = true,
+                                IsDeleted = false,
+                                CreatedBy = actionBy,
+                                CreatedDate = DateTime.Now
+                            };
+
+                            _yearlyMaintenanceFeeRepository.Add(addGeneralFee);
+                            _mainResponse.Success = true;
+                            _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
+
+                        }
                     }
                 }
                 else
                 {
+                    if (addGeneralFeeRequest.FeeType != "" && addGeneralFeeRequest.FeeType != null)
+                    {
+                        var feeType = new GlobalCodes
+                        {
+                            CategoryId = catgeoryId,
+                            CodeName = addGeneralFeeRequest.FeeType,
+                            Description = addGeneralFeeRequest.FeeType,
+                            IsActive = true,
+                            IsDeleted = false,
+                            CreatedBy = actionBy,
+                            CreatedDate = DateTime.Now
+                        };
+
+                        feeTypeId = _globalCodeRepository.Add(feeType).GlobalCodeId;
+                    }
                     if (addGeneralFeeRequest.TimeFrame == "Pre")
                     {
 
@@ -689,97 +776,59 @@ namespace AAYHS.Service.Service
                         _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
 
                     }
+
                 }
             }
             else
             {
-                if (addGeneralFeeRequest.FeeType != "" && addGeneralFeeRequest.FeeType != null)
-                {
-                    var feeType = new GlobalCodes
-                    {
-                        CategoryId = catgeoryId,
-                        CodeName = addGeneralFeeRequest.FeeType,
-                        Description = addGeneralFeeRequest.FeeType,
-                        IsActive = true,
-                        IsDeleted = false,
-                        CreatedBy = actionBy,
-                        CreatedDate = DateTime.Now
-                    };
+                var getYearlyMain = _yearlyMaintenanceFeeRepository.GetSingle(x => x.YearlyMaintainenceFeeId == addGeneralFeeRequest.YearlyMaintainenceFeeId);
 
-                    feeTypeId = _globalCodeRepository.Add(feeType).GlobalCodeId;
+                if (getYearlyMain!=null)
+                {
+                    if (addGeneralFeeRequest.TimeFrame == "Pre")
+                    {
+                        getYearlyMain.PreEntryFee = addGeneralFeeRequest.Amount;
+                        getYearlyMain.ModifiedBy = actionBy;
+                        getYearlyMain.ModifiedDate = DateTime.Now;
+
+                        _yearlyMaintenanceFeeRepository.Update(getYearlyMain);
+                        _mainResponse.Success = true;
+                        _mainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
+
+                    }
+                    if (addGeneralFeeRequest.TimeFrame == "Post")
+                    {
+
+                        getYearlyMain.PostEntryFee = addGeneralFeeRequest.Amount;
+                        getYearlyMain.ModifiedBy = actionBy;
+                        getYearlyMain.ModifiedDate = DateTime.Now;
+
+                        _yearlyMaintenanceFeeRepository.Update(getYearlyMain);
+                        _mainResponse.Success = true;
+                        _mainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
+
+                    }
+                    if (addGeneralFeeRequest.TimeFrame == "")
+                    {
+
+                        getYearlyMain.Amount = addGeneralFeeRequest.Amount;
+                        getYearlyMain.ModifiedBy = actionBy;
+                        getYearlyMain.ModifiedDate = DateTime.Now;
+
+                        _yearlyMaintenanceFeeRepository.Update(getYearlyMain);
+                        _mainResponse.Success = true;
+                        _mainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
+
+                    }
                 }
-                if (addGeneralFeeRequest.TimeFrame == "Pre")
+                else
                 {
-
-                    var addGeneralFee = new YearlyMaintainenceFee
-                    {
-                        YearlyMaintainenceId = addGeneralFeeRequest.YearlyMaintainenceId,
-                        FeeTypeId = feeTypeId,
-                        PreEntryFee = addGeneralFeeRequest.Amount,
-                        PostEntryFee = 0,
-                        Amount = 0,
-                        RefundPercentage = 40,
-                        IsActive = true,
-                        IsDeleted = false,
-                        CreatedBy = actionBy,
-                        CreatedDate = DateTime.Now
-                    };
-
-                    _yearlyMaintenanceFeeRepository.Add(addGeneralFee);
-                    _mainResponse.Success = true;
-                    _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
-
-                }
-                if (addGeneralFeeRequest.TimeFrame == "Post")
-                {
-
-                    var addGeneralFee = new YearlyMaintainenceFee
-                    {
-                        YearlyMaintainenceId = addGeneralFeeRequest.YearlyMaintainenceId,
-                        FeeTypeId = feeTypeId,
-                        PreEntryFee = 0,
-                        PostEntryFee = addGeneralFeeRequest.Amount,
-                        Amount = 0,
-                        RefundPercentage = 40,
-                        IsActive = true,
-                        IsDeleted = false,
-                        CreatedBy = actionBy,
-                        CreatedDate = DateTime.Now
-
-                    };
-
-                    _yearlyMaintenanceFeeRepository.Add(addGeneralFee);
-                    _mainResponse.Success = true;
-                    _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
+                    _mainResponse.Success = false;
+                    _mainResponse.Message = Constants.NO_RECORD_EXIST_WITH_ID;
 
                 }
-                if (addGeneralFeeRequest.TimeFrame == "")
-                {
-
-                    var addGeneralFee = new YearlyMaintainenceFee
-                    {
-                        YearlyMaintainenceId = addGeneralFeeRequest.YearlyMaintainenceId,
-                        FeeTypeId = feeTypeId,
-                        PreEntryFee = 0,
-                        PostEntryFee = 0,
-                        Amount = addGeneralFeeRequest.Amount,
-                        RefundPercentage = 40,
-                        IsActive = true,
-                        IsDeleted = false,
-                        CreatedBy = actionBy,
-                        CreatedDate = DateTime.Now
-                    };
-
-                    _yearlyMaintenanceFeeRepository.Add(addGeneralFee);
-                    _mainResponse.Success = true;
-                    _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
-
-                }
-
             }
-
-            
-
+                    
             return _mainResponse;
         }
 

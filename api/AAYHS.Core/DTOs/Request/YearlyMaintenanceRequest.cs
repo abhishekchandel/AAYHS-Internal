@@ -36,6 +36,7 @@ namespace AAYHS.Core.DTOs.Request
     }
     public class AddGeneralFeeRequest
     {
+        public int YearlyMaintainenceFeeId { get; set; }
         public int YearlyMaintainenceId { get; set; }
         public string TimeFrame { get; set; }
         public string FeeType { get; set; }

@@ -413,7 +413,7 @@ namespace AAYHS.Repository.Repository
 
             int horseStall = preHorseStall.Count() + postHorseStall.Count();
             int tackStall = preTackStall.Count() + postTackStall.Count();
-            int classes = preClasses.Count + postClasses.Count();
+            int classes = preClasses.Count() + postClasses.Count();
 
             int[] FeeTypeId = { horseStallFeeId, tackStallFeeId, additionalProgramsFeeId, classEntryId };
             string[] feetype = { "Stall", "Tack", "Additional Programs", "Class Entry" };

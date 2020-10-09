@@ -13,7 +13,7 @@ namespace AAYHS.Core.DTOs.Response
         public string Phone1 { get; set; }
         public ExhibitorInfo exhibitorInfo { get; set; }
         public StallAndTackStallNumber stallAndTackStallNumber { get; set; }
-        public List< HorseDetail> horseDetail { get; set; }
+        public List<HorseClassDetail> horseClassDetails { get; set; }
         public FinancialsDetail financialsDetail { get; set; }
 
     }
@@ -29,19 +29,30 @@ namespace AAYHS.Core.DTOs.Response
     }
     public class StallAndTackStallNumber
     {
-        public int HorseStallNumber { get; set; }
-        public int TackStallNumber { get; set; }
-        public int ExhibitorBirthYear { get; set; }
+        public List<HorseStall> horseStalls { get; set; }
+        public List<TackStall> tackStalls { get; set; }
+        public int ExhibitorId { get; set; }
+        public int? ExhibitorBirthYear { get; set; }
     }
-    public class HorseDetail
+    public class HorseStall
+    {
+        public int? HorseStallNumber { get; set; }
+    }
+    public class TackStall
+    {
+        public int? TackStallNumber { get; set; }
+    }
+    public class HorseClassDetail
     {
         public string HorseName { get; set; }
         public int? BackNumber { get; set; }
-        public int ExhibitorId { get; set; }
-        public bool NSBAIndicator { get; set; }
+        public string ClassNumber { get; set; }
+        public string ClassName { get; set; }
     }
     public class FinancialsDetail
     {
+        public int ClassQty { get; set; }
+        public decimal ClassAmount { get; set; }
         public int HorseStallQty { get; set; }       
         public decimal HorseStallAmount { get; set; }
         public int TackStallQty { get; set; }
@@ -72,9 +83,8 @@ namespace AAYHS.Core.DTOs.Response
         public int? BackNumber { get; set; }
         public bool NSBA { get; set; }
         public string HorseName { get; set; }
-        public string ExhibitorName { get; set; }
-        public string City { get; set; }
-        public string StateZipcode { get; set; }
+        public string ExhibitorName { get; set; }        
+        public string CityStateZipcode { get; set; }
     }
 
     public class GetPaddockReport
@@ -87,12 +97,11 @@ namespace AAYHS.Core.DTOs.Response
     public class ClassDetail
     {
         public int? BackNumber { get; set; }
-        public bool Scratch { get; set; }
-        public bool NSBA { get; set; }
+        public string Scratch { get; set; }
+        public string NSBA { get; set; }
         public string HorseName { get; set; }
         public string ExhibitorName { get; set; }
-        public string City { get; set; }
-        public string StateZipcode { get; set; }
+        public string CityStateZipcode { get; set; }
         public int Split { get; set; }
     }
 }
