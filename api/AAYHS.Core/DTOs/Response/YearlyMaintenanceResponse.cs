@@ -84,6 +84,7 @@ namespace AAYHS.Core.DTOs.Response
     {
         public int YearlyMaintenanceFeeId { get; set; }
         public string TimeFrame { get; set; }
+        public int FeeTypeId { get; set; }
         public string FeeType { get; set; }
         public decimal Amount { get; set; }
         public bool Active { get; set; }

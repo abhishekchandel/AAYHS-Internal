@@ -208,6 +208,7 @@ namespace AAYHS.Repository.Repository
                         getGeneralFeesResponse = new GetGeneralFeesResponse();
                         getGeneralFeesResponse.YearlyMaintenanceFeeId = getGeneralFees[i].YearlyMaintenanceFeeId;
                         getGeneralFeesResponse.TimeFrame = "Pre";
+                        getGeneralFeesResponse.FeeTypeId = getGeneralFees[i].FeeTypeId;
                         getGeneralFeesResponse.FeeType= getGeneralFees[i].FeeType;
                         getGeneralFeesResponse.Amount = getGeneralFees[i].PreEntryFee;
                         getGeneralFeesResponse.Active= getGeneralFees[i].Active;
@@ -219,6 +220,7 @@ namespace AAYHS.Repository.Repository
                         getGeneralFeesResponse = new GetGeneralFeesResponse();
                         getGeneralFeesResponse.YearlyMaintenanceFeeId = getGeneralFees[i].YearlyMaintenanceFeeId;
                         getGeneralFeesResponse.TimeFrame = "Post";
+                        getGeneralFeesResponse.FeeTypeId = getGeneralFees[i].FeeTypeId;
                         getGeneralFeesResponse.FeeType = getGeneralFees[i].FeeType;
                         getGeneralFeesResponse.Amount = getGeneralFees[i].PostEntryFee;
                         getGeneralFeesResponse.Active = getGeneralFees[i].Active;
@@ -232,6 +234,7 @@ namespace AAYHS.Repository.Repository
                             getGeneralFeesResponse = new GetGeneralFeesResponse();
                             getGeneralFeesResponse.YearlyMaintenanceFeeId = getGeneralFees[i].YearlyMaintenanceFeeId;
                             getGeneralFeesResponse.TimeFrame = "";
+                            getGeneralFeesResponse.FeeTypeId = getGeneralFees[i].FeeTypeId;
                             getGeneralFeesResponse.FeeType = getGeneralFees[i].FeeType;
                             getGeneralFeesResponse.Amount = getGeneralFees[i].Amount;
                             getGeneralFeesResponse.Active = getGeneralFees[i].Active;
