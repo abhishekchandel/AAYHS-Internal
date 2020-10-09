@@ -17,7 +17,7 @@ namespace AAYHS.Service.IService
         MainResponse DeleteYearly(int yearlyMaintainenceId, string actionBy);
         MainResponse AddADFee(AddAdFee addAdFee, string actionBy);
         MainResponse GetAllAdFees(int yearlyMaintenanceId);
-        MainResponse DeleteAdFee(int yearlyMaintenanceFeeId, string actionBy);
+        MainResponse DeleteAdFee(DeleteAdFee deleteAd , string actionBy);
         MainResponse GetAllUsersApproved();
         MainResponse RemoveApprovedUser(int userId, string actionBy);
         MainResponse GetAllRoles();

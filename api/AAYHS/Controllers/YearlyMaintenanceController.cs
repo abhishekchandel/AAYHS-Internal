@@ -148,11 +148,11 @@ namespace AAYHS.API.Controllers
         /// </summary>
         /// <param name="yearlyMaintenanceFeeId"></param>
         /// <returns></returns>
-        [HttpDelete]
-        public ActionResult DeleteAdFee(int yearlyMaintenanceFeeId)
+        [HttpPost]
+        public ActionResult DeleteAdFee(DeleteAdFee deleteAd)
         {
             string actionBy = User.Identity.Name;
-            _mainResponse = _yearlyMaintenanceService.DeleteAdFee(yearlyMaintenanceFeeId, actionBy);
+            _mainResponse = _yearlyMaintenanceService.DeleteAdFee(deleteAd, actionBy);
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }

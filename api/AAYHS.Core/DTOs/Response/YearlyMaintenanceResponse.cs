@@ -51,6 +51,7 @@ namespace AAYHS.Core.DTOs.Response
     public class GetAdFees
     {
         public int YearlyMaintenanceFeeId { get; set; }
+        public int AdSizeId { get; set; }
         public string AdSize  { get; set; }
         public decimal Amount { get; set; }
         public bool Active { get; set; }
@@ -83,6 +84,7 @@ namespace AAYHS.Core.DTOs.Response
     {
         public int YearlyMaintenanceFeeId { get; set; }
         public string TimeFrame { get; set; }
+        public int FeeTypeId { get; set; }
         public string FeeType { get; set; }
         public decimal Amount { get; set; }
         public bool Active { get; set; }
@@ -90,6 +92,7 @@ namespace AAYHS.Core.DTOs.Response
     public class GetGeneralFees
     {
         public int YearlyMaintenanceFeeId { get; set; }
+        public int FeeTypeId { get; set; }
         public string TimeFrame { get; set; }
         public string FeeType { get; set; }
         public decimal PreEntryFee { get; set; }
@@ -113,10 +116,15 @@ namespace AAYHS.Core.DTOs.Response
     }
     public class GetContactInfo
     {
-        public int AAYHSContactId { get; set; }
-        public DateTime ShowStart{ get; set; }
+        public DateTime ShowStart { get; set; }
         public DateTime ShowEnd { get; set; }
         public string ShowLocation { get; set; }
+        public ContactInfo contactInfo { get; set; }
+        
+    }
+    public class ContactInfo
+    {
+        public int AAYHSContactId { get; set; }
         public string Email1 { get; set; }
         public string Email2 { get; set; }
         public string Phone1 { get; set; }

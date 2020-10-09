@@ -30,12 +30,18 @@ namespace AAYHS.Core.DTOs.Request
         public string AdSize { get; set; }
         public decimal Amount { get; set; }
     }
+    public class DeleteAdFee
+    {
+        public int YearlyMaintenanceFeeId { get; set; }
+        public int AdSizeId { get; set; }
+    }
     public class AddClassCategoryRequest
     {
         public string CategoryName { get; set; }
     }
     public class AddGeneralFeeRequest
     {
+        public int YearlyMaintainenceFeeId { get; set; }
         public int YearlyMaintainenceId { get; set; }
         public string TimeFrame { get; set; }
         public string FeeType { get; set; }
@@ -45,6 +51,9 @@ namespace AAYHS.Core.DTOs.Request
     {
         public int AAYHSContactId { get; set; }
         public int YearlyMaintenanceId { get; set; }
+        public DateTime ShowStart { get; set; }
+        public DateTime ShowEnd { get; set; }
+        public string Location { get; set; }
         public string Email1 { get; set; }
         public string Email2 { get; set; }
         public string Phone1 { get; set; }
@@ -67,6 +76,7 @@ namespace AAYHS.Core.DTOs.Request
     public class RemoveGeneralFee
     {
         public int YearlyMaintenanceFeeId { get; set; }
+        public int FeeTypeId { get; set; }
         public string TimeFrame { get; set; }
     }
     public class AddRefundRequest

@@ -217,7 +217,7 @@ namespace AAYHS.Repository.Repository
                                        join address in _context.Addresses on sponsor.AddressId equals address.AddressId
                                        join city in _context.Cities on address.CityId equals city.CityId
                                        join state in _context.States on city.StateId equals state.StateId 
-                                       join zipcode in _context.ZipCodes on address.ZipCodeId equals zipcode.ZipCodeId into zipcode1
+                                       join zipcode in _context.ZipCodes2 on address.ZipCodeId equals zipcode.ZipCodeId into zipcode1
                                        from zipcode2 in zipcode1.DefaultIfEmpty()
                                        where sponsorExhibitor.IsActive==true && sponsorExhibitor.IsDeleted==false &&
                                        sponsor.IsActive==true && sponsor.IsDeleted==false &&
@@ -232,7 +232,7 @@ namespace AAYHS.Repository.Repository
                                          Address=address.Address,
                                          City=city.Name,
                                          State=state.Name, 
-                                         Zipcode= zipcode2!=null? zipcode2.Number:0,
+                                         Zipcode= zipcode2!=null? Convert.ToInt32( zipcode2.ZipCode):0,
                                          Email =sponsor.Email,
                                          Amount=sponsor.AmountReceived,
                                          SponsorTypeId=sponsorExhibitor.SponsorTypeId,
@@ -413,7 +413,7 @@ namespace AAYHS.Repository.Repository
 
             int horseStall = preHorseStall.Count() + postHorseStall.Count();
             int tackStall = preTackStall.Count() + postTackStall.Count();
-            int classes = preClasses.Count + postClasses.Count();
+            int classes = preClasses.Count() + postClasses.Count();
 
             int[] FeeTypeId = { horseStallFeeId, tackStallFeeId, additionalProgramsFeeId, classEntryId };
             string[] feetype = { "Stall", "Tack", "Additional Programs", "Class Entry" };

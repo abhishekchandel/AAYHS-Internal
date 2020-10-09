@@ -66,5 +66,6 @@ namespace AAYHS.Core.Shared.Static
         public const string EMAIL_ALREADY_EXIST = "Email already exist";
         public const string FEE_ALREADY_IN_USE = "This fee already in use";
         public const string CLASS_CATEGORY_ALREADY_IN_USE = "This class category already in use";
+        public const string FEE_ALREADY_EXIST = "This fee already exist";
     }
 }

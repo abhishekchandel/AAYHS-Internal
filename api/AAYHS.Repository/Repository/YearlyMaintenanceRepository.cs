@@ -138,6 +138,7 @@ namespace AAYHS.Repository.Repository
                     select new GetAdFees
                     { 
                       YearlyMaintenanceFeeId=fees.YearlyMaintainenceFeeId,
+                      AdSizeId=adSize.GlobalCodeId,
                       AdSize=adSize.CodeName,
                       Amount=fees.Amount,
                       Active=fees.IsActive
@@ -187,6 +188,7 @@ namespace AAYHS.Repository.Repository
                     select new GetGeneralFees
                     {
                         YearlyMaintenanceFeeId=yearlyFee.YearlyMaintainenceFeeId,
+                        FeeTypeId=feeType.GlobalCodeId,
                         FeeType=feeType.CodeName,
                         PreEntryFee=yearlyFee.PreEntryFee,
                         PostEntryFee=yearlyFee.PostEntryFee,
@@ -206,6 +208,7 @@ namespace AAYHS.Repository.Repository
                         getGeneralFeesResponse = new GetGeneralFeesResponse();
                         getGeneralFeesResponse.YearlyMaintenanceFeeId = getGeneralFees[i].YearlyMaintenanceFeeId;
                         getGeneralFeesResponse.TimeFrame = "Pre";
+                        getGeneralFeesResponse.FeeTypeId = getGeneralFees[i].FeeTypeId;
                         getGeneralFeesResponse.FeeType= getGeneralFees[i].FeeType;
                         getGeneralFeesResponse.Amount = getGeneralFees[i].PreEntryFee;
                         getGeneralFeesResponse.Active= getGeneralFees[i].Active;
@@ -217,6 +220,7 @@ namespace AAYHS.Repository.Repository
                         getGeneralFeesResponse = new GetGeneralFeesResponse();
                         getGeneralFeesResponse.YearlyMaintenanceFeeId = getGeneralFees[i].YearlyMaintenanceFeeId;
                         getGeneralFeesResponse.TimeFrame = "Post";
+                        getGeneralFeesResponse.FeeTypeId = getGeneralFees[i].FeeTypeId;
                         getGeneralFeesResponse.FeeType = getGeneralFees[i].FeeType;
                         getGeneralFeesResponse.Amount = getGeneralFees[i].PostEntryFee;
                         getGeneralFeesResponse.Active = getGeneralFees[i].Active;
@@ -230,6 +234,7 @@ namespace AAYHS.Repository.Repository
                             getGeneralFeesResponse = new GetGeneralFeesResponse();
                             getGeneralFeesResponse.YearlyMaintenanceFeeId = getGeneralFees[i].YearlyMaintenanceFeeId;
                             getGeneralFeesResponse.TimeFrame = "";
+                            getGeneralFeesResponse.FeeTypeId = getGeneralFees[i].FeeTypeId;
                             getGeneralFeesResponse.FeeType = getGeneralFees[i].FeeType;
                             getGeneralFeesResponse.Amount = getGeneralFees[i].Amount;
                             getGeneralFeesResponse.Active = getGeneralFees[i].Active;
@@ -275,60 +280,66 @@ namespace AAYHS.Repository.Repository
             GetContactInfo getContactInfo = new GetContactInfo();
             IEnumerable<GetContactInfo> data;
 
-            data = (from contactInfo in _ObjContext.AAYHSContact
-                    join yearlyMaintenance in _ObjContext.YearlyMaintainence on contactInfo.YearlyMaintainenceId equals
-                    yearlyMaintenance.YearlyMaintainenceId into yearlyMaintenance1
-                    from yearlyMaintenance2 in yearlyMaintenance1.DefaultIfEmpty()
-                    where contactInfo.YearlyMaintainenceId == yearlyMaintenanceId
+
+            data = (from yearly in _ObjContext.YearlyMaintainence
+                    where yearly.YearlyMaintainenceId == yearlyMaintenanceId
                     select new GetContactInfo
                     {
-                        AAYHSContactId = contactInfo.AAYHSContactId,
-                        ShowStart = yearlyMaintenance2.ShowStartDate,
-                        ShowEnd = yearlyMaintenance2.ShowEndDate,
-                        ShowLocation = yearlyMaintenance2.Location,
-                        Email1 = contactInfo.Email1,
-                        Email2 = contactInfo.Email2,
-                        Phone1 = contactInfo.Phone1,
-                        Phone2 = contactInfo.Phone2,
-                        exhibitorSponsorConfirmationResponse = (from address in _ObjContext.AAYHSContactAddresses
-                                           where contactInfo.ExhibitorSponsorConfirmationAddressId == address.AAYHSContactAddressId                                          
-                                           && address.IsDeleted == false
-                                           select new ExhibitorSponsorConfirmationResponse
-                                           { 
-                                             AAYHSContactAddressId=address.AAYHSContactAddressId,
-                                             Address=address.Address,
-                                             City=address.City,
-                                             StateId=address.StateId,
-                                             ZipCode=address.ZipCode                                       
-                                           }).FirstOrDefault(),
-                        exhibitorSponsorRefundStatementResponse = (from address in _ObjContext.AAYHSContactAddresses
-                                                                   where contactInfo.ExhibitorSponsorRefundStatementAddressId == address.AAYHSContactAddressId
-                                                                   && address.IsDeleted == false
-                                                                   select new ExhibitorSponsorRefundStatementResponse
-                                                                   {
-                                                                       AAYHSContactAddressId = address.AAYHSContactAddressId,
-                                                                       Address = address.Address,
-                                                                       City = address.City,
-                                                                       StateId = address.StateId,
-                                                                       ZipCode = address.ZipCode
-                                                                   }).FirstOrDefault(),
-                        exhibitorConfirmationEntriesResponse = (from address in _ObjContext.AAYHSContactAddresses
-                                                                where contactInfo.ExhibitorConfirmationEntriesAddressId == address.AAYHSContactAddressId
-                                                                && address.IsDeleted == false
-                                                                select new ExhibitorConfirmationEntriesResponse
-                                                                {
-                                                                    AAYHSContactAddressId = address.AAYHSContactAddressId,
-                                                                    Address = address.Address,
-                                                                    City = address.City,
-                                                                    StateId = address.StateId,
-                                                                    ZipCode = address.ZipCode
-                                                                }).FirstOrDefault()
-                    }); 
+                        ShowStart = yearly.ShowStartDate,
+                        ShowEnd = yearly.ShowEndDate,
+                        ShowLocation = yearly.Location,
 
-            if (data.Count()!=0)
-            {
-                getContactInfo = data.FirstOrDefault();
-            }
+                        contactInfo = (from contactInfo in _ObjContext.AAYHSContact
+                                       where contactInfo.YearlyMaintainenceId == yearlyMaintenanceId
+                                       select new ContactInfo
+                                       {
+                                           AAYHSContactId = contactInfo.AAYHSContactId,
+                                           Email1 = contactInfo.Email1,
+                                           Email2 = contactInfo.Email2,
+                                           Phone1 = contactInfo.Phone1,
+                                           Phone2 = contactInfo.Phone2,
+
+
+                                       exhibitorSponsorConfirmationResponse = (from address in _ObjContext.AAYHSContactAddresses
+                                                                               where contactInfo.ExhibitorSponsorConfirmationAddressId == address.AAYHSContactAddressId
+                                                                               && address.IsDeleted == false
+                                                                               select new ExhibitorSponsorConfirmationResponse
+                                                                               {
+                                                                                   AAYHSContactAddressId = address.AAYHSContactAddressId,
+                                                                                   Address = address.Address,
+                                                                                   City = address.City,
+                                                                                   StateId = address.StateId,
+                                                                                   ZipCode = address.ZipCode
+                                                                               }).FirstOrDefault(),
+                                           exhibitorSponsorRefundStatementResponse = (from address in _ObjContext.AAYHSContactAddresses
+                                                                                      where contactInfo.ExhibitorSponsorRefundStatementAddressId == address.AAYHSContactAddressId
+                                                                                      && address.IsDeleted == false
+                                                                                      select new ExhibitorSponsorRefundStatementResponse
+                                                                                      {
+                                                                                          AAYHSContactAddressId = address.AAYHSContactAddressId,
+                                                                                          Address = address.Address,
+                                                                                          City = address.City,
+                                                                                          StateId = address.StateId,
+                                                                                          ZipCode = address.ZipCode
+                                                                                      }).FirstOrDefault(),
+                                           exhibitorConfirmationEntriesResponse = (from address in _ObjContext.AAYHSContactAddresses
+                                                                                   where contactInfo.ExhibitorConfirmationEntriesAddressId == address.AAYHSContactAddressId
+                                                                                   && address.IsDeleted == false
+                                                                                   select new ExhibitorConfirmationEntriesResponse
+                                                                                   {
+                                                                                       AAYHSContactAddressId = address.AAYHSContactAddressId,
+                                                                                       Address = address.Address,
+                                                                                       City = address.City,
+                                                                                       StateId = address.StateId,
+                                                                                       ZipCode = address.ZipCode
+                                                                                   }).FirstOrDefault()
+                                       }).FirstOrDefault()
+
+
+                    });
+           
+            getContactInfo = data.FirstOrDefault();
+           
             return getContactInfo;
         }
 
