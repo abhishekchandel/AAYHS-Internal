@@ -125,9 +125,10 @@
 
                                             <div class="form-group">
                                                 <label>State <span>*</span></label>
-                                                <input   class="form-control" required placeholder="state" name="state"
+                                                <input  autocomplete="new-password"
+                                                 class="form-control" required placeholder="State" name="state"
                                                 #state="ngModel" [(ngModel)]="seletedStateName" (keyup)="filterStates($event.target.value,true)"
-                                                value="{{seletedStateName}}" [matAutocomplete]="stateauto">
+                                                value="{{seletedStateName}}" type="search" [matAutocomplete]="stateauto">
 
                                                 <mat-autocomplete #stateauto="matAutocomplete">
                                                     <mat-option *ngFor="let option of statefilteredOptions"
@@ -143,9 +144,10 @@
                                                 <div class="col-md-7">
                                                     <div class="form-group">
                                                         <label>City <span>*</span></label>
-                                                        <input   class="form-control" required placeholder="city" name="city"
+                                                        <input  autocomplete="new-password"
+                                                         class="form-control" required placeholder="City" name="city"
                                                         #city="ngModel" [(ngModel)]="seletedCityName" (keyup)="filterCities($event.target.value,true)"
-                                                        value="{{seletedCityName}}" [matAutocomplete]="cityauto">
+                                                        value="{{seletedCityName}}" type="search" [matAutocomplete]="cityauto">
         
                                                         <mat-autocomplete #cityauto="matAutocomplete">
                                                             <mat-option *ngFor="let option of cityfilteredOptions"

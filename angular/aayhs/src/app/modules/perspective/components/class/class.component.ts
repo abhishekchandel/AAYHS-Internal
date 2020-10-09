@@ -430,8 +430,13 @@ export class ClassComponent implements OnInit {
   }
 
   addExhibitorToClass() {
-debugger
+
     if( this.exhibitorId==null ||  this.exhibitorId==undefined)
+    {
+      return;
+    }
+
+    if( this.horseId==null ||  this.horseId==undefined)
     {
       return;
     }
@@ -1167,11 +1172,14 @@ table.pdfTable tbody tr td{
 
 
   setFilteredclassexhibitor(id,event:any) {
+    
     if (event.isUserInput) {
+   this.exhibitorId = id;
+   this.horseId=null;
     this.loading = true;
     this.classService.getExhibitorHorses(id).subscribe(response => {
       this.exhibitorsHorsesResponse = response.Data.getExhibitorHorses;
-      this.exhibitorId = id
+      
       this.loading = false;
     }, error => {
       this.exhibitorsHorsesResponse = null;

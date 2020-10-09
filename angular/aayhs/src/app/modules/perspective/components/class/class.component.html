@@ -247,7 +247,7 @@
 																   #classexhibitor="ngModel" [(ngModel)]="seletedclassexhibitorname"
 																   value="{{seletedclassexhibitorname}}"
 																   (keyup)="filterclassexhibitor($event.target.value,true)"
-																   [matAutocomplete]="classexhibitorauto">
+																   type="search" [matAutocomplete]="classexhibitorauto">
 																   <span class="help-block"
 																   *ngIf="exhibitorId==null && (entriesForm.submitted || classexhibitor.touched)">
 																   Please select exhibitor</span>
@@ -429,20 +429,7 @@
 														<td data-label="Back No">
 
 
-															<!-- <select class="dynDataSeclect" name="backNumber" required
-																[(ngModel)]="backNumber" #backNumberControl="ngModel"
-																(change)="getExhibitorDetail($event.target.value)">
-																<option [ngValue]="null">
-																	Select Back Number
-																</option>
-																<option *ngFor="let backNumber of backNumbersResponse"
-																	[value]="backNumber.BackNumber">
-																	{{backNumber.BackNumber}}
-																</option>
-															</select>
-															<span class="error"
-																*ngIf="(resultForm.submitted || backNumberControl.touched) && backNumberControl.invalid">Please
-																select back number</span> -->
+															
 
 
 																<div class="form-group"> 
@@ -452,7 +439,7 @@
 																   #backnumber="ngModel" [(ngModel)]="seletedbacknumbername"
 																   value="{{seletedbacknumbername}}"
 																   (keyup)="filterbacknumber($event.target.value,true)"
-																   [matAutocomplete]="backnumberauto">
+																   type="search" [matAutocomplete]="backnumberauto">
 																   <span class="help-block"
 																   *ngIf="backNumber==null && (entriesForm.submitted || backnumber.touched)">
 																   Please select back number</span>

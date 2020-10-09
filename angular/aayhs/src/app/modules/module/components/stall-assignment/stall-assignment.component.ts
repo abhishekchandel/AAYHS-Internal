@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { StallService } from '../../../../core/services/stall.service';
 import { MatDialogRef, MatDialogConfig, MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackbarComponent } from '../../../../shared/ui/mat-snackbar/mat-snackbar.component';
-
+import { GroupService } from 'src/app/core/services/group.service';
 
 @Component({
   selector: 'app-stall-assignment',
@@ -19,13 +19,27 @@ export class StallAssignmentComponent implements OnInit {
   hoverBookedByType:any;
   hoverStallType:any;
 
-  constructor( private stallService: StallService,
+  constructor(private groupService: GroupService,
+     private stallService: StallService,
     private snackBar: MatSnackbarComponent,
    ) { }
 
   ngOnInit(): void {
+    this.getAllStallTypes();
     this.getAllAssignedStalls();
   }
+  getAllStallTypes() {
+
+    this.StallTypes = [];
+    this.groupService.getGlobalCodes('StallType').subscribe(response => {
+      if (response.Data != null && response.Data.totalRecords > 0) {
+        this.StallTypes = response.Data.globalCodeResponse;
+      }
+    }, error => {
+
+    })
+  }
+
   getAllAssignedStalls() {
     this.loading = true;
     return new Promise((resolve, reject) => {
@@ -74,6 +88,7 @@ export class StallAssignmentComponent implements OnInit {
   }
 
   ShowStallDetail(val) {
+    debugger
     var checkInAllassigned = this.allAssignedStalls.filter((x) => { return x.StallId == val });
     
     if (checkInAllassigned != null && checkInAllassigned != undefined && checkInAllassigned.length > 0)

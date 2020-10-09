@@ -191,4 +191,6 @@ export class ExhibitorService {
   getGlobalCodes(type: string) {
     return this.http.get<any>(`${this.api}CommonAPI/GetGlobalCode?categoryName=${type}`);
   }
+
+
 }

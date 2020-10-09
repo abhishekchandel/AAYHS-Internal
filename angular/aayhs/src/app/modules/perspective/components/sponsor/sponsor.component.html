@@ -107,9 +107,10 @@
 
 											<div class="form-group">
                                                 <label>State <span>*</span></label>
-                                                <input   class="form-control" required placeholder="state" name="state"
+												<input autocomplete="new-password"
+												  class="form-control" required placeholder="State" name="state"
                                                 #state="ngModel" [(ngModel)]="seletedStateName" (keyup)="filterStates($event.target.value,true)"
-                                                value="{{seletedStateName}}" [matAutocomplete]="stateauto">
+                                                value="{{seletedStateName}}" type="search" [matAutocomplete]="stateauto">
 
                                                 <mat-autocomplete #stateauto="matAutocomplete">
                                                     <mat-option *ngFor="let option of statefilteredOptions"
@@ -174,9 +175,10 @@
 												<div class="col-md-7">
 													<div class="form-group">
                                                         <label>City <span>*</span></label>
-                                                        <input   class="form-control" required placeholder="city" name="city"
+														<input autocomplete="new-password" 
+														 class="form-control" required placeholder="City" name="city"
                                                         #city="ngModel" [(ngModel)]="seletedCityName" (keyup)="filterCities($event.target.value,true)"
-                                                        value="{{seletedCityName}}" [matAutocomplete]="cityauto">
+                                                        value="{{seletedCityName}}" type="search" [matAutocomplete]="cityauto">
         
                                                         <mat-autocomplete #cityauto="matAutocomplete">
                                                             <mat-option *ngFor="let option of cityfilteredOptions"
@@ -281,13 +283,14 @@
 
 														 <td data-label="Sponsor Exhibitor" colspan="2">
 															<div class="form-group"> 
-																 <input class="form-control" 
+																 <input
+																 class="form-control" 
 																required
 																placeholder="sponsor exhibitor" name="sponsorexhibitor"
 																#sponsorexhibitor="ngModel" [(ngModel)]="seletedsponsorexhibitorname"
 																value="{{seletedsponsorexhibitorname}}"
 																(keyup)="filtersponsorexhibitor($event.target.value,true)"
-																[matAutocomplete]="sponsorexhibitorauto">
+																type="search" [matAutocomplete]="sponsorexhibitorauto">
 																<span class="help-block"
 																*ngIf="exhibitorId==null && (sponsorExhibitorForm.submitted || sponsorexhibitor.touched)">
 																Please select exhibitor</span>
@@ -446,20 +449,6 @@
 															</select>
 
 
-															<!-- <div class="form-group"> 
-																<input class="form-control" 
-															   required
-															   placeholder="Exh Name/Horse Name" 
-															   (keyup)="filterclassexhibitorhorse($event.target.value,true)"
-															   [matAutocomplete]="exhibitorhorseclassauto">
-														   </div>
-			   
-															   <mat-autocomplete #exhibitorhorseclassauto="matAutocomplete">
-																   <mat-option *ngFor="let item of list.ClassExhibitorsAndHorses"
-																   [value]="item">
-																   {{item}}
-																   </mat-option>
-															   </mat-autocomplete> -->
 
 														</td>
 														
@@ -475,23 +464,7 @@
 													<tr id="sponsorClassesentry">
 
 														<td data-label="Class Name" colspan="2">
-															<!-- <select class="dynDataSeclect" name="sponsorclass" required
-																[(ngModel)]="sponsorClassId"
-																#sponsorClassControl="ngModel"
-																(change)="setSponsorClass($event.target.value)">
-																<option disabled="true" [ngValue]="null"
-																	class="selectDropdown">Select Class</option>
-																<option class="selectDropdown" [value]="item.ClassId"
-																	*ngFor="let item of UnassignedSponsorClasses">
-																	{{item.Name}}/
-																	{{item.ClassNumber}}/  
-																	{{item.AgeGroup}}
-																</option>
-															</select>
-															<span class="help-block"
-																*ngIf="(sponsorClassForm.submitted || sponsorClassControl.touched) && sponsorClassControl.invalid">Please
-																select class
-															</span> -->
+															
 
 
 															<div class="form-group"> 
@@ -501,7 +474,7 @@
 															   #sponsorclass="ngModel" [(ngModel)]="seletedsponsorclassname"
 															   value="{{seletedsponsorclassname}}"
 															   (keyup)="filtersponsorclass($event.target.value,true)"
-															   [matAutocomplete]="sponsorclassauto">
+															   type="search" [matAutocomplete]="sponsorclassauto">
 															   <span class="help-block"
 															   *ngIf="sponsorClassId==null && (sponsorClassForm.submitted || sponsorclass.touched)">
 															   Please select class</span>

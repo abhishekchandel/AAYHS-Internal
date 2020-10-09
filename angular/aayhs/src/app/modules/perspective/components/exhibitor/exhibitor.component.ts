@@ -25,7 +25,16 @@ import { HttpEventType } from '@angular/common/http';
 import { MatPaginator } from '@angular/material/paginator';
 import { ExhibitorStallComponent } from '../stall/exhibitorstall.component';
 import { environment } from 'src/environments/environment';
-import { MatAutocompleteModule } from '@angular/material/autocomplete'
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ReportService } from 'src/app/core/services/report.service';
+import 'jspdf-autotable';
+import { UserOptions } from 'jspdf-autotable';
+import * as jsPDF from 'jspdf';
+
+interface jsPDFWithPlugin extends jsPDF {
+  autoTable: (options: UserOptions) => jsPDF;
+}
+
 
 @Component({
   selector: 'app-exhibitor',
@@ -110,8 +119,8 @@ export class ExhibitorComponent implements OnInit {
   horsestalllength: number = 0;
   tackstalllength: number = 0;
   UnassignedStallNumbers: any = [];
-  
- 
+
+
 
   minDate = moment(new Date()).format('YYYY-MM-DD');
   //for binding images with server url
@@ -160,8 +169,8 @@ export class ExhibitorComponent implements OnInit {
     State: null,
   };
 
-  seletedStateName: string="";
-  seletedCityName: string="";
+  seletedStateName: string = "";
+  seletedCityName: string = "";
   seletedhorseName: string = "";
   seletedsponsorName: string = "";
   seletedclassName: string = "";
@@ -172,12 +181,18 @@ export class ExhibitorComponent implements OnInit {
   filteredClassesOption: Observable<string[]>;
 
 
+  ExhibitorRegistrationReportResponse: any;
+  selectedExhibitorId: null;
+  reportName: string = "";
+  reportType: string = "downloadPDF";
+
   constructor(
     public dialog: MatDialog,
     private exhibitorService: ExhibitorService,
     private snackBar: MatSnackbarComponent,
     private data: GlobalService,
-    private sponsorService: SponsorService
+    private sponsorService: SponsorService,
+    private reportService: ReportService
   ) { }
 
   ngOnInit(): void {
@@ -264,6 +279,7 @@ export class ExhibitorComponent implements OnInit {
     this.getAllSponsorTypes();
     this.getScannedDocuments(id);
     this.getFees();
+    this.selectedExhibitorId = id;
   }
 
   resetForm() {
@@ -336,12 +352,12 @@ export class ExhibitorComponent implements OnInit {
     this.horsestalllength = 0;
     this.tackstalllength = 0;
 
-    this.cityfilteredOptions=null;
-    this.zipCodesResponse=null;
-    this.filteredHorsesOption=null;
-    this.filteredSponsorOption=null;
-    this.filteredClassesOption=null;
-    
+    this.cityfilteredOptions = null;
+    this.zipCodesResponse = null;
+    this.filteredHorsesOption = null;
+    this.filteredSponsorOption = null;
+    this.filteredClassesOption = null;
+
   }
 
   getNext(event) {
@@ -798,9 +814,8 @@ export class ExhibitorComponent implements OnInit {
   }
 
   addClassToExhibitor() {
-    if(this.linkedClassId==null && this.linkedClassId==undefined)
-    {
-return;
+    if (this.linkedClassId == null && this.linkedClassId == undefined) {
+      return;
     }
     this.loading = true;
     var addClass = {
@@ -887,7 +902,7 @@ return;
     this.loading = true;
     this.exhibitorService.getAllSponsors(id).subscribe(response => {
       this.sponsors = response.Data.getSponsorForExhibitors;
-      this.filteredSponsorOption= response.Data.getSponsorForExhibitors;
+      this.filteredSponsorOption = response.Data.getSponsorForExhibitors;
       this.loading = false;
     }, error => {
       this.loading = false;
@@ -897,8 +912,7 @@ return;
   }
 
   addSponsorToExhibitor() {
-    if(this.linkedSponsorId==null|| this.linkedSponsorId==undefined)
-    {
+    if (this.linkedSponsorId == null || this.linkedSponsorId == undefined) {
       return;
     }
     this.loading = true;
@@ -1551,16 +1565,136 @@ return;
     debugger
     if (event.isUserInput) {
       this.loading = true;
-    this.linkedClassId = id;
-    this.exhibitorService.getClassDetail(Number(id), this.exhibitorInfo.ExhibitorId).subscribe(response => {
-      this.classDetails = response.Data;
-      this.showScratch = true;
-      this.loading = false;
-    }, error => {
-      this.loading = false;
-      this.classDetails = null;
-    })
+      this.linkedClassId = id;
+      this.exhibitorService.getClassDetail(Number(id), this.exhibitorInfo.ExhibitorId).subscribe(response => {
+        this.classDetails = response.Data;
+        this.showScratch = true;
+        this.loading = false;
+      }, error => {
+        this.loading = false;
+        this.classDetails = null;
+      })
     }
+  }
+
+
+
+
+
+  getExhibitorRegistrationReport() {
+
+    if (this.selectedExhibitorId == null || this.selectedExhibitorId == undefined || Number(this.selectedExhibitorId) <= 0) {
+      this.snackBar.openSnackBar("Please select exhibitor!", 'Close', 'red-snackbar');
+      return;
+    }
+
+    return new Promise((resolve, reject) => {
+      this.loading = true;
+      this.reportName = "ExhibitorRegistrationReport#15";
+      this.ExhibitorRegistrationReportResponse = null;
+      this.reportService.getExhibitorRegistrationReport(Number(this.selectedExhibitorId)).subscribe(response => {
+        this.ExhibitorRegistrationReportResponse = response.Data;
+        this.loading = false;
+      }, error => {
+        this.ExhibitorRegistrationReportResponse = null;
+        this.loading = false;
+      })
+      resolve();
+    });
+
+  }
+  
+  saveExhibitorRegistrationReportPDF(): void {
+    let doc = new jsPDF("p", "mm", "a4") as jsPDFWithPlugin;
+    doc.setFontSize(10);
+    // doc.setFontType("bold");
+    doc.text('Address :', 10, 10);
+    doc.text(this.ExhibitorRegistrationReportResponse.Address, 35, 10);
+
+    doc.text('City Name :', 10, 15);
+    doc.text(this.ExhibitorRegistrationReportResponse.CityName, 35, 15)
+
+    doc.text('StateZipcode :', 10, 20);
+    doc.text(this.ExhibitorRegistrationReportResponse.StateZipcode, 35, 20);
+
+    doc.text('Email :', 10, 25);
+    doc.text(this.ExhibitorRegistrationReportResponse.Email1, 35, 20);
+
+    doc.text('Phone :', 10, 30);
+    doc.text(this.ExhibitorRegistrationReportResponse.Phone1, 35, 20);
+    doc.text('Print Date :', 10, 35);
+    doc.text(new Date(), 35, 20);
+
+
+
+
+
+    var img = new Image()
+    img.src = 'assets/images/logo.png'
+    doc.addImage(img, 'png', 190, 5, 16, 20)
+
+
+    doc.text('Sponsored By :', 100, 30);
+
+    doc.line(0, 33, 300, 33);
+
+    doc.setLineWidth(5.0);
+
+
+
+    doc.text(this.ExhibitorRegistrationReportResponse.sponsorInfo[0].SponsorName, 10, 40);
+    doc.text(this.ExhibitorRegistrationReportResponse.sponsorInfo[0].City + ' ' + this.ExhibitorRegistrationReportResponse.sponsorInfo[0].StateZipcode, 10, 45);
+
+
+    doc.text(this.ExhibitorRegistrationReportResponse.sponsorInfo[1].SponsorName, 130, 40);
+    doc.text(this.ExhibitorRegistrationReportResponse.sponsorInfo[1].City + ' ' + this.ExhibitorRegistrationReportResponse.sponsorInfo[1].StateZipcode, 130, 45);
+
+
+    doc.text(this.ExhibitorRegistrationReportResponse.sponsorInfo[2].SponsorName, 10, 55);
+    doc.text(this.ExhibitorRegistrationReportResponse.sponsorInfo[2].City + ' ' + this.ExhibitorRegistrationReportResponse.sponsorInfo[2].StateZipcode, 10, 60);
+
+
+    doc.text(this.ExhibitorRegistrationReportResponse.sponsorInfo[3].SponsorName, 130, 55);
+    doc.text(this.ExhibitorRegistrationReportResponse.sponsorInfo[3].City + ' ' + this.ExhibitorRegistrationReportResponse.sponsorInfo[3].StateZipcode, 130, 60);
+
+
+
+
+    doc.autoTable({
+      body: this.ExhibitorRegistrationReportResponse.classInfo,
+      columns:
+        [
+          { header: 'Back#', dataKey: 'BackNumber' },
+          { header: 'NSBA', dataKey: 'NSBA' },
+          { header: 'Horse', dataKey: 'HorseName' },
+          { header: 'Exhibitor', dataKey: 'ExhibitorName' },
+          { header: 'City/State', dataKey: 'City' },
+
+        ],
+      margin: { vertical: 35, horizontal: 10 },
+      startY: 70
+    })
+
+    doc.save('ExhibitorRegistrationReportPDF.pdf');
+  }
+
+  submitReports() {
+
+    if (this.reportName == "ExhibitorRegistrationReport#15") {
+      if (this.ExhibitorRegistrationReportResponse == null || this.ExhibitorRegistrationReportResponse == undefined) {
+        this.snackBar.openSnackBar("No data available!", 'Close', 'red-snackbar');
+        return;
+      }
+      if (this.reportType == "downloadPDF") {
+        this.saveExhibitorRegistrationReportPDF();
+      }
+
+    }
+
+
+
+
+
   }
 }
 

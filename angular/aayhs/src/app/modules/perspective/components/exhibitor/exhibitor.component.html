@@ -70,8 +70,8 @@
             <div class="tab-pane  active" id="home">
                 <mat-tab-group #tabGroup>
                     <mat-tab class="nav-link active nav nav-tabs" label="Exhibitor Info">
-                        <form #exhibitorInfoForm="ngForm" name="exhibitorInfoForm"
-                            (ngSubmit)="exhibitorInfoForm.valid && addUpdateExhibitor()" novalidate>
+                        <form     #exhibitorInfoForm="ngForm" name="exhibitorInfoForm"
+                            (ngSubmit)="exhibitorInfoForm.valid && addUpdateExhibitor()" novalidate >
                             <div class="card">
                                 <div class="card-body">
                                     <div class="row">
@@ -113,18 +113,18 @@
                                             </div>
 
                                            
-
+                                          
 
                                             <div class="form-group">
                                                 <label>State <span>*</span></label>
-                                                <input  
+                                                <input     
                                                 class="form-control" 
                                                 required
-                                                placeholder="state" name="state"
+                                                placeholder="State" name="state"
                                                 #state="ngModel" [(ngModel)]="seletedStateName"
                                                 (keyup)="filterStates($event.target.value,true)"
                                                 value="{{seletedStateName}}" 
-                                                [matAutocomplete]="stateauto">
+                                                autocomplete="new-password"  type="search" [matAutocomplete]="stateauto">
 
 
                                                 <mat-autocomplete #stateauto="matAutocomplete">
@@ -149,14 +149,14 @@
 
                                                     <div class="form-group">
                                                         <label>City <span>*</span></label>
-                                                        <input  
+                                                        <input     
                                                         class="form-control" 
                                                         required
-                                                        placeholder="city" name="city"
+                                                        placeholder="City" name="city"
                                                         #city="ngModel" [(ngModel)]="seletedCityName"
                                                         (keyup)="filterCities($event.target.value,true)"
                                                         value="{{seletedCityName}}" 
-                                                        [matAutocomplete]="cityauto">
+                                                        autocomplete="new-password"  type="search" [matAutocomplete]="cityauto">
         
         
                                                         <mat-autocomplete #cityauto="matAutocomplete">
@@ -323,7 +323,7 @@
 
                     <mat-tab class="nav-link nav nav-tabs" label="Horse">
                         <div class="card">
-                            <form #horsesForm="ngForm" (ngSubmit)="horsesForm.valid && addHorseToExhibitor()"
+                            <form     #horsesForm="ngForm" (ngSubmit)="horsesForm.valid && addHorseToExhibitor()"
                                 class="formScroll">
                                 <div class="card-body">
                                     <div class="table-responsive tableTab" id="contentscroll2">
@@ -356,14 +356,15 @@
                                                     <tr>
                                                         <td>
 
-                                                            <div class="form-group">  <input   
+                                                            <div class="form-group">  <input
+                                                               
                                                             class="form-control" 
                                                             required
                                                             placeholder="horse name" name="horsename"
                                                             #horsename="ngModel" [(ngModel)]="seletedhorseName"
                                                             value="{{seletedhorseName}}"
                                                             (keyup)="filterhorses($event.target.value,true)"
-                                                            [matAutocomplete]="horseauto">
+                                                            type="search" [matAutocomplete]="horseauto">
                                                             <span class="help-block"
                                                             *ngIf="linkedHorseId==null && (horsesForm.submitted || horsename.touched)">
                                                             Please select horse</span>
@@ -443,7 +444,7 @@
                     </mat-tab>
                     <mat-tab class="nav-link nav nav-tabs" label="Sponsors">
                         <div class="card dataEntriesTable">
-                            <form #sponsorsForm="ngForm" (ngSubmit)="sponsorsForm.valid && addSponsorToExhibitor()"
+                            <form     #sponsorsForm="ngForm" (ngSubmit)="sponsorsForm.valid && addSponsorToExhibitor()"
                                 class="formScroll">
                                 <div class="card-body">
                                     <div class="table-responsive tableTab" id="contentscroll2">
@@ -484,29 +485,16 @@
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <!-- <select class="dynDataSeclect" name="exhibitorSponsor"
-                                                                required [(ngModel)]="linkedSponsorId"
-                                                                (change)="getSponsorDetails($event.target.value)"
-                                                                #sponsorControl="ngModel">
-                                                                <option [ngValue]="null">
-                                                                    Select sponsor
-                                                                </option>
-                                                                <option *ngFor="let sponsor of sponsors"
-                                                                    [value]="sponsor.SponsorId">{{sponsor.SponsorName}}
-                                                                </option>
-                                                            </select>
-                                                            <span class="help-block"
-                                                                *ngIf="(sponsorsForm.submitted || sponsorControl.touched) && sponsorControl.invalid">Please
-                                                                select sponsor</span> -->
+                                                           
 
-                                                                <div class="form-group">  <input   
+                                                                <div class="form-group">  <input     
                                                                     class="form-control" 
                                                                     required
                                                                     placeholder="sponsor name" name="sponsorname"
                                                                     #sponsorname="ngModel" [(ngModel)]="seletedsponsorName"
                                                                     value="{{seletedsponsorName}}"
                                                                     (keyup)="filtersponsor($event.target.value,true)"
-                                                                    [matAutocomplete]="sponsorauto">
+                                                                    type="search" [matAutocomplete]="sponsorauto">
                                                                     <span class="help-block"
                                                                     *ngIf="linkedSponsorId==null && (sponsorsForm.submitted || sponsorname.touched)">
                                                                     Please select sponsor</span>
@@ -621,7 +609,7 @@
                     </mat-tab>
                     <mat-tab class="nav-link nav nav-tabs" label="Classes">
                         <div class="card dataEntriesTable">
-                            <form #classesForm="ngForm" (ngSubmit)="classesForm.valid && addClassToExhibitor()"
+                            <form     #classesForm="ngForm" (ngSubmit)="classesForm.valid && addClassToExhibitor()"
                                 class="formScroll">
                                 <div class="card-body">
                                     <div class="table-responsive" id="contentscroll2">
@@ -666,14 +654,14 @@
                                                     </tr>
                                                     <tr>
                                                         <td colspan="2">
-                                                                <div class="form-group">  <input   
+                                                                <div class="form-group">  <input      
                                                                     class="form-control" 
                                                                     required
                                                                     placeholder="class name" name="classname"
                                                                     #classname="ngModel" [(ngModel)]="seletedclassName"
                                                                     value="{{seletedclassName}}"
                                                                     (keyup)="filterclass($event.target.value,true)"
-                                                                    [matAutocomplete]="classauto">
+                                                                    type="search" [matAutocomplete]="classauto">
                                                                     <span class="help-block"
                                                                     *ngIf="linkedClassId==null && (classesForm.submitted || classname.touched)">
                                                                     Please select class</span>
@@ -874,7 +862,7 @@
                                         </thead>
                                         <perfect-scrollbar class="nicescrollBar-2">
                                             <tbody>
-                                                <tr>
+                                                <tr (click)="getExhibitorRegistrationReport()" style="cursor: pointer;">
                                                     <td>Exhibitor Registration Statement Report (#15)</td>
                                                 </tr>
                                                 <tr>
@@ -928,13 +916,13 @@
                                     class="btn btn-red btnCss roundBtn">Previous</button>
                                 <button (click)='tabGroup.selectedIndex = 6'
                                     class="btn btn-red btnCss roundBtn">Next</button>
-                                <button class="btn btn-red btnCss roundBtn">Submit</button>
+                                <button class="btn btn-red btnCss roundBtn" (click)="submitReports">Submit</button>
                             </div>
                         </div>
                     </mat-tab>
                     <mat-tab class="nav-link nav nav-tabs" label="Scans">
                         <div class="card dataEntriesTable">
-                            <form #scanForm="ngForm" (ngSubmit)="scanForm.valid && uploadDocument()">
+                            <form     #scanForm="ngForm" (ngSubmit)="scanForm.valid && uploadDocument()">
                                 <div class="card-body">
                                     <div class="browseDoc row">
                                         <div class="col-md-6 col-sm-12">
@@ -1027,7 +1015,7 @@
 
         </div>
 
-
+        <input   type="text" id="noauto" value="noauto" name="noauto" style="visibility: hidden;">
     </div>
 
 
