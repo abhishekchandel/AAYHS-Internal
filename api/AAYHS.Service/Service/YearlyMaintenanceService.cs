@@ -214,7 +214,7 @@ namespace AAYHS.Service.Service
                     ShowEndDate = addYearly.ShowEndDate,
                     PreEntryCutOffDate = addYearly.PreCutOffDate,
                     SponcerCutOffDate = addYearly.SponcerCutOffDate,
-                    Date = addYearly.Date,
+                    Date = DateTime.Now,
                     Location = addYearly.Location,
                     IsActive = true,
                     IsDeleted = false,
@@ -253,7 +253,6 @@ namespace AAYHS.Service.Service
                     updateYear.ShowEndDate = addYearly.ShowEndDate;
                     updateYear.PreEntryCutOffDate = addYearly.PreCutOffDate;
                     updateYear.SponcerCutOffDate = addYearly.SponcerCutOffDate;
-                    updateYear.Date = addYearly.Date;
                     updateYear.Location = addYearly.Location;
                     updateYear.ModifiedBy = actionBy;
                     updateYear.ModifiedDate = DateTime.Now;

@@ -277,17 +277,14 @@ namespace AAYHS.Repository.Repository
             GetContactInfo getContactInfo = new GetContactInfo();
             IEnumerable<GetContactInfo> data;
 
-            data = (from contactInfo in _ObjContext.AAYHSContact
-                    join yearlyMaintenance in _ObjContext.YearlyMaintainence on contactInfo.YearlyMaintainenceId equals
-                    yearlyMaintenance.YearlyMaintainenceId into yearlyMaintenance1
-                    from yearlyMaintenance2 in yearlyMaintenance1.DefaultIfEmpty()
+            data = (from contactInfo in _ObjContext.AAYHSContact                   
                     where contactInfo.YearlyMaintainenceId == yearlyMaintenanceId
                     select new GetContactInfo
                     {
                         AAYHSContactId = contactInfo.AAYHSContactId,
-                        ShowStart = yearlyMaintenance2.ShowStartDate,
-                        ShowEnd = yearlyMaintenance2.ShowEndDate,
-                        ShowLocation = yearlyMaintenance2.Location,
+                        ShowStart = _ObjContext.YearlyMaintainence.Where(x=>x.YearlyMaintainenceId==yearlyMaintenanceId).Select(x=>x.ShowStartDate).FirstOrDefault(),
+                        ShowEnd = _ObjContext.YearlyMaintainence.Where(x => x.YearlyMaintainenceId == yearlyMaintenanceId).Select(x => x.ShowEndDate).FirstOrDefault(),
+                        ShowLocation = _ObjContext.YearlyMaintainence.Where(x => x.YearlyMaintainenceId == yearlyMaintenanceId).Select(x => x.Location).FirstOrDefault(),
                         Email1 = contactInfo.Email1,
                         Email2 = contactInfo.Email2,
                         Phone1 = contactInfo.Phone1,
