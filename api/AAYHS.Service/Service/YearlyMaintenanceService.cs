@@ -581,7 +581,7 @@ namespace AAYHS.Service.Service
 
         public MainResponse AddGeneralFees(AddGeneralFeeRequest addGeneralFeeRequest, string actionBy)
         {
-            int feeTypeId=0;
+            int feeTypeId = 0;
             int catgeoryId = _yearlyMaintenanceRepository.GetCategoryId("FeeType");
 
             var checkFeeTypeExist = _globalCodeRepository.GetSingle(x => x.CodeName.ToLower() == addGeneralFeeRequest.FeeType.ToLower() && 
@@ -595,6 +595,19 @@ namespace AAYHS.Service.Service
 
                     if (checkFee != null)
                     {
+                        if (checkFee.PreEntryFee!=0 && checkFee.PostEntryFee!=0)
+                        {
+                            _mainResponse.Success = false;
+                            _mainResponse.Message = Constants.FEE_ALREADY_EXIST;
+                            return _mainResponse;
+                        }
+
+                        if (checkFee.PreEntryFee == 0 && checkFee.PostEntryFee == 0 && checkFee.Amount!=0)
+                        {
+                            _mainResponse.Success = false;
+                            _mainResponse.Message = Constants.FEE_ALREADY_EXIST;
+                            return _mainResponse;
+                        }
                         if (addGeneralFeeRequest.TimeFrame == "Pre")
                         {
                             checkFee.PreEntryFee = addGeneralFeeRequest.Amount;
@@ -639,7 +652,7 @@ namespace AAYHS.Service.Service
                             var addGeneralFee = new YearlyMaintainenceFee
                             {
                                 YearlyMaintainenceId = addGeneralFeeRequest.YearlyMaintainenceId,
-                                FeeTypeId = feeTypeId,
+                                FeeTypeId = checkFeeTypeExist.GlobalCodeId,
                                 PreEntryFee = addGeneralFeeRequest.Amount,
                                 PostEntryFee = 0,
                                 Amount = 0,
@@ -661,7 +674,7 @@ namespace AAYHS.Service.Service
                             var addGeneralFee = new YearlyMaintainenceFee
                             {
                                 YearlyMaintainenceId = addGeneralFeeRequest.YearlyMaintainenceId,
-                                FeeTypeId = feeTypeId,
+                                FeeTypeId = checkFeeTypeExist.GlobalCodeId,
                                 PreEntryFee = 0,
                                 PostEntryFee = addGeneralFeeRequest.Amount,
                                 Amount = 0,
@@ -684,7 +697,7 @@ namespace AAYHS.Service.Service
                             var addGeneralFee = new YearlyMaintainenceFee
                             {
                                 YearlyMaintainenceId = addGeneralFeeRequest.YearlyMaintainenceId,
-                                FeeTypeId = feeTypeId,
+                                FeeTypeId = checkFeeTypeExist.GlobalCodeId,
                                 PreEntryFee = 0,
                                 PostEntryFee = 0,
                                 Amount = addGeneralFeeRequest.Amount,
@@ -981,6 +994,19 @@ namespace AAYHS.Service.Service
             int exhibitorSponsorConfirmation=0;
             int exhibitorSponsorRefundStatement=0 ;
             int exhibitorConfirmationEntries=0;
+            if (addContactInfoRequest.YearlyMaintenanceId!=0)
+            {
+                var yearlyMaint = _yearlyMaintenanceRepository.GetSingle(x => x.YearlyMaintainenceId == 
+                addContactInfoRequest.YearlyMaintenanceId);
+
+                if (yearlyMaint!=null)
+                {
+                    yearlyMaint.ShowStartDate = addContactInfoRequest.ShowStart;
+                    yearlyMaint.ShowEndDate = addContactInfoRequest.ShowEnd;
+                    yearlyMaint.Location = addContactInfoRequest.Location;
+                    _yearlyMaintenanceRepository.Update(yearlyMaint);
+                }
+            }
             if (addContactInfoRequest.AAYHSContactId==0)
             {
 
