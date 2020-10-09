@@ -594,19 +594,31 @@ namespace AAYHS.Service.Service
 
                     if (checkFee != null)
                     {
-                        if (checkFee.PreEntryFee!=0 && checkFee.PostEntryFee!=0)
+                        if (checkFee.PreEntryFee != 0 && addGeneralFeeRequest.TimeFrame=="Pre")
                         {
                             _mainResponse.Success = false;
                             _mainResponse.Message = Constants.FEE_ALREADY_EXIST;
                             return _mainResponse;
                         }
-
-                        if (checkFee.PreEntryFee == 0 && checkFee.PostEntryFee == 0 && checkFee.Amount!=0)
+                        if (checkFee.PostEntryFee != 0 && addGeneralFeeRequest.TimeFrame == "Post")
                         {
                             _mainResponse.Success = false;
                             _mainResponse.Message = Constants.FEE_ALREADY_EXIST;
                             return _mainResponse;
                         }
+                        if (checkFee.Amount != 0 && addGeneralFeeRequest.TimeFrame == "")
+                        {
+                            _mainResponse.Success = false;
+                            _mainResponse.Message = Constants.FEE_ALREADY_EXIST;
+                            return _mainResponse;
+                        }
+                        if (checkFee.PreEntryFee!=0 && checkFee.PostEntryFee!=0 && addGeneralFeeRequest.TimeFrame == "")
+                        {
+                            _mainResponse.Success = false;
+                            _mainResponse.Message = Constants.FEE_ALREADY_EXIST;
+                            return _mainResponse;
+                        }
+                       
                         if (addGeneralFeeRequest.TimeFrame == "Pre")
                         {
                             checkFee.PreEntryFee = addGeneralFeeRequest.Amount;
@@ -802,9 +814,9 @@ namespace AAYHS.Service.Service
                 }
             }
             else
-            {
+            {                
                 var getYearlyMain = _yearlyMaintenanceFeeRepository.GetSingle(x => x.YearlyMaintainenceFeeId == addGeneralFeeRequest.YearlyMaintainenceFeeId);
-
+                
                 if (getYearlyMain!=null)
                 {
                     if (addGeneralFeeRequest.TimeFrame == "Pre")
