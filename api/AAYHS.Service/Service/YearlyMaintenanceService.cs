@@ -863,6 +863,19 @@ namespace AAYHS.Service.Service
                     getGeneralFee.Amount = 0;
                     _yearlyMaintenanceFeeRepository.Update(getGeneralFee);
                 }
+                if (getGeneralFee.PreEntryFee==0 && getGeneralFee.PostEntryFee==0 && getGeneralFee.Amount==0)
+                {
+                    getGeneralFee.IsDeleted = true;
+                    getGeneralFee.DeletedBy = actionBy;
+                    getGeneralFee.DeletedDate = DateTime.Now;
+                    _yearlyMaintenanceFeeRepository.Update(getGeneralFee);
+
+                    var getGlobalCode = _globalCodeRepository.GetSingle(x => x.GlobalCodeId == removeGeneralFee.GlobalCodeId);
+                    getGlobalCode.IsDeleted = true;
+                    getGlobalCode.DeletedBy = actionBy;
+                    getGlobalCode.DeletedDate = DateTime.Now;
+                    _globalCodeRepository.Update(getGlobalCode);
+                }
                 _mainResponse.Success = true;
                 _mainResponse.Message = Constants.RECORD_DELETE_SUCCESS;
             }

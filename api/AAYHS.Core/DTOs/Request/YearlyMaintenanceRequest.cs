@@ -68,6 +68,7 @@ namespace AAYHS.Core.DTOs.Request
     public class RemoveGeneralFee
     {
         public int YearlyMaintenanceFeeId { get; set; }
+        public int GlobalCodeId { get; set; }
         public string TimeFrame { get; set; }
     }
     public class AddRefundRequest

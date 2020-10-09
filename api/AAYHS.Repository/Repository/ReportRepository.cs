@@ -297,7 +297,7 @@ namespace AAYHS.Repository.Repository
                                        BackNumber= exhibitor.BackNumber,
                                        HorseName=horse.Name,
                                        ExhibitorName=exhibitor.FirstName+" "+exhibitor.LastName,
-                                       CityStateZipcode=city.Name+" "+state.Code+", "+zipcode.ZipCode
+                                       CityStateZipcode=city.Name+", "+state.Code+", "+zipcode.ZipCode
                                      }).ToList()
 
                     }) ;
@@ -337,7 +337,7 @@ namespace AAYHS.Repository.Repository
                                       NSBA= Convert.ToString(exhibitor.IsNSBAMember==true?"N":"-"),
                                       HorseName=horse.Name,
                                       ExhibitorName=exhibitor.FirstName+" "+exhibitor.LastName,
-                                      CityStateZipcode=city.Name+" "+state.Code+", "+zipcode.ZipCode,
+                                      CityStateZipcode=city.Name+", "+state.Code+", "+zipcode.ZipCode,
                                       Split=_ObjContext.ClassSplits.Where(x=>x.ClassId==exhibitorClass.ClassId).Select(x=>x.SplitNumber).FirstOrDefault()
                                     }).ToList()
                     });           
