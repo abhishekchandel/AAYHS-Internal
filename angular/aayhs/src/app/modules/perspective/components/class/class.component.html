@@ -167,7 +167,6 @@
 						</form>
 
 					</mat-tab>
-
 					<mat-tab class="nav-link active nav nav-tabs" label="Entries">
 
 						<div class="card dataEntriesTable">
@@ -493,6 +492,38 @@
 								</div>
 							</form>
 						</div>
+					</mat-tab>
+					<mat-tab class="nav-link active nav nav-tabs" label="Reports">
+						<div class="card dataEntriesTable">
+                            <div class="card-body">
+                                <div class="table-responsive tableTab ssReports" id="contentscroll2">
+                                    <table class="table table-bordered tableBodyScroll">
+                                        <thead>
+                                            <tr>
+                                                <th>Select a Statement or Report</th>
+                                            </tr>
+                                        </thead>
+                                        <perfect-scrollbar class="nicescrollBar-2">
+                                            <tbody>
+                                                <tr>
+                                                    <td>Program Sheet (#25)</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Paddock Sheet (#23)</td>
+                                                </tr>
+                                               
+                                            </tbody>
+                                        </perfect-scrollbar>
+                                    </table>
+                                    
+                                </div>
+                            </div>
+                            <div class="actionBtn text-right mb-3">
+                                <button (click)='tabGroup.selectedIndex = 2'
+                                    class="btn btn-red btnCss roundBtn">Previous</button>
+                                <button class="btn btn-red btnCss roundBtn">Download</button>
+                            </div>
+                        </div>
 					</mat-tab>
 				</mat-tab-group>
 			</div>
