@@ -27,4 +27,5 @@ export interface ContactInfo{
     returnState:number
     AAYHSContactId:number
     yearlyMaintenanceId:number
+
 }

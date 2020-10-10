@@ -1177,9 +1177,11 @@ table.pdfTable tbody tr td{
   setFilteredclassexhibitor(id,event:any) {
     if (event.isUserInput) {
     this.loading = true;
+    this.exhibitorId = id;
+    this.horseId = null;
     this.classService.getExhibitorHorses(id).subscribe(response => {
       this.exhibitorsHorsesResponse = response.Data.getExhibitorHorses;
-      this.exhibitorId = id
+     
       this.loading = false;
     }, error => {
       this.exhibitorsHorsesResponse = null;
@@ -1269,14 +1271,29 @@ downloadProgramSheet(): void {
 
 if(this.programReport.sponsorInfo.length > 0)
 {
+  if(this.programReport.sponsorInfo!=null && this.programReport.sponsorInfo.length>0)
+  {
+
+    if(this.programReport.sponsorInfo.length>=1){
   doc.text(this.programReport.sponsorInfo[0].SponsorName, 10, 40);
   doc.text(this.programReport.sponsorInfo[0].City + ' ' + this.programReport.sponsorInfo[0].StateZipcode, 10, 45);
+    }
+
+ if(this.programReport.sponsorInfo.length >=2){
   doc.text(this.programReport.sponsorInfo[1].SponsorName, 130, 40);
   doc.text(this.programReport.sponsorInfo[1].City + ' ' + this.programReport.sponsorInfo[1].StateZipcode, 130, 45);
+ }
+
+ if(this.programReport.sponsorInfo.length >=3){
   doc.text(this.programReport.sponsorInfo[2].SponsorName, 10, 55);
   doc.text(this.programReport.sponsorInfo[2].City + ' ' + this.programReport.sponsorInfo[2].StateZipcode, 10, 60);
+ }
+
+ if(this.programReport.sponsorInfo.length >=4){
   doc.text(this.programReport.sponsorInfo[3].SponsorName, 130, 55);
   doc.text(this.programReport.sponsorInfo[3].City + ' ' + this.programReport.sponsorInfo[3].StateZipcode, 130, 60);
+  }
+}
 }
    
   doc.autoTable({

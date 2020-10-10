@@ -269,7 +269,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label>Choose Group </label>
-                                                <select #groupId="ngModel" name="groupId"
+                                                <select #groupId="ngModel" name="groupId" class="form-control"
                                                     [(ngModel)]="exhibitorInfo.GroupId" class="form-control">
                                                     <option [ngValue]="null">
                                                         Select Group
@@ -521,7 +521,7 @@
                                                         <td>
                                                             <span *ngIf="linkedSponsorId">
                                                                 <select class="dynDataSeclect" name="sponsortype"
-                                                                    required [(ngModel)]="sponsortypeId"
+                                                                    required [(ngModel)]="sponsortypeId" class="form-control"
                                                                     #sponsorTypeControl="ngModel"
                                                                     (change)="setSponsorType($event.target.value)">
                                                                     <option disabled="true" [ngValue]="null"
@@ -551,7 +551,7 @@
                                                                 </span>
                                                             </span>
                                                             <span *ngIf="(linkedSponsorId && sponsortypeId==2)">
-                                                                <select class="dynDataSeclect" name="type"
+                                                                <select class="dynDataSeclect" name="type" class="form-control"
                                                                     [required]="sponsortypeId==2" [(ngModel)]="typeId"
                                                                     #typeControl="ngModel"
                                                                     (change)="setType($event.target.value)">
@@ -570,7 +570,7 @@
                                                         </td>
                                                         <td>
                                                             <span *ngIf="(linkedSponsorId && sponsortypeId==1)">
-                                                                <select class="dynDataSeclect" name="type"
+                                                                <select class="dynDataSeclect" name="type" class="form-control"
                                                                     [required]="sponsortypeId==1" [(ngModel)]="adTypeId"
                                                                     #addTypeControl="ngModel"
                                                                     (change)="setAdType($event.target.value)">
@@ -679,7 +679,7 @@
                                                         </td>
 
                                                         <td>
-                                                            <select class="dynDataSeclect" name="addexhibitorhorse"
+                                                            <select class="form-control dynDataSeclect" name="addexhibitorhorse"
                                                                 required [(ngModel)]="addHorseId"
                                                                 (change)="setLinkedHorse($event.target.value)"
                                                                 #addHorseControl="ngModel">
@@ -862,7 +862,7 @@
                                         </thead>
                                         <perfect-scrollbar class="nicescrollBar-2">
                                             <tbody>
-                                                <tr (click)="getExhibitorRegistrationReport()" style="cursor: pointer;">
+                                                <tr id="tr_ExhibitorRegistrationReport" (click)="getExhibitorRegistrationReport()" style="cursor: pointer;">
                                                     <td>Exhibitor Registration Statement Report (#15)</td>
                                                 </tr>
                                                 <tr>
@@ -916,7 +916,7 @@
                                     class="btn btn-red btnCss roundBtn">Previous</button>
                                 <button (click)='tabGroup.selectedIndex = 6'
                                     class="btn btn-red btnCss roundBtn">Next</button>
-                                <button class="btn btn-red btnCss roundBtn" (click)="submitReports">Submit</button>
+                                <button class="btn btn-red btnCss roundBtn" (click)="submitReports()">Submit</button>
                             </div>
                         </div>
                     </mat-tab>

@@ -16,4 +16,8 @@ export class ReportService {
   getPaddockSheet(id:number){
     return this.http.get<any>(`${this.api}Report/GetPaddockReport?classId=${id}`);
   }
+
+  getExhibitorRegistrationReport(exhibitorIdst:number){
+    return this.http.get<any>(`${this.api}Report/GetExhibitorRegistrationReport?exhibitorIdst=${exhibitorIdst}`);
+  }
 }

@@ -193,6 +193,7 @@ export class ExhibitorComponent implements OnInit {
     private data: GlobalService,
     private sponsorService: SponsorService,
     private reportService: ReportService
+   
   ) { }
 
   ngOnInit(): void {
@@ -223,7 +224,7 @@ export class ExhibitorComponent implements OnInit {
 
     }
     const dialogRef = this.dialog.open(FinancialTransactionsComponent, {
-      maxWidth: "400px",
+      maxWidth: "500px",
       data
     });
     dialogRef.afterClosed().subscribe(dialogResult => {
@@ -280,6 +281,12 @@ export class ExhibitorComponent implements OnInit {
     this.getScannedDocuments(id);
     this.getFees();
     this.selectedExhibitorId = id;
+    this.reportName = "";
+    this.ExhibitorRegistrationReportResponse = null;
+    var selectedreportrow = document.getElementById("tr_ExhibitorRegistrationReport");
+    if(selectedreportrow!=null && selectedreportrow!=undefined){
+    selectedreportrow.style.background = "#fff";
+    }
   }
 
   resetForm() {
@@ -357,6 +364,14 @@ export class ExhibitorComponent implements OnInit {
     this.filteredHorsesOption = null;
     this.filteredSponsorOption = null;
     this.filteredClassesOption = null;
+
+    this.reportName = "";
+    this.ExhibitorRegistrationReportResponse = null;
+    this.selectedExhibitorId=null;
+    var selectedreportrow = document.getElementById("tr_ExhibitorRegistrationReport");
+    if(selectedreportrow!=null && selectedreportrow!=null){
+    selectedreportrow.style.background = "#fff";
+    }
 
   }
 
@@ -1589,6 +1604,14 @@ export class ExhibitorComponent implements OnInit {
     }
 
     return new Promise((resolve, reject) => {
+      //  var alltr= document.getElementsByName("tr");
+      //  alltr.forEach(element => {
+      //    element.style.background="#fff";
+      //  });
+      var selectedrow = document.getElementById("tr_ExhibitorRegistrationReport");
+      if(selectedrow!=null && selectedrow!=undefined){
+      selectedrow.style.background = "#dee2e6";
+      }
       this.loading = true;
       this.reportName = "ExhibitorRegistrationReport#15";
       this.ExhibitorRegistrationReportResponse = null;
@@ -1603,29 +1626,42 @@ export class ExhibitorComponent implements OnInit {
     });
 
   }
-  
+
   saveExhibitorRegistrationReportPDF(): void {
+
     let doc = new jsPDF("p", "mm", "a4") as jsPDFWithPlugin;
     doc.setFontSize(10);
     // doc.setFontType("bold");
     doc.text('Address :', 10, 10);
-    doc.text(this.ExhibitorRegistrationReportResponse.Address, 35, 10);
+    doc.text(this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.Address != null
+      || this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.Address != undefined
+      ? this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.Address : "", 35, 10);
 
     doc.text('City Name :', 10, 15);
-    doc.text(this.ExhibitorRegistrationReportResponse.CityName, 35, 15)
+    doc.text(this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.CityName != null
+      || this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.CityName != undefined
+      ? this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.CityName : "", 35, 15)
 
     doc.text('StateZipcode :', 10, 20);
-    doc.text(this.ExhibitorRegistrationReportResponse.StateZipcode, 35, 20);
+    doc.text(this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.StateZipcode != null
+      || this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.StateZipcode != undefined
+      ? this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.StateZipcode : "", 35, 20)
+
+
 
     doc.text('Email :', 10, 25);
-    doc.text(this.ExhibitorRegistrationReportResponse.Email1, 35, 20);
+    doc.text(this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.Email1 != null
+      || this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.Email1 != undefined
+      ? this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.Email1 : "", 35, 25);
 
     doc.text('Phone :', 10, 30);
-    doc.text(this.ExhibitorRegistrationReportResponse.Phone1, 35, 20);
+    doc.text(this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.Phone1 != null
+      || this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.Phone1 != undefined
+      ? this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.Phone1 : "", 35, 30);
+
     doc.text('Print Date :', 10, 35);
-    doc.text(new Date(), 35, 20);
-
-
+    var newdate=new Date()
+    doc.text(String(moment(new Date()).format('YYYY-MM-DD')), 35, 35);
 
 
 
@@ -1634,55 +1670,214 @@ export class ExhibitorComponent implements OnInit {
     doc.addImage(img, 'png', 190, 5, 16, 20)
 
 
-    doc.text('Sponsored By :', 100, 30);
 
-    doc.line(0, 33, 300, 33);
+
+    doc.line(0, 40, 300, 40);
 
     doc.setLineWidth(5.0);
 
 
+    doc.text('ExhibitorName: ', 10, 50);
+    doc.text(this.ExhibitorRegistrationReportResponse.ExhibitorName != null ||
+      this.ExhibitorRegistrationReportResponse.ExhibitorName != undefined ?
+      this.ExhibitorRegistrationReportResponse.ExhibitorName : ""
+      , 35, 50);
 
-    doc.text(this.ExhibitorRegistrationReportResponse.sponsorInfo[0].SponsorName, 10, 40);
-    doc.text(this.ExhibitorRegistrationReportResponse.sponsorInfo[0].City + ' ' + this.ExhibitorRegistrationReportResponse.sponsorInfo[0].StateZipcode, 10, 45);
+    doc.text('Address:', 10, 55);
+    doc.text(this.ExhibitorRegistrationReportResponse.Address != null ||
+      this.ExhibitorRegistrationReportResponse.Address != undefined ?
+      this.ExhibitorRegistrationReportResponse.Address : ""
+      , 35, 55);
+
+    doc.text('City:', 10, 60);
+    doc.text(this.ExhibitorRegistrationReportResponse.CityName != null ||
+      this.ExhibitorRegistrationReportResponse.CityName != undefined ?
+      this.ExhibitorRegistrationReportResponse.CityName : ""
+      , 35, 60);
+
+    doc.text('StateZipcode:', 10, 65);
+    doc.text(this.ExhibitorRegistrationReportResponse.StateZipcode != null ||
+      this.ExhibitorRegistrationReportResponse.StateZipcode != undefined ?
+      this.ExhibitorRegistrationReportResponse.StateZipcode : ""
+      , 35, 65);
 
 
-    doc.text(this.ExhibitorRegistrationReportResponse.sponsorInfo[1].SponsorName, 130, 40);
-    doc.text(this.ExhibitorRegistrationReportResponse.sponsorInfo[1].City + ' ' + this.ExhibitorRegistrationReportResponse.sponsorInfo[1].StateZipcode, 130, 45);
+    doc.text('Phone:', 10, 70);
+    doc.text(this.ExhibitorRegistrationReportResponse.Phone != null ||
+      this.ExhibitorRegistrationReportResponse.Phone != undefined ?
+      this.ExhibitorRegistrationReportResponse.Phone : ""
+      , 35, 70);
 
 
-    doc.text(this.ExhibitorRegistrationReportResponse.sponsorInfo[2].SponsorName, 10, 55);
-    doc.text(this.ExhibitorRegistrationReportResponse.sponsorInfo[2].City + ' ' + this.ExhibitorRegistrationReportResponse.sponsorInfo[2].StateZipcode, 10, 60);
+    doc.text('Email:', 10, 75);
+    doc.text(this.ExhibitorRegistrationReportResponse.Email != null ||
+      this.ExhibitorRegistrationReportResponse.Email != undefined ?
+      this.ExhibitorRegistrationReportResponse.Email : ""
+      , 35, 75);
 
 
-    doc.text(this.ExhibitorRegistrationReportResponse.sponsorInfo[3].SponsorName, 130, 55);
-    doc.text(this.ExhibitorRegistrationReportResponse.sponsorInfo[3].City + ' ' + this.ExhibitorRegistrationReportResponse.sponsorInfo[3].StateZipcode, 130, 60);
 
+    doc.text('HorseStallNumbers:', 110, 50);
+    doc.text('TackStallNumbers:', 110, 55);
+    doc.text('ExhibitorId:', 110, 60);
+    doc.text('YearOfBirth:', 110, 65);
+
+    if (this.ExhibitorRegistrationReportResponse.stallAndTackStallNumber.horseStalls.length > 0) {
+      var horsestall = "";
+      this.ExhibitorRegistrationReportResponse.stallAndTackStallNumber.horseStalls.forEach(element => {
+        horsestall = horsestall + "," + element.HorseStallNumber
+      });
+      horsestall = horsestall.replace(/^,|,$/g, '');
+      doc.text(horsestall, 145, 50);
+    }
+    if (this.ExhibitorRegistrationReportResponse.stallAndTackStallNumber.tackStalls.length > 0) {
+      var tackstall = "";
+      this.ExhibitorRegistrationReportResponse.stallAndTackStallNumber.tackStalls.forEach(element => {
+        tackstall = tackstall + "," + element.TackStallNumber
+      });
+      tackstall = tackstall.replace(/^,|,$/g, '');
+      doc.text(tackstall, 145, 55);
+    }
+
+
+    doc.text(this.ExhibitorRegistrationReportResponse.stallAndTackStallNumber.ExhibitorId != null
+      || this.ExhibitorRegistrationReportResponse.stallAndTackStallNumber.ExhibitorId != undefined
+      ? String(this.ExhibitorRegistrationReportResponse.stallAndTackStallNumber.ExhibitorId) : ""
+      , 145, 60);
+
+    doc.text(this.ExhibitorRegistrationReportResponse.stallAndTackStallNumber.ExhibitorBirthYear != null
+      || this.ExhibitorRegistrationReportResponse.stallAndTackStallNumber.ExhibitorBirthYear != undefined
+      ? String(this.ExhibitorRegistrationReportResponse.stallAndTackStallNumber.ExhibitorBirthYear) : ""
+      , 145, 65);
 
 
 
     doc.autoTable({
-      body: this.ExhibitorRegistrationReportResponse.classInfo,
+      body: this.ExhibitorRegistrationReportResponse.horseClassDetails,
       columns:
         [
-          { header: 'Back#', dataKey: 'BackNumber' },
-          { header: 'NSBA', dataKey: 'NSBA' },
-          { header: 'Horse', dataKey: 'HorseName' },
-          { header: 'Exhibitor', dataKey: 'ExhibitorName' },
-          { header: 'City/State', dataKey: 'City' },
+          { header: 'HorseName', dataKey: 'HorseName' },
+          { header: 'BackNumber', dataKey: 'BackNumber' },
+          { header: 'ClassNumber', dataKey: 'ClassNumber' },
+          { header: 'ClassName', dataKey: 'ClassName' },
+
 
         ],
       margin: { vertical: 35, horizontal: 10 },
-      startY: 70
+      startY: 85
     })
+
+    let finalY = (doc as any).lastAutoTable.finalY + 10;
+
+    doc.line(0, finalY, 300, finalY);
+
+    doc.setLineWidth(5.0);
+    finalY = finalY + 10;
+
+    doc.text('Total Quantity:', 140, finalY);
+    doc.text('Total Amount:', 170, finalY);
+    finalY = finalY + 7;
+
+    doc.text('Class Entries:', 80, finalY);
+    doc.text(this.ExhibitorRegistrationReportResponse.financialsDetail.ClassQty != null ||
+      this.ExhibitorRegistrationReportResponse.financialsDetail.ClassQty != undefined ?
+      String(this.ExhibitorRegistrationReportResponse.financialsDetail.ClassQty) : ""
+      , 150, finalY);
+    doc.text(this.ExhibitorRegistrationReportResponse.financialsDetail.ClassAmount != null ||
+      this.ExhibitorRegistrationReportResponse.financialsDetail.ClassAmount != undefined ?
+      String(this.ExhibitorRegistrationReportResponse.financialsDetail.ClassAmount) : ""
+      , 180, finalY);
+
+    finalY = finalY + 5;
+
+    doc.text('Total horse Stall:', 80, finalY);
+    doc.text(this.ExhibitorRegistrationReportResponse.financialsDetail.HorseStallQty != null ||
+      this.ExhibitorRegistrationReportResponse.financialsDetail.HorseStallQty != undefined ?
+      String(this.ExhibitorRegistrationReportResponse.financialsDetail.HorseStallQty) : ""
+      , 150, finalY);
+    doc.text(this.ExhibitorRegistrationReportResponse.financialsDetail.HorseStallAmount != null ||
+      this.ExhibitorRegistrationReportResponse.financialsDetail.HorseStallAmount != undefined ?
+      String(this.ExhibitorRegistrationReportResponse.financialsDetail.HorseStallAmount) : ""
+      , 180, finalY);
+
+    finalY = finalY + 5;
+
+
+
+    doc.text('Total tack stall:', 80, finalY);
+    doc.text(this.ExhibitorRegistrationReportResponse.financialsDetail.TackStallQty != null ||
+      this.ExhibitorRegistrationReportResponse.financialsDetail.TackStallQty != undefined ?
+      String(this.ExhibitorRegistrationReportResponse.financialsDetail.TackStallQty) : ""
+      , 150, finalY);
+    doc.text(this.ExhibitorRegistrationReportResponse.financialsDetail.TackStallAmount != null ||
+      this.ExhibitorRegistrationReportResponse.financialsDetail.TackStallAmount != undefined ?
+      String(this.ExhibitorRegistrationReportResponse.financialsDetail.TackStallAmount) : ""
+      , 180, finalY);
+
+    finalY = finalY + 5;
+
+    doc.text('Overpayment Refund:', 80, finalY);
+    doc.text(this.ExhibitorRegistrationReportResponse.financialsDetail.Refund != null ||
+      this.ExhibitorRegistrationReportResponse.financialsDetail.Refund != undefined ?
+      String(this.ExhibitorRegistrationReportResponse.financialsDetail.Refund) : ""
+      , 180, finalY);
+
+    finalY = finalY + 10;
+
+
+
+    doc.text('Amount Due:', 80, finalY);
+    doc.text(this.ExhibitorRegistrationReportResponse.financialsDetail.AmountDue != null ||
+      this.ExhibitorRegistrationReportResponse.financialsDetail.AmountDue != undefined ?
+      String(this.ExhibitorRegistrationReportResponse.financialsDetail.AmountDue) : ""
+      , 180, finalY);
+
+    finalY = finalY + 5;
+
+    doc.text('Received Amount:', 80, finalY);
+    doc.text(this.ExhibitorRegistrationReportResponse.financialsDetail.ReceivedAmount != null ||
+      this.ExhibitorRegistrationReportResponse.financialsDetail.ReceivedAmount != undefined ?
+      String(this.ExhibitorRegistrationReportResponse.financialsDetail.ReceivedAmount) : ""
+      , 180, finalY);
+
+
+    finalY = finalY + 10;
+
+    doc.text('Overpayment:', 80, finalY);
+    doc.text(this.ExhibitorRegistrationReportResponse.financialsDetail.Overpayment != null ||
+      this.ExhibitorRegistrationReportResponse.financialsDetail.Overpayment != undefined ?
+      String(this.ExhibitorRegistrationReportResponse.financialsDetail.Overpayment) : ""
+      , 180, finalY);
+
+    finalY = finalY + 5;
+
+    doc.text('BalanceDue:', 80, finalY);
+    doc.text(this.ExhibitorRegistrationReportResponse.financialsDetail.BalanceDue != null ||
+      this.ExhibitorRegistrationReportResponse.financialsDetail.BalanceDue != undefined ?
+      String(this.ExhibitorRegistrationReportResponse.financialsDetail.BalanceDue) : ""
+      , 180, finalY);
+
 
     doc.save('ExhibitorRegistrationReportPDF.pdf');
   }
 
   submitReports() {
 
+    
+    if (this.selectedExhibitorId == null || this.selectedExhibitorId == undefined || Number(this.selectedExhibitorId) <= 0) {
+      this.snackBar.openSnackBar("Please select exhibitor!", 'Close', 'red-snackbar');
+      return;
+    }
+
+    if (this.reportName == "") {
+      this.snackBar.openSnackBar("Please select report!", 'Close', 'red-snackbar');
+      return;
+    }
+      this.loading = true;
     if (this.reportName == "ExhibitorRegistrationReport#15") {
       if (this.ExhibitorRegistrationReportResponse == null || this.ExhibitorRegistrationReportResponse == undefined) {
         this.snackBar.openSnackBar("No data available!", 'Close', 'red-snackbar');
+        this.loading = false;
         return;
       }
       if (this.reportType == "downloadPDF") {
@@ -1690,10 +1885,7 @@ export class ExhibitorComponent implements OnInit {
       }
 
     }
-
-
-
-
+    this.loading = false;
 
   }
 }

@@ -305,7 +305,7 @@
 														</td>
 
 														<td data-label="Sponsor Type" colspan="2">
-															<select class="dynDataSeclect" name="sponsortype" required
+															<select class="form-control dynDataSeclect" name="sponsortype" required
 																[(ngModel)]="sponsortypeId"
 																#sponsorTypeControl="ngModel"
 																(change)="setSponsorType($event.target.value)">
@@ -323,7 +323,7 @@
 														</td>
 
 														<td *ngIf="sponsortypeId==2" data-label="Type">
-															<select class="dynDataSeclect" name="type"
+															<select class="form-control dynDataSeclect" name="type"
 																[required]="sponsortypeId==2" [(ngModel)]="typeId"
 																#typeControl="ngModel"
 																(change)="setType($event.target.value)">
@@ -355,7 +355,7 @@
 
 														<td *ngIf="sponsortypeId==1" data-label="Type">
 
-															<select class="dynDataSeclect" name="type"
+															<select class="form-control dynDataSeclect" name="type"
 																[required]="sponsortypeId==1" [(ngModel)]="adTypeId"
 																#typeControl="ngModel"
 																(change)="setAdType($event.target.value)">
@@ -440,7 +440,7 @@
 														<td data-label="Age Group">{{list.AgeGroup}}</td>
 														<td data-label="Exhibitor" class="non-print-element">
 														
-															<select class="dynDataSeclect">
+															<select class="form-control dynDataSeclect">
 																<option disabled=true selected>Exh Name/Horse Name
 																</option>
 																<option

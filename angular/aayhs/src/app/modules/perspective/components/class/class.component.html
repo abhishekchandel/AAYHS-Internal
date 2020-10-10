@@ -83,7 +83,7 @@
 
 											<div class="form-group">
 												<label>Class Category <span>*</span></label>
-												<select class=" form-control dynDataSeclect" name="exhibitor" required
+												<select class="form-control dynDataSeclect" name="exhibitor" required
 													[(ngModel)]="classInfo.ClassHeaderId" #classHeader="ngModel"
 													(change)="setClassHeader($event.target.value)">
 													<option [ngValue]="null">
@@ -243,7 +243,7 @@
 														<td colspan="2">
 																<div class="form-group"> 
 																	<input class="form-control" 
-																   required
+																   required  type="search" 
 																   placeholder="select exhibitor" name="classexhibitor"
 																   #classexhibitor="ngModel" [(ngModel)]="seletedclassexhibitorname"
 																   value="{{seletedclassexhibitorname}}"
@@ -266,7 +266,7 @@
 
 														</td>
 														<td colspan="2">
-															<select class="dynDataSeclect" name="horse" required
+															<select class="form-control dynDataSeclect" name="horse" required
 																[(ngModel)]="horseId" #horseControl="ngModel">
 																<option [ngValue]="null">
 																	Select Horse
@@ -355,7 +355,7 @@
 															{{result.BackNumber}}</td>
 
 														<td *ngIf="updatemode==true && updateRowIndex==i">
-															<select class="dynDataSeclect" name="backNumberEdit"
+															<select class="form-control dynDataSeclect" name="backNumberEdit"
 																required [(ngModel)]="editBackNumber"
 																#backNumberEdit="ngModel"
 																(change)="getEditExhibitorDetail($event.target.value)">
@@ -430,25 +430,12 @@
 														<td data-label="Back No">
 
 
-															<!-- <select class="dynDataSeclect" name="backNumber" required
-																[(ngModel)]="backNumber" #backNumberControl="ngModel"
-																(change)="getExhibitorDetail($event.target.value)">
-																<option [ngValue]="null">
-																	Select Back Number
-																</option>
-																<option *ngFor="let backNumber of backNumbersResponse"
-																	[value]="backNumber.BackNumber">
-																	{{backNumber.BackNumber}}
-																</option>
-															</select>
-															<span class="error"
-																*ngIf="(resultForm.submitted || backNumberControl.touched) && backNumberControl.invalid">Please
-																select back number</span> -->
+														
 
 
 																<div class="form-group"> 
 																	<input class="form-control" 
-																   required
+																   required type="search" 
 																   placeholder="Select Back Number" name="backnumber"
 																   #backnumber="ngModel" [(ngModel)]="seletedbacknumbername"
 																   value="{{seletedbacknumbername}}"
