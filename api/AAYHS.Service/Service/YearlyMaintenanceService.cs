@@ -1001,9 +1001,7 @@ namespace AAYHS.Service.Service
                 addContactInfoRequest.YearlyMaintenanceId);
 
                 if (yearlyMaint!=null)
-                {
-                    yearlyMaint.ShowStartDate = addContactInfoRequest.ShowStart;
-                    yearlyMaint.ShowEndDate = addContactInfoRequest.ShowEnd;
+                {                   
                     yearlyMaint.Location = addContactInfoRequest.Location;
                     _yearlyMaintenanceRepository.Update(yearlyMaint);
                 }

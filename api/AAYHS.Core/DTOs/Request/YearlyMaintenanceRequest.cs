@@ -50,9 +50,7 @@ namespace AAYHS.Core.DTOs.Request
     public class AddContactInfoRequest
     {
         public int AAYHSContactId { get; set; }
-        public int YearlyMaintenanceId { get; set; }
-        public DateTime ShowStart { get; set; }
-        public DateTime ShowEnd { get; set; }
+        public int YearlyMaintenanceId { get; set; }       
         public string Location { get; set; }
         public string Email1 { get; set; }
         public string Email2 { get; set; }
