@@ -300,7 +300,8 @@ namespace AAYHS.Repository.Repository
                                      select new ClassInfo 
                                      { 
                                        BackNumber= exhibitor.BackNumber,
-                                       HorseName=horse.Name,
+                                       NSBA= Convert.ToString(exhibitor.IsNSBAMember == true ? "N" : "-"),
+                                       HorseName =horse.Name,
                                        ExhibitorName=exhibitor.FirstName+" "+exhibitor.LastName,
                                        CityStateZipcode=city.Name+", "+state.Code+", "+zipcode.ZipCode
                                      }).ToList()
