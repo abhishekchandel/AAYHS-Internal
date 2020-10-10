@@ -1,3 +1,4 @@
+
 <div class="innerContent">
 	<div class="sortData">
 		<div class="sponBtn"><button class="btn btn-red btnCss" (click)="resetForm()">Add new Classes</button></div>
@@ -82,7 +83,7 @@
 
 											<div class="form-group">
 												<label>Class Category <span>*</span></label>
-												<select class=" form-control dynDataSeclect" name="exhibitor" required
+												<select class="form-control dynDataSeclect" name="exhibitor" required
 													[(ngModel)]="classInfo.ClassHeaderId" #classHeader="ngModel"
 													(change)="setClassHeader($event.target.value)">
 													<option [ngValue]="null">
@@ -242,12 +243,12 @@
 														<td colspan="2">
 																<div class="form-group"> 
 																	<input class="form-control" 
-																   required
+																   required  type="search" 
 																   placeholder="select exhibitor" name="classexhibitor"
 																   #classexhibitor="ngModel" [(ngModel)]="seletedclassexhibitorname"
 																   value="{{seletedclassexhibitorname}}"
 																   (keyup)="filterclassexhibitor($event.target.value,true)"
-																   type="search" [matAutocomplete]="classexhibitorauto">
+																   [matAutocomplete]="classexhibitorauto">
 																   <span class="help-block"
 																   *ngIf="exhibitorId==null && (entriesForm.submitted || classexhibitor.touched)">
 																   Please select exhibitor</span>
@@ -265,7 +266,7 @@
 
 														</td>
 														<td colspan="2">
-															<select class="dynDataSeclect" name="horse" required
+															<select class="form-control dynDataSeclect" name="horse" required
 																[(ngModel)]="horseId" #horseControl="ngModel">
 																<option [ngValue]="null">
 																	Select Horse
@@ -354,7 +355,7 @@
 															{{result.BackNumber}}</td>
 
 														<td *ngIf="updatemode==true && updateRowIndex==i">
-															<select class="dynDataSeclect" name="backNumberEdit"
+															<select class="form-control dynDataSeclect" name="backNumberEdit"
 																required [(ngModel)]="editBackNumber"
 																#backNumberEdit="ngModel"
 																(change)="getEditExhibitorDetail($event.target.value)">
@@ -429,17 +430,17 @@
 														<td data-label="Back No">
 
 
-															
+														
 
 
 																<div class="form-group"> 
 																	<input class="form-control" 
-																   required
+																   required type="search" 
 																   placeholder="Select Back Number" name="backnumber"
 																   #backnumber="ngModel" [(ngModel)]="seletedbacknumbername"
 																   value="{{seletedbacknumbername}}"
 																   (keyup)="filterbacknumber($event.target.value,true)"
-																   type="search" [matAutocomplete]="backnumberauto">
+																   [matAutocomplete]="backnumberauto">
 																   <span class="help-block"
 																   *ngIf="backNumber==null && (entriesForm.submitted || backnumber.touched)">
 																   Please select back number</span>
@@ -476,6 +477,8 @@
 									<button (click)="confirmDownload()" type="button"
 										class="btn btn-red btnCss addDataType1">Download</button>
 									<button type="submit" class="btn btn-red btnCss">Submit</button>
+									<button type="button" (click)='tabGroup.selectedIndex = 3'
+										class="btn btn-red btnCss">Next</button>
 								</div>
 							</form>
 						</div>
@@ -487,15 +490,15 @@
                                     <table class="table table-bordered tableBodyScroll">
                                         <thead>
                                             <tr>
-                                                <th>Select a Statement or Report</th>
+                                                <th>Select a Report</th>
                                             </tr>
                                         </thead>
                                         <perfect-scrollbar class="nicescrollBar-2">
                                             <tbody>
-                                                <tr>
+                                                <tr (click)="selectReport('Program',0)" [ngClass]="{'blueRow': selectedReportIndex == 0}">
                                                     <td>Program Sheet (#25)</td>
                                                 </tr>
-                                                <tr>
+                                                <tr (click)="selectReport('Paddock',1)" [ngClass]="{'blueRow': selectedReportIndex == 1}"> 
                                                     <td>Paddock Sheet (#23)</td>
                                                 </tr>
                                                
@@ -508,7 +511,7 @@
                             <div class="actionBtn text-right mb-3">
                                 <button (click)='tabGroup.selectedIndex = 2'
                                     class="btn btn-red btnCss roundBtn">Previous</button>
-                                <button class="btn btn-red btnCss roundBtn">Download</button>
+                                <button (click)="downlaodReport()" class="btn btn-red btnCss roundBtn">Download</button>
                             </div>
                         </div>
 					</mat-tab>

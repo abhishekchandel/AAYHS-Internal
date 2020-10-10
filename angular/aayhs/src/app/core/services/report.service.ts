@@ -12,7 +12,12 @@ export class ReportService {
   getProgramSheet(id:number){
     return this.http.get<any>(`${this.api}Report/GetProgramsReport?classId=${id}`);
   }
-  getExhibitorRegistrationReport(exhibitorId:number){
-    return this.http.get<any>(`${this.api}Report/GetExhibitorRegistrationReport?exhibitorIdst=${exhibitorId}`);
+
+  getPaddockSheet(id:number){
+    return this.http.get<any>(`${this.api}Report/GetPaddockReport?classId=${id}`);
+  }
+
+  getExhibitorRegistrationReport(exhibitorIdst:number){
+    return this.http.get<any>(`${this.api}Report/GetExhibitorRegistrationReport?exhibitorIdst=${exhibitorIdst}`);
   }
 }

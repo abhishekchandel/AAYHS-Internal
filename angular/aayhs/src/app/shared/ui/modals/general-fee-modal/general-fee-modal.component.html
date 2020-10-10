@@ -37,7 +37,9 @@
                                             </td>
                                             
                                             <td>{{fee.FeeType}}</td>
-                                            <td>${{fee.Amount}}</td>
+                                            <td>${{fee.Amount}}
+                                               <span *ngIf="updateMode"> <input #refund="ngModel"  appOnlynumber name="feeAmount"  required [(ngModel)]="feeAmount" type="text" class="form-control" /></span>
+                                            </td>
                                             <td>
                                                 <label class="customCheckbox d-inline">
                                                     <input  name="nsbaIndicator" type="checkbox" value="fee.Active" [attr.checked]="fee.Active === true ? true : null"  class="ciCheckbox">
@@ -45,7 +47,7 @@
                                                 </label>
                                             </td>
                                             <td>
-                                                <button type="button" class="icon" (click)="confirmRemoveFee(fee.YearlyMaintenanceFeeId,fee.TimeFrame)"><span></span> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                                <button type="button" class="icon" (click)="confirmRemoveFee(fee.FeeTypeId,fee.TimeFrame)"><span></span> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
                                             </td>
                                         </tr>
                                                                             

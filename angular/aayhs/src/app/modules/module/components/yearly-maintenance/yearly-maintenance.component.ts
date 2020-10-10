@@ -66,9 +66,7 @@ yearlyMaintenanceSummary:YearlyMaintenanceModel={
   };
   
   contactInfo : ContactInfo ={
-    ShowDate:null,
-    ShowEnd:null,
-    ShowLocation:null,
+    Location:null,
     Email1:null,
     Email2:null,
     Phone1:null,
@@ -87,7 +85,7 @@ yearlyMaintenanceSummary:YearlyMaintenanceModel={
     returnState:null,
     AAYHSContactId:null,
     yearlyMaintenanceId:null,
-    location:null
+   
   }
 
   constructor(public dialog: MatDialog,
@@ -114,12 +112,7 @@ yearlyMaintenanceSummary:YearlyMaintenanceModel={
   highlight(id, i) {
     this.resetForm();
     this.selectedRowIndex = i;
-    this.getAdFees(id);
    this.getYearlyMaintenanceByDetails(id);
-   this.selectedRowIndex = i;
-   this.getAdFees(id);
-  this.getClassCategory();
-   this.getGeneralFees(id);
    this.getContactInfo(id);
   }
 
@@ -326,6 +319,7 @@ yearlyMaintenanceSummary:YearlyMaintenanceModel={
   handleShowStartDate(){
     this.startDate = moment(this.yearlyMaintenanceSummary.ShowStartDate).format('YYYY-MM-DD');
   }
+
 
   handleShowEndDate(){
     this.endDate = moment(this.yearlyMaintenanceSummary.ShowEndDate).format('YYYY-MM-DD');
@@ -542,26 +536,28 @@ getContactInfo(id){
   return new Promise((resolve, reject) => {
     this.loading = true;
     this.yearlyService.getContactInfo(id).subscribe(response => {
-      this.contactInfo.ShowDate=response.Data.ShowStart,
-      this.contactInfo.ShowEnd=response.Data.ShowEnd,
-      this.contactInfo.ShowLocation=response.Data.ShowLocation,
-      this.contactInfo.Email1=response.Data.Email1,
-      this.contactInfo.Email2=response.Data.Email2,
-      this.contactInfo.Phone1=response.Data.Phone1,
-      this.contactInfo.Phone2=response.Data.Phone2,
-      this.contactInfo.exhibitorSponsorAddress=response.Data.exhibitorSponsorConfirmationResponse.Address,
-      this.contactInfo.exhibitorSponsorCity=response.Data.exhibitorSponsorConfirmationResponse.City,
-      this.contactInfo.exhibitorSponsorZip=response.Data.exhibitorSponsorConfirmationResponse.ZipCode,
-      this.contactInfo.exhibitorSponsorState=response.Data.exhibitorSponsorConfirmationResponse.StateId,
-      this.contactInfo.exhibitorRefundAddress=response.Data.exhibitorSponsorRefundStatementResponse.Address,
-      this.contactInfo.exhibitorRefundCity=response.Data.exhibitorSponsorRefundStatementResponse.City,
-      this.contactInfo.exhibitorRefundZip=response.Data.exhibitorSponsorRefundStatementResponse.ZipCode,
-      this.contactInfo.exhibitorRefundState=response.Data.exhibitorSponsorRefundStatementResponse.StateId,
-      this.contactInfo.returnAddress=response.Data.exhibitorConfirmationEntriesResponse.Address,
-      this.contactInfo.returnCity=response.Data.exhibitorConfirmationEntriesResponse.City,
-      this.contactInfo.returnZip=response.Data.exhibitorConfirmationEntriesResponse.ZipCode,
-      this.contactInfo.returnState=response.Data.exhibitorConfirmationEntriesResponse.StateId
-      this.contactInfo.AAYHSContactId=response.Data.AAYHSContactId
+      this.contactInfo.Location=response.Data.contactInfo.ShowLocation,
+      this.contactInfo.Email1=response.Data.contactInfo.Email1,
+      this.contactInfo.Email2=response.Data.contactInfo.Email2,
+      this.contactInfo.Phone1=response.Data.contactInfo.Phone1,
+      this.contactInfo.Phone2=response.Data.contactInfo.Phone2,
+
+      this.contactInfo.exhibitorSponsorAddress=response.Data.contactInfo.exhibitorSponsorConfirmationResponse.Address,
+      this.contactInfo.exhibitorSponsorCity=response.Data.contactInfo.exhibitorSponsorConfirmationResponse.City,
+      this.contactInfo.exhibitorSponsorZip=response.Data.contactInfo.exhibitorSponsorConfirmationResponse.ZipCode,
+      this.contactInfo.exhibitorSponsorState=response.Data.contactInfo.exhibitorSponsorConfirmationResponse.StateId,
+
+      this.contactInfo.exhibitorRefundAddress=response.Data.contactInfo.exhibitorSponsorRefundStatementResponse.Address,
+      this.contactInfo.exhibitorRefundCity=response.Data.contactInfo.exhibitorSponsorRefundStatementResponse.City,
+      this.contactInfo.exhibitorRefundZip=response.Data.contactInfo.exhibitorSponsorRefundStatementResponse.ZipCode,
+      this.contactInfo.exhibitorRefundState=response.Data.contactInfo.exhibitorSponsorRefundStatementResponse.StateId,
+
+      this.contactInfo.returnAddress=response.Data.contactInfo.exhibitorConfirmationEntriesResponse.Address,
+      this.contactInfo.returnCity=response.Data.contactInfo.exhibitorConfirmationEntriesResponse.City,
+      this.contactInfo.returnZip=response.Data.contactInfo.exhibitorConfirmationEntriesResponse.ZipCode,
+      this.contactInfo.returnState=response.Data.contactInfo.exhibitorConfirmationEntriesResponse.StateId
+
+      this.contactInfo.AAYHSContactId=response.Data.contactInfo.AAYHSContactId
     
       this.loading = false;
     }, error => {
@@ -575,9 +571,7 @@ getContactInfo(id){
 
 resetForm(){
 
-  this.contactInfo.ShowDate=null,
-  this.contactInfo.ShowEnd=null,
-  this.contactInfo.ShowLocation=null,
+  this.contactInfo.Location=null,
   this.contactInfo.Email1=null,
   this.contactInfo.Email2=null,
   this.contactInfo.Phone1=null,
@@ -637,9 +631,13 @@ addUpdateContactInfo(){
     this.contactInfo.exhibitorRefundState=Number(this.contactInfo.exhibitorRefundState),
     this.contactInfo.returnState=Number(this.contactInfo.returnState)
     this.contactInfo.yearlyMaintenanceId=this.yearlyMaintenanceSummary.YearlyMaintenanceId
+
+    debugger;
+
     this.yearlyService.addUpdateContact(this.contactInfo).subscribe(response => {
       this.getContactInfo(this.yearlyMaintenanceSummary.YearlyMaintenanceId);
       this.addContactForm.resetForm();
+      this.getYearlyMaintenanceByDetails(this.yearlyMaintenanceSummary.YearlyMaintenanceId)
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
       this.loading = false;
     }, error => {

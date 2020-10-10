@@ -287,7 +287,7 @@
                                                     <td data-label="Exhibitor Name">{{list.ExhibitorName}}</td>
 
                                                     <td data-label="Group Exhibitor" class="non-print-element">
-                                                        <select class="dynDataSeclect">
+                                                        <select class="form-control dynDataSeclect">
                                                             <option class="selectDropdown"
                                                                 *ngFor="let item of list.getGroupExhibitorHorses">
                                                                 {{item.HorseName}}</option>
@@ -400,7 +400,7 @@
                                                     <tr id="groupFinancialsentry">
                                                         <td data-label="Date">{{currentDate | date:'dd-MM-yyyy'}}</td>
                                                         <td data-label="Fee Type">
-                                                            <select class="dynDataSeclect" name="horsefeetypes" required
+                                                            <select class="form-control dynDataSeclect" name="horsefeetypes" required
                                                                 [(ngModel)]="FinancialsFeeTypeId"
                                                                 #groupFeeTypeControl="ngModel"
                                                                 (change)="setFinancialsFeeType($event.target.value)">
