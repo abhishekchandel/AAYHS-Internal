@@ -8,9 +8,7 @@ export interface YearlyMaintenanceModel{
 }
 
 export interface ContactInfo{
-    ShowDate:string,
-    ShowEnd:string,
-    ShowLocation:string,
+    Location:string,
     Email1:string,
     Email2:string,
     Phone1:string,
@@ -29,5 +27,4 @@ export interface ContactInfo{
     returnState:number
     AAYHSContactId:number
     yearlyMaintenanceId:number
-    location:string
 }

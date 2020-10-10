@@ -1,3 +1,4 @@
+
 <div class="innerContent">
 	<div class="sortData">
 		<div class="sponBtn"><button class="btn btn-red btnCss" (click)="resetForm()">Add new Classes</button></div>
@@ -247,7 +248,7 @@
 																   #classexhibitor="ngModel" [(ngModel)]="seletedclassexhibitorname"
 																   value="{{seletedclassexhibitorname}}"
 																   (keyup)="filterclassexhibitor($event.target.value,true)"
-																   type="search" [matAutocomplete]="classexhibitorauto">
+																   [matAutocomplete]="classexhibitorauto">
 																   <span class="help-block"
 																   *ngIf="exhibitorId==null && (entriesForm.submitted || classexhibitor.touched)">
 																   Please select exhibitor</span>
@@ -429,7 +430,20 @@
 														<td data-label="Back No">
 
 
-															
+															<!-- <select class="dynDataSeclect" name="backNumber" required
+																[(ngModel)]="backNumber" #backNumberControl="ngModel"
+																(change)="getExhibitorDetail($event.target.value)">
+																<option [ngValue]="null">
+																	Select Back Number
+																</option>
+																<option *ngFor="let backNumber of backNumbersResponse"
+																	[value]="backNumber.BackNumber">
+																	{{backNumber.BackNumber}}
+																</option>
+															</select>
+															<span class="error"
+																*ngIf="(resultForm.submitted || backNumberControl.touched) && backNumberControl.invalid">Please
+																select back number</span> -->
 
 
 																<div class="form-group"> 
@@ -439,7 +453,7 @@
 																   #backnumber="ngModel" [(ngModel)]="seletedbacknumbername"
 																   value="{{seletedbacknumbername}}"
 																   (keyup)="filterbacknumber($event.target.value,true)"
-																   type="search" [matAutocomplete]="backnumberauto">
+																   [matAutocomplete]="backnumberauto">
 																   <span class="help-block"
 																   *ngIf="backNumber==null && (entriesForm.submitted || backnumber.touched)">
 																   Please select back number</span>
@@ -476,6 +490,8 @@
 									<button (click)="confirmDownload()" type="button"
 										class="btn btn-red btnCss addDataType1">Download</button>
 									<button type="submit" class="btn btn-red btnCss">Submit</button>
+									<button type="button" (click)='tabGroup.selectedIndex = 3'
+										class="btn btn-red btnCss">Next</button>
 								</div>
 							</form>
 						</div>
@@ -487,15 +503,15 @@
                                     <table class="table table-bordered tableBodyScroll">
                                         <thead>
                                             <tr>
-                                                <th>Select a Statement or Report</th>
+                                                <th>Select a Report</th>
                                             </tr>
                                         </thead>
                                         <perfect-scrollbar class="nicescrollBar-2">
                                             <tbody>
-                                                <tr>
+                                                <tr (click)="selectReport('Program',0)" [ngClass]="{'blueRow': selectedReportIndex == 0}">
                                                     <td>Program Sheet (#25)</td>
                                                 </tr>
-                                                <tr>
+                                                <tr (click)="selectReport('Paddock',1)" [ngClass]="{'blueRow': selectedReportIndex == 1}"> 
                                                     <td>Paddock Sheet (#23)</td>
                                                 </tr>
                                                
@@ -508,7 +524,7 @@
                             <div class="actionBtn text-right mb-3">
                                 <button (click)='tabGroup.selectedIndex = 2'
                                     class="btn btn-red btnCss roundBtn">Previous</button>
-                                <button class="btn btn-red btnCss roundBtn">Download</button>
+                                <button (click)="downlaodReport()" class="btn btn-red btnCss roundBtn">Download</button>
                             </div>
                         </div>
 					</mat-tab>

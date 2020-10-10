@@ -2349,25 +2349,15 @@ html {
 
 
         // IE select box
-:-ms-input-placeholder.form-control {
-    opacity: 1 !important;
-    }
-    // mat select box
-    .cdk-overlay-container, .cdk-global-overlay-wrapper {
-    pointer-events: none;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 250px !important;
-    }
-    .cdk-overlay-pane {
-    width: 100% !important;
-    .mat-option-text {
-    overflow: visible !important;
-    text-overflow: initial !important;
-    }
-    }
-    .mat-option:hover:not(.mat-option-disabled), .mat-option:focus:not(.mat-option-disabled) {
-    background: #a0b8f9 !important;
-    color: #000 !important;
-    }
+        :-ms-input-placeholder.form-control {
+            opacity: 1 !important; 
+        }
+        .cdk-overlay-connected-position-bounding-box{
+            .cdk-overlay-pane {
+                width: 250px !important;
+            }
+        }
+        .mat-option:hover:not(.mat-option-disabled), .mat-option:focus:not(.mat-option-disabled) {
+            background: #a0b8f9 !important;
+            color: #000 !important;
+        }

@@ -56,7 +56,7 @@
 			<tbody>
 				<tr>
                     <td><span class="blueBox"></span><b>Horse Show Year:</b> {{yearlyMaintenanceSummary.Year}} </td>
-					<td><span class="blueBox"></span><b>Horse Show Location:</b> <span class="classNameExt1"></span>
+					<td><span class="blueBox"></span><b>Horse Show Location:</b> &nbsp; {{contactInfo.Location}}
 					</td>
 				</tr>
 			</tbody>
@@ -307,43 +307,11 @@
                                 <div class="card">
                                 <div class="card-body">
                                     <div class="boxShadow mb-4"> 
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Show Date <span>*</span></label> 
-                                                            <mat-form-field class="dateField">
-                                                                <input matInput [matDatepicker]="showDatePicker" name="showDate"
-                                                                    placeholder="Show Start Date" class="form-control" required
-                                                                    name="showStartDate"#showDate="ngModel" [(ngModel)]="contactInfo.ShowDate"
-                                                                    (dateChange)="handleShowStartDate()" readonly
-                                                                    >
-                                                                <mat-datepicker-toggle matSuffix [for]="showDatePicker">
-                                                                </mat-datepicker-toggle>
-                                                                <mat-datepicker #showDatePicker></mat-datepicker>													
-                                                            </mat-form-field>
-                                                        </div>
-                                                        <span class="help-block"*ngIf="(addContactForm.submitted || showDate.touched) && showDate.invalid">Please enter Show date </span>                                                          
-                                            </div>
-                                            <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Show End <span>*</span></label> 
-                                                            <mat-form-field class="dateField">
-                                                                <input matInput [matDatepicker]="showEndPicker" name="showEnd"
-                                                                    placeholder="Show Start Date" class="form-control" required
-                                                                    name="showStartDate"#showEnd="ngModel" [(ngModel)]="contactInfo.ShowEnd"
-                                                                    (dateChange)="handleShowStartDate()" readonly
-                                                                    >
-                                                                <mat-datepicker-toggle matSuffix [for]="showEndPicker">
-                                                                </mat-datepicker-toggle>
-                                                                <mat-datepicker #showEndPicker></mat-datepicker>													
-                                                            </mat-form-field>   
-                                                             </div>
-                                                             <span class="help-block"*ngIf="(addContactForm.submitted || showEnd.touched) && showEnd.invalid">Please enter Show end date </span>
-                                            </div>
+                                        <div class="row">                                         
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Show Location <span>*</span></label> 
-                                                    <input type="text"  class="form-control" required name="location" #location="ngModel" [(ngModel)]="contactInfo.location" placeholder="Location"/>
+                                                    <input type="text"  class="form-control" required name="location" #location="ngModel" [(ngModel)]="contactInfo.Location" placeholder="Location"/>
                                                 </div>
                                                 <span class="help-block"*ngIf="(addContactForm.submitted || location.touched) && location.invalid">Please enter location </span>                                                
                                             </div>

@@ -1,3 +1,5 @@
+
+
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { ClassInfoModel } from '../../../../core/models/class-model'
 import { ConfirmDialogComponent, ConfirmDialogModel } from '../../../../shared/ui/modals/confirmation-modal/confirm-dialog.component';
@@ -22,6 +24,7 @@ import { Workbook } from 'exceljs';
 import * as fs from 'file-saver';
 import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { Observable } from "rxjs";
+import {ReportService} from 'src/app/core/services/report.service'
 
 interface jsPDFWithPlugin extends jsPDF {
   autoTable: (options: UserOptions) => jsPDF;
@@ -53,6 +56,8 @@ export class ClassComponent implements OnInit {
 
   result: string = '';
   selectedRowIndex: any;
+  selectedReport:any;
+  selectedReportIndex:any;
   classRequest = {
     ClassId: 0,
     Page: 1,
@@ -96,7 +101,8 @@ export class ClassComponent implements OnInit {
     Place: null
   };
   dataForExcel = [];
-
+  programReport:any;
+  paddockReport:any;
   editExhibitorInfo = {
     ExhibitorId: null,
     ExhibitorName: null,
@@ -141,7 +147,8 @@ export class ClassComponent implements OnInit {
     private classService: ClassService,
     private snackBar: MatSnackbarComponent,
     private exportAsService: ExportAsService,
-    private data: GlobalService
+    private data: GlobalService,
+    private reportService: ReportService
   ) { }
 
   ngOnInit(): void {
@@ -369,6 +376,9 @@ export class ClassComponent implements OnInit {
     this.seletedclassexhibitorname="";
     this.backNumbersFilteredOptions=null;
     this.seletedbacknumbername="";
+
+    this.selectedReport=null
+    this.selectedReportIndex=null
   }
 
   getClassEntries(id: number) {
@@ -430,13 +440,7 @@ export class ClassComponent implements OnInit {
   }
 
   addExhibitorToClass() {
-
     if( this.exhibitorId==null ||  this.exhibitorId==undefined)
-    {
-      return;
-    }
-
-    if( this.horseId==null ||  this.horseId==undefined)
     {
       return;
     }
@@ -612,7 +616,6 @@ if(this.backNumber==null || this.backNumber==undefined)
       Place: this.place,
       ResultId: resultId
     }
-    debugger;
     this.classService.updateResult(addClassResult).subscribe(response => {
       this.loading = false;
       this.getClassResult(this.classInfo.ClassId);
@@ -1172,14 +1175,11 @@ table.pdfTable tbody tr td{
 
 
   setFilteredclassexhibitor(id,event:any) {
-    
     if (event.isUserInput) {
-   this.exhibitorId = id;
-   this.horseId=null;
     this.loading = true;
     this.classService.getExhibitorHorses(id).subscribe(response => {
       this.exhibitorsHorsesResponse = response.Data.getExhibitorHorses;
-      
+      this.exhibitorId = id
       this.loading = false;
     }, error => {
       this.exhibitorsHorsesResponse = null;
@@ -1225,5 +1225,150 @@ table.pdfTable tbody tr td{
   }
   }
 
+getProgramSheet(){
+  return new Promise((resolve, reject) => {
+    this.loading = true;
+    this.reportService.getProgramSheet(this.classInfo.ClassId).subscribe(response => {
+      this.programReport = response.Data;
+      this.downloadProgramSheet();
+      this.loading = false;
+    }, error => {
+      this.loading = false;
 
+    }
+    )
+    resolve();
+  });
+}
+
+downloadProgramSheet(): void {
+  let doc = new jsPDF("p", "mm", "a4") as jsPDFWithPlugin;
+  doc.setFontSize(10);
+  // doc.setFontType("bold");
+  doc.text('Class Name :', 10, 10);
+   doc.text(this.programReport.ClassName, 35, 10);
+
+  doc.text('Class Number :', 10, 15);
+   doc.text(this.programReport.ClassNumber, 35, 15)
+
+  doc.text('Age Group :', 10, 20);
+  doc.text(this.programReport.Age, 35, 20);
+
+  var img = new Image()
+  img.src = 'assets/images/logo.png'
+  doc.addImage(img, 'png', 190, 5, 16, 20)
+
+
+  doc.text('Sponsored By :', 100, 30);
+
+    doc.line(0, 33, 300,33);
+
+  doc.setLineWidth(5.0); 
+
+//check if there are sponsors for the class
+
+if(this.programReport.sponsorInfo.length > 0)
+{
+  doc.text(this.programReport.sponsorInfo[0].SponsorName, 10, 40);
+  doc.text(this.programReport.sponsorInfo[0].City + ' ' + this.programReport.sponsorInfo[0].StateZipcode, 10, 45);
+  doc.text(this.programReport.sponsorInfo[1].SponsorName, 130, 40);
+  doc.text(this.programReport.sponsorInfo[1].City + ' ' + this.programReport.sponsorInfo[1].StateZipcode, 130, 45);
+  doc.text(this.programReport.sponsorInfo[2].SponsorName, 10, 55);
+  doc.text(this.programReport.sponsorInfo[2].City + ' ' + this.programReport.sponsorInfo[2].StateZipcode, 10, 60);
+  doc.text(this.programReport.sponsorInfo[3].SponsorName, 130, 55);
+  doc.text(this.programReport.sponsorInfo[3].City + ' ' + this.programReport.sponsorInfo[3].StateZipcode, 130, 60);
+}
+   
+  doc.autoTable({
+     body: this.programReport.classInfo,
+    columns:
+      [
+        { header: 'Back#', dataKey: 'BackNumber' },
+        { header: 'NSBA', dataKey: 'NSBA' },
+        { header: 'Horse', dataKey: 'HorseName' },
+        { header: 'Exhibitor', dataKey: 'ExhibitorName' },
+        { header: 'City/State', dataKey: 'CityStateZipcode' },
+
+      ],
+    margin: { vertical: 35, horizontal: 10 },
+    startY:70
+  })
+
+  doc.save('ProgramSheet.pdf');
+}
+
+getPaddockSheet(){
+  return new Promise((resolve, reject) => {
+    this.loading = true;
+    this.reportService.getPaddockSheet(this.classInfo.ClassId).subscribe(response => {
+      this.paddockReport = response.Data;
+      this.downloadPaddockSheet();
+      this.loading = false;
+    }, error => {
+      this.loading = false;
+
+    }
+    )
+    resolve();
+  });
+}
+
+downloadPaddockSheet(){
+  let doc = new jsPDF("p", "mm", "a4") as jsPDFWithPlugin;
+  doc.setFontSize(10);
+
+  doc.text('Class Name :', 10, 10);
+  doc.text(this.paddockReport.ClassName, 35, 10);
+
+  doc.text('Class Number :', 10, 15);
+  doc.text(this.paddockReport.ClassNumber, 35, 15)
+
+  doc.text('Age Group :', 10, 20);
+  doc.text(this.paddockReport.Age, 35, 20);
+
+  var img = new Image()
+  img.src = 'assets/images/logo.png'
+  doc.addImage(img, 'png', 190, 5, 16, 20)
+
+  doc.line(0, 33, 300,33);
+  doc.setLineWidth(5.0); 
+
+
+  doc.autoTable({
+     body: this.paddockReport.classDetails,
+    columns:
+      [
+        { header: 'Back#', dataKey: 'BackNumber' },
+        { header: 'Scratch', dataKey: 'Scratch' },
+        { header: 'NSBA', dataKey: 'NSBA' },
+        { header: 'Horse', dataKey: 'HorseName' },
+        { header: 'Exhibitor', dataKey: 'ExhibitorName' },
+        { header: 'City/State', dataKey: 'CityStateZipcode' },
+        { header: 'Split#', dataKey: 'Split' },
+
+      ],
+    margin: { vertical: 35, horizontal: 10 },
+    startY:50
+  })
+
+  doc.save('Paddockheet.pdf');
+}
+
+selectReport(value,index){
+  this.selectedReport=value
+  this.selectedReportIndex=index
+}
+
+downlaodReport(){
+  if(this.classInfo.ClassId==0){
+    this.snackBar.openSnackBar('Please select a class', 'Close', 'red-snackbar');
+    return false;
+  }
+
+  if(this.selectedReport==null){
+    this.snackBar.openSnackBar('Please select a report to download', 'Close', 'red-snackbar');
+    return false;
+  }
+  this.selectedReport=='Program' ? this.getProgramSheet() : this.getPaddockSheet()
+}
 }

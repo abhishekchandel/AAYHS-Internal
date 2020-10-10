@@ -66,9 +66,7 @@ yearlyMaintenanceSummary:YearlyMaintenanceModel={
   };
   
   contactInfo : ContactInfo ={
-    ShowDate:null,
-    ShowEnd:null,
-    ShowLocation:null,
+    Location:null,
     Email1:null,
     Email2:null,
     Phone1:null,
@@ -87,7 +85,6 @@ yearlyMaintenanceSummary:YearlyMaintenanceModel={
     returnState:null,
     AAYHSContactId:null,
     yearlyMaintenanceId:null,
-    location:null
   }
 
   constructor(public dialog: MatDialog,
@@ -114,12 +111,7 @@ yearlyMaintenanceSummary:YearlyMaintenanceModel={
   highlight(id, i) {
     this.resetForm();
     this.selectedRowIndex = i;
-    this.getAdFees(id);
    this.getYearlyMaintenanceByDetails(id);
-   this.selectedRowIndex = i;
-   this.getAdFees(id);
-  this.getClassCategory();
-   this.getGeneralFees(id);
    this.getContactInfo(id);
   }
 
@@ -326,6 +318,7 @@ yearlyMaintenanceSummary:YearlyMaintenanceModel={
   handleShowStartDate(){
     this.startDate = moment(this.yearlyMaintenanceSummary.ShowStartDate).format('YYYY-MM-DD');
   }
+
 
   handleShowEndDate(){
     this.endDate = moment(this.yearlyMaintenanceSummary.ShowEndDate).format('YYYY-MM-DD');
@@ -542,9 +535,9 @@ getContactInfo(id){
   return new Promise((resolve, reject) => {
     this.loading = true;
     this.yearlyService.getContactInfo(id).subscribe(response => {
-      this.contactInfo.ShowDate=response.Data.ShowStart,
+      this.contactInfo.ShowStart=response.Data.ShowStart,
       this.contactInfo.ShowEnd=response.Data.ShowEnd,
-      this.contactInfo.ShowLocation=response.Data.ShowLocation,
+      this.contactInfo.Location=response.Data.ShowLocation,
       this.contactInfo.Email1=response.Data.Email1,
       this.contactInfo.Email2=response.Data.Email2,
       this.contactInfo.Phone1=response.Data.Phone1,
@@ -575,9 +568,7 @@ getContactInfo(id){
 
 resetForm(){
 
-  this.contactInfo.ShowDate=null,
-  this.contactInfo.ShowEnd=null,
-  this.contactInfo.ShowLocation=null,
+  this.contactInfo.Location=null,
   this.contactInfo.Email1=null,
   this.contactInfo.Email2=null,
   this.contactInfo.Phone1=null,
@@ -637,9 +628,13 @@ addUpdateContactInfo(){
     this.contactInfo.exhibitorRefundState=Number(this.contactInfo.exhibitorRefundState),
     this.contactInfo.returnState=Number(this.contactInfo.returnState)
     this.contactInfo.yearlyMaintenanceId=this.yearlyMaintenanceSummary.YearlyMaintenanceId
+
+    debugger;
+
     this.yearlyService.addUpdateContact(this.contactInfo).subscribe(response => {
       this.getContactInfo(this.yearlyMaintenanceSummary.YearlyMaintenanceId);
       this.addContactForm.resetForm();
+      this.getYearlyMaintenanceByDetails(this.yearlyMaintenanceSummary.YearlyMaintenanceId)
       this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
       this.loading = false;
     }, error => {
