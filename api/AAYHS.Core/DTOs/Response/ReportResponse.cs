@@ -81,7 +81,7 @@ namespace AAYHS.Core.DTOs.Response
     public class ClassInfo
     {
         public int? BackNumber { get; set; }
-        public bool NSBA { get; set; }
+        public string NSBA { get; set; }
         public string HorseName { get; set; }
         public string ExhibitorName { get; set; }        
         public string CityStateZipcode { get; set; }
