@@ -122,6 +122,12 @@ export class ExhibitorComponent implements OnInit {
 
 
 
+  ExhibitorRegistrationReportResponse: any;
+  selectedExhibitorId: null;
+  reportName: string = "";
+  reportType: string = "downloadPDF";
+
+
   minDate = moment(new Date()).format('YYYY-MM-DD');
   //for binding images with server url
   filesUrl = environment.filesUrl;
@@ -142,7 +148,7 @@ export class ExhibitorComponent implements OnInit {
     StateId: null,
     CityId: null,
     ZipCodeId: null,
-    QTYProgram: 1,
+    QTYProgram: 0,
     BirthYear: null,
     Phone: null,
     PrimaryEmail: null,
@@ -181,10 +187,6 @@ export class ExhibitorComponent implements OnInit {
   filteredClassesOption: Observable<string[]>;
 
 
-  ExhibitorRegistrationReportResponse: any;
-  selectedExhibitorId: null;
-  reportName: string = "";
-  reportType: string = "downloadPDF";
 
   constructor(
     public dialog: MatDialog,
@@ -281,11 +283,12 @@ export class ExhibitorComponent implements OnInit {
     this.getScannedDocuments(id);
     this.getFees();
     this.selectedExhibitorId = id;
-    this.reportName = "";
-    this.ExhibitorRegistrationReportResponse = null;
+   
     var selectedreportrow = document.getElementById("tr_ExhibitorRegistrationReport");
     if(selectedreportrow!=null && selectedreportrow!=undefined){
     selectedreportrow.style.background = "#fff";
+    this.reportName = "";
+    this.ExhibitorRegistrationReportResponse = null;
     }
   }
 
@@ -299,7 +302,7 @@ export class ExhibitorComponent implements OnInit {
       this.exhibitorInfo.StateId = null,
       this.exhibitorInfo.CityId = null,
       this.exhibitorInfo.ZipCodeId = null,
-      this.exhibitorInfo.QTYProgram = 1,
+      this.exhibitorInfo.QTYProgram = 0,
       this.exhibitorInfo.BirthYear = null,
       this.exhibitorInfo.Phone = null,
       this.exhibitorInfo.PrimaryEmail = null,
@@ -308,7 +311,7 @@ export class ExhibitorComponent implements OnInit {
       this.exhibitorInfo.IsDoctorNote = false,
       this.exhibitorInfo.GroupId = null,
       this.exhibitorInfo.GroupName = null
-    this.exhibitorInfoForm.resetForm({ quantityPrograms: 1 });
+    this.exhibitorInfoForm.resetForm({ quantityPrograms: 0 });
     this.selectedRowIndex = null
 
     //horses section
@@ -1628,99 +1631,94 @@ export class ExhibitorComponent implements OnInit {
   }
 
   saveExhibitorRegistrationReportPDF(): void {
-
+let y=10;
     let doc = new jsPDF("p", "mm", "a4") as jsPDFWithPlugin;
     doc.setFontSize(10);
     // doc.setFontType("bold");
-    doc.text('Address :', 10, 10);
+   
     doc.text(this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.Address != null
       || this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.Address != undefined
-      ? this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.Address : "", 35, 10);
+      ? this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.Address : "", 120, y);
 
-    doc.text('City Name :', 10, 15);
+   
     doc.text(this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.CityName != null
       || this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.CityName != undefined
-      ? this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.CityName : "", 35, 15)
+      ? this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.CityName : "", 120, y+5)
 
-    doc.text('StateZipcode :', 10, 20);
+   
     doc.text(this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.StateZipcode != null
       || this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.StateZipcode != undefined
-      ? this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.StateZipcode : "", 35, 20)
+      ? this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.StateZipcode : "", 120, y+10)
 
 
+      doc.text(this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.Phone1 != null
+        || this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.Phone1 != undefined
+        ? this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.Phone1 : "", 120, y+15);
 
-    doc.text('Email :', 10, 25);
+   
     doc.text(this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.Email1 != null
       || this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.Email1 != undefined
-      ? this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.Email1 : "", 35, 25);
+      ? this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.Email1 : "", 120, y+20);
 
-    doc.text('Phone :', 10, 30);
-    doc.text(this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.Phone1 != null
-      || this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.Phone1 != undefined
-      ? this.ExhibitorRegistrationReportResponse.getAAYHSContactInfo.Phone1 : "", 35, 30);
+    
+    
 
-    doc.text('Print Date :', 10, 35);
+    doc.text('Print Date :', 120, y+30);
     var newdate=new Date()
-    doc.text(String(moment(new Date()).format('YYYY-MM-DD')), 35, 35);
-
-
+    doc.text(String(moment(new Date()).format('YYYY-MM-DD')), 140, y+30);
 
     var img = new Image()
     img.src = 'assets/images/logo.png'
-    doc.addImage(img, 'png', 190, 5, 16, 20)
+    doc.addImage(img, 'png', 10, 5, 16, 20)
 
-
-
-
-    doc.line(0, 40, 300, 40);
-
+    doc.line(0, y+35, 300, y+35);
     doc.setLineWidth(5.0);
 
-
-    doc.text('ExhibitorName: ', 10, 50);
+y=y+5;
+  
     doc.text(this.ExhibitorRegistrationReportResponse.ExhibitorName != null ||
       this.ExhibitorRegistrationReportResponse.ExhibitorName != undefined ?
       this.ExhibitorRegistrationReportResponse.ExhibitorName : ""
-      , 35, 50);
+      , 10, y+40);
 
-    doc.text('Address:', 10, 55);
+ 
     doc.text(this.ExhibitorRegistrationReportResponse.Address != null ||
       this.ExhibitorRegistrationReportResponse.Address != undefined ?
       this.ExhibitorRegistrationReportResponse.Address : ""
-      , 35, 55);
+      , 10, y+45);
 
-    doc.text('City:', 10, 60);
+  
     doc.text(this.ExhibitorRegistrationReportResponse.CityName != null ||
       this.ExhibitorRegistrationReportResponse.CityName != undefined ?
       this.ExhibitorRegistrationReportResponse.CityName : ""
-      , 35, 60);
+      , 10, y+50);
 
-    doc.text('StateZipcode:', 10, 65);
+   
     doc.text(this.ExhibitorRegistrationReportResponse.StateZipcode != null ||
       this.ExhibitorRegistrationReportResponse.StateZipcode != undefined ?
       this.ExhibitorRegistrationReportResponse.StateZipcode : ""
-      , 35, 65);
+      , 10, y+55);
 
 
-    doc.text('Phone:', 10, 70);
+  
     doc.text(this.ExhibitorRegistrationReportResponse.Phone != null ||
       this.ExhibitorRegistrationReportResponse.Phone != undefined ?
       this.ExhibitorRegistrationReportResponse.Phone : ""
-      , 35, 70);
+      , 10, y+60);
 
 
-    doc.text('Email:', 10, 75);
+  
     doc.text(this.ExhibitorRegistrationReportResponse.Email != null ||
       this.ExhibitorRegistrationReportResponse.Email != undefined ?
       this.ExhibitorRegistrationReportResponse.Email : ""
-      , 35, 75);
+      , 10, y+65);
 
 
 
-    doc.text('HorseStallNumbers:', 110, 50);
-    doc.text('TackStallNumbers:', 110, 55);
-    doc.text('ExhibitorId:', 110, 60);
-    doc.text('YearOfBirth:', 110, 65);
+    doc.text('HorseStallNumbers:', 110, y+40);
+    doc.text('TackStallNumbers:', 110, y+45);
+    doc.text('ExhibitorId:', 110, y+50);
+    doc.text('YearOfBirth:', 110, y+55);
 
     if (this.ExhibitorRegistrationReportResponse.stallAndTackStallNumber.horseStalls.length > 0) {
       var horsestall = "";
@@ -1728,7 +1726,7 @@ export class ExhibitorComponent implements OnInit {
         horsestall = horsestall + "," + element.HorseStallNumber
       });
       horsestall = horsestall.replace(/^,|,$/g, '');
-      doc.text(horsestall, 145, 50);
+      doc.text(horsestall, 145, y+40);
     }
     if (this.ExhibitorRegistrationReportResponse.stallAndTackStallNumber.tackStalls.length > 0) {
       var tackstall = "";
@@ -1736,19 +1734,19 @@ export class ExhibitorComponent implements OnInit {
         tackstall = tackstall + "," + element.TackStallNumber
       });
       tackstall = tackstall.replace(/^,|,$/g, '');
-      doc.text(tackstall, 145, 55);
+      doc.text(tackstall, 145, y+45);
     }
 
 
     doc.text(this.ExhibitorRegistrationReportResponse.stallAndTackStallNumber.ExhibitorId != null
       || this.ExhibitorRegistrationReportResponse.stallAndTackStallNumber.ExhibitorId != undefined
       ? String(this.ExhibitorRegistrationReportResponse.stallAndTackStallNumber.ExhibitorId) : ""
-      , 145, 60);
+      , 145, y+50);
 
     doc.text(this.ExhibitorRegistrationReportResponse.stallAndTackStallNumber.ExhibitorBirthYear != null
       || this.ExhibitorRegistrationReportResponse.stallAndTackStallNumber.ExhibitorBirthYear != undefined
       ? String(this.ExhibitorRegistrationReportResponse.stallAndTackStallNumber.ExhibitorBirthYear) : ""
-      , 145, 65);
+      , 145, y+55);
 
 
 
@@ -1764,7 +1762,7 @@ export class ExhibitorComponent implements OnInit {
 
         ],
       margin: { vertical: 35, horizontal: 10 },
-      startY: 85
+      startY: y+75
     })
 
     let finalY = (doc as any).lastAutoTable.finalY + 10;
@@ -1860,7 +1858,21 @@ export class ExhibitorComponent implements OnInit {
 
     doc.save('ExhibitorRegistrationReportPDF.pdf');
   }
+  tabChanged(event)
+  {
+  
+    if(this.reportName == "" && event.tab.origin == 5)
+    {
 
+      this.ExhibitorRegistrationReportResponse = null;
+      var selectedreportrow = document.getElementById("tr_ExhibitorRegistrationReport");
+      let check=1;
+      while (selectedreportrow!=null && selectedreportrow!=undefined && check==1) {
+        selectedreportrow.style.background = "#fff";
+        check=0;
+    }
+    }
+  }
   submitReports() {
 
     

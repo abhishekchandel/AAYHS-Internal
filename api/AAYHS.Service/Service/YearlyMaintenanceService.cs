@@ -378,7 +378,7 @@ namespace AAYHS.Service.Service
             }
             else
             {
-                _mainResponse.Success = false;
+                _mainResponse.Success = true;
                 _mainResponse.Message = Constants.NO_RECORD_EXIST_WITH_ID;
             }
             return _mainResponse;

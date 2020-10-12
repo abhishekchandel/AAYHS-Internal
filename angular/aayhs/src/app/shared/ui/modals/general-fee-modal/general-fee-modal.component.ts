@@ -71,7 +71,7 @@ updateMode:boolean=false;
   }
 
 
-  confirmRemoveFee(id,timeframe): void {
+  confirmRemoveFee(YearlyMaintenanceFeeId,feetypeid,timeframe): void {
     const message = `Are you sure you want to remove the record?`;
     const dialogData = new ConfirmDialogModel("Confirm Action", message);
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
@@ -81,19 +81,20 @@ updateMode:boolean=false;
     dialogRef.afterClosed().subscribe(dialogResult => {
       this.result = dialogResult;
       if (this.result) {
-        this.deleteGeneralFee(id,timeframe)
+        this.deleteGeneralFee(YearlyMaintenanceFeeId,feetypeid,timeframe)
       }
     });
 
   }
 
   
-  deleteGeneralFee(id,timeframe){
+  deleteGeneralFee(YearlyMaintenanceFeeId,feetypeid,timeframe){
     return new Promise((resolve, reject) => {   
       this.loading = true;
       var deleteRequest={
-        yearlyMaintenanceFeeId:Number(id),
-        timeFrame:timeframe
+        YearlyMaintenanceFeeId:Number(YearlyMaintenanceFeeId),
+        FeeTypeId:Number(feetypeid),
+        timeFrame:timeframe,
       }
       this.yearlyService.deleteGeneralFee(deleteRequest).subscribe(response => {
         this.getGeneralFees(this.yearlyMaintainenceId);
@@ -109,6 +110,7 @@ updateMode:boolean=false;
   }
 
   getGeneralFees(id){
+    
     return new Promise((resolve, reject) => {
       this.loading = true;
       this.yearlyService.getGeneralFees(id).subscribe(response => {

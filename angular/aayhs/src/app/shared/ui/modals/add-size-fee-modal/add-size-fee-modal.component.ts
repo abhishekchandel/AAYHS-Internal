@@ -69,7 +69,7 @@ export class AddSizeFeeModalComponent implements OnInit {
   }
 
 
-  confirmRemoveFee(id): void {
+  confirmRemoveFee(id,AdSizeId): void {
     const message = `Are you sure you want to remove the record?`;
     const dialogData = new ConfirmDialogModel("Confirm Action", message);
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
@@ -79,17 +79,21 @@ export class AddSizeFeeModalComponent implements OnInit {
     dialogRef.afterClosed().subscribe(dialogResult => {
       this.result = dialogResult;
       if (this.result) {
-        this.deleteAdFee(id)
+        this.deleteAdFee(id,AdSizeId)
       }
     });
 
   }
 
   
-  deleteAdFee(id){
+  deleteAdFee(id,AdSizeId){
     return new Promise((resolve, reject) => {   
       this.loading = true;
-      this.yearlyService.deleteAdFee(id).subscribe(response => {
+      let DeleteAdFee={
+       YearlyMaintenanceFeeId:id,
+       AdSizeId:AdSizeId
+      }
+      this.yearlyService.deleteAdFee(DeleteAdFee).subscribe(response => {
         this.getAdFees(this.yearlyMaintainenceId);
         this.snackBar.openSnackBar(response.Message, 'Close', 'green-snackbar');
         this.loading = false;
@@ -103,11 +107,19 @@ export class AddSizeFeeModalComponent implements OnInit {
   }
 
   getAdFees(id){
+    debugger
     return new Promise((resolve, reject) => {
       this.loading = true;
       this.yearlyService.getAdFees(id).subscribe(response => {
+        if(response.Data!=null && response.Data!=undefined)
+        {
         this.adFeesList = response.Data.getAdFees;
         this.loading = false;
+        }
+        else{
+          this.adFeesList = null;
+          this.loading = false;
+        }
       }, error => {
         this.loading = false;
   

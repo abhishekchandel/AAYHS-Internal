@@ -536,7 +536,8 @@ getContactInfo(id){
   return new Promise((resolve, reject) => {
     this.loading = true;
     this.yearlyService.getContactInfo(id).subscribe(response => {
-      this.contactInfo.Location=response.Data.contactInfo.ShowLocation,
+      debugger
+      this.contactInfo.Location=response.Data.ShowLocation,
       this.contactInfo.Email1=response.Data.contactInfo.Email1,
       this.contactInfo.Email2=response.Data.contactInfo.Email2,
       this.contactInfo.Phone1=response.Data.contactInfo.Phone1,
