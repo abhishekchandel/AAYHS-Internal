@@ -104,4 +104,15 @@ namespace AAYHS.Core.DTOs.Response
         public string CityStateZipcode { get; set; }
         public int Split { get; set; }
     }
+    public class GetAllClassesEntries
+    {
+        public List< GetClassEntriesCount> getClassEntriesCount { get; set; }
+    }
+    public class GetClassEntriesCount
+    {
+        public string ClassNumber { get; set; }
+        public string ClassName { get; set; }
+        public string  ClassAgeGroup { get; set; }
+        public int EntryTotal { get; set; }
+    }
 }

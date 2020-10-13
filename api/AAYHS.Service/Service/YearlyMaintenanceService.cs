@@ -135,6 +135,18 @@ namespace AAYHS.Service.Service
 
                 if (userApprovedRequest.IsApproved==true)
                 {
+                    var role = new UserRoles
+                    {
+                        RoleId = userApprovedRequest.RoleId,
+                        UserId = userApprovedRequest.UserId,
+                        IsActive = true,
+                        IsDeleted = false,
+                        CreatedBy = actionBy,
+                        CreatedDate = DateTime.Now
+                    };
+
+                    _userRoleRepository.Add(role);
+
                     string guid = Guid.NewGuid().ToString();
                   
                     var settings = _applicationRepository.GetAll().FirstOrDefault();
@@ -149,18 +161,7 @@ namespace AAYHS.Service.Service
                     email.TemplateType = "User Approved";
 
                     _emailRepository.SendEmail(email);
-
-                    var role = new UserRoles
-                    {
-                        RoleId = userApprovedRequest.RoleId,
-                        UserId = userApprovedRequest.UserId,
-                        IsActive = true,
-                        IsDeleted = false,
-                        CreatedBy = actionBy,
-                        CreatedDate = DateTime.Now
-                    };
-
-                    _userRoleRepository.Add(role);
+                   
                 }
 
                 _mainResponse.Success = true;
@@ -583,12 +584,18 @@ namespace AAYHS.Service.Service
             int feeTypeId = 0;
             int catgeoryId = _yearlyMaintenanceRepository.GetCategoryId("FeeType");
 
-            var checkFeeTypeExist = _globalCodeRepository.GetSingle(x => x.CodeName.ToLower() == addGeneralFeeRequest.FeeType.ToLower() && 
-            x.CategoryId == catgeoryId && x.IsActive == true && x.IsDeleted == false);
+            var checkFeeTypeExist = _globalCodeRepository.GetSingle(x => x.CodeName.ToLower() == (addGeneralFeeRequest.FeeType != null ? addGeneralFeeRequest.FeeType.ToLower():"") &&
+            x.CategoryId == catgeoryId && x.IsActive == true && x.IsDeleted == false) ;
             if (addGeneralFeeRequest.YearlyMaintainenceFeeId==0)
             {
                 if (checkFeeTypeExist != null)
                 {
+                    if (checkFeeTypeExist.CodeName.ToLower() != "additional program" && addGeneralFeeRequest.TimeFrame=="")
+                    {
+                        _mainResponse.Success = false;
+                        _mainResponse.Message = Constants.TIME_FRAME_REQUIRED;
+                        return _mainResponse;
+                    }
                     var checkFee = _yearlyMaintenanceFeeRepository.GetSingle(x => x.FeeTypeId == checkFeeTypeExist.GlobalCodeId &&
                     x.YearlyMaintainenceId == addGeneralFeeRequest.YearlyMaintainenceId && x.IsActive == true && x.IsDeleted == false);
 

@@ -11,5 +11,6 @@ namespace AAYHS.Service.IService
         MainResponse GetExhibitorRegistrationReport(int exhibitorId);
         MainResponse GetProgramsReport(int classId);
         MainResponse GetPaddockReport(int classId);
+        MainResponse GetAllClassesEntries();
     }
 }

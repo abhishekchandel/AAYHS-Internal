@@ -68,5 +68,16 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<GetPaddockReport>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
+        /// <summary>
+        /// This api used to get all classes entries count
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetAllClassesEntries()
+        {
+            _mainResponse = _reportService.GetAllClassesEntries();
+            _jsonString = Mapper.Convert<GetAllClassesEntries>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
     }
 }

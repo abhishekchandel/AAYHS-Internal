@@ -350,5 +350,24 @@ namespace AAYHS.Repository.Repository
             getPaddockReport = data.FirstOrDefault();
             return getPaddockReport;
         }
+
+        public GetAllClassesEntries GetAllClassesEntries()
+        {
+            IEnumerable<GetClassEntriesCount> data;
+            GetAllClassesEntries getAllClassesEntries = new GetAllClassesEntries();
+
+            data = (from classes in _ObjContext.Classes
+                    where classes.IsActive == true && classes.IsDeleted == false
+                    orderby classes.ClassNumber
+                    select new GetClassEntriesCount
+                    { 
+                      ClassNumber=classes.ClassNumber,
+                      ClassName=classes.Name,
+                      ClassAgeGroup=classes.AgeGroup,
+                      EntryTotal=_ObjContext.ExhibitorClass.Where(x=>x.ClassId==classes.ClassId && x.IsScratch==false && x.IsActive==true && x.IsDeleted==false).Count()
+                    });
+            getAllClassesEntries.getClassEntriesCount = data.ToList();
+            return getAllClassesEntries;
+        }
     }
 }

@@ -67,5 +67,6 @@ namespace AAYHS.Core.Shared.Static
         public const string FEE_ALREADY_IN_USE = "This fee already in use";
         public const string CLASS_CATEGORY_ALREADY_IN_USE = "This class category already in use";
         public const string FEE_ALREADY_EXIST = "This fee already exist";
+        public const string TIME_FRAME_REQUIRED = "Time Frame required for this fee";
     }
 }

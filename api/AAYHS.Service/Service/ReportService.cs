@@ -53,5 +53,14 @@ namespace AAYHS.Service.Service
             _mainResponse.Success = true;
             return _mainResponse;
         }
+
+        public MainResponse GetAllClassesEntries()
+        {
+            var getAllClasses = _reportRepository.GetAllClassesEntries();
+
+            _mainResponse.GetAllClassesEntries = getAllClasses;
+            _mainResponse.Success = true;
+            return _mainResponse;
+        }
     }
 }

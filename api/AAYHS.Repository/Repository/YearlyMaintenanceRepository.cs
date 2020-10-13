@@ -181,10 +181,13 @@ namespace AAYHS.Repository.Repository
             List<GetGeneralFees> getGeneralFees = new List<GetGeneralFees>();
             GetAllGeneralFees getAllGeneralFees = new GetAllGeneralFees();
 
+            int adCategoryId = GetCategoryId("FeeType");
+
             data = (from yearlyFee in _ObjContext.YearlyMaintainenceFee
                     join feeType in _ObjContext.GlobalCodes on yearlyFee.FeeTypeId equals feeType.GlobalCodeId
                     where yearlyFee.IsActive == true && yearlyFee.IsDeleted == false
                     && yearlyFee.YearlyMaintainenceId==yearlyMaintenanceId
+                    && feeType.CategoryId== adCategoryId
                     select new GetGeneralFees
                     {
                         YearlyMaintenanceFeeId=yearlyFee.YearlyMaintainenceFeeId,

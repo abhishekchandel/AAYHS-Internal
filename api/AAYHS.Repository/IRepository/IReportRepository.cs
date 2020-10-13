@@ -11,5 +11,6 @@ namespace AAYHS.Repository.IRepository
         GetExhibitorRegistrationReport GetExhibitorRegistrationReport(int exhibitorId);
         GetProgramReport GetProgramsReport(int classId);
         GetPaddockReport GetPaddockReport(int classId);
+        GetAllClassesEntries GetAllClassesEntries();
     }
 }
