@@ -1247,55 +1247,59 @@ downloadProgramSheet(): void {
   let doc = new jsPDF("p", "mm", "a4") as jsPDFWithPlugin;
   doc.setFontSize(10);
   // doc.setFontType("bold");
-  doc.text('Class Name :', 10, 10);
-   doc.text(this.programReport.ClassName, 35, 10);
 
-  doc.text('Class Number :', 10, 15);
-   doc.text(this.programReport.ClassNumber, 35, 15)
+  doc.text('Class Number :', 80, 10);
+  doc.text(this.programReport.ClassNumber, 110, 10)
 
-  doc.text('Age Group :', 10, 20);
-  doc.text(this.programReport.Age, 35, 20);
+  doc.text('Class Name :', 80, 15);
+   doc.text(this.programReport.ClassName, 110, 15);
+
+  doc.text('Age Group :', 80, 20);
+  doc.text(this.programReport.Age, 110, 20);
+
+
 
   var img = new Image()
   img.src = 'assets/images/logo.png'
   doc.addImage(img, 'png', 190, 5, 16, 20)
 
 
-  doc.text('Sponsored By :', 100, 30);
+  doc.text('Sponsored By :', 90, 30);
 
     doc.line(0, 33, 300,33);
 
   doc.setLineWidth(5.0); 
 
 //check if there are sponsors for the class
-
-if(this.programReport.sponsorInfo.length > 0)
+let yaxis=40;
+if(this.programReport.sponsorInfo!=null && this.programReport.sponsorInfo.length>0)
 {
-  if(this.programReport.sponsorInfo!=null && this.programReport.sponsorInfo.length>0)
-  {
-
-    if(this.programReport.sponsorInfo.length>=1){
+if(this.programReport.sponsorInfo.length>=1){
   doc.text(this.programReport.sponsorInfo[0].SponsorName, 10, 40);
   doc.text(this.programReport.sponsorInfo[0].City + ' ' + this.programReport.sponsorInfo[0].StateZipcode, 10, 45);
+    yaxis=45;
     }
 
  if(this.programReport.sponsorInfo.length >=2){
   doc.text(this.programReport.sponsorInfo[1].SponsorName, 130, 40);
   doc.text(this.programReport.sponsorInfo[1].City + ' ' + this.programReport.sponsorInfo[1].StateZipcode, 130, 45);
+  yaxis=45;
  }
 
  if(this.programReport.sponsorInfo.length >=3){
   doc.text(this.programReport.sponsorInfo[2].SponsorName, 10, 55);
   doc.text(this.programReport.sponsorInfo[2].City + ' ' + this.programReport.sponsorInfo[2].StateZipcode, 10, 60);
+  yaxis=60;
  }
 
  if(this.programReport.sponsorInfo.length >=4){
   doc.text(this.programReport.sponsorInfo[3].SponsorName, 130, 55);
   doc.text(this.programReport.sponsorInfo[3].City + ' ' + this.programReport.sponsorInfo[3].StateZipcode, 130, 60);
+  yaxis=60;
   }
+
 }
-}
-   
+   debugger
   doc.autoTable({
      body: this.programReport.classInfo,
     columns:
@@ -1308,7 +1312,7 @@ if(this.programReport.sponsorInfo.length > 0)
 
       ],
     margin: { vertical: 35, horizontal: 10 },
-    startY:70
+    startY:yaxis+10
   })
 
   doc.save('ProgramSheet.pdf');
@@ -1334,14 +1338,16 @@ downloadPaddockSheet(){
   let doc = new jsPDF("p", "mm", "a4") as jsPDFWithPlugin;
   doc.setFontSize(10);
 
-  doc.text('Class Name :', 10, 10);
-  doc.text(this.paddockReport.ClassName, 35, 10);
+  doc.text('Class Number :', 80, 10);
+  doc.text(this.paddockReport.ClassNumber, 110, 10)
 
-  doc.text('Class Number :', 10, 15);
-  doc.text(this.paddockReport.ClassNumber, 35, 15)
+  doc.text('Class Name :', 80, 15);
+  doc.text(this.paddockReport.ClassName, 110, 15);
 
-  doc.text('Age Group :', 10, 20);
-  doc.text(this.paddockReport.Age, 35, 20);
+  doc.text('Age Group :', 80, 20);
+  doc.text(this.paddockReport.Age, 110, 20);
+
+  
 
   var img = new Image()
   img.src = 'assets/images/logo.png'
@@ -1365,7 +1371,7 @@ downloadPaddockSheet(){
 
       ],
     margin: { vertical: 35, horizontal: 10 },
-    startY:50
+    startY:40
   })
 
   doc.save('Paddockheet.pdf');

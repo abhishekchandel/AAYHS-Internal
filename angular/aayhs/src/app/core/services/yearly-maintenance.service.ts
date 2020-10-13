@@ -44,8 +44,8 @@ export class YearlyMaintenanceService {
     return this.http.post<any>(`${this.api}YearlyMaintenance/AddAdFee`,data);
   }
 
-  deleteAdFee(id){
-    return this.http.delete<any>(`${this.api}YearlyMaintenance/DeleteAdFee?yearlyMaintenanceFeeId=${id}`);
+  deleteAdFee(DeleteAdFee){
+    return this.http.post<any>(`${this.api}YearlyMaintenance/DeleteAdFee`,DeleteAdFee);
   }
 
   getYearlyMaintenanceById(id){
@@ -87,7 +87,7 @@ export class YearlyMaintenanceService {
   }
 
   deleteGeneralFee(data){
-    return this.http.post<any>(`${this.api}YearlyMaintenance/RemoveGeneralFee?yearlyMaintenanceFeeId`,data);
+    return this.http.post<any>(`${this.api}YearlyMaintenance/RemoveGeneralFee`,data);
   }
 
   getContactInfo(id){
