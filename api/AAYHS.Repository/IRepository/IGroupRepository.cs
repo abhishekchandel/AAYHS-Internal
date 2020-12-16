@@ -14,6 +14,8 @@ namespace AAYHS.Repository.IRepository
         GroupListResponse SearchGroup(SearchRequest searchRequest);
         GetAllGroupExhibitors GetGroupExhibitors(int GroupId);
         GetAllGroupFinacials GetAllGroupFinancials(int GroupId);
+        GetAllGroupsFinacialsModule GetModuleGroupsFinancials();
+        GetAllGroupsFinacialsModule GetModuleGroupsFinancials(int groupId);
         GetGroupStatement GetGroupStatement(int GroupId);
     }
 }

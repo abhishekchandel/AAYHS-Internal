@@ -53,16 +53,13 @@ namespace AAYHS.Repository.Repository
                                        Email = sponsor.Email,
                                        AmountReceived = sponsor.AmountReceived,
                                        Address = data != null ? data.Address : "",
-                                       ZipCodeId = data != null ? data.ZipCodeId :0,
-                                       CityId = data != null ? data.CityId : 0,
-                                       CityName = data != null ? _context.Cities.Where(x => x.CityId == data.CityId).Select(y => y.Name).FirstOrDefault() : "",
-                                       StateId = data != null ? _context.Cities.Where(x => x.CityId == data.CityId).Select(y => y.StateId).FirstOrDefault() : 0,
+                                       ZipCode = data != null ? data.ZipCode :"",
+                                       City = data != null ? data.City : "",
+                                       StateId = data != null ? data.StateId : 0,
                                    }).FirstOrDefault();
             _mainResponse.SponsorResponse = sponsorResponse;
             return _mainResponse;
         }
-
-
         public MainResponse GetAllSponsors(BaseRecordFilterRequest request)
         {
 
@@ -86,9 +83,8 @@ namespace AAYHS.Repository.Repository
                                        Email = sponsor.Email,
                                        AmountReceived = sponsor.AmountReceived,
                                        Address = data != null ? data.Address : "",
-                                       ZipCodeId = data != null ? data.ZipCodeId :0,
-                                       CityId = data != null ? data.CityId : 0,
-                                       StateId = data != null ? _context.Cities.Where(x => x.CityId == data.CityId).Select(y => y.StateId).FirstOrDefault() : 0,
+                                       ZipCode = data != null ? data.ZipCode :"",
+                                       StateId = data != null ? data.StateId : 0,
                                    }).ToList();
            
             if (sponsorResponses.Count() > 0)
@@ -121,7 +117,6 @@ namespace AAYHS.Repository.Repository
             _mainResponse.SponsorListResponse = sponsorListResponse;
             return _mainResponse;
         }
-
         public SponsorListResponse SearchSponsor(SearchRequest searchRequest)
         {
             IEnumerable<SponsorResponse> sponsorResponses;
@@ -147,9 +142,8 @@ namespace AAYHS.Repository.Repository
                                        Email = sponsor.Email,
                                        AmountReceived = sponsor.AmountReceived,
                                        Address = data != null ? data.Address : "",
-                                       ZipCodeId = data != null ? data.ZipCodeId : 0,
-                                       CityId = data != null ? data.CityId : 0,
-                                       StateId = data != null ? _context.Cities.Where(x => x.CityId == data.CityId).Select(y => y.StateId).FirstOrDefault() : 0,
+                                       ZipCode = data != null ? data.ZipCode : "",
+                                       StateId = data != null ? data.StateId : 0,
                                    }).ToList();
 
             if (sponsorResponses.Count() > 0)
@@ -177,6 +171,5 @@ namespace AAYHS.Repository.Repository
             sponsorListResponse.sponsorResponses = sponsorResponses.ToList();
             return sponsorListResponse;
         }
-
     }
 }

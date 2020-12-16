@@ -68,5 +68,10 @@ namespace AAYHS.Core.Shared.Static
         public const string CLASS_CATEGORY_ALREADY_IN_USE = "This class category already in use";
         public const string FEE_ALREADY_EXIST = "This fee already exist";
         public const string TIME_FRAME_REQUIRED = "Time Frame required for this fee";
+        public const string AMOUNT_CANT_ZERO = "Please Add the amount";
+        public const string GENERAL_FEE_CANT_EMPTY = "General Fee Can not be empty";
+        public const string NO_YEAR = "Please create the next year";
+        public const string SPONSOR_NO_FUND = "This sponsor have no fund to sponsor the exhibitor";
+        public const string SELECT_CURRENT_YEAR = "Please select the current year";
     }
 }

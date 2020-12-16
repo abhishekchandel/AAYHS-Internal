@@ -36,7 +36,16 @@ namespace AAYHS.Core.DTOs.Response
         public ExhibitorResponse ExhibitorResponse { get; set; }
         public ExhibitorListResponse ExhibitorListResponse { get; set; }
         public SponsorExhibitorListResponse SponsorExhibitorListResponse { get; set; }
+        
         public SponsorExhibitorResponse SponsorExhibitorResponse { get; set; }
+        public SponsorDistributionListResponse SponsorDistributionListResponse { get; set; }
+        public SponsorDistributionResponse SponsorDistributionResponse { get; set; }
+        
+        public ExhibiorAdsSponsorReportListResponse ExhibiorAdsSponsorReportListResponse { get; set; }
+        public ExhibiorAdsSponsorReportResponse ExhibiorAdsSponsorReportResponse { get; set; }
+
+        public NonExhibiorSummarySponsorDistributionsListResponse NonExhibiorSummarySponsorDistributionsListResponse { get; set; }
+        public NonExhibiorSummarySponsorDistributionsResponse NonExhibiorSummarySponsorDistributionsResponse { get; set; }
         public ResultExhibitorDetails ResultExhibitorDetails { get; set; }
         public GetAllBackNumber GetAllBackNumber { get; set; }
         public CityResponse CityResponse { get; set; }
@@ -47,6 +56,7 @@ namespace AAYHS.Core.DTOs.Response
         public GetAllHorses GetAllHorses { get; set; }
         public UserResponse UserResponse { get; set; }
         public GetAllGroupFinacials GetAllGroupFinacials { get; set; }
+        public GetAllGroupsFinacialsModule GetAllGroupsFinacialsModule { get; set; }
         public GroupResponse GroupResponse  { get; set; }
         public GroupListResponse GroupListResponse  { get; set; }
         public GetAllLinkedExhibitors GetAllLinkedExhibitors { get; set; }
@@ -83,9 +93,33 @@ namespace AAYHS.Core.DTOs.Response
         public GetAllRefund GetAllRefund { get; set; }   
         public GetLocation GetLocation { get; set; }   
         public GetExhibitorRegistrationReport GetExhibitorRegistrationReport { get; set; }   
+        public GetExhibitorGroupInformationReport GetExhibitorGroupInformationReport { get; set; }
+        
+        public GetExhibitorGroupInformationReportForAllGroups GetExhibitorGroupInformationReportForAllGroups { get; set; }
+        public GetExhibitorSponsorConfirmationReportForAllExhibitors GetExhibitorSponsorConfirmationReportForAllExhibitors { get; set; }
+        public GetExhibitorSponsorConfirmationReport GetExhibitorSponsorConfirmationReport { get; set; }
         public GetProgramReport GetProgramReport { get; set; }   
         public GetPaddockReport GetPaddockReport { get; set; }   
         public GetAllClassesEntries GetAllClassesEntries { get; set; }   
+        public GetClassResultReport GetClassResultReport { get; set; }   
+        public GetSingleClassResult GetSingleClassResult { get; set; }   
+        public GetAllScan GetAllScan { get; set; }   
+        public GetAllStatementText GetAllStatementText { get; set; }   
+        public GetExhibitorSponsorRefundStatement GetExhibitorSponsorRefundStatement { get; set; }   
+        public ExhibitorAllSponsorAmount ExhibitorAllSponsorAmount { get; set; }   
+        public GetSponsorAllIncentives GetSponsorAllIncentives { get; set; }   
+        public AllSponsorsYealry AllSponsorsYealry { get; set; }   
+        public GetPaddockReportOfAllClasses GetPaddockReportOfAllClasses { get; set; }   
+        public GetProgramReportOfAllClasses GetProgramReportOfAllClasses { get; set; }   
+        public ShowSummaryReport ShowSummaryReport { get; set; }   
+        public GetExhibitorsSponsorRefundReport GetExhibitorsSponsorRefundReport { get; set; }   
+        public GetAdministrativeReport GetAdministrativeReport { get; set; }   
+        public GetNSBAExhibitorFee GetNSBAExhibitorFee { get; set; }   
+        public GetAllSponsorAdType GetAllSponsorAdType { get; set; }   
+        public GetNonExhibitorSponsor GetNonExhibitorSponsor { get; set; }   
+        public GetAllNonExhibitorSponsors GetAllNonExhibitorSponsors { get; set; }   
+        public GetAllExhibitorSponsoredAd GetAllExhibitorSponsoredAd { get; set; }   
+        public GetAllNonExhibitorSponsorAd GetAllNonExhibitorSponsorAd { get; set; }   
       
     }
    

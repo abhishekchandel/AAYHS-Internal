@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AAYHS.Core.DTOs.Request;
 using AAYHS.Core.DTOs.Response;
 using AAYHS.Core.DTOs.Response.Common;
 using AAYHS.Core.Shared.Static;
@@ -73,11 +74,11 @@ namespace AAYHS.API.Controllers
         /// </summary>
         /// <param name="cityid"></param>
         /// <returns></returns>
-        [HttpGet]
-        public IActionResult GetZipCodes(string city)
+        [HttpPost]
+        public IActionResult GetZipCodes(ZipCodeRequest request)
         {
 
-            _mainResponse = _globalCodeService.GetAllZipCodes(city);
+            _mainResponse = _globalCodeService.GetAllZipCodes(request);
             _jsonString = Mapper.Convert<ZipCodeResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }

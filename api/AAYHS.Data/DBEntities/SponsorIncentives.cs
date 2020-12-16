@@ -7,17 +7,13 @@ using System.Text;
 
 namespace AAYHS.Data.DBEntities
 {
-    public class SponsorExhibitor:BaseEntity
+    public class SponsorIncentives:BaseEntity
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int SponsorExhibitorId { get; set; }
-        public int SponsorId { get; set; }
-        public int ExhibitorId { get; set; }
-        public int SponsorTypeId { get; set; }
-        public int AdTypeId { get; set; }
-        public int HorseId { get; set; }
-        public string TypeId { get; set; }
+        public int SponsorIncentiveId { get; set; }
+        public int YearlyMaintenanceId { get; set; }
         public decimal SponsorAmount { get; set; }
+        public int Award { get; set; }
     }
 }

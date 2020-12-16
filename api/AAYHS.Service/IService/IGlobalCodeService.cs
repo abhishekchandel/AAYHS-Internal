@@ -1,4 +1,5 @@
-﻿using AAYHS.Core.DTOs.Response;
+﻿using AAYHS.Core.DTOs.Request;
+using AAYHS.Core.DTOs.Response;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,6 +12,6 @@ namespace AAYHS.Service.IService
         MainResponse GetGlobalCode(string globalCodeType);
         MainResponse GetAllStates();
         MainResponse GetAllCities(int StateId);
-        MainResponse GetAllZipCodes(string city);
+        MainResponse GetAllZipCodes(ZipCodeRequest request);
     }
 }

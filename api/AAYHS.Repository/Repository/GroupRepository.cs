@@ -60,10 +60,9 @@ namespace AAYHS.Repository.Repository
                                  Email = groups.Email,
                                  AmountReceived = groups.AmountReceived,
                                  Address = data != null ? data.Address : "",
-                                 ZipCodeId = data != null ? data.ZipCodeId : 0,
-                                 CityId = data != null ? data.CityId : 0,
-                                 CityName = data != null ? _context.Cities.Where(x => x.CityId == data.CityId).Select(y => y.Name).FirstOrDefault() :"",
-                                 StateId = data != null ? _context.Cities.Where(x => x.CityId == data.CityId).Select(y => y.StateId).FirstOrDefault() : 0,
+                                 ZipCode = data != null ? data.ZipCode : "",
+                                 City = data != null ? data.City :"",
+                                 StateId = data != null ?data.StateId: 0,
                                  groupStallAssignmentResponses = (from stallassign in _context.StallAssignment
                                                                   where stallassign.GroupId == groups.GroupId
                                                                   && stallassign.IsActive == true
@@ -107,9 +106,9 @@ namespace AAYHS.Repository.Repository
                                     Email = Group.Email,
                                     AmountReceived = Group.AmountReceived,
                                     Address = data != null ? data.Address : "",
-                                    ZipCodeId = data != null ? data.ZipCodeId : 0,
-                                    CityId = data != null ? data.CityId : 0,
-                                    StateId = data != null ? _context.Cities.Where(x => x.CityId == data.CityId).Select(y => y.StateId).FirstOrDefault() : 0,
+                                    ZipCode = data != null ? data.ZipCode : "",
+                                    City = data != null ? data.City : "",
+                                    StateId = data != null ? data.StateId : 0,
                                 }).ToList();
 
             if (GroupResponses.Count() > 0)
@@ -171,9 +170,9 @@ namespace AAYHS.Repository.Repository
                                     Email = Group.Email,
                                     AmountReceived = Group.AmountReceived,
                                     Address = data != null ? data.Address : "",
-                                    ZipCodeId = data != null ? data.ZipCodeId : 0,
-                                    CityId = data != null ? data.CityId : 0,
-                                    StateId = data != null ? _context.Cities.Where(x => x.CityId == data.CityId).Select(y => y.StateId).FirstOrDefault() : 0,
+                                    ZipCode = data != null ? data.ZipCode : "",
+                                    City = data != null ? data.City : "",
+                                    StateId = data != null ? data.StateId : 0,
                                 }).ToList();
 
             if (GroupResponses.Count() > 0)
@@ -238,18 +237,28 @@ namespace AAYHS.Repository.Repository
         {
             GetAllGroupFinacials getAllGroupFinacials = new GetAllGroupFinacials();
             List<GetGroupFinacials> list = new List<GetGroupFinacials>();
+            var selectedgroup = (from groups in _context.Groups where groups.GroupId == GroupId && groups.IsActive == true select groups).FirstOrDefault();
+            if (selectedgroup != null)
+            {
+                getAllGroupFinacials.GroupName = selectedgroup.GroupName;
+                getAllGroupFinacials.GroupId = selectedgroup.GroupId;
+            }
+         
+
             list = (from financial in _context.GroupFinancials
-                    join feetype in _context.GlobalCodes on financial.FeeTypeId equals feetype.GlobalCodeId
+                    join feetype in _context.YearlyMaintainenceFee on financial.FeeTypeId equals feetype.YearlyMaintainenceFeeId
                     join timeframe in _context.GlobalCodes on financial.TimeFrameId equals timeframe.GlobalCodeId
-                    where financial.GroupId == GroupId && financial.IsActive == true && financial.IsDeleted == false
-                    && feetype.IsActive == true && feetype.IsDeleted == false
-                      && timeframe.IsActive == true && timeframe.IsDeleted == false
+                    where financial.GroupId == GroupId 
+                    && financial.IsActive == true 
+                    && feetype.IsActive == true 
+                    && timeframe.IsActive == true
                     select new GetGroupFinacials
                     {
                         GroupFinancialId = financial.GroupFinancialId,
                         Date = financial.Date,
                         FeeTypeId = financial.FeeTypeId,
-                        FeeTypeName = feetype.CodeName,
+                        FeeTypeName = feetype.FeeName,
+                        FeeTimeFrame= feetype.TimeFrame,
                         TimeFrameId = financial.TimeFrameId,
                         TimeFrameName = timeframe.CodeName,
                         Amount = financial.Amount
@@ -258,9 +267,93 @@ namespace AAYHS.Repository.Repository
 
 
             getAllGroupFinacials.getGroupFinacials = list;
+          
             getAllGroupFinacials.getGroupFinacialsTotals = getTotals(list);
             return getAllGroupFinacials;
         }
+
+        public GetAllGroupsFinacialsModule GetModuleGroupsFinancials()
+        {
+            GetAllGroupsFinacialsModule response =new GetAllGroupsFinacialsModule();
+            List<GetGroupFinacialsTotals> getGetGroupFinacialsTotalsList = new List<GetGroupFinacialsTotals>();
+
+            var allGroups = (from groups in _context.Groups where groups.IsActive == true select groups).ToList();
+            foreach (var item in allGroups)
+            {
+                List<GetGroupFinacials> list = new List<GetGroupFinacials>();
+                list = (from financial in _context.GroupFinancials
+                        join feetype in _context.YearlyMaintainenceFee on financial.FeeTypeId equals feetype.YearlyMaintainenceFeeId
+                        join timeframe in _context.GlobalCodes on financial.TimeFrameId equals timeframe.GlobalCodeId
+                        where financial.GroupId == item.GroupId && financial.IsActive == true && financial.IsDeleted == false
+                        && feetype.IsActive == true && feetype.IsDeleted == false
+                          && timeframe.IsActive == true && timeframe.IsDeleted == false
+                        select new GetGroupFinacials
+                        {
+                            GroupFinancialId = financial.GroupFinancialId,
+                            Date = financial.Date,
+                            FeeTypeId = financial.FeeTypeId,
+                            FeeTypeName = feetype.FeeName,
+                            FeeTimeFrame = feetype.TimeFrame,
+                            TimeFrameId = financial.TimeFrameId,
+                            TimeFrameName = timeframe.CodeName,
+                            Amount = financial.Amount
+                        }).ToList();
+
+                GetGroupFinacialsTotals getGetGroupFinacialsTotals = new GetGroupFinacialsTotals();
+
+                getGetGroupFinacialsTotals = getTotals(list);
+                getGetGroupFinacialsTotals.GroupName = item.GroupName;
+                getGetGroupFinacialsTotals.GroupId = item.GroupId;
+                getGetGroupFinacialsTotalsList.Add(getGetGroupFinacialsTotals);
+            }
+            response.getGroupFinacialsTotalsList = getGetGroupFinacialsTotalsList;
+            return response;
+        }
+
+        public GetAllGroupsFinacialsModule GetModuleGroupsFinancials(int groupId)
+        {
+            GetAllGroupsFinacialsModule response = new GetAllGroupsFinacialsModule();
+            List<GetGroupFinacialsTotals> getGetGroupFinacialsTotalsList = new List<GetGroupFinacialsTotals>();
+
+            var allGroups = (from groups in _context.Groups where groups.GroupId==groupId && groups.IsActive == true select groups).ToList();
+            foreach (var item in allGroups)
+            {
+                List<GetGroupFinacials> list = new List<GetGroupFinacials>();
+                list = (from financial in _context.GroupFinancials
+                        join feetype in _context.YearlyMaintainenceFee on financial.FeeTypeId equals feetype.YearlyMaintainenceFeeId
+                        join timeframe in _context.GlobalCodes on financial.TimeFrameId equals timeframe.GlobalCodeId
+                        where financial.GroupId == item.GroupId 
+                        && financial.IsActive == true
+                        && financial.IsDeleted == false
+                        && feetype.IsActive == true
+                        && feetype.IsDeleted == false
+                        && timeframe.IsActive == true 
+                        && timeframe.IsDeleted == false
+                        select new GetGroupFinacials
+                        {
+                            GroupFinancialId = financial.GroupFinancialId,
+                            Date = financial.Date,
+                            FeeTypeId = financial.FeeTypeId,
+                            FeeTypeName = feetype.FeeName,
+                            FeeTimeFrame = feetype.TimeFrame,
+                            TimeFrameId = financial.TimeFrameId,
+                            TimeFrameName = timeframe.CodeName,
+                            Amount = financial.Amount
+                        }).ToList();
+
+                GetGroupFinacialsTotals getGetGroupFinacialsTotals = new GetGroupFinacialsTotals();
+                
+                getGetGroupFinacialsTotals = getTotals(list);
+                getGetGroupFinacialsTotals.GroupName = item.GroupName;
+                getGetGroupFinacialsTotals.GroupId = item.GroupId;
+                getGetGroupFinacialsTotalsList.Add(getGetGroupFinacialsTotals);
+            }
+
+            response.getGroupFinacialsTotalsList = getGetGroupFinacialsTotalsList;
+
+            return response;
+        }
+
 
         public GetGroupFinacialsTotals getTotals(List<GetGroupFinacials> list)
         {
@@ -280,26 +373,11 @@ namespace AAYHS.Repository.Repository
                              }).ToList();
                 var Preid = (from code in codes where code.CodeName == "Pre" select code.GlobalCodeId).FirstOrDefault();
                 var Postid = (from code in codes where code.CodeName == "Post" select code.GlobalCodeId).FirstOrDefault();
-                var fees = (from gcc in _context.GlobalCodeCategories
-                            join gc in _context.GlobalCodes on gcc.GlobalCodeCategoryId equals gc.CategoryId
-                            where gcc.CategoryName == "FeeType" && gc.IsDeleted == false && gc.IsActive == true
-                            select new
-                            {
-                                gc.GlobalCodeId,
-                                gc.CodeName
-
-                            }).ToList();
-                var horsestallid = (from code in fees where code.CodeName == "Horse Stall" select code.GlobalCodeId).FirstOrDefault();
-                var tackstallid = (from code in fees where code.CodeName == "Tack Stall" select code.GlobalCodeId).FirstOrDefault();
-                getGroupFinacialsTotals.PreStallSum = list.Where(x => x.TimeFrameId == Preid && x.FeeTypeId == horsestallid).Select(x => x.Amount).Sum();
-                getGroupFinacialsTotals.PreTackStallSum = list.Where(x => x.TimeFrameId == Preid && x.FeeTypeId == tackstallid).Select(x => x.Amount).Sum();
+              
                 getGroupFinacialsTotals.PreTotal = list.Where(x => x.TimeFrameId == Preid).Select(x => x.Amount).Sum();
-                getGroupFinacialsTotals.PostStallSum = list.Where(x => x.TimeFrameId == Postid && x.FeeTypeId == horsestallid).Select(x => x.Amount).Sum();
-                getGroupFinacialsTotals.PostTackStallSum = list.Where(x => x.TimeFrameId == Postid && x.FeeTypeId == tackstallid).Select(x => x.Amount).Sum();
                 getGroupFinacialsTotals.PostTotal = list.Where(x => x.TimeFrameId == Postid).Select(x => x.Amount).Sum();
-                getGroupFinacialsTotals.PrePostStallSum = list.Where(x => x.FeeTypeId == horsestallid).Select(x => x.Amount).Sum();
-                getGroupFinacialsTotals.PrePostTackStallSum = list.Where(x => x.FeeTypeId == tackstallid).Select(x => x.Amount).Sum();
-                getGroupFinacialsTotals.PrePostTotal = list.Select(x => x.Amount).Sum();
+                getGroupFinacialsTotals.PrePostTotal= getGroupFinacialsTotals.PreTotal + getGroupFinacialsTotals.PostTotal;
+                //getGroupFinacialsTotals.PrePostTotal = list.Select(x => x.Amount).Sum();
             }
 
             return getGroupFinacialsTotals;
@@ -312,19 +390,17 @@ namespace AAYHS.Repository.Repository
             IEnumerable<AAYHSInfo> data;
 
             data = (from aayhs in _context.AAYHSContact
-                    join address in _context.Addresses on aayhs.ExhibitorConfirmationEntriesAddressId equals address.AddressId into address1
-                    from address2 in address1.DefaultIfEmpty()
-                    join city in _context.Cities on address2.CityId equals city.CityId into city1
-                    from city2 in city1.DefaultIfEmpty()
-                    join state in _context.States on city2.StateId equals state.StateId into state1
+                    join address in _context.AAYHSContactAddresses on aayhs.ExhibitorConfirmationEntriesAddressId equals address.AAYHSContactAddressId into address1
+                    from address2 in address1.DefaultIfEmpty()                   
+                    join state in _context.States on address2.StateId equals state.StateId into state1
                     from state2 in state1.DefaultIfEmpty()
                     where aayhs.IsActive == true && aayhs.IsDeleted == false && address2.IsActive == true && address2.IsDeleted == false
                     select new AAYHSInfo 
                     { 
-                       Email=aayhs.Email1,
+                       Email= address2.Email,
                        Address=address2.Address,
-                       CityStateZip= city2.Name + ", " + state2.Code + "  " + address2.ZipCodeId,
-                       PhoneNumber=aayhs.Phone1
+                       CityStateZip= address2.City + ", " + state2.Code + "  " + address2.ZipCode,
+                       PhoneNumber= address2.Phone
                     });
 
             getGroupStatement.aAYHSInfo = data.FirstOrDefault();
@@ -333,10 +409,8 @@ namespace AAYHS.Repository.Repository
             
             data1 = (from groups in _context.Groups
                     join address in _context.Addresses on groups.AddressId equals address.AddressId into address1
-                    from address2 in address1.DefaultIfEmpty()
-                    join city in _context.Cities on address2.CityId equals city.CityId into city1
-                    from city2 in city1.DefaultIfEmpty()
-                    join state in _context.States on city2.StateId equals state.StateId into state1
+                    from address2 in address1.DefaultIfEmpty()                    
+                    join state in _context.States on address2.StateId equals state.StateId into state1
                     from state2 in state1.DefaultIfEmpty()
                     where groups.IsActive == true && groups.IsDeleted == false && address2.IsActive == true
                     && address2.IsDeleted == false && groups.GroupId == GroupId
@@ -345,7 +419,7 @@ namespace AAYHS.Repository.Repository
                         GroupName = groups.GroupName,
                         ContactName = groups.ContactName,
                         Address = address2.Address,
-                        CityStateZip = city2.Name + ", " + state2.Code + "  " + address2.ZipCodeId,
+                        CityStateZip = address2.City + ", " + state2.Code + "  " + address2.ZipCode,
                         PhoneNumebr = groups.Phone,
                         Email = groups.Email
 
@@ -353,36 +427,56 @@ namespace AAYHS.Repository.Repository
             getGroupStatement.getGroupInfo = data1.FirstOrDefault();
 
 
-            var fees = (from gcc in _context.GlobalCodeCategories
-                        join gc in _context.GlobalCodes on gcc.GlobalCodeCategoryId equals gc.CategoryId
-                        where gcc.CategoryName == "FeeType" && gc.IsDeleted == false && gc.IsActive == true
-                        select new
-                        {
-                            gc.GlobalCodeId,
-                            gc.CodeName
+  
 
-                        }).ToList();
+            var yearlyMainId = _context.YearlyMaintainence.Where(x => x.Years == DateTime.Now.Year && x.IsActive == true
+             && x.IsDeleted == false).FirstOrDefault();
 
-            var horseStallId = (from code in fees where code.CodeName == "Horse Stall" select code.GlobalCodeId).FirstOrDefault();
-            var tackStallId = (from code in fees where code.CodeName == "Tack Stall" select code.GlobalCodeId).FirstOrDefault();
+            var allFees = _context.YearlyMaintainenceFee.Where(x => x.FeeType == "GeneralFee" && x.IsDeleted == false).ToList();
+
+            var horseStallFee = allFees.Where(x => x.FeeName == "Stall"
+                                 && x.YearlyMaintainenceId == yearlyMainId.YearlyMaintainenceId && x.IsDeleted == false).ToList();
+
+
+            var tackStallFee = allFees.Where(x => x.FeeName == "Tack" &&
+                                 x.YearlyMaintainenceId == yearlyMainId.YearlyMaintainenceId && x.IsDeleted == false).ToList();
+
+
+
+            int prehorseStallFeeId = horseStallFee.Where(x => x.TimeFrame == "Pre" && x.IsDeleted == false).Select(x => x.YearlyMaintainenceFeeId).FirstOrDefault();
+            int posthorseStallFeeId = horseStallFee.Where(x => x.TimeFrame == "Post" && x.IsDeleted == false).Select(x => x.YearlyMaintainenceFeeId).FirstOrDefault();
+            int pretackStallFeeId = tackStallFee.Where(x => x.TimeFrame == "Pre" && x.IsDeleted == false).Select(x => x.YearlyMaintainenceFeeId).FirstOrDefault();
+            int posttackStallFeeId = tackStallFee.Where(x => x.TimeFrame == "Post" && x.IsDeleted == false).Select(x => x.YearlyMaintainenceFeeId).FirstOrDefault();
+
 
             GroupStatement groupStatement = new GroupStatement();
 
             groupStatement.TotalHorseStall = _context.GroupFinancials.Where(x => x.GroupId == GroupId && 
-                                                             x.FeeTypeId== horseStallId && x.IsActive==true && x.IsDeleted==false).Select(x => x.Amount).Sum();
+                                                            ( x.FeeTypeId== prehorseStallFeeId || x.FeeTypeId == posthorseStallFeeId) 
+                                                            && x.IsActive==true && x.IsDeleted==false).Select(x => x.Amount).Sum();
+
             groupStatement.TotalTackStall = _context.GroupFinancials.Where(x => x.GroupId == GroupId &&
-                                                             x.FeeTypeId == tackStallId && x.IsActive == true && x.IsDeleted == false).Select(x => x.Amount).Sum();
+                                                             (x.FeeTypeId == pretackStallFeeId || x.FeeTypeId == posttackStallFeeId) 
+                                                             && x.IsActive == true && x.IsDeleted == false).Select(x => x.Amount).Sum();
+
             groupStatement.StallQuantity = _context.StallAssignment.Where(x => x.GroupId == GroupId && 
                                                              x.IsDeleted == false && x != null).Select(x => x.StallAssignmentId).Count();
-            //groupStatement.TackStallQuantity = _context.TackStallAssignment.Where(x => x.GroupId == GroupId 
-            //                                                 && x.IsDeleted == false).Select(x => x.TackStallAssignmentId).Count();
-            decimal stallAmount = _context.YearlyMaintainenceFee.Where(x => x.FeeTypeId == horseStallId 
-                                                       && x.IsActive == true && x.IsDeleted == false).Select(x=>x.Amount).Sum();
-            decimal tackStallAmount = _context.YearlyMaintainenceFee.Where(x => x.FeeTypeId == tackStallId
+          
+            decimal stallAmount = _context.YearlyMaintainenceFee.Where(x => (x.YearlyMaintainenceFeeId == prehorseStallFeeId
+                                                        || x.YearlyMaintainenceFeeId == posthorseStallFeeId)
+                                                       && x.IsActive == true && x.IsDeleted == false).Select(x => x.Amount).Sum();
+
+
+            decimal tackStallAmount = _context.YearlyMaintainenceFee.Where(x => (x.YearlyMaintainenceFeeId == pretackStallFeeId
+                                                        || x.YearlyMaintainenceFeeId == posttackStallFeeId)
                                                         && x.IsActive == true && x.IsDeleted == false).Select(x => x.Amount).Sum();
+
+
             groupStatement.AmountDue = (groupStatement.StallQuantity * stallAmount) + (groupStatement.TackStallQuantity * tackStallAmount);
-            groupStatement.ReceviedAmount =Convert.ToDecimal(groupStatement.TotalHorseStall + groupStatement.TotalTackStall);
+            groupStatement.ReceviedAmount = Convert.ToDecimal(groupStatement.TotalHorseStall + groupStatement.TotalTackStall);
             groupStatement.OverPayment = groupStatement.ReceviedAmount - groupStatement.AmountDue;
+
+
 
             getGroupStatement.groupStatement = groupStatement;
 

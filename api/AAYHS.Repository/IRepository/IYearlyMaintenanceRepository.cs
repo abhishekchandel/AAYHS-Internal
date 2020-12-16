@@ -1,5 +1,6 @@
 ﻿using AAYHS.Core.DTOs.Request;
 using AAYHS.Core.DTOs.Response;
+using AAYHS.Core.DTOs.Response.Common;
 using AAYHS.Data.DBEntities;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace AAYHS.Repository.IRepository
 {
     public interface IYearlyMaintenanceRepository:IGenericRepository<YearlyMaintainence>
     {
-        GetAllYearlyMaintenance GetAllYearlyMaintenance(GetAllYearlyMaintenanceRequest getAllYearlyMaintenanceRequest, int feeTypeId);
+        GetAllYearlyMaintenance GetAllYearlyMaintenance(GetAllYearlyMaintenanceRequest getAllYearlyMaintenanceRequest, GlobalCodeMainResponse feeType);
         GetYearlyMaintenanceById GetYearlyMaintenanceById(int yearlyMaintenanceId);
         int GetCategoryId(string categoryType);
         GetAllAdFees GetAllAdFees(int yearlyMaintenanceId);
@@ -17,6 +18,6 @@ namespace AAYHS.Repository.IRepository
         GetAllGeneralFees GetAllGeneralFees(int yearlyMaintenanceId);
         GetAllRefund GetAllRefund(int yearlyMaintenanceId);
         GetContactInfo GetContactInfo(int yearlyMaintenanceId);
-        GetLocation GetLocation(int yearlyMaintenanceId);
+        void DeleteYearlyFee(int yearlyMaintenanceId);
     }
 }

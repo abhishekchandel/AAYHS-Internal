@@ -14,7 +14,8 @@ namespace AAYHS.Data.DBEntities
         public int ResultId { get; set; }
         public int ClassId { get; set; }
         public string AgeGroup { get; set; }
-        public int ExhibitorId { get; set; }        
+        public int ExhibitorId { get; set; }
+        public int HorseId { get; set; }
         public int Placement { get; set; }       
     }
 }

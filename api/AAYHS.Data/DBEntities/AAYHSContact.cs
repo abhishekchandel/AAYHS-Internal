@@ -14,6 +14,16 @@ namespace AAYHS.Data.DBEntities
         public int AAYHSContactId { get; set; }
         public int YearlyMaintainenceId { get; set; }
         [Column(TypeName = "varchar(50)")]
+        public string Location { get; set; }
+        [Column(TypeName = "varchar(50)")]
+        public string Address { get; set; }
+        [Column(TypeName = "varchar(50)")]
+        public string City { get; set; }
+        [Column(TypeName = "varchar(50)")]
+        public string State { get; set; }
+        [Column(TypeName = "varchar(50)")]
+        public string ZipCode { get; set; }
+        [Column(TypeName = "varchar(50)")]
         public string Email1 { get; set; }
         [Column(TypeName = "varchar(50)")]
         public string Email2 { get; set; }

@@ -42,5 +42,8 @@ namespace AAYHS.Service.IService
         MainResponse GetFinancialViewDetail(ViewDetailRequest viewDetailRequest);
         MainResponse SendEmailWithDocument(EmailWithDocumentRequest emailWithDocumentRequest);
         Task<FileStream> DownloadDocument(string documentPath);
+        MainResponse ExhibitorAllSponsorAmount(int exhibitorId);
+        MainResponse UpdateFinancialTransaction(UpdateFinancialRequest updateFinancialRequest, string actionBy);
+        MainResponse GetSponsorAdTypes();
    }
 }

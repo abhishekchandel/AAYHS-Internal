@@ -16,53 +16,53 @@ namespace AAYHS.API.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class SponsorExhibitorAPIController : ControllerBase
+    public class SponsorDistributionAPIController : ControllerBase
     {
-        private readonly ISponsorExhibitorService _SponsorExhibitorService;
+        private readonly ISponsorDistributionService _SponsorDistributionService;
         private MainResponse _mainResponse;
         private string _jsonString = string.Empty;
-        public SponsorExhibitorAPIController(ISponsorExhibitorService SponsorExhibitorService)
+        public SponsorDistributionAPIController(ISponsorDistributionService SponsorDistributionService)
         {
-            _SponsorExhibitorService = SponsorExhibitorService;
+            _SponsorDistributionService = SponsorDistributionService;
             _mainResponse = new MainResponse();
         }
 
         /// <summary>
-        /// This API is used to get all Sponsor Exhibitors .
+        /// This API is used to get all Sponsor distributions .
         /// </summary>
-        /// <param name="Sponsor Id paAddUpdateSponsorExhibitorrameter is required"></param>
-        /// <returns> Exhibitors Sponsor list</returns>
+        /// <param name="Sponsor Id paAddUpdateSponsorDistributionrameter is required"></param>
+        /// <returns> distributions  list</returns>
         [HttpGet]
-        public ActionResult GetSponsorExhibitorBySponsorId(int SponsorId)
+        public ActionResult GetSponsorDistributionBySponsorId(int SponsorId)
         {
-            _mainResponse = _SponsorExhibitorService.GetSponsorExhibitorBySponsorId(SponsorId);
-            _jsonString = Mapper.Convert<SponsorExhibitorListResponse>(_mainResponse);
+            _mainResponse = _SponsorDistributionService.GetSponsorDistributionBySponsorId(SponsorId);
+            _jsonString = Mapper.Convert<SponsorDistributionListResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
 
 
         /// <summary>
-        /// This API is used to delete Exhibitors Sponsor.
+        /// This API is used to delete distributions Sponsor.
         /// </summary>
         /// <param name="Exhibitor Sponsor Id parameters is required"></param>
         /// <returns>Success  true or false with message</returns>
         [HttpDelete]
-        public ActionResult DeleteSponsorExhibitor(int SponsorExhibitorId)
+        public ActionResult DeleteSponsorDistribution(int SponsorDistributionId)
         {
-            _mainResponse = _SponsorExhibitorService.DeleteSponsorExhibitor(SponsorExhibitorId);
+            _mainResponse = _SponsorDistributionService.DeleteSponsorDistribution(SponsorDistributionId);
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
 
         /// <summary>
-        /// This API is used to Add/update  Exhibitor Sponsor.
+        /// This API is used to Add/update  distributions Sponsor.
         /// </summary>
         /// <param name="Exhibitor Sponsor detail parameter is required"></param>
         /// <returns> Success  true or false with message</returns>
         [HttpPost]
-        public ActionResult AddUpdateSponsorExhibitor([FromBody] SponsorExhibitorRequest request)
+        public ActionResult AddUpdateSponsorDistribution([FromBody] SponsorDistributionRequest request)
         {
-            _mainResponse = _SponsorExhibitorService.AddUpdateSponsorExhibitor(request);
+            _mainResponse = _SponsorDistributionService.AddUpdateSponsorDistribution(request);
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }

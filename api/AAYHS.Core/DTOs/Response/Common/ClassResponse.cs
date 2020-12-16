@@ -13,6 +13,7 @@ namespace AAYHS.Core.DTOs.Response.Common
         public string Name { get; set; }
         public string Location { get; set; }
         public string AgeGroup { get; set; }
+        public bool IsNSBAMember { get; set; }
         public int Entries { get; set; }
         public DateTime? ScheduleDate { get; set; }
         public TimeSpan? SchedulTime { get; set; }
@@ -72,13 +73,18 @@ namespace AAYHS.Core.DTOs.Response.Common
     public class GetBackNumber
     {
         public int ExhibitorId { get; set; }
+        public string ExhibitorName { get; set; }
+        public int HorseId { get; set; }
+        public string HorseName { get; set; }
         public int? BackNumber { get; set; }
+        public string ExhibitorHorseBackNumber { get; set; }
     }
     public class ResultExhibitorDetails
     {
         public int ExhibitorId { get; set; }
         public string ExhibitorName { get; set; }
         public int? BirthYear { get; set; }
+        public int HorseId { get; set; }
         public string HorseName { get; set; }
         public string Address { get; set; }
         public decimal AmountPaid { get; set; }
@@ -103,6 +109,7 @@ namespace AAYHS.Core.DTOs.Response.Common
         public string ExhibitorName { get; set; }
         public int? BirthYear { get; set; }
         public string HorseName { get; set; }
+        public int HorseId { get; set; }
         public string Address { get; set; }
         public decimal AmountPaid { get; set; }
         public decimal AmountDue { get; set; }

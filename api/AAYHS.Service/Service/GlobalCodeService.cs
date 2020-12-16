@@ -1,4 +1,5 @@
-﻿using AAYHS.Core.DTOs.Response;
+﻿using AAYHS.Core.DTOs.Request;
+using AAYHS.Core.DTOs.Response;
 using AAYHS.Core.DTOs.Response.Common;
 using AAYHS.Core.Shared.Static;
 using AAYHS.Repository.IRepository;
@@ -76,9 +77,9 @@ namespace AAYHS.Service.Service
             _mainResponse.Success = true;
             return _mainResponse;
         }
-        public MainResponse GetAllZipCodes(string city)
+        public MainResponse GetAllZipCodes(ZipCodeRequest request)
         {
-            var zipCodes = _zipCodeRepository2.GetAll(x => x.City == city).OrderBy(x => x.ZipCode);
+            var zipCodes = _zipCodeRepository2.GetAll(x => x.City == request.cityname && x.StateAbbrv== request.statecode).OrderBy(x => x.ZipCode);
             var zipCodeResponse = _mapper.Map<List<GetZipCodes>>(zipCodes);
             ZipCodeResponse response = new ZipCodeResponse();
             response.ZipCode = zipCodeResponse;

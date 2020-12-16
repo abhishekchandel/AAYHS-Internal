@@ -139,7 +139,6 @@ namespace AAYHS.API.Controllers
         }
 
 
-
         /// <summary>
         /// This api used to update group financial amount
         /// </summary>
@@ -153,8 +152,6 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
-
-
 
 
         /// <summary>
@@ -171,6 +168,8 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
+
+
         /// <summary>
         /// This api used to get all group financials
         /// </summary>
@@ -184,7 +183,33 @@ namespace AAYHS.API.Controllers
             _jsonString = Mapper.Convert<GetAllGroupFinacials>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
-       
+
+        /// <summary>
+        /// This api used to get module groups financials
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        //[Authorize]   
+        public IActionResult GetModuleGroupsFinancials()
+        {
+            _mainResponse = _GroupService.GetModuleGroupsFinancials();
+            _jsonString = Mapper.Convert<GetAllGroupsFinacialsModule>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+
+        /// <summary>
+        /// This api used to get module group financials
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        //[Authorize]   
+        public IActionResult GetModuleGroupFinancials(int groupId)
+        {
+            _mainResponse = _GroupService.GetModuleGroupsFinancials(groupId);
+            _jsonString = Mapper.Convert<GetAllGroupsFinacialsModule>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+
         /// <summary>
         /// This api used to get group statement
         /// </summary>

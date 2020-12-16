@@ -13,8 +13,8 @@ namespace AAYHS.Core.DTOs.Request
         public string Email { get; set; }
         public float AmountReceived { get; set; }
         public string Address { get; set; }
-        public int ZipCodeId { get; set; }
-        public int CityId { get; set; }
+        public string ZipCode { get; set; }
+        public string City { get; set; }
         public int StateId { get; set; }
     }
    

@@ -51,7 +51,6 @@ namespace AAYHS.Core.DTOs.Response
     public class GetAdFees
     {
         public int YearlyMaintenanceFeeId { get; set; }
-        public int AdSizeId { get; set; }
         public string AdSize  { get; set; }
         public decimal Amount { get; set; }
         public bool Active { get; set; }
@@ -89,17 +88,7 @@ namespace AAYHS.Core.DTOs.Response
         public decimal Amount { get; set; }
         public bool Active { get; set; }
     }
-    public class GetGeneralFees
-    {
-        public int YearlyMaintenanceFeeId { get; set; }
-        public int FeeTypeId { get; set; }
-        public string TimeFrame { get; set; }
-        public string FeeType { get; set; }
-        public decimal PreEntryFee { get; set; }
-        public decimal PostEntryFee { get; set; }
-        public decimal Amount { get; set; }
-        public bool Active { get; set; }
-    }
+    
 
     public class GetAllRefund
     {
@@ -113,14 +102,13 @@ namespace AAYHS.Core.DTOs.Response
         public string RefundType { get; set; }
         public decimal Refund { get; set; }
         public bool Active { get; set; }
-    }
+    }   
     public class GetContactInfo
     {
-        public DateTime ShowStart { get; set; }
-        public DateTime ShowEnd { get; set; }
-        public string ShowLocation { get; set; }
         public ContactInfo contactInfo { get; set; }
-        
+        public ExhibitorSponsorConfirmationResponse exhibitorSponsorConfirmationResponse { get; set; }
+        public ExhibitorSponsorRefundStatementResponse exhibitorSponsorRefundStatementResponse { get; set; }
+        public ExhibitorConfirmationEntriesResponse exhibitorConfirmationEntriesResponse { get; set; }
     }
     public class ContactInfo
     {
@@ -129,9 +117,11 @@ namespace AAYHS.Core.DTOs.Response
         public string Email2 { get; set; }
         public string Phone1 { get; set; }
         public string Phone2 { get; set; }
-        public ExhibitorSponsorConfirmationResponse exhibitorSponsorConfirmationResponse { get; set; }
-        public ExhibitorSponsorRefundStatementResponse exhibitorSponsorRefundStatementResponse { get; set; }
-        public ExhibitorConfirmationEntriesResponse exhibitorConfirmationEntriesResponse { get; set; }
+        public string Location { get; set; }
+        public string Address { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string Zipcode { get; set; }
     }
     public class ExhibitorSponsorConfirmationResponse
     {
@@ -140,6 +130,8 @@ namespace AAYHS.Core.DTOs.Response
         public string City { get; set; }
         public int StateId { get; set; }
         public string ZipCode { get; set; }
+        public string Phone { get; set; }
+        public string Email { get; set; }
     }
     public class ExhibitorSponsorRefundStatementResponse
     {
@@ -148,6 +140,8 @@ namespace AAYHS.Core.DTOs.Response
         public string City { get; set; }
         public int StateId { get; set; }
         public string ZipCode { get; set; }
+        public string Phone { get; set; }
+        public string Email { get; set; }
     }
     public class ExhibitorConfirmationEntriesResponse
     {
@@ -156,6 +150,8 @@ namespace AAYHS.Core.DTOs.Response
         public string City { get; set; }
         public int StateId { get; set; }
         public string ZipCode { get; set; }
+        public string Phone { get; set; }
+        public string Email { get; set; }
     }
 
     public class GetLocation
@@ -167,5 +163,40 @@ namespace AAYHS.Core.DTOs.Response
         public int StateId { get; set; }
         public string ZipCode { get; set; }
         public string Phone { get; set; }
+    }
+
+    public class GetAllScan
+    {
+        public List< GetScan> getScans { get; set; }
+    }
+    public class GetScan
+    {
+        public int ScanId { get; set; }
+        public int ExhibitorId { get; set; }
+        public string DocumentName { get; set; }
+        public string DocumentPath { get; set; }
+    }
+    public class GetAllStatementText
+    {
+        public List<GetStatementText> getStatementTexts { get; set; }
+    }
+    public class GetStatementText
+    {
+        public int YearlyStatementTextId { get; set; }
+        public int YearlyMaintenanceId { get; set; }
+        public string StatementName { get; set; }
+        public string StatementNumber { get; set; }
+        public string StatementText { get; set; }
+        public int? Incentive { get; set; }
+    }
+    public class GetSponsorAllIncentives
+    {
+        public List<GetSponsorIncentives> getSponsorIncentives { get; set; }
+    }
+    public class GetSponsorIncentives
+    {
+        public int SponsorIncentiveId { get; set; }
+        public decimal SponsorAmount { get; set; }
+        public int Award { get; set; }
     }
 }

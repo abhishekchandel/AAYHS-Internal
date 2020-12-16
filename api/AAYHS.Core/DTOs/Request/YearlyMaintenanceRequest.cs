@@ -17,12 +17,11 @@ namespace AAYHS.Core.DTOs.Request
     {
         public int YearlyMaintainenceId { get; set; }
         public int Year { get; set; }
-        public DateTime ShowStartDate { get; set; }
-        public DateTime ShowEndDate { get; set; }
-        public DateTime PreCutOffDate { get; set; } 
-        public DateTime SponcerCutOffDate { get; set; }
+        public string ShowStartDate { get; set; }
+        public string ShowEndDate { get; set; }
+        public string PreCutOffDate { get; set; } 
+        public string SponcerCutOffDate { get; set; }
         public DateTime Date { get; set; }
-        public string Location { get; set; }
     }
     public class AddAdFee
     {
@@ -50,8 +49,12 @@ namespace AAYHS.Core.DTOs.Request
     public class AddContactInfoRequest
     {
         public int AAYHSContactId { get; set; }
-        public int YearlyMaintenanceId { get; set; }       
+        public int YearlyMaintenanceId { get; set; }
         public string Location { get; set; }
+        public string Address { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string Zipcode { get; set; }
         public string Email1 { get; set; }
         public string Email2 { get; set; }
         public string Phone1 { get; set; }
@@ -60,14 +63,20 @@ namespace AAYHS.Core.DTOs.Request
         public string ExhibitorSponsorCity { get; set; }
         public int ExhibitorSponsorState{ get; set; }
         public string ExhibitorSponsorZip { get; set; }
+        public string ExhibitorSponsorPhone { get; set; }
+        public string ExhibitorSponsorEmail { get; set; }
         public string ExhibitorRefundAddress { get; set; }
         public string ExhibitorRefundCity { get; set; }
         public int ExhibitorRefundState { get; set; }
         public string ExhibitorRefundZip { get; set; }
+        public string ExhibitorRefundPhone { get; set; }
+        public string ExhibitorRefundEmail { get; set; }
         public string ReturnAddress { get; set; }
         public string ReturnCity { get; set; }
         public int ReturnState { get; set; }
         public string ReturnZip { get; set; }
+        public string ReturnPhone { get; set; }
+        public string ReturnEmail { get; set; }
 
     }
 
@@ -94,5 +103,51 @@ namespace AAYHS.Core.DTOs.Request
         public int StateId { get; set; }
         public string ZipCode { get; set; }
         public string Phone { get; set; }
+    }
+    public class GetScanRequest
+    {
+        public int YearlyMaintenanceId { get; set; }
+        public int DocumentTypeId { get; set; }
+    }
+    public class AddStatementTextRequest
+    {
+        public int YearlyStatementTextId { get; set; }
+        public int YearlyMaintenanceId { get; set; }
+        public string StatementName { get; set; }
+        public string StatementNumber { get; set; }
+        public string StatementText { get; set; }
+        public int? Incentive { get; set; }
+    }
+    public class AddSponsorIncentiveRequest
+    {
+        public int SponsorIncentiveId { get; set; }
+        public int YearlyMaintenanceId { get; set; }
+        public decimal Amount { get; set; }
+        public int Award { get; set; }
+    }
+    public class ActiveInActiveRequest
+    {
+        public int UserId { get; set; }
+        public bool IsActive { get; set; }
+    }
+    public class ActiveInActiveGeneralFeeRequest
+    {
+        public int YearlyMaintenanceFeeId { get; set; }
+        public bool IsActive { get; set; }
+    }
+    public class ActiveInActiveAdFeeRequest
+    {
+        public int YearlyMaintenanceFeeId { get; set; }
+        public bool IsActive { get; set; }
+    }
+    public class ActiveInActiveClassCategory
+    {
+        public int GlobalCodeId { get; set; }
+        public bool IsActive { get; set; }
+    }
+    public class ActiveInActiveScratchRefund
+    {
+        public int RefundDetailId { get; set; }
+        public bool IsActive { get; set; }
     }
 }

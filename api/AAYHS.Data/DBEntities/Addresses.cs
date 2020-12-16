@@ -15,6 +15,11 @@ namespace AAYHS.Data.DBEntities
         public int AddressId { get; set; }
         public string Address { get; set; }
         public string AddressExtension { get; set; }
+        public int? StateId { get; set; }
+        [Column(TypeName = "varchar(50)")]
+        public string City { get; set; }
+        [Column(TypeName = "varchar(50)")]
+        public string ZipCode { get; set; }
         public int ZipCodeId { get; set; }
         public int CityId { get; set; }
     }

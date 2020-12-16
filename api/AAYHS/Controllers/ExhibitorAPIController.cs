@@ -482,7 +482,41 @@ namespace AAYHS.API.Controllers
                 return BadRequest(e);
             }
         }
-
-       
+        /// <summary>
+        /// This api used to get sponsors of a exhibitor with respective horse and amount
+        /// </summary>
+        /// <param name="exhibitorId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult ExhibitorAllSponsorAmount(int exhibitorId)
+        {
+            _mainResponse = _exhibitorService.ExhibitorAllSponsorAmount(exhibitorId);
+            _jsonString = Mapper.Convert<ExhibitorAllSponsorAmount>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to update Financial Transaction
+        /// </summary>
+        /// <param name="updateFinancialRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult UpdateFinancialTransaction(UpdateFinancialRequest updateFinancialRequest)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _exhibitorService.UpdateFinancialTransaction(updateFinancialRequest, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to get sponsor ad types
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetSponsorAdTypes()
+        {
+            _mainResponse = _exhibitorService.GetSponsorAdTypes();
+            _jsonString = Mapper.Convert<GetAllSponsorAdType>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
     }
 }

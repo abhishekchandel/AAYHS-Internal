@@ -45,11 +45,12 @@ namespace AAYHS.Repository.Repository
                     select new GlobalCodeResponse
                     {
                         GlobalCodeId = gc.GlobalCodeId,
+                        Year=gc.Year,
                         CodeName = (gc.CodeName == null ? "" : gc.CodeName),
                         Description = (gc.Description == null ? String.Empty : gc.Description),
                         GlobalCodeCategory = gcc.CategoryName,
                         CategoryId = gc.CategoryId,
-                    });
+                    }).OrderBy(x=>x.CodeName);
             globalCodeMainResponse.totalRecords = data.Count();
             globalCodeMainResponse.globalCodeResponse = data.ToList();
             return globalCodeMainResponse;

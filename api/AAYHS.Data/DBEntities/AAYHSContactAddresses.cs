@@ -12,10 +12,16 @@ namespace AAYHS.Data.DBEntities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public int AAYHSContactAddressId { get; set; }
+        [Column(TypeName = "varchar(100)")]
         public string Address { get; set; }
+        [Column(TypeName = "varchar(50)")]
         public string City { get; set; }
         public int StateId { get; set; }
+        [Column(TypeName = "varchar(50)")]
         public string ZipCode { get; set; }
-        public string? Phone { get; set; }
+        [Column(TypeName = "varchar(50)")]
+        public string Phone { get; set; }
+        [Column(TypeName = "varchar(50)")]
+        public string Email { get; set; }
     }
 }

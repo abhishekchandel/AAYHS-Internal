@@ -13,6 +13,7 @@ namespace AAYHS.Core.DTOs.Response.Common
     {
         public int CategoryId { get; set; }
         public int GlobalCodeId { get; set; }
+        public int? Year { get; set; }
         public string CodeName { get; set; }
         public string Description { get; set; }
         public string GlobalCodeCategory { get; set; }

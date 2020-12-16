@@ -19,12 +19,12 @@ namespace AAYHS.Core.DTOs.Response
         public string PrimaryEmail { get; set; }
         public string SecondaryEmail { get; set; }
         public string Phone { get; set; }
-        public int ZipCodeId { get; set; }
+        public string ZipCode { get; set; }
         public int CityId { get; set; }
-        public int StateId { get; set; }
+        public int? StateId { get; set; }
         public string GroupName { get; set; }
         public string Address { get; set; }
-        public string CityName { get; set; }
+        public string City { get; set; }
         public List<ExhibitorStallAssignmentResponse> exhibitorStallAssignmentResponses { get; set; }
 
     }
@@ -114,8 +114,13 @@ namespace AAYHS.Core.DTOs.Response
         public string State { get; set; }
         public int Zipcode { get; set; }
         public string Email { get; set; }
-        public float Amount { get; set; }
+        public decimal SponsorAmount { get; set; }
+        public decimal Amount { get; set; }
+        public decimal AmountPaid { get; set; }
+        public decimal Balance { get; set; }
         public int SponsorTypeId { get; set; }
+        public int HorseId { get; set; }
+        public string HorseName { get; set; }
         public string SponsorTypeName { get; set; }
         public string AdTypeName { get; set; }
         public string IdNumber { get; set; }
@@ -135,7 +140,9 @@ namespace AAYHS.Core.DTOs.Response
         public string City { get; set; }
         public string State { get; set; }
         public string Email { get; set; }
-        public float AmountReceived { get; set; }
+        public decimal Amount { get; set; }
+        public decimal AmountPaid { get; set; }
+        public decimal Balance { get; set; }
         public int Zipcode { get; set; }
     }
     public class GetAllSponsorForExhibitor
@@ -189,15 +196,14 @@ namespace AAYHS.Core.DTOs.Response
     public class GetFees
     {
         public int FeeTypeId { get; set; }
-        public string FeeType { get; set; }
-        public string TimeFrameType { get; set; }
-        public decimal PreFee { get; set; }
-        public decimal PostFee { get; set; }
+        public string FeeName { get; set; }
+        public string TimeFrameType { get; set; }       
         public decimal Amount { get; set; }
         public decimal RefundPercentage { get; set; }
     }
     public class GetAllFees
     {
+        public string DefaultTimeFrame { get; set; }
         public List<GetFees> getFees { get; set; }
     }
     public class GetExhibitorTransactions
@@ -215,5 +221,26 @@ namespace AAYHS.Core.DTOs.Response
     {
         public List<GetExhibitorTransactions> getExhibitorTransactions { get; set; }
         public bool IsRefund { get; set; }
+    }
+
+    public class ExhibitorAllSponsorAmount
+    {
+        public List<ExhibitorSponsor> exhibitorSponsors { get; set; }
+    }
+    public class ExhibitorSponsor
+    {
+        public int SponsorId { get; set; }
+        public string HorseName { get; set; }
+        public string SponsorName { get; set; }
+        public decimal Amount { get; set; }
+    }
+    public class GetAllSponsorAdType
+    {
+        public List<SponsorAdType> sponsorAdTypes { get; set; }
+    }
+    public class SponsorAdType
+    {
+        public int YearlyMaintainenceFeeId { get; set; }
+        public string FeeName { get; set; }
     }
 }

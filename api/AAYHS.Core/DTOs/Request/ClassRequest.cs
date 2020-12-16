@@ -16,8 +16,9 @@ namespace AAYHS.Core.DTOs.Request
         public string ClassNumber { get; set; }
         public string Name { get; set; }
         public string Location { get; set; }
-        public string AgeGroup { get; set; }    
-        public DateTime? ScheduleDate { get; set; }
+        public string AgeGroup { get; set; }
+        public bool IsNSBAMember { get; set; }
+        public string ScheduleDate { get; set; }
         public TimeSpan? ScheduleTime { get; set; }
         public int SplitNumber { get; set; }
         public bool ChampionShipIndicator { get; set; }
@@ -29,7 +30,6 @@ namespace AAYHS.Core.DTOs.Request
         public int ClassId { get; set; }     
         public int HorseId { get; set; }
         public bool Scratch { get; set; }
-        public DateTime Date { get; set; }
     }
     
     public class SplitRequest
@@ -52,6 +52,7 @@ namespace AAYHS.Core.DTOs.Request
     {
         public int ClassId { get; set; }
         public int ExhibitorId { get; set; }
+        public int HorseId { get; set; }
         public int Place { get; set; }
     }    
    public class SearchRequest : BaseRecordFilterRequest
@@ -68,5 +69,6 @@ namespace AAYHS.Core.DTOs.Request
         public int ResultId { get; set; }
         public int Place { get; set; }
         public int ExhibitorId { get; set; }
+        public int HorseId { get; set; }
     }
 }

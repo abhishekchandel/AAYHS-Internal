@@ -53,8 +53,9 @@ namespace AAYHS.Service.Service
                 var addressEntity = new Addresses
                 {
                     Address = request.Address,
-                    CityId = request.CityId,
-                    ZipCodeId = request.ZipCodeId,
+                    StateId=request.StateId,
+                    City = request.City,
+                    ZipCode = request.ZipCode,
                     CreatedDate = DateTime.Now,
                     IsActive = true,
                     IsDeleted = false
@@ -96,8 +97,9 @@ namespace AAYHS.Service.Service
                     if (address != null && address.AddressId > 0)
                     {
                         address.Address = request.Address;
-                        address.CityId = request.CityId;
-                        address.ZipCodeId = request.ZipCodeId;
+                        address.StateId = request.StateId;
+                        address.City = request.City;
+                        address.ZipCode = request.ZipCode;
                         address.ModifiedDate = DateTime.Now;
                         _AddressRepository.Update(address);
                     }

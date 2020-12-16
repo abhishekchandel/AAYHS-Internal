@@ -7,8 +7,8 @@ using System.Text;
 
 namespace AAYHS.Repository.IRepository
 {
-    public interface IScanRepository:IGenericRepository<Scans>
+   public interface ISponsorDistributionRepository : IGenericRepository<SponsorDistributions>
     {
-        GetAllScan GetAllScan(GetScanRequest getScanRequest);
+        MainResponse GetSponsorDistributionBySponsorId(int SponsorId);
     }
 }

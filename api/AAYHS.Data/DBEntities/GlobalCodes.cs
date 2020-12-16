@@ -13,6 +13,7 @@ namespace AAYHS.Data.DBEntities
         [Key]
         public int GlobalCodeId { get; set; }
         public int CategoryId { get; set; }
+        public int? Year { get; set; }
         [Column(TypeName = "varchar(255)")]
         public string CodeName { get; set; }
         [Column(TypeName = "varchar(1000)")]

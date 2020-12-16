@@ -329,30 +329,153 @@ namespace AAYHS.API.Controllers
             _mainResponse = _yearlyMaintenanceService.AddUpdateContactInfo(addContactInfoRequest, actionBy);
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
-        }
+        }                
         /// <summary>
-        /// This api used to add update location
+        /// This api used to get all scan document of exhibitors
         /// </summary>
-        /// <param name="addLocationRequest"></param>
+        /// <param name="getScanRequest"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult AddUpdateLocation(AddLocationRequest addLocationRequest)
+        public ActionResult GetAllScan(GetScanRequest getScanRequest)
+        {            
+            _mainResponse = _yearlyMaintenanceService.GetAllScan(getScanRequest);
+            _jsonString = Mapper.Convert<GetAllScan>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to add and update yealry statement text
+        /// </summary>
+        /// <param name="addStatementTextRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult AddUpdateYearlyStatementText(AddStatementTextRequest addStatementTextRequest)
         {
             string actionBy = User.Identity.Name;
-            _mainResponse = _yearlyMaintenanceService.AddUpdateLocation(addLocationRequest, actionBy);
+            _mainResponse = _yearlyMaintenanceService.AddUpdateYearlyStatementText(addStatementTextRequest, actionBy);
             _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
         /// <summary>
-        /// This api used to get location
+        /// This api used to get all yearly statement text
         /// </summary>
         /// <param name="yearlyMaintenanceId"></param>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult GetLocation(int yearlyMaintenanceId)
+        public ActionResult GetYearlyStatementText(int yearlyMaintenanceId)
         {
-            _mainResponse = _yearlyMaintenanceService.GetLocation(yearlyMaintenanceId);
-            _jsonString = Mapper.Convert<GetLocation>(_mainResponse);
+            _mainResponse = _yearlyMaintenanceService.GetYearlyStatementText(yearlyMaintenanceId);
+            _jsonString = Mapper.Convert<GetAllStatementText>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to add and update sponsor incentive
+        /// </summary>
+        /// <param name="addSponsorIncentiveRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult AddAndUpdateSponsorIncentive(AddSponsorIncentiveRequest addSponsorIncentiveRequest)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _yearlyMaintenanceService.AddAndUpdateSponsorIncentive(addSponsorIncentiveRequest, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to get sponsor incentive
+        /// </summary>
+        /// <param name="yearlyMaintenanceId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetSponsorIncentive(int yearlyMaintenanceId)
+        {
+            _mainResponse = _yearlyMaintenanceService.GetSponsorIncentive(yearlyMaintenanceId);
+            _jsonString = Mapper.Convert<GetSponsorAllIncentives>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to delete sponsor incentive
+        /// </summary>
+        /// <param name="sponsorIncentiveId"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        public ActionResult DeleteSponsorIncentive(int sponsorIncentiveId)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _yearlyMaintenanceService.DeleteSponsorIncentive(sponsorIncentiveId, actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to active or inactive the user
+        /// </summary>
+        /// <param name="activeInActiveRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult ActiveInActiveUser(ActiveInActiveRequest activeInActiveRequest)
+        {
+            _mainResponse = _yearlyMaintenanceService.ActiveInActiveUser(activeInActiveRequest);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to active or inactive the general fee
+        /// </summary>
+        /// <param name="activeInActiveGeneralFeeRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult ActiveInActiveGeneralFee(ActiveInActiveGeneralFeeRequest activeInActiveGeneralFeeRequest)
+        {
+            _mainResponse = _yearlyMaintenanceService.ActiveInActiveGeneralFee(activeInActiveGeneralFeeRequest);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to active and inactive the ad fee
+        /// </summary>
+        /// <param name="activeInActiveAdFeeRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult ActiveInActiveAdFee(ActiveInActiveAdFeeRequest activeInActiveAdFeeRequest)
+        {
+            _mainResponse = _yearlyMaintenanceService.ActiveInActiveAdFee(activeInActiveAdFeeRequest);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to active and inactive the class category
+        /// </summary>
+        /// <param name="activeInActiveClassCategory"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult ActiveInActiveClassCategory(ActiveInActiveClassCategory activeInActiveClassCategory)
+        {
+            _mainResponse = _yearlyMaintenanceService.ActiveInActiveClassCategory(activeInActiveClassCategory);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to active and inactive the scratch refund fee
+        /// </summary>
+        /// <param name="activeInActiveScratchRefund"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult ActiveInActiveScratchRefund(ActiveInActiveScratchRefund activeInActiveScratchRefund)
+        {
+            _mainResponse = _yearlyMaintenanceService.ActiveInActiveScratchRefund(activeInActiveScratchRefund);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
+            return new OkObjectResult(_jsonString);
+        }
+        /// <summary>
+        /// This api used to add yearly maintenance fee and category to diffrent year
+        /// </summary>
+        /// <param name="yearlyMaintenanceId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult YearlyDataForNextYear([FromBody]int yearlyMaintenanceId)
+        {
+            string actionBy = User.Identity.Name;
+            _mainResponse = _yearlyMaintenanceService.YearlyDataForNextYear(yearlyMaintenanceId,actionBy);
+            _jsonString = Mapper.Convert<BaseResponse>(_mainResponse);
             return new OkObjectResult(_jsonString);
         }
     }

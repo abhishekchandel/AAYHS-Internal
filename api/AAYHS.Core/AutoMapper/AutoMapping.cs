@@ -17,6 +17,7 @@ namespace AAYHS.Core.AutoMapper
             CreateMap<SponsorRequest, Sponsors>();
             CreateMap<ExhibitorRequest, Sponsors>();
             CreateMap<SponsorExhibitorRequest, SponsorExhibitor>();
+            CreateMap<SponsorDistributionRequest, SponsorDistributions>();
             CreateMap<APILogRequest, Apilogs>();
             CreateMap<States, State>();
             CreateMap<Cities, City>();
@@ -41,8 +42,8 @@ namespace AAYHS.Core.AutoMapper
             CreateMap<User, GetUser>();
             CreateMap<Roles, GetRoles>();
             CreateMap<GlobalCodes, GetClassCategory>();
-
-
+            CreateMap<SponsorIncentives, GetSponsorIncentives>();
+            CreateMap<YearlyMaintainenceFee, SponsorAdType>();
 
         }
     }

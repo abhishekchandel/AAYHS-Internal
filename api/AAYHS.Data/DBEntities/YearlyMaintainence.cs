@@ -11,17 +11,12 @@ namespace AAYHS.Data.DBEntities
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int YearlyMaintainenceId { get; set; }
-        [Column(TypeName = "Date")]
-        public DateTime Year { get; set; }
+        public int YearlyMaintainenceId { get; set; }        
         public int Years { get; set; }
         public DateTime ShowStartDate { get; set; }
         public DateTime ShowEndDate { get; set; }
         public DateTime PreEntryCutOffDate { get; set; }      
-        public DateTime SponcerCutOffDate { get; set; }
-        [Column(TypeName = "varchar(50)")]
-        public string Location { get; set; }
-        public int? LocationAddressId { get; set; }
+        public DateTime SponcerCutOffDate { get; set; }        
         public DateTime Date { get; set; }
 
     }

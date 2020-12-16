@@ -22,11 +22,13 @@ namespace AAYHS.Service.Service
         #region private
         private MainResponse _mainResponse;
         private ISponsorExhibitorRepository _SponsorExhibitorRepository;
+        private ISponsorRepository _SponsorRepository;
         #endregion
 
-        public SponsorExhibitorService(ISponsorExhibitorRepository SponsorExhibitorRepository, IMapper Mapper)
+        public SponsorExhibitorService(ISponsorExhibitorRepository SponsorExhibitorRepository,ISponsorRepository SponsorRepository, IMapper Mapper)
         {
             _SponsorExhibitorRepository = SponsorExhibitorRepository;
+            _SponsorRepository = SponsorRepository;
             _Mapper = Mapper;
             _mainResponse = new MainResponse();
         }
@@ -34,6 +36,17 @@ namespace AAYHS.Service.Service
         {
             if (request.SponsorExhibitorId <= 0)
             {
+                decimal sponsorAmount = Convert.ToDecimal(_SponsorRepository.GetSingle(x => x.SponsorId == request.SponsorId).AmountReceived);
+
+                decimal sponsorPaid = _SponsorExhibitorRepository.GetAll(x => x.SponsorId == request.SponsorId).Select(x => x.SponsorAmount).Sum();
+
+                decimal checkSponsorAmount = sponsorAmount - sponsorPaid;
+                if (checkSponsorAmount <= 0)
+                {
+                    _mainResponse.Message = Constants.SPONSOR_NO_FUND;
+                    _mainResponse.Success = false;
+                    return _mainResponse;
+                }
                 var checkexist = _SponsorExhibitorRepository.GetSingle(x => x.SponsorId == request.SponsorId && x.ExhibitorId == request.ExhibitorId
                 && x.IsActive==true && x.IsDeleted==false);
                 if (checkexist != null && checkexist.SponsorExhibitorId > 0)
@@ -58,6 +71,8 @@ namespace AAYHS.Service.Service
                     SponsorExhibitor.SponsorId = request.SponsorId;
                     SponsorExhibitor.ExhibitorId = request.ExhibitorId;
                     SponsorExhibitor.SponsorTypeId = request.SponsorTypeId;
+                    SponsorExhibitor.SponsorAmount = request.SponsorAmount;
+                    SponsorExhibitor.HorseId = request.HorseId;
                     SponsorExhibitor.AdTypeId =Convert.ToInt32(request.AdTypeId);
                     SponsorExhibitor.TypeId = request.TypeId;
                     SponsorExhibitor.ModifiedDate = DateTime.Now;

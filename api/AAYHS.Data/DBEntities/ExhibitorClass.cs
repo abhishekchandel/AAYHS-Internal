@@ -16,6 +16,7 @@ namespace AAYHS.Data.DBEntities
         public int ClassId { get; set; }
         public int HorseId { get; set; }
         public bool IsScratch { get; set; }
+        public DateTime? ScratchDate { get; set; }
         public DateTime Date { get; set; }
     }
 }

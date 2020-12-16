@@ -9,6 +9,7 @@ using System.Text;
 using System.Linq;
 using AAYHS.Core.Shared.Static;
 using AAYHS.Data.DBEntities;
+using AAYHS.Core.DTOs.Response.Common;
 
 namespace AAYHS.Service.Service
 {
@@ -34,6 +35,9 @@ namespace AAYHS.Service.Service
         private IExhibitorPaymentDetailRepository _exhibitorPaymentDetailRepository;
         private IClassRepository _classRepository;
         private ISponsorExhibitorRepository _sponsorExhibitorRepository;
+        private IScanRepository _scan;
+        private IYearlyStatementTextRepository _yearlyStatementTextRepository;
+        private ISponsorIncentiveRepository _sponsorIncentiveRepository;
         private MainResponse _mainResponse;
         #endregion
 
@@ -44,7 +48,9 @@ namespace AAYHS.Service.Service
                           IUserRoleRepository userRoleRepository,IAAYHSContactRepository aAYHSContactRepository,
                           IRefundRepository refundRepository,IAAYHSContactAddressRepository aAYHSContactAddressRepository,
                           IExhibitorPaymentDetailRepository exhibitorPaymentDetailRepository,
-                          IClassRepository classRepository,ISponsorExhibitorRepository sponsorExhibitorRepository,IMapper Mapper)
+                          IClassRepository classRepository,ISponsorExhibitorRepository sponsorExhibitorRepository,
+                          IScanRepository scan,IYearlyStatementTextRepository yearlyStatementTextRepository,
+                          ISponsorIncentiveRepository sponsorIncentiveRepository,IMapper Mapper)
         {
             _yearlyMaintenanceRepository = yearlyMaintenanceRepository;
             _globalCodeRepository = globalCodeRepository;
@@ -60,15 +66,17 @@ namespace AAYHS.Service.Service
             _exhibitorPaymentDetailRepository = exhibitorPaymentDetailRepository;
             _classRepository = classRepository;
             _sponsorExhibitorRepository = sponsorExhibitorRepository;
+            _scan = scan;
+            _yearlyStatementTextRepository = yearlyStatementTextRepository;
+            _sponsorIncentiveRepository = sponsorIncentiveRepository;
             _mapper = Mapper;
             _mainResponse = new MainResponse();
         }
 
         public MainResponse GetAllYearlyMaintenance(GetAllYearlyMaintenanceRequest getAllYearlyMaintenanceRequest)
         {
-            var feeType = _globalCodeRepository.GetCodes("FeeType");
-            int feeTypeId = feeType.globalCodeResponse.Where(x => x.CodeName == "Administration").Select(x => x.GlobalCodeId).FirstOrDefault();
-            var allYearlyMaintenance = _yearlyMaintenanceRepository.GetAllYearlyMaintenance(getAllYearlyMaintenanceRequest, feeTypeId);
+            var feeType = _globalCodeRepository.GetCodes("FeeType");         
+            var allYearlyMaintenance = _yearlyMaintenanceRepository.GetAllYearlyMaintenance(getAllYearlyMaintenanceRequest,feeType);
 
             if (allYearlyMaintenance.getYearlyMaintenances != null && allYearlyMaintenance.TotalRecords > 0)
             {
@@ -146,18 +154,14 @@ namespace AAYHS.Service.Service
                     };
 
                     _userRoleRepository.Add(role);
-
-                    string guid = Guid.NewGuid().ToString();
-                  
+                                    
                     var settings = _applicationRepository.GetAll().FirstOrDefault();
 
                     EmailRequest email = new EmailRequest();
                     email.To = user.Email;
                     email.SenderEmail = settings.CompanyEmail;
                     email.CompanyEmail = settings.CompanyEmail;
-                    email.CompanyPassword = settings.CompanyPassword;
-                    email.Url = settings.ResetPasswordUrl;
-                    email.Token = guid;
+                    email.CompanyPassword = settings.CompanyPassword;                  
                     email.TemplateType = "User Approved";
 
                     _emailRepository.SendEmail(email);
@@ -211,12 +215,11 @@ namespace AAYHS.Service.Service
                 var newYearly = new YearlyMaintainence
                 {
                     Years = addYearly.Year,
-                    ShowStartDate = addYearly.ShowStartDate,
-                    ShowEndDate = addYearly.ShowEndDate,
-                    PreEntryCutOffDate = addYearly.PreCutOffDate,
-                    SponcerCutOffDate = addYearly.SponcerCutOffDate,
+                    ShowStartDate = Convert.ToDateTime(addYearly.ShowStartDate),
+                    ShowEndDate = Convert.ToDateTime(addYearly.ShowEndDate),
+                    PreEntryCutOffDate = Convert.ToDateTime(addYearly.PreCutOffDate),
+                    SponcerCutOffDate = Convert.ToDateTime(addYearly.SponcerCutOffDate),
                     Date = DateTime.Now,
-                    Location = addYearly.Location,
                     IsActive = true,
                     IsDeleted = false,
                     CreatedBy = actionBy,
@@ -250,11 +253,10 @@ namespace AAYHS.Service.Service
                 if (updateYear!=null)
                 {
                     updateYear.Years = addYearly.Year;
-                    updateYear.ShowStartDate = addYearly.ShowStartDate;
-                    updateYear.ShowEndDate = addYearly.ShowEndDate;
-                    updateYear.PreEntryCutOffDate = addYearly.PreCutOffDate;
-                    updateYear.SponcerCutOffDate = addYearly.SponcerCutOffDate;
-                    updateYear.Location = addYearly.Location;
+                    updateYear.ShowStartDate = Convert.ToDateTime(addYearly.ShowStartDate);
+                    updateYear.ShowEndDate = Convert.ToDateTime(addYearly.ShowEndDate);
+                    updateYear.PreEntryCutOffDate = Convert.ToDateTime(addYearly.PreCutOffDate);
+                    updateYear.SponcerCutOffDate = Convert.ToDateTime(addYearly.SponcerCutOffDate);
                     updateYear.ModifiedBy = actionBy;
                     updateYear.ModifiedDate = DateTime.Now;
 
@@ -282,6 +284,8 @@ namespace AAYHS.Service.Service
                 deleteYearly.DeletedDate = DateTime.Now;
 
                 _yearlyMaintenanceRepository.Update(deleteYearly);
+                _yearlyMaintenanceRepository.DeleteYearlyFee(yearlyMaintainenceId);
+
                 _mainResponse.Success = true;
                 _mainResponse.Message = Constants.RECORD_DELETE_SUCCESS;
             }
@@ -293,77 +297,41 @@ namespace AAYHS.Service.Service
             return _mainResponse;
         }
 
-        public MainResponse AddADFee(AddAdFee addAdFee,string actionBy)
+        public MainResponse AddADFee(AddAdFee addAdFee,string actionBy) 
         {
-            var feeType = _globalCodeRepository.GetCodes("AdTypes");
-
-            var checkAdType = feeType.globalCodeResponse.Where(x => x.CodeName.ToLower() == addAdFee.AdSize.ToLower()).FirstOrDefault();
+            string adSize = "";
+            if (addAdFee.AdSize!=string.Empty && addAdFee.AdSize!=null)
+            {
+                adSize = addAdFee.AdSize.TrimStart();
+                adSize = adSize.TrimEnd();
+            }
            
-            if (checkAdType != null)
+            var checkAdFee = _yearlyMaintenanceFeeRepository.GetSingle(x => x.YearlyMaintainenceId==addAdFee.YearlyMaintainenceId && 
+                             x.FeeName.ToLower() == adSize.ToLower() && x.FeeType== "AdFee" &&  x.IsDeleted==false);
+
+            if (checkAdFee!=null)
             {
-                var checkAdFee = _yearlyMaintenanceFeeRepository.GetSingle(x => x.YearlyMaintainenceId == addAdFee.YearlyMaintainenceId &&
-                x.FeeTypeId == checkAdType.GlobalCodeId && x.IsActive == true && x.IsDeleted == false);
-
-                if (checkAdFee == null)
-                {
-                    var addFee = new YearlyMaintainenceFee
-                    {
-                        YearlyMaintainenceId= addAdFee.YearlyMaintainenceId,
-                        FeeTypeId=checkAdType.GlobalCodeId,
-                        PreEntryFee=0,
-                        PostEntryFee=0,
-                        Amount= addAdFee.Amount,
-                        RefundPercentage=40,
-                        IsActive=true,
-                        IsDeleted=false,
-                        CreatedBy=actionBy,
-                        CreatedDate=DateTime.Now
-
-                    };
-
-                    _yearlyMaintenanceFeeRepository.Add(addFee);
-                    _mainResponse.Success = true;
-                    _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
-                }
-                else
-                {
-                    _mainResponse.Success = false;
-                    _mainResponse.Message = Constants.RECORD_AlREADY_EXIST;
-                }
+                _mainResponse.Success = false;
+                _mainResponse.Message = Constants.RECORD_AlREADY_EXIST;
+                return _mainResponse;
             }
-            else
+            var addFee = new YearlyMaintainenceFee
             {
-                int categoryId = _yearlyMaintenanceRepository.GetCategoryId("AdTypes");
-                var addGlobalCode = new GlobalCodes
-                {
-                    CategoryId = categoryId,
-                    CodeName= addAdFee.AdSize,
-                    Description= addAdFee.AdSize,
-                    IsActive=true,
-                    IsDeleted=false,
-                    CreatedBy=actionBy,
-                    CreatedDate=DateTime.Now
-                };
+                YearlyMaintainenceId = addAdFee.YearlyMaintainenceId,
+                FeeType = "AdFee", 
+                FeeName= adSize,
+                Amount = addAdFee.Amount,
+                RefundPercentage = 40,
+                IsActive = true,
+                IsDeleted = false,
+                CreatedBy = actionBy,
+                CreatedDate = DateTime.Now
 
-               var codeId= _globalCodeRepository.Add(addGlobalCode);
+            };
 
-                var addFee = new YearlyMaintainenceFee
-                {
-                    YearlyMaintainenceId = addAdFee.YearlyMaintainenceId,
-                    FeeTypeId = codeId.GlobalCodeId,
-                    PreEntryFee = 0,
-                    PostEntryFee = 0,
-                    Amount = addAdFee.Amount,
-                    RefundPercentage = 40,
-                    IsActive = true,
-                    IsDeleted = false,
-                    CreatedBy = actionBy,
-                    CreatedDate = DateTime.Now
-                };
-                _yearlyMaintenanceFeeRepository.Add(addFee);
-                _mainResponse.Success = true;
-                _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
-            }
+            _yearlyMaintenanceFeeRepository.Add(addFee);
+            _mainResponse.Success = true;
+            _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
 
             return _mainResponse;
         }
@@ -391,29 +359,18 @@ namespace AAYHS.Service.Service
 
             if (deleteAdFee!=null)
             {
-                var checkFeeType = _sponsorExhibitorRepository.GetSingle(x => x.AdTypeId == deleteAdFee.FeeTypeId && x.IsDeleted == false);
+                var checkFeeType = _sponsorExhibitorRepository.GetSingle(x => x.AdTypeId == deleteAdFee.YearlyMaintainenceFeeId && x.IsDeleted == false);
 
-                if (checkFeeType!=null)
+                if (checkFeeType != null)
                 {
                     _mainResponse.Success = false;
                     _mainResponse.Message = Constants.FEE_ALREADY_IN_USE;
                     return _mainResponse;
                 }
-               
                 deleteAdFee.IsDeleted = true;
                 deleteAdFee.DeletedBy = actionBy;
                 deleteAdFee.DeletedDate = DateTime.Now;
                 _yearlyMaintenanceFeeRepository.Update(deleteAdFee);
-
-                var getGlobalCode = _globalCodeRepository.GetSingle(x => x.GlobalCodeId == deleteAd.AdSizeId);
-                if (getGlobalCode != null)
-                {
-                    getGlobalCode.IsDeleted = true;
-                    getGlobalCode.DeletedBy = actionBy;
-                    getGlobalCode.DeletedDate = DateTime.Now;
-
-                    _globalCodeRepository.Update(getGlobalCode);
-                }
                
                 _mainResponse.Success = true;
                 _mainResponse.Message = Constants.RECORD_DELETE_SUCCESS;
@@ -428,7 +385,7 @@ namespace AAYHS.Service.Service
 
         public MainResponse GetAllUsersApproved()
         {
-            var users = _userRepository.GetAll(x => x.IsApproved == true && x.IsActive==true && x.IsDeleted == false);
+            var users = _userRepository.GetAll(x => x.IsApproved == true && x.IsDeleted == false);
 
             if (users.Count() > 0)
             {
@@ -502,8 +459,14 @@ namespace AAYHS.Service.Service
 
         public MainResponse AddClassCategory(AddClassCategoryRequest addClassCategoryRequest,string actionBy)
         {
+            string category = "";
+            if (addClassCategoryRequest.CategoryName != string.Empty && addClassCategoryRequest.CategoryName != null)
+            {
+                category = addClassCategoryRequest.CategoryName.TrimStart();
+                category = category.TrimEnd();
+            }
             int categoryId = _yearlyMaintenanceRepository.GetCategoryId("ClassHeaderType");
-            var checkClassCategory = _globalCodeRepository.GetSingle(x => x.CodeName.ToLower() == addClassCategoryRequest.CategoryName.ToLower() 
+            var checkClassCategory = _globalCodeRepository.GetSingle(x => x.CodeName.ToLower() == category.ToLower() 
             && x.CategoryId==categoryId && x.IsActive == true & x.IsDeleted == false);
 
             if (checkClassCategory!=null)
@@ -515,8 +478,8 @@ namespace AAYHS.Service.Service
             var classCategory = new GlobalCodes
             {
                 CategoryId = categoryId,
-                CodeName=addClassCategoryRequest.CategoryName,
-                Description=addClassCategoryRequest.CategoryName,
+                CodeName= category,
+                Description= category,
                 IsActive=true,
                 IsDeleted=false,
                 CreatedBy= actionBy,
@@ -581,295 +544,80 @@ namespace AAYHS.Service.Service
 
         public MainResponse AddGeneralFees(AddGeneralFeeRequest addGeneralFeeRequest, string actionBy)
         {
-            int feeTypeId = 0;
-            int catgeoryId = _yearlyMaintenanceRepository.GetCategoryId("FeeType");
-
-            var checkFeeTypeExist = _globalCodeRepository.GetSingle(x => x.CodeName.ToLower() == (addGeneralFeeRequest.FeeType != null ? addGeneralFeeRequest.FeeType.ToLower():"") &&
-            x.CategoryId == catgeoryId && x.IsActive == true && x.IsDeleted == false) ;
+                    
             if (addGeneralFeeRequest.YearlyMaintainenceFeeId==0)
             {
-                if (checkFeeTypeExist != null)
+                string feeName = "";
+                if (addGeneralFeeRequest.FeeType != string.Empty && addGeneralFeeRequest.FeeType != null)
                 {
-                    if (checkFeeTypeExist.CodeName.ToLower() != "additional program" && addGeneralFeeRequest.TimeFrame=="")
-                    {
-                        _mainResponse.Success = false;
-                        _mainResponse.Message = Constants.TIME_FRAME_REQUIRED;
-                        return _mainResponse;
-                    }
-                    var checkFee = _yearlyMaintenanceFeeRepository.GetSingle(x => x.FeeTypeId == checkFeeTypeExist.GlobalCodeId &&
-                    x.YearlyMaintainenceId == addGeneralFeeRequest.YearlyMaintainenceId && x.IsActive == true && x.IsDeleted == false);
-
-                    if (checkFee != null)
-                    {
-                        if (checkFee.PreEntryFee != 0 && addGeneralFeeRequest.TimeFrame=="Pre")
-                        {
-                            _mainResponse.Success = false;
-                            _mainResponse.Message = Constants.FEE_ALREADY_EXIST;
-                            return _mainResponse;
-                        }
-                        if (checkFee.PostEntryFee != 0 && addGeneralFeeRequest.TimeFrame == "Post")
-                        {
-                            _mainResponse.Success = false;
-                            _mainResponse.Message = Constants.FEE_ALREADY_EXIST;
-                            return _mainResponse;
-                        }
-                        if (checkFee.Amount != 0 && addGeneralFeeRequest.TimeFrame == "")
-                        {
-                            _mainResponse.Success = false;
-                            _mainResponse.Message = Constants.FEE_ALREADY_EXIST;
-                            return _mainResponse;
-                        }
-                        if (checkFee.PreEntryFee!=0 && checkFee.PostEntryFee!=0 && addGeneralFeeRequest.TimeFrame == "")
-                        {
-                            _mainResponse.Success = false;
-                            _mainResponse.Message = Constants.FEE_ALREADY_EXIST;
-                            return _mainResponse;
-                        }
-                       
-                        if (addGeneralFeeRequest.TimeFrame == "Pre")
-                        {
-                            checkFee.PreEntryFee = addGeneralFeeRequest.Amount;
-                            checkFee.ModifiedBy = actionBy;
-                            checkFee.ModifiedDate = DateTime.Now;
-
-                            _yearlyMaintenanceFeeRepository.Update(checkFee);
-                            _mainResponse.Success = true;
-                            _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
-
-                        }
-                        if (addGeneralFeeRequest.TimeFrame == "Post")
-                        {
-
-                            checkFee.PostEntryFee = addGeneralFeeRequest.Amount;
-                            checkFee.ModifiedBy = actionBy;
-                            checkFee.ModifiedDate = DateTime.Now;
-
-                            _yearlyMaintenanceFeeRepository.Update(checkFee);
-                            _mainResponse.Success = true;
-                            _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
-
-                        }
-                        if (addGeneralFeeRequest.TimeFrame == "")
-                        {
-
-                            checkFee.Amount = addGeneralFeeRequest.Amount;
-                            checkFee.ModifiedBy = actionBy;
-                            checkFee.ModifiedDate = DateTime.Now;
-
-                            _yearlyMaintenanceFeeRepository.Update(checkFee);
-                            _mainResponse.Success = true;
-                            _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
-
-                        }
-                    }
-                    else
-                    {
-                        if (addGeneralFeeRequest.TimeFrame == "Pre")
-                        {
-
-                            var addGeneralFee = new YearlyMaintainenceFee
-                            {
-                                YearlyMaintainenceId = addGeneralFeeRequest.YearlyMaintainenceId,
-                                FeeTypeId = checkFeeTypeExist.GlobalCodeId,
-                                PreEntryFee = addGeneralFeeRequest.Amount,
-                                PostEntryFee = 0,
-                                Amount = 0,
-                                RefundPercentage = 40,
-                                IsActive = true,
-                                IsDeleted = false,
-                                CreatedBy = actionBy,
-                                CreatedDate = DateTime.Now
-                            };
-
-                            _yearlyMaintenanceFeeRepository.Add(addGeneralFee);
-                            _mainResponse.Success = true;
-                            _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
-
-                        }
-                        if (addGeneralFeeRequest.TimeFrame == "Post")
-                        {
-
-                            var addGeneralFee = new YearlyMaintainenceFee
-                            {
-                                YearlyMaintainenceId = addGeneralFeeRequest.YearlyMaintainenceId,
-                                FeeTypeId = checkFeeTypeExist.GlobalCodeId,
-                                PreEntryFee = 0,
-                                PostEntryFee = addGeneralFeeRequest.Amount,
-                                Amount = 0,
-                                RefundPercentage = 40,
-                                IsActive = true,
-                                IsDeleted = false,
-                                CreatedBy = actionBy,
-                                CreatedDate = DateTime.Now
-
-                            };
-
-                            _yearlyMaintenanceFeeRepository.Add(addGeneralFee);
-                            _mainResponse.Success = true;
-                            _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
-
-                        }
-                        if (addGeneralFeeRequest.TimeFrame == "")
-                        {
-
-                            var addGeneralFee = new YearlyMaintainenceFee
-                            {
-                                YearlyMaintainenceId = addGeneralFeeRequest.YearlyMaintainenceId,
-                                FeeTypeId = checkFeeTypeExist.GlobalCodeId,
-                                PreEntryFee = 0,
-                                PostEntryFee = 0,
-                                Amount = addGeneralFeeRequest.Amount,
-                                RefundPercentage = 40,
-                                IsActive = true,
-                                IsDeleted = false,
-                                CreatedBy = actionBy,
-                                CreatedDate = DateTime.Now
-                            };
-
-                            _yearlyMaintenanceFeeRepository.Add(addGeneralFee);
-                            _mainResponse.Success = true;
-                            _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
-
-                        }
-                    }
+                    feeName = addGeneralFeeRequest.FeeType.TrimStart();
+                    feeName = feeName.TrimEnd();
                 }
                 else
                 {
-                    if (addGeneralFeeRequest.FeeType != "" && addGeneralFeeRequest.FeeType != null)
-                    {
-                        var feeType = new GlobalCodes
-                        {
-                            CategoryId = catgeoryId,
-                            CodeName = addGeneralFeeRequest.FeeType,
-                            Description = addGeneralFeeRequest.FeeType,
-                            IsActive = true,
-                            IsDeleted = false,
-                            CreatedBy = actionBy,
-                            CreatedDate = DateTime.Now
-                        };
-
-                        feeTypeId = _globalCodeRepository.Add(feeType).GlobalCodeId;
-                    }
-                    if (addGeneralFeeRequest.TimeFrame == "Pre")
-                    {
-
-                        var addGeneralFee = new YearlyMaintainenceFee
-                        {
-                            YearlyMaintainenceId = addGeneralFeeRequest.YearlyMaintainenceId,
-                            FeeTypeId = feeTypeId,
-                            PreEntryFee = addGeneralFeeRequest.Amount,
-                            PostEntryFee = 0,
-                            Amount = 0,
-                            RefundPercentage = 40,
-                            IsActive = true,
-                            IsDeleted = false,
-                            CreatedBy = actionBy,
-                            CreatedDate = DateTime.Now
-                        };
-
-                        _yearlyMaintenanceFeeRepository.Add(addGeneralFee);
-                        _mainResponse.Success = true;
-                        _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
-
-                    }
-                    if (addGeneralFeeRequest.TimeFrame == "Post")
-                    {
-
-                        var addGeneralFee = new YearlyMaintainenceFee
-                        {
-                            YearlyMaintainenceId = addGeneralFeeRequest.YearlyMaintainenceId,
-                            FeeTypeId = feeTypeId,
-                            PreEntryFee = 0,
-                            PostEntryFee = addGeneralFeeRequest.Amount,
-                            Amount = 0,
-                            RefundPercentage = 40,
-                            IsActive = true,
-                            IsDeleted = false,
-                            CreatedBy = actionBy,
-                            CreatedDate = DateTime.Now
-
-                        };
-
-                        _yearlyMaintenanceFeeRepository.Add(addGeneralFee);
-                        _mainResponse.Success = true;
-                        _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
-
-                    }
-                    if (addGeneralFeeRequest.TimeFrame == "")
-                    {
-
-                        var addGeneralFee = new YearlyMaintainenceFee
-                        {
-                            YearlyMaintainenceId = addGeneralFeeRequest.YearlyMaintainenceId,
-                            FeeTypeId = feeTypeId,
-                            PreEntryFee = 0,
-                            PostEntryFee = 0,
-                            Amount = addGeneralFeeRequest.Amount,
-                            RefundPercentage = 40,
-                            IsActive = true,
-                            IsDeleted = false,
-                            CreatedBy = actionBy,
-                            CreatedDate = DateTime.Now
-                        };
-
-                        _yearlyMaintenanceFeeRepository.Add(addGeneralFee);
-                        _mainResponse.Success = true;
-                        _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
-
-                    }
-
+                    _mainResponse.Success = false;
+                    _mainResponse.Message = Constants.GENERAL_FEE_CANT_EMPTY;
+                    return _mainResponse;
                 }
+                if (feeName.ToLower() != "additional programs" && addGeneralFeeRequest.TimeFrame == "")
+                {
+                    _mainResponse.Success = false;
+                    _mainResponse.Message = Constants.TIME_FRAME_REQUIRED;
+                    return _mainResponse;
+                }
+                var checkFeeNamePre = _yearlyMaintenanceFeeRepository.GetSingle(x => x.FeeType == "GeneralFee" && x.YearlyMaintainenceId == addGeneralFeeRequest.YearlyMaintainenceId
+                                  && x.FeeName.ToLower() == feeName.ToLower() && x.TimeFrame == addGeneralFeeRequest.TimeFrame && x.IsDeleted == false);
+                if (checkFeeNamePre != null)
+                {
+                    _mainResponse.Success = false;
+                    _mainResponse.Message = Constants.RECORD_AlREADY_EXIST;
+                    return _mainResponse;
+                }               
+                var checkProgramFee = _yearlyMaintenanceFeeRepository.GetSingle(x => x.FeeType == "GeneralFee" &&
+                                      x.YearlyMaintainenceId == addGeneralFeeRequest.YearlyMaintainenceId && x.FeeName.ToLower() == "additional programs" &&
+                                      x.IsDeleted == false);
+                if (checkProgramFee != null && feeName.ToLower() == "additional programs")
+                {
+                    _mainResponse.Success = false;
+                    _mainResponse.Message = Constants.RECORD_AlREADY_EXIST;
+                    return _mainResponse;
+                }
+                var generalFee = new YearlyMaintainenceFee
+                {
+                    YearlyMaintainenceId = addGeneralFeeRequest.YearlyMaintainenceId,
+                    FeeType = "GeneralFee",
+                    TimeFrame = addGeneralFeeRequest.TimeFrame,
+                    FeeName = feeName,
+                    Amount = addGeneralFeeRequest.Amount,
+                    RefundPercentage=40,
+                    IsActive = true,
+                    IsDeleted = false,
+                    CreatedBy = actionBy,
+                    CreatedDate = DateTime.Now
+                };
+
+                _yearlyMaintenanceFeeRepository.Add(generalFee);
+                _mainResponse.Success = true;
+                _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
             }
             else
-            {                
-                var getYearlyMain = _yearlyMaintenanceFeeRepository.GetSingle(x => x.YearlyMaintainenceFeeId == addGeneralFeeRequest.YearlyMaintainenceFeeId);
-                
-                if (getYearlyMain!=null)
+            {
+                var generalFee = _yearlyMaintenanceFeeRepository.GetSingle(x => x.YearlyMaintainenceFeeId == addGeneralFeeRequest.YearlyMaintainenceFeeId);
+
+                if (generalFee!=null)
                 {
-                    if (addGeneralFeeRequest.TimeFrame == "Pre")
-                    {
-                        getYearlyMain.PreEntryFee = addGeneralFeeRequest.Amount;
-                        getYearlyMain.ModifiedBy = actionBy;
-                        getYearlyMain.ModifiedDate = DateTime.Now;
-
-                        _yearlyMaintenanceFeeRepository.Update(getYearlyMain);
-                        _mainResponse.Success = true;
-                        _mainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
-
-                    }
-                    if (addGeneralFeeRequest.TimeFrame == "Post")
-                    {
-
-                        getYearlyMain.PostEntryFee = addGeneralFeeRequest.Amount;
-                        getYearlyMain.ModifiedBy = actionBy;
-                        getYearlyMain.ModifiedDate = DateTime.Now;
-
-                        _yearlyMaintenanceFeeRepository.Update(getYearlyMain);
-                        _mainResponse.Success = true;
-                        _mainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
-
-                    }
-                    if (addGeneralFeeRequest.TimeFrame == "")
-                    {
-
-                        getYearlyMain.Amount = addGeneralFeeRequest.Amount;
-                        getYearlyMain.ModifiedBy = actionBy;
-                        getYearlyMain.ModifiedDate = DateTime.Now;
-
-                        _yearlyMaintenanceFeeRepository.Update(getYearlyMain);
-                        _mainResponse.Success = true;
-                        _mainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
-
-                    }
+                    generalFee.Amount = addGeneralFeeRequest.Amount;
+                    _yearlyMaintenanceFeeRepository.Update(generalFee);
+                    _mainResponse.Success = true;
+                    _mainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
                 }
                 else
                 {
                     _mainResponse.Success = false;
                     _mainResponse.Message = Constants.NO_RECORD_EXIST_WITH_ID;
-
                 }
             }
-                    
+            
             return _mainResponse;
         }
 
@@ -879,44 +627,19 @@ namespace AAYHS.Service.Service
 
             if (getGeneralFee!=null)
             {
-                var checkFee = _exhibitorPaymentDetailRepository.GetSingle(x => x.FeeTypeId == getGeneralFee.FeeTypeId && x.IsDeleted == false);
+                var checkFee = _exhibitorPaymentDetailRepository.GetSingle(x => x.FeeTypeId == getGeneralFee.YearlyMaintainenceFeeId && x.IsDeleted == false);
 
-                if (checkFee!=null)
+                if (checkFee != null)
                 {
                     _mainResponse.Success = false;
                     _mainResponse.Message = Constants.FEE_ALREADY_IN_USE;
                     return _mainResponse;
                 }
-                if (removeGeneralFee.TimeFrame=="Pre")
-                {
-                    getGeneralFee.PreEntryFee = 0;
-                    _yearlyMaintenanceFeeRepository.Update(getGeneralFee);
-                }
+                getGeneralFee.IsDeleted = true;
+                getGeneralFee.DeletedBy = actionBy;
+                getGeneralFee.DeletedDate = DateTime.Now;
+                _yearlyMaintenanceFeeRepository.Update(getGeneralFee);
 
-                if (removeGeneralFee.TimeFrame == "Post")
-                {
-                    getGeneralFee.PostEntryFee = 0;
-                    _yearlyMaintenanceFeeRepository.Update(getGeneralFee);
-                }
-
-                if (removeGeneralFee.TimeFrame == "")
-                {
-                    getGeneralFee.Amount = 0;
-                    _yearlyMaintenanceFeeRepository.Update(getGeneralFee);
-                }
-                if (getGeneralFee.PreEntryFee==0 && getGeneralFee.PostEntryFee==0 && getGeneralFee.Amount==0)
-                {
-                    getGeneralFee.IsDeleted = true;
-                    getGeneralFee.DeletedBy = actionBy;
-                    getGeneralFee.DeletedDate = DateTime.Now;
-                    _yearlyMaintenanceFeeRepository.Update(getGeneralFee);
-
-                    var getGlobalCode = _globalCodeRepository.GetSingle(x => x.GlobalCodeId == removeGeneralFee.FeeTypeId);
-                    getGlobalCode.IsDeleted = true;
-                    getGlobalCode.DeletedBy = actionBy;
-                    getGlobalCode.DeletedDate = DateTime.Now;
-                    _globalCodeRepository.Update(getGlobalCode);
-                }
                 _mainResponse.Success = true;
                 _mainResponse.Message = Constants.RECORD_DELETE_SUCCESS;
             }
@@ -1002,17 +725,7 @@ namespace AAYHS.Service.Service
             int exhibitorSponsorConfirmation=0;
             int exhibitorSponsorRefundStatement=0 ;
             int exhibitorConfirmationEntries=0;
-            if (addContactInfoRequest.YearlyMaintenanceId!=0)
-            {
-                var yearlyMaint = _yearlyMaintenanceRepository.GetSingle(x => x.YearlyMaintainenceId == 
-                addContactInfoRequest.YearlyMaintenanceId);
-
-                if (yearlyMaint!=null)
-                {                   
-                    yearlyMaint.Location = addContactInfoRequest.Location;
-                    _yearlyMaintenanceRepository.Update(yearlyMaint);
-                }
-            }
+            
             if (addContactInfoRequest.AAYHSContactId==0)
             {
 
@@ -1022,6 +735,8 @@ namespace AAYHS.Service.Service
                     City = addContactInfoRequest.ExhibitorSponsorCity,
                     StateId = addContactInfoRequest.ExhibitorSponsorState,
                     ZipCode = addContactInfoRequest.ExhibitorSponsorZip,
+                    Phone=addContactInfoRequest.ExhibitorSponsorPhone,
+                    Email=addContactInfoRequest.ExhibitorSponsorEmail,
                     IsActive = true,
                     IsDeleted = false,
                     CreatedBy = actionBy,
@@ -1029,20 +744,22 @@ namespace AAYHS.Service.Service
                 };
 
                 exhibitorSponsorConfirmation = _aAYHSContactAddressRepository.Add(address1).AAYHSContactAddressId;
-                
-              
-                    var address2 = new AAYHSContactAddresses
-                    {
-                        Address = addContactInfoRequest.ExhibitorRefundAddress,
-                        City = addContactInfoRequest.ExhibitorRefundCity,
-                        StateId= addContactInfoRequest.ExhibitorRefundState,
-                        ZipCode = addContactInfoRequest.ExhibitorRefundZip,
-                        IsActive = true,
-                        IsDeleted = false,
-                        CreatedBy = actionBy,
-                        CreatedDate = DateTime.Now
 
-                    };
+
+                var address2 = new AAYHSContactAddresses
+                {
+                    Address = addContactInfoRequest.ExhibitorRefundAddress,
+                    City = addContactInfoRequest.ExhibitorRefundCity,
+                    StateId = addContactInfoRequest.ExhibitorRefundState,
+                    ZipCode = addContactInfoRequest.ExhibitorRefundZip,
+                    Phone=addContactInfoRequest.ExhibitorRefundPhone,
+                    Email=addContactInfoRequest.ExhibitorRefundEmail,
+                    IsActive = true,
+                    IsDeleted = false,
+                    CreatedBy = actionBy,
+                    CreatedDate = DateTime.Now
+
+                };
 
                 exhibitorSponsorRefundStatement = _aAYHSContactAddressRepository.Add(address2).AAYHSContactAddressId;
 
@@ -1053,6 +770,8 @@ namespace AAYHS.Service.Service
                     City = addContactInfoRequest.ReturnCity,
                     StateId = addContactInfoRequest.ReturnState,
                     ZipCode = addContactInfoRequest.ReturnZip,
+                    Phone=addContactInfoRequest.ReturnPhone,
+                    Email=addContactInfoRequest.ReturnEmail,
                     IsActive = true,
                     IsDeleted = false,
                     CreatedBy = actionBy,
@@ -1065,6 +784,11 @@ namespace AAYHS.Service.Service
                 var contactInfo = new AAYHSContact
                 {
                     YearlyMaintainenceId = addContactInfoRequest.YearlyMaintenanceId,
+                    Location=addContactInfoRequest.Location,
+                    Address=addContactInfoRequest.Address,
+                    City=addContactInfoRequest.City,
+                    State=addContactInfoRequest.State,
+                    ZipCode=addContactInfoRequest.Zipcode,
                     Email1 = addContactInfoRequest.Email1,
                     Email2 = addContactInfoRequest.Email2,
                     Phone1 = addContactInfoRequest.Phone1,
@@ -1085,9 +809,9 @@ namespace AAYHS.Service.Service
             else
             {
                 var contact = _aAYHSContactRepository.GetSingle(x => x.AAYHSContactId == addContactInfoRequest.AAYHSContactId);
-               
-                    var address1 = _aAYHSContactAddressRepository.GetSingle(x => x.AAYHSContactAddressId ==
-                    contact.ExhibitorSponsorConfirmationAddressId);
+
+                var address1 = _aAYHSContactAddressRepository.GetSingle(x => x.AAYHSContactAddressId ==
+                contact.ExhibitorSponsorConfirmationAddressId);
 
                 if (address1 != null)
                 {
@@ -1095,31 +819,35 @@ namespace AAYHS.Service.Service
                     address1.City = addContactInfoRequest.ExhibitorSponsorCity;
                     address1.StateId = addContactInfoRequest.ExhibitorSponsorState;
                     address1.ZipCode = addContactInfoRequest.ExhibitorSponsorZip;
+                    address1.Phone = addContactInfoRequest.ExhibitorSponsorPhone;
+                    address1.Email = addContactInfoRequest.ExhibitorSponsorEmail;
                     address1.ModifiedBy = actionBy;
                     address1.ModifiedDate = DateTime.Now;
 
                     _aAYHSContactAddressRepository.Update(address1);
                 }
-                                       
-             
-                    var address2 = _aAYHSContactAddressRepository.GetSingle(x => x.AAYHSContactAddressId ==
-                    contact.ExhibitorSponsorRefundStatementAddressId);
 
-                    if (address2 != null)
-                    {
+
+                var address2 = _aAYHSContactAddressRepository.GetSingle(x => x.AAYHSContactAddressId ==
+                contact.ExhibitorSponsorRefundStatementAddressId);
+
+                if (address2 != null)
+                {
                     address2.Address = addContactInfoRequest.ExhibitorRefundAddress;
-                    address2.City= addContactInfoRequest.ExhibitorRefundCity;
+                    address2.City = addContactInfoRequest.ExhibitorRefundCity;
                     address2.StateId = addContactInfoRequest.ExhibitorRefundState;
                     address2.ZipCode = addContactInfoRequest.ExhibitorRefundZip;
+                    address2.Phone = addContactInfoRequest.ExhibitorRefundPhone;
+                    address2.Email = addContactInfoRequest.ExhibitorRefundEmail;
                     address2.ModifiedBy = actionBy;
                     address2.ModifiedDate = DateTime.Now;
 
-                        _aAYHSContactAddressRepository.Update(address2);
-                    }
+                    _aAYHSContactAddressRepository.Update(address2);
+                }
 
-               
-                    var address = _aAYHSContactAddressRepository.GetSingle(x => x.AAYHSContactAddressId ==
-                    contact.ExhibitorConfirmationEntriesAddressId);
+
+                var address = _aAYHSContactAddressRepository.GetSingle(x => x.AAYHSContactAddressId ==
+                contact.ExhibitorConfirmationEntriesAddressId);
 
                 if (address != null)
                 {
@@ -1127,6 +855,8 @@ namespace AAYHS.Service.Service
                     address.City = addContactInfoRequest.ReturnCity;
                     address.StateId = addContactInfoRequest.ReturnState;
                     address.ZipCode = addContactInfoRequest.ReturnZip;
+                    address.Phone = addContactInfoRequest.ReturnPhone;
+                    address.Email = addContactInfoRequest.ReturnEmail;
                     address.ModifiedBy = actionBy;
                     address.ModifiedDate = DateTime.Now;
 
@@ -1138,6 +868,11 @@ namespace AAYHS.Service.Service
                 if (contactInfo!=null)
                 {
                     contactInfo.YearlyMaintainenceId = addContactInfoRequest.YearlyMaintenanceId;
+                    contactInfo.Location = addContactInfoRequest.Location;
+                    contactInfo.Address = addContactInfoRequest.Address;
+                    contactInfo.City = addContactInfoRequest.City;
+                    contactInfo.State = addContactInfoRequest.State;
+                    contactInfo.ZipCode = addContactInfoRequest.Zipcode;
                     contactInfo.Email1 = addContactInfoRequest.Email1;
                     contactInfo.Email2 = addContactInfoRequest.Email2;
                     contactInfo.Phone1 = addContactInfoRequest.Phone1;
@@ -1157,80 +892,150 @@ namespace AAYHS.Service.Service
             }
             return _mainResponse;
         }
-
-        public MainResponse AddUpdateLocation(AddLocationRequest addLocationRequest, string actionBy)
+              
+        public MainResponse GetAllScan(GetScanRequest getScanRequest)
         {
-            int addressId = 0;
-            var yearly = _yearlyMaintenanceRepository.GetSingle(x => x.YearlyMaintainenceId == addLocationRequest.YearlyMaintenanceId);
-            if (yearly.LocationAddressId == null)
+            var getAllScan = _scan.GetAllScan(getScanRequest);
+
+            if (getAllScan.getScans!=null)
             {
-                var address = new AAYHSContactAddresses
-                {
-                    Address = addLocationRequest.Address,
-                    City = addLocationRequest.City,
-                    StateId = addLocationRequest.StateId,
-                    ZipCode = addLocationRequest.ZipCode,
-                    Phone = addLocationRequest.Phone,
-                    IsActive=true,
-                    IsDeleted=false,
-                    CreatedBy=actionBy,
-                    CreatedDate=DateTime.Now
-
-                };
-                addressId = _aAYHSContactAddressRepository.Add(address).AAYHSContactAddressId;              
-                if (yearly != null)
-                {
-                    yearly.Location = addLocationRequest.Name;
-                    yearly.LocationAddressId = addressId;
-                    yearly.ModifiedBy = actionBy;
-                    yearly.ModifiedDate = DateTime.Now;
-
-                    _yearlyMaintenanceRepository.Update(yearly);
-                }
+                _mainResponse.GetAllScan = getAllScan;
                 _mainResponse.Success = true;
-                _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
+
             }
             else
             {
-                var addressUpdate = _aAYHSContactAddressRepository.GetSingle(x => x.AAYHSContactAddressId == yearly.LocationAddressId);
-
-                if (addressUpdate!=null)
-                {
-                    addressUpdate.Address = addLocationRequest.Address;
-                    addressUpdate.City = addLocationRequest.City;
-                    addressUpdate.StateId = addLocationRequest.StateId;
-                    addressUpdate.ZipCode = addLocationRequest.ZipCode;
-                    addressUpdate.Phone = addLocationRequest.Phone;
-                    addressUpdate.ModifiedBy = actionBy;
-                    addressUpdate.ModifiedDate = DateTime.Now;
-
-                    _aAYHSContactAddressRepository.Update(addressUpdate);
-                }
-
-                if (yearly != null)
-                {
-                    yearly.Location = addLocationRequest.Name;
-                    yearly.LocationAddressId = yearly.LocationAddressId;
-                    yearly.ModifiedBy = actionBy;
-                    yearly.ModifiedDate = DateTime.Now;
-
-                    _yearlyMaintenanceRepository.Update(yearly);
-                }
-
-                _mainResponse.Success = true;
-                _mainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
+                _mainResponse.Success = false;
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
             }
 
             return _mainResponse;
         }
 
-        public MainResponse GetLocation(int yearlyMaintenanceId)
+        public MainResponse AddUpdateYearlyStatementText(AddStatementTextRequest addStatementTextRequest, string actionBy)
         {
-            var getLocation = _yearlyMaintenanceRepository.GetLocation(yearlyMaintenanceId);
-
-            if (getLocation!=null)
+            if (addStatementTextRequest.YearlyStatementTextId==0)
             {
-                _mainResponse.GetLocation = getLocation;
+                var addStatementText = new YearlyStatementText
+                {
+                    YearlyMaintenanceId = addStatementTextRequest.YearlyMaintenanceId,
+                    StatementName = addStatementTextRequest.StatementName,
+                    StatementNumber = addStatementTextRequest.StatementNumber.ToLower(),
+                    StatementText = addStatementTextRequest.StatementText,
+                    Incentive=addStatementTextRequest.Incentive,
+                    IsActive = true,
+                    IsDeleted = false,
+                    CreatedBy = actionBy,
+                    CreatedDate = DateTime.Now
+                };
+
+                int newId=_yearlyStatementTextRepository.Add(addStatementText).YearlyStatementTextId;
+                _mainResponse.Success = true;
+                _mainResponse.NewId = newId;
+                _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
+            }
+            else
+            {
+                var updateStatementText = _yearlyStatementTextRepository.GetSingle(x => x.YearlyStatementTextId == addStatementTextRequest.YearlyStatementTextId);
+
+                if (updateStatementText!=null)
+                {
+                    updateStatementText.StatementName = addStatementTextRequest.StatementName;
+                    updateStatementText.StatementNumber = addStatementTextRequest.StatementNumber.ToLower();
+                    updateStatementText.StatementText = addStatementTextRequest.StatementText;
+                    updateStatementText.Incentive = addStatementTextRequest.Incentive;
+                    updateStatementText.ModifiedBy = actionBy;
+                    updateStatementText.ModifiedDate = DateTime.Now;
+
+                    _yearlyStatementTextRepository.Update(updateStatementText);
+                    _mainResponse.Success = true;
+                    _mainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
+                }
+                else
+                {
+                    _mainResponse.Success = false;
+                    _mainResponse.Message = Constants.NO_RECORD_EXIST_WITH_ID;
+                }
+            }
+
+            return _mainResponse;
+            
+        }
+
+        public MainResponse GetYearlyStatementText(int yearlyMaintenanceId)
+        {
+            var getStatementText = _yearlyStatementTextRepository.GetYearlyStatementText(yearlyMaintenanceId);
+
+            if (getStatementText.getStatementTexts!=null)
+            {
+                _mainResponse.GetAllStatementText = getStatementText;
+                _mainResponse.Success = true;
+            }
+            else
+            {
+                _mainResponse.Success = false;
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+            }
+
+            return _mainResponse;
+        }
+
+        public MainResponse AddAndUpdateSponsorIncentive(AddSponsorIncentiveRequest addSponsorIncentiveRequest, string actionBy)
+        {
+            if (addSponsorIncentiveRequest.SponsorIncentiveId==0)
+            {
+                var addIncentive = new SponsorIncentives
+                {
+                    YearlyMaintenanceId=addSponsorIncentiveRequest.YearlyMaintenanceId,
+                    SponsorAmount = addSponsorIncentiveRequest.Amount,
+                    Award=addSponsorIncentiveRequest.Award,
+                    IsActive=true,
+                    IsDeleted=false,
+                    CreatedBy=actionBy,
+                    CreatedDate=DateTime.Now
+                };
+
+                _sponsorIncentiveRepository.Add(addIncentive);
+                _mainResponse.Success = true;
+                _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
+            }
+            else
+            {
+                var updateIncentive = _sponsorIncentiveRepository.GetSingle(x => x.SponsorIncentiveId == 
+                                      addSponsorIncentiveRequest.SponsorIncentiveId);
+
+                if (updateIncentive!=null)
+                {
+                    updateIncentive.SponsorAmount = addSponsorIncentiveRequest.Amount;
+                    updateIncentive.Award = addSponsorIncentiveRequest.Award;
+                    updateIncentive.ModifiedBy = actionBy;
+                    updateIncentive.ModifiedDate = DateTime.Now;
+
+                    _sponsorIncentiveRepository.Update(updateIncentive);
+                    _mainResponse.Success = true;
+                    _mainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
+                }
+                else
+                {
+                    _mainResponse.Success = false;
+                    _mainResponse.Message = Constants.RECORD_UPDATE_FAILED;
+                }
+                
+            }
+
+            return _mainResponse;
+        }
+
+        public MainResponse GetSponsorIncentive(int yearlyMaintenanceId)
+        {
+            var sponsorIncentives = _sponsorIncentiveRepository.GetAll(x => x.YearlyMaintenanceId == yearlyMaintenanceId && 
+                                    x.IsActive == true && x.IsDeleted == false);
+
+            if (sponsorIncentives.Count()!=0)
+            {
+                GetSponsorAllIncentives getSponsorAllIncentives = new GetSponsorAllIncentives();
+                getSponsorAllIncentives.getSponsorIncentives = _mapper.Map<List<GetSponsorIncentives>>(sponsorIncentives);
+                _mainResponse.GetSponsorAllIncentives = getSponsorAllIncentives;
                 _mainResponse.Success = true;
             }
             else
@@ -1239,6 +1044,240 @@ namespace AAYHS.Service.Service
                 _mainResponse.Message = Constants.NO_RECORD_FOUND;
             }
             return _mainResponse;
+        }
+
+        public MainResponse DeleteSponsorIncentive(int sponsorIncentiveId, string actionBy)
+        {
+            var getSponsorIncentive = _sponsorIncentiveRepository.GetSingle(x => x.SponsorIncentiveId == sponsorIncentiveId);
+
+            if (getSponsorIncentive!=null)
+            {
+                getSponsorIncentive.IsDeleted = true;
+                getSponsorIncentive.DeletedBy = actionBy;
+                getSponsorIncentive.DeletedDate = DateTime.Now;
+
+                _sponsorIncentiveRepository.Update(getSponsorIncentive);
+                _mainResponse.Success = true;
+                _mainResponse.Message = Constants.RECORD_DELETE_SUCCESS;
+            }
+            else
+            {
+                _mainResponse.Success = false;
+                _mainResponse.Message = Constants.NO_RECORD_Exist_WITH_ID;
+            }
+
+            return _mainResponse;
+        }
+
+        public MainResponse ActiveInActiveUser(ActiveInActiveRequest activeInActiveRequest)
+        {
+            var user = _userRepository.GetSingle(x => x.UserId == activeInActiveRequest.UserId);
+
+            if (user!=null)
+            {
+                user.IsActive = activeInActiveRequest.IsActive;
+                _userRepository.Update(user);
+
+                _mainResponse.Success = true;
+                _mainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
+            }
+            else
+            {
+                _mainResponse.Success = false;
+                _mainResponse.Message = Constants.NO_RECORD_EXIST_WITH_ID;
+            }
+
+            return _mainResponse;
+        }
+
+        public MainResponse ActiveInActiveGeneralFee(ActiveInActiveGeneralFeeRequest activeInActiveGeneralFeeRequest)
+        {
+            var feeId = _yearlyMaintenanceFeeRepository.GetSingle(x => x.YearlyMaintainenceFeeId == 
+                        activeInActiveGeneralFeeRequest.YearlyMaintenanceFeeId);
+
+            if (feeId!=null)
+            {
+                feeId.IsActive = activeInActiveGeneralFeeRequest.IsActive;
+                _yearlyMaintenanceFeeRepository.Update(feeId);
+               
+                _mainResponse.Success = true;
+                _mainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
+            }
+            else
+            {
+                _mainResponse.Success = false;
+                _mainResponse.Message = Constants.NO_RECORD_EXIST_WITH_ID;
+            }
+
+            return _mainResponse;
+        }
+
+        public MainResponse ActiveInActiveAdFee(ActiveInActiveAdFeeRequest activeInActiveAdFeeRequest)
+        {
+            var adFee = _yearlyMaintenanceFeeRepository.GetSingle(x => x.YearlyMaintainenceFeeId == activeInActiveAdFeeRequest.YearlyMaintenanceFeeId);
+
+            if (adFee!=null)
+            {
+                adFee.IsActive = activeInActiveAdFeeRequest.IsActive;
+                _yearlyMaintenanceFeeRepository.Update(adFee);
+               
+                _mainResponse.Success = true;
+                _mainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
+            }
+            else
+            {
+                _mainResponse.Success = false;
+                _mainResponse.Message = Constants.NO_RECORD_EXIST_WITH_ID;
+            }
+
+            return _mainResponse;
+        }
+
+        public MainResponse ActiveInActiveClassCategory(ActiveInActiveClassCategory activeInActiveClassCategory)
+        {
+            var categoryId = _globalCodeRepository.GetSingle(x => x.GlobalCodeId == activeInActiveClassCategory.GlobalCodeId);
+
+            if (categoryId!=null)
+            {
+                categoryId.IsActive = activeInActiveClassCategory.IsActive;
+                _globalCodeRepository.Update(categoryId);
+
+                _mainResponse.Success = true;
+                _mainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
+            }
+            else
+            {
+                _mainResponse.Success = false;
+                _mainResponse.Message = Constants.NO_RECORD_EXIST_WITH_ID;
+            }
+
+            return _mainResponse;
+        }
+
+        public MainResponse ActiveInActiveScratchRefund(ActiveInActiveScratchRefund activeInActiveScratchRefund)
+        {
+            var refund = _refundRepository.GetSingle(x => x.RefundDetailId == activeInActiveScratchRefund.RefundDetailId);
+
+            if (refund!=null)
+            {
+                refund.IsActive = activeInActiveScratchRefund.IsActive;
+                _refundRepository.Update(refund);
+
+                _mainResponse.Success = true;
+                _mainResponse.Message = Constants.RECORD_UPDATE_SUCCESS;
+            }
+            else
+            {
+                _mainResponse.Success = false;
+                _mainResponse.Message = Constants.NO_RECORD_EXIST_WITH_ID;
+            }
+
+            return _mainResponse;
+        }
+
+        public MainResponse YearlyDataForNextYear(int yearlyMaintenanceId,string actionBy)
+        {
+            int currentYear = DateTime.Now.Year;
+            int nextYear = currentYear + 1;       
+            var currentYearId = _yearlyMaintenanceRepository.GetSingle(x => x.YearlyMaintainenceId == yearlyMaintenanceId && x.IsDeleted == false);
+            if (currentYear!=currentYearId.Years)
+            {
+                _mainResponse.Success = false;
+                _mainResponse.Message = Constants.SELECT_CURRENT_YEAR;
+                return _mainResponse;
+            }
+            var currentYearFee = _yearlyMaintenanceFeeRepository.GetAll(x => x.YearlyMaintainenceId == currentYearId.YearlyMaintainenceId && x.IsDeleted == false);
+            var checkYear = _yearlyMaintenanceRepository.GetSingle(x => x.Years == nextYear && x.IsDeleted == false);
+            if (checkYear != null)
+            {
+                _yearlyMaintenanceRepository.DeleteYearlyFee(checkYear.YearlyMaintainenceId);
+                foreach (var fee in currentYearFee)
+                {
+                    var add = new YearlyMaintainenceFee
+                    {
+                        YearlyMaintainenceId = checkYear.YearlyMaintainenceId,
+                        FeeType = fee.FeeType,
+                        FeeName = fee.FeeName,
+                        TimeFrame = fee.TimeFrame,
+                        Amount = fee.Amount,
+                        RefundPercentage = 40,
+                        IsActive = fee.IsActive,
+                        IsDeleted = false,
+                        CreatedDate = DateTime.Now,
+                        CreatedBy = actionBy
+                    };
+                    _yearlyMaintenanceFeeRepository.Add(add);
+                }
+
+                var refundDetail = _refundRepository.GetAll(x => x.YearlyMaintenanceId == currentYearId.YearlyMaintainenceId && x.IsDeleted == false);
+
+                foreach (var refund in refundDetail)
+                {
+                    var refundNext = new RefundDetail
+                    {
+                        YearlyMaintenanceId = checkYear.YearlyMaintainenceId,
+                        DateAfter = refund.DateAfter,
+                        DateBefore = refund.DateBefore,
+                        FeeTypeId = refund.FeeTypeId,
+                        RefundPercentage = refund.RefundPercentage,
+                        IsActive = refund.IsActive,
+                        IsDeleted = false,
+                        CreatedDate = DateTime.Now,
+                        CreatedBy = actionBy
+
+                    };
+
+                    _refundRepository.Add(refundNext);
+                }
+
+                var getIncentive = _sponsorIncentiveRepository.GetAll(x => x.YearlyMaintenanceId == currentYearId.YearlyMaintainenceId && x.IsDeleted == false);
+
+                foreach (var incentives in getIncentive)
+                {
+                    var incentive = new SponsorIncentives
+                    {
+                        YearlyMaintenanceId = checkYear.YearlyMaintainenceId,
+                        Award = incentives.Award,
+                        SponsorAmount = incentives.SponsorAmount,
+                        IsActive = incentives.IsActive,
+                        IsDeleted = false,
+                        CreatedDate = DateTime.Now,
+                        CreatedBy = actionBy
+                    };
+
+                    _sponsorIncentiveRepository.Add(incentive);
+                }
+
+                var getStatementText = _yearlyStatementTextRepository.GetAll(x => x.YearlyMaintenanceId == currentYearId.YearlyMaintainenceId && x.IsDeleted == false);
+
+                foreach (var text in getStatementText)
+                {
+                    var addText = new YearlyStatementText
+                    {
+                        YearlyMaintenanceId= checkYear.YearlyMaintainenceId,
+                        StatementName=text.StatementName,
+                        StatementNumber=text.StatementNumber,
+                        StatementText=text.StatementText,
+                        Incentive=text.Incentive,
+                        IsActive=text.IsActive,
+                        IsDeleted=false,
+                        CreatedDate=DateTime.Now,
+                        CreatedBy=actionBy
+                    };
+
+                    _yearlyStatementTextRepository.Add(addText);
+                }
+                _mainResponse.Success = true;
+                _mainResponse.Message = Constants.RECORD_ADDED_SUCCESS;
+            }
+            else
+            {
+                _mainResponse.Success = false;
+                _mainResponse.Message = Constants.NO_YEAR;
+            }
+
+            return _mainResponse;
+
         }
     }
 }

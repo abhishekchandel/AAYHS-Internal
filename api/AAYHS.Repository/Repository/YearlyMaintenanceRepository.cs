@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using AAYHS.Core.DTOs.Response.Common;
 
 namespace AAYHS.Repository.Repository
 {
@@ -29,28 +30,32 @@ namespace AAYHS.Repository.Repository
             _MainResponse = new MainResponse();
         }
 
-        public GetAllYearlyMaintenance GetAllYearlyMaintenance(GetAllYearlyMaintenanceRequest getAllYearlyMaintenanceRequest, int feeTypeId)
+        public GetAllYearlyMaintenance GetAllYearlyMaintenance(GetAllYearlyMaintenanceRequest getAllYearlyMaintenanceRequest, GlobalCodeMainResponse feeType)
         {
             IEnumerable<GetYearlyMaintenance> data;
-            GetAllYearlyMaintenance getAllYearlyMaintenance = new GetAllYearlyMaintenance();
-            
+            GetAllYearlyMaintenance getAllYearlyMaintenance = new GetAllYearlyMaintenance();         
             List<GetYearlyMaintenance> getYearlyMaintenances = new List<GetYearlyMaintenance>();
-            var allYear = _ObjContext.YearlyMaintainence.Where(x => x.IsActive == true && x.IsDeleted == false).ToList();
+            var allYears = _ObjContext.YearlyMaintainence.Where(x => x.IsActive == true && x.IsDeleted == false).ToList();
 
-            if (allYear.Count()!=0)
+            if (allYears.Count()!=0)
             {
-                for (int i = 0; i <= allYear.Count()-1; i++)
+                for (int i = 0; i <= allYears.Count()-1; i++)
                 {
                     GetYearlyMaintenance getYearlyMaintenance = new GetYearlyMaintenance();
-                    var yearlyFee = _ObjContext.YearlyMaintainenceFee.Where(x => x.YearlyMaintainenceId == allYear[i].YearlyMaintainenceId &&
-                    x.FeeTypeId == feeTypeId && x.IsActive == true && x.IsDeleted == false).FirstOrDefault();
+                 
+                    var yearlyFee = _ObjContext.YearlyMaintainenceFee.Where(x => x.YearlyMaintainenceId == allYears[i].YearlyMaintainenceId &&
+                                    x.FeeType== "GeneralFee" &&
+                                    x.FeeName == "Administration" && x.IsActive == true && x.IsDeleted == false).ToList();
 
-                    getYearlyMaintenance.YearlyMaintenanceId = allYear[i].YearlyMaintainenceId;
-                    getYearlyMaintenance.Year = allYear[i].Years;
-                    getYearlyMaintenance.PreEntryCutOffDate = allYear[i].PreEntryCutOffDate;
-                    getYearlyMaintenance.PreEntryFee = yearlyFee != null ? yearlyFee.PreEntryFee : 0;
-                    getYearlyMaintenance.PostEntryFee= yearlyFee != null ? yearlyFee.PostEntryFee : 0;
-                    getYearlyMaintenance.DateCreated = allYear[i].Date;
+                    decimal yearlyPreFee = yearlyFee.Where(x => x.TimeFrame == "Pre").Select(x => x.Amount).FirstOrDefault();
+                    decimal yearlyPostFee = yearlyFee.Where(x => x.TimeFrame == "Post").Select(x => x.Amount).FirstOrDefault();
+
+                    getYearlyMaintenance.YearlyMaintenanceId = allYears[i].YearlyMaintainenceId;
+                    getYearlyMaintenance.Year = allYears[i].Years;
+                    getYearlyMaintenance.PreEntryCutOffDate = allYears[i].PreEntryCutOffDate;
+                    getYearlyMaintenance.PreEntryFee = yearlyPreFee;
+                    getYearlyMaintenance.PostEntryFee= yearlyPostFee;
+                    getYearlyMaintenance.DateCreated = allYears[i].Date;
 
                     getYearlyMaintenances.Add(getYearlyMaintenance);
                 }
@@ -104,7 +109,6 @@ namespace AAYHS.Repository.Repository
                        ShowStartDate=yearlyMaintenance.ShowStartDate,
                        ShowEndDate=yearlyMaintenance.ShowEndDate,
                        SponcerCutOffDate=yearlyMaintenance.SponcerCutOffDate,
-                       Location=yearlyMaintenance.Location,
                        Date = yearlyMaintenance.Date
 
                     });
@@ -124,22 +128,18 @@ namespace AAYHS.Repository.Repository
         }
 
         public GetAllAdFees GetAllAdFees(int yearlyMaintenanceId)
-        {
-            int adCategoryId = GetCategoryId("AdTypes");
+        {          
             IEnumerable<GetAdFees> data;
             GetAllAdFees getAllAdFees = new GetAllAdFees();
 
-            data = (from fees in _ObjContext.YearlyMaintainenceFee
-                    join adSize in _ObjContext.GlobalCodes on fees.FeeTypeId equals adSize.GlobalCodeId
-                    where fees.IsActive == true && fees.IsDeleted == false
-                    && adSize.IsActive == true && adSize.IsDeleted == false
+            data = (from fees in _ObjContext.YearlyMaintainenceFee                   
+                    where fees.IsDeleted == false                   
                     && fees.YearlyMaintainenceId==yearlyMaintenanceId
-                    && adSize.CategoryId== adCategoryId
+                    && fees.FeeType=="AdFee"
                     select new GetAdFees
                     { 
-                      YearlyMaintenanceFeeId=fees.YearlyMaintainenceFeeId,
-                      AdSizeId=adSize.GlobalCodeId,
-                      AdSize=adSize.CodeName,
+                      YearlyMaintenanceFeeId=fees.YearlyMaintainenceFeeId,                    
+                      AdSize= fees.FeeName,
                       Amount=fees.Amount,
                       Active=fees.IsActive
                     });
@@ -158,7 +158,7 @@ namespace AAYHS.Repository.Repository
 
             data = (from globalCategory in _ObjContext.GlobalCodeCategories
                     join globalCode in _ObjContext.GlobalCodes on globalCategory.GlobalCodeCategoryId equals globalCode.CategoryId
-                    where globalCode.IsActive == true && globalCode.IsDeleted == false
+                    where globalCode.IsDeleted == false
                     && globalCategory.CategoryName=="ClassHeaderType"
                     select new GetClassCategory
                     {
@@ -177,76 +177,24 @@ namespace AAYHS.Repository.Repository
 
         public GetAllGeneralFees GetAllGeneralFees(int yearlyMaintenanceId)
         {
-            IEnumerable<GetGeneralFees> data;
-            List<GetGeneralFees> getGeneralFees = new List<GetGeneralFees>();
+            IEnumerable<GetGeneralFeesResponse> data;          
             GetAllGeneralFees getAllGeneralFees = new GetAllGeneralFees();
-
-            int adCategoryId = GetCategoryId("FeeType");
-
-            data = (from yearlyFee in _ObjContext.YearlyMaintainenceFee
-                    join feeType in _ObjContext.GlobalCodes on yearlyFee.FeeTypeId equals feeType.GlobalCodeId
-                    where yearlyFee.IsActive == true && yearlyFee.IsDeleted == false
-                    && yearlyFee.YearlyMaintainenceId==yearlyMaintenanceId
-                    && feeType.CategoryId== adCategoryId
-                    select new GetGeneralFees
+                    
+            data = (from yearlyFee in _ObjContext.YearlyMaintainenceFee                   
+                    where yearlyFee.IsDeleted == false                   
+                    && yearlyFee.YearlyMaintainenceId==yearlyMaintenanceId 
+                    && yearlyFee.FeeType=="GeneralFee"
+                    select new GetGeneralFeesResponse
                     {
-                        YearlyMaintenanceFeeId=yearlyFee.YearlyMaintainenceFeeId,
-                        FeeTypeId=feeType.GlobalCodeId,
-                        FeeType=feeType.CodeName,
-                        PreEntryFee=yearlyFee.PreEntryFee,
-                        PostEntryFee=yearlyFee.PostEntryFee,
+                        YearlyMaintenanceFeeId=yearlyFee.YearlyMaintainenceFeeId,                        
+                        FeeType= yearlyFee.FeeName,
+                        TimeFrame=yearlyFee.TimeFrame,
                         Amount=yearlyFee.Amount,
                         Active=yearlyFee.IsActive
                     });
             if (data.Count()!=0)
             {
-                getGeneralFees = data.ToList();
-                List<GetGeneralFeesResponse> getAllGeneral = new List<GetGeneralFeesResponse>();
-                for (int i = 0; i <= getGeneralFees.Count()-1; i++)
-                {
-                    GetGeneralFeesResponse getGeneralFeesResponse;
-
-                    if (getGeneralFees[i].PreEntryFee!=0)
-                    {
-                        getGeneralFeesResponse = new GetGeneralFeesResponse();
-                        getGeneralFeesResponse.YearlyMaintenanceFeeId = getGeneralFees[i].YearlyMaintenanceFeeId;
-                        getGeneralFeesResponse.TimeFrame = "Pre";
-                        getGeneralFeesResponse.FeeTypeId = getGeneralFees[i].FeeTypeId;
-                        getGeneralFeesResponse.FeeType= getGeneralFees[i].FeeType;
-                        getGeneralFeesResponse.Amount = getGeneralFees[i].PreEntryFee;
-                        getGeneralFeesResponse.Active= getGeneralFees[i].Active;
-                        getAllGeneral.Add(getGeneralFeesResponse);
-
-                    }
-                    if (getGeneralFees[i].PostEntryFee != 0)
-                    {
-                        getGeneralFeesResponse = new GetGeneralFeesResponse();
-                        getGeneralFeesResponse.YearlyMaintenanceFeeId = getGeneralFees[i].YearlyMaintenanceFeeId;
-                        getGeneralFeesResponse.TimeFrame = "Post";
-                        getGeneralFeesResponse.FeeTypeId = getGeneralFees[i].FeeTypeId;
-                        getGeneralFeesResponse.FeeType = getGeneralFees[i].FeeType;
-                        getGeneralFeesResponse.Amount = getGeneralFees[i].PostEntryFee;
-                        getGeneralFeesResponse.Active = getGeneralFees[i].Active;
-                        getAllGeneral.Add(getGeneralFeesResponse);
-                    }
-
-                    if (getGeneralFees[i].PreEntryFee == 0 && getGeneralFees[i].PostEntryFee == 0)
-                    {
-                        if (getGeneralFees[i].Amount!=0)
-                        {
-                            getGeneralFeesResponse = new GetGeneralFeesResponse();
-                            getGeneralFeesResponse.YearlyMaintenanceFeeId = getGeneralFees[i].YearlyMaintenanceFeeId;
-                            getGeneralFeesResponse.TimeFrame = "";
-                            getGeneralFeesResponse.FeeTypeId = getGeneralFees[i].FeeTypeId;
-                            getGeneralFeesResponse.FeeType = getGeneralFees[i].FeeType;
-                            getGeneralFeesResponse.Amount = getGeneralFees[i].Amount;
-                            getGeneralFeesResponse.Active = getGeneralFees[i].Active;
-                            getAllGeneral.Add(getGeneralFeesResponse);
-                        }
-                        
-                    }
-                }
-                getAllGeneralFees.getGeneralFeesResponses = getAllGeneral;
+                getAllGeneralFees.getGeneralFeesResponses = data.ToList();
             }
             return getAllGeneralFees;
         }
@@ -258,7 +206,7 @@ namespace AAYHS.Repository.Repository
 
             data = (from refund in _ObjContext.RefundDetail
                     join feeType in _ObjContext.GlobalCodes on refund.FeeTypeId equals feeType.GlobalCodeId
-                    where refund.IsActive == true && refund.IsDeleted == false
+                    where  refund.IsDeleted == false
                     && refund.YearlyMaintenanceId==yearlyMaintenanceId
                     select new GetRefund
                     {
@@ -280,96 +228,98 @@ namespace AAYHS.Repository.Repository
 
         public GetContactInfo GetContactInfo(int yearlyMaintenanceId)
         {
-            GetContactInfo getContactInfo = new GetContactInfo();
             IEnumerable<GetContactInfo> data;
+            GetContactInfo getContactInfo = new GetContactInfo();
 
-
-            data = (from yearly in _ObjContext.YearlyMaintainence
-                    where yearly.YearlyMaintainenceId == yearlyMaintenanceId
+            data = (from contactInfo in _ObjContext.AAYHSContact
+                    where contactInfo.YearlyMaintainenceId == yearlyMaintenanceId
                     select new GetContactInfo
                     {
-                        ShowStart = yearly.ShowStartDate,
-                        ShowEnd = yearly.ShowEndDate,
-                        ShowLocation = yearly.Location,
-
-                        contactInfo = (from contactInfo in _ObjContext.AAYHSContact
-                                       where contactInfo.YearlyMaintainenceId == yearlyMaintenanceId
-                                       select new ContactInfo
-                                       {
-                                           AAYHSContactId = contactInfo.AAYHSContactId,
-                                           Email1 = contactInfo.Email1,
-                                           Email2 = contactInfo.Email2,
-                                           Phone1 = contactInfo.Phone1,
-                                           Phone2 = contactInfo.Phone2,
-
-
-                                       exhibitorSponsorConfirmationResponse = (from address in _ObjContext.AAYHSContactAddresses
-                                                                               where contactInfo.ExhibitorSponsorConfirmationAddressId == address.AAYHSContactAddressId
-                                                                               && address.IsDeleted == false
-                                                                               select new ExhibitorSponsorConfirmationResponse
-                                                                               {
-                                                                                   AAYHSContactAddressId = address.AAYHSContactAddressId,
-                                                                                   Address = address.Address,
-                                                                                   City = address.City,
-                                                                                   StateId = address.StateId,
-                                                                                   ZipCode = address.ZipCode
-                                                                               }).FirstOrDefault(),
-                                           exhibitorSponsorRefundStatementResponse = (from address in _ObjContext.AAYHSContactAddresses
-                                                                                      where contactInfo.ExhibitorSponsorRefundStatementAddressId == address.AAYHSContactAddressId
-                                                                                      && address.IsDeleted == false
-                                                                                      select new ExhibitorSponsorRefundStatementResponse
-                                                                                      {
-                                                                                          AAYHSContactAddressId = address.AAYHSContactAddressId,
-                                                                                          Address = address.Address,
-                                                                                          City = address.City,
-                                                                                          StateId = address.StateId,
-                                                                                          ZipCode = address.ZipCode
-                                                                                      }).FirstOrDefault(),
-                                           exhibitorConfirmationEntriesResponse = (from address in _ObjContext.AAYHSContactAddresses
-                                                                                   where contactInfo.ExhibitorConfirmationEntriesAddressId == address.AAYHSContactAddressId
-                                                                                   && address.IsDeleted == false
-                                                                                   select new ExhibitorConfirmationEntriesResponse
-                                                                                   {
-                                                                                       AAYHSContactAddressId = address.AAYHSContactAddressId,
-                                                                                       Address = address.Address,
-                                                                                       City = address.City,
-                                                                                       StateId = address.StateId,
-                                                                                       ZipCode = address.ZipCode
-                                                                                   }).FirstOrDefault()
-                                       }).FirstOrDefault()
+                        contactInfo=(from info in _ObjContext.AAYHSContact
+                                                    where info.YearlyMaintainenceId==yearlyMaintenanceId
+                                                    select new ContactInfo 
+                                                    { 
+                                                      AAYHSContactId=info.AAYHSContactId,
+                                                      Email1=info.Email1,
+                                                      Email2=info.Email2,
+                                                      Phone1=info.Phone1,
+                                                      Phone2=info.Phone2,
+                                                      Location=info.Location,
+                                                      Address=info.Address,
+                                                      City=info.City,
+                                                      State=info.State,
+                                                      Zipcode=info.ZipCode                                                                                                      
+                                                    }).FirstOrDefault(),
 
 
+                        exhibitorSponsorConfirmationResponse = (from address in _ObjContext.AAYHSContactAddresses
+                                                                where contactInfo.ExhibitorSponsorConfirmationAddressId == address.AAYHSContactAddressId
+                                                                && address.IsDeleted == false
+                                                                select new ExhibitorSponsorConfirmationResponse
+                                                                {
+                                                                    AAYHSContactAddressId = address.AAYHSContactAddressId,
+                                                                    Address = address.Address,
+                                                                    City = address.City,
+                                                                    StateId = address.StateId,
+                                                                    ZipCode = address.ZipCode,
+                                                                    Phone=address.Phone,
+                                                                    Email=address.Email
+                                                                    
+                                                                }).FirstOrDefault(),
+                        exhibitorSponsorRefundStatementResponse = (from address in _ObjContext.AAYHSContactAddresses
+                                                                   where contactInfo.ExhibitorSponsorRefundStatementAddressId == address.AAYHSContactAddressId
+                                                                   && address.IsDeleted == false
+                                                                   select new ExhibitorSponsorRefundStatementResponse
+                                                                   {
+                                                                       AAYHSContactAddressId = address.AAYHSContactAddressId,
+                                                                       Address = address.Address,
+                                                                       City = address.City,
+                                                                       StateId = address.StateId,
+                                                                       ZipCode = address.ZipCode,
+                                                                       Phone=address.Phone,
+                                                                       Email=address.Email
+                                                                   }).FirstOrDefault(),
+                        exhibitorConfirmationEntriesResponse = (from address in _ObjContext.AAYHSContactAddresses
+                                                                where contactInfo.ExhibitorConfirmationEntriesAddressId == address.AAYHSContactAddressId
+                                                                && address.IsDeleted == false
+                                                                select new ExhibitorConfirmationEntriesResponse
+                                                                {
+                                                                    AAYHSContactAddressId = address.AAYHSContactAddressId,
+                                                                    Address = address.Address,
+                                                                    City = address.City,
+                                                                    StateId = address.StateId,
+                                                                    ZipCode = address.ZipCode,
+                                                                    Phone=address.Phone,
+                                                                    Email=address.Email
+                                                                }).FirstOrDefault()
                     });
+
+
+                  
            
             getContactInfo = data.FirstOrDefault();
            
             return getContactInfo;
         }
 
-        public GetLocation GetLocation(int yearlyMaintenanceId)
+        public void DeleteYearlyFee(int yearlyMaintenanceId)
         {
-            GetLocation getLocation = new GetLocation();
-            IEnumerable<GetLocation> data;
+            var allFee = _ObjContext.YearlyMaintainenceFee.Where(x => x.YearlyMaintainenceId == yearlyMaintenanceId);
+            _ObjContext.YearlyMaintainenceFee.RemoveRange(allFee);
+            _ObjContext.SaveChanges();
 
-            data = (from yearly in _ObjContext.YearlyMaintainence
-                    join address in _ObjContext.AAYHSContactAddresses on yearly.LocationAddressId equals address.AAYHSContactAddressId
-                    where yearly.YearlyMaintainenceId == yearlyMaintenanceId
-                    select new GetLocation 
-                    { 
-                      AAYHSContactAddressId=address.AAYHSContactAddressId,
-                      Name=yearly.Location,
-                      Address=address.Address,
-                      City=address.City,
-                      StateId=address.StateId,
-                      ZipCode=address.ZipCode,
-                      Phone=address.Phone                  
-                    });
+            var allRefund = _ObjContext.RefundDetail.Where(x => x.YearlyMaintenanceId == yearlyMaintenanceId);
+            _ObjContext.RefundDetail.RemoveRange(allRefund);
+            _ObjContext.SaveChanges();
 
-            if (data.Count()!=0)
-            {
-                getLocation = data.FirstOrDefault();
-            }
-            return getLocation;
+            var sponsorIncentive = _ObjContext.SponsorIncentives.Where(x => x.YearlyMaintenanceId == yearlyMaintenanceId);
+            _ObjContext.SponsorIncentives.RemoveRange(sponsorIncentive);
+            _ObjContext.SaveChanges();
+
+            var allText = _ObjContext.YearlyStatementText.Where(x => x.YearlyMaintenanceId == yearlyMaintenanceId);
+            _ObjContext.YearlyStatementText.RemoveRange(allText);
+            _ObjContext.SaveChanges();
         }
+
     }
 }

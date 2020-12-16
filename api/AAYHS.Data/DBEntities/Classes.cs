@@ -17,6 +17,7 @@ namespace AAYHS.Data.DBEntities
         public string Name { get; set; }
         public string Location { get; set; }
         public string AgeGroup { get; set; }
-     
+        public bool IsNSBAMember { get; set; }
+
     }
 }

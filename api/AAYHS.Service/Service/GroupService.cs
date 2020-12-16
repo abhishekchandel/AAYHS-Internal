@@ -66,8 +66,9 @@ namespace AAYHS.Service.Service
                 var addressEntity = new Addresses
                 {
                     Address = request.Address,
-                    CityId = request.CityId,
-                    ZipCodeId = request.ZipCodeId,
+                    StateId=request.StateId,
+                    City= request.City,
+                    ZipCode = request.ZipCode,
                     CreatedDate = DateTime.Now,
                     IsActive = true,
                     IsDeleted = false,
@@ -128,8 +129,9 @@ namespace AAYHS.Service.Service
                     if (address != null && address.AddressId > 0)
                     {
                         address.Address = request.Address;
-                        address.CityId = request.CityId;
-                        address.ZipCodeId = request.ZipCodeId;
+                        address.StateId = request.StateId;
+                        address.City = request.City;
+                        address.ZipCode = request.ZipCode;
                         address.ModifiedDate = DateTime.Now;
                         _AddressRepository.Update(address);
                     }
@@ -392,6 +394,38 @@ namespace AAYHS.Service.Service
             else
             {
                 _mainResponse.Success = false;
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+            }
+            return _mainResponse;
+        }
+
+        public MainResponse GetModuleGroupsFinancials()
+        {
+            var financials = _GroupRepository.GetModuleGroupsFinancials();
+            if (financials != null)
+            {
+                _mainResponse.GetAllGroupsFinacialsModule = financials;
+                _mainResponse.Success = true;
+
+            }
+            else
+            {
+                _mainResponse.Message = Constants.NO_RECORD_FOUND;
+            }
+            return _mainResponse;
+        }
+
+        public MainResponse GetModuleGroupsFinancials(int groupId)
+        {
+            var financials = _GroupRepository.GetModuleGroupsFinancials(groupId);
+            if (financials != null)
+            {
+                _mainResponse.GetAllGroupsFinacialsModule = financials;
+                _mainResponse.Success = true;
+
+            }
+            else
+            {
                 _mainResponse.Message = Constants.NO_RECORD_FOUND;
             }
             return _mainResponse;

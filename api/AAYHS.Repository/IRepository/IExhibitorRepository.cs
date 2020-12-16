@@ -20,5 +20,6 @@ namespace AAYHS.Repository.IRepository
         GetAllFees GetAllFees();
         GetAllExhibitorTransactions GetAllExhibitorTransactions(int exhibitorId);
         GetAllExhibitorTransactions GetFinancialViewDetail(ViewDetailRequest viewDetailRequest);
+        ExhibitorAllSponsorAmount ExhibitorAllSponsorAmount(int exhibitorId);
    }
 }

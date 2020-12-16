@@ -80,39 +80,28 @@ namespace AAYHS.Service.Service
         public MainResponse GetClassExhibitors(int ClassId)
         {
             GetClassAllExhibitors getClassAllExhibitors = new GetClassAllExhibitors();
-            List < GetClassExhibitors> getClassListExhibitors = new List<GetClassExhibitors>();
-            var allExhibitor = _exhibitorRepository.GetAll(x=>x.IsActive==true && x.IsDeleted==false);
-            if (allExhibitor.Count!=0)
-            {
-                var exhibitorClasses = _exhibitorClassRepositor.GetAll(x => x.ClassId == ClassId && x.IsActive == true && x.IsDeleted == false);
-                var exhibitor = allExhibitor.Where(x => exhibitorClasses.All(y => y.ExhibitorId != x.ExhibitorId)).OrderBy(z=>z.FirstName).ToList(); 
-                if (exhibitor.Count()!=0)
+            List<GetClassExhibitors> getClassListExhibitors = new List<GetClassExhibitors>();
+            var allExhibitor = _exhibitorRepository.GetAll(x => x.IsActive == true && x.IsDeleted == false);
+            if (allExhibitor.Count != 0)
+            {              
+                for (int i = 0; i < allExhibitor.Count(); i++)
                 {
-                    for (int i = 0; i < exhibitor.Count(); i++)
-                    {
-                      GetClassExhibitors getClassExhibitors = new GetClassExhibitors();
-                                                                       
-                      getClassExhibitors.ExhibitorId = exhibitor[i].ExhibitorId;
-                      getClassExhibitors.Exhibitor = exhibitor[i].ExhibitorId + " " + exhibitor[i].FirstName + " " + exhibitor[i].LastName;
-                      getClassListExhibitors.Add(getClassExhibitors);
-                                                                    
-                    }
-                    getClassAllExhibitors.getClassExhibitors = getClassListExhibitors;
-                    _mainResponse.GetClassAllExhibitors = getClassAllExhibitors;
-                    _mainResponse.Success = true;
+                    GetClassExhibitors getClassExhibitors = new GetClassExhibitors();
+
+                    getClassExhibitors.ExhibitorId = allExhibitor[i].ExhibitorId;
+                    getClassExhibitors.Exhibitor = allExhibitor[i].ExhibitorId + " " + allExhibitor[i].FirstName + " " + allExhibitor[i].LastName;
+                    getClassListExhibitors.Add(getClassExhibitors);
+
                 }
-                else
-                {
-                    _mainResponse.Message = Constants.NO_RECORD_FOUND;
-                    _mainResponse.Success = false;
-                }
-                               
+                getClassAllExhibitors.getClassExhibitors = getClassListExhibitors;
+                _mainResponse.GetClassAllExhibitors = getClassAllExhibitors;
+                _mainResponse.Success = true;
             }
             else
             {
                 _mainResponse.Message = Constants.NO_RECORD_FOUND;
                 _mainResponse.Success = false;
-            }          
+            }
             return _mainResponse;
         }
         public MainResponse GetExhibitorHorses(int ExhibitorId)
@@ -145,6 +134,7 @@ namespace AAYHS.Service.Service
         }
         public async Task<MainResponse> CreateUpdateClass(AddClassRequest addClassRequest,string actionBy)
         {
+            DateTime? scheduleDate = null;
             if (addClassRequest.ClassId == 0)
             {
                 var classNumber = _classRepository.GetSingle(x => x.ClassNumber == addClassRequest.ClassNumber && x.IsActive == true && x.IsDeleted == false);
@@ -169,17 +159,22 @@ namespace AAYHS.Service.Service
                     Name = addClassRequest.Name,
                     Location = addClassRequest.Location,
                     AgeGroup = addClassRequest.AgeGroup,
+                    IsNSBAMember=addClassRequest.IsNSBAMember,
                     IsActive = true,
                     CreatedBy = actionBy,
                     CreatedDate = DateTime.Now
                 };
                 var _class = await _classRepository.AddAsync(classes);
 
-
+                if (addClassRequest.ScheduleDate!=null)
+                {
+                    scheduleDate = Convert.ToDateTime(addClassRequest.ScheduleDate);
+                }
+                                
                 var schedule = new ScheduleDates
                 {
                     ClassId = _class.ClassId,
-                    Date = addClassRequest.ScheduleDate,
+                    Date = scheduleDate,
                     Time = addClassRequest.ScheduleTime,
                     IsActive = true,
                     CreatedBy = actionBy,
@@ -238,7 +233,10 @@ namespace AAYHS.Service.Service
                         return _mainResponse;
                     }
                 }
-                
+                if (addClassRequest.ScheduleDate != null)
+                {
+                    scheduleDate = Convert.ToDateTime(addClassRequest.ScheduleDate);
+                }
                 var updateClass = _classRepository.GetSingle(x => x.ClassId == addClassRequest.ClassId && x.IsActive==true && x.IsDeleted==false);
                 if (updateClass!=null)
                 {
@@ -247,6 +245,7 @@ namespace AAYHS.Service.Service
                     updateClass.Name = addClassRequest.Name;
                     updateClass.Location = addClassRequest.Location;
                     updateClass.AgeGroup = addClassRequest.AgeGroup;
+                    updateClass.IsNSBAMember = addClassRequest.IsNSBAMember;
                     updateClass.ModifiedBy = actionBy;
                     updateClass.ModifiedDate = DateTime.Now;
                     await _classRepository.UpdateAsync(updateClass);
@@ -255,7 +254,7 @@ namespace AAYHS.Service.Service
                 var updateClassSchedule = _scheduleDateRepository.GetSingle(x => x.ClassId == addClassRequest.ClassId && x.IsActive == true && x.IsDeleted == false);
                 if (updateClassSchedule != null)
                 {
-                    updateClassSchedule.Date = addClassRequest.ScheduleDate;
+                    updateClassSchedule.Date =scheduleDate;
                     updateClassSchedule.Time = addClassRequest.ScheduleTime;
                     updateClassSchedule.ModifiedBy = actionBy;
                     updateClassSchedule.ModifiedDate = DateTime.Now;
@@ -290,13 +289,21 @@ namespace AAYHS.Service.Service
         }
         public async Task<MainResponse> AddExhibitorToClass(AddClassExhibitor addClassExhibitor, string actionBy)
         {
+            var checkExhibitor = _exhibitorClassRepositor.GetSingle(x => x.ExhibitorId == addClassExhibitor.ExhibitorId && x.HorseId == addClassExhibitor.HorseId
+                                  && x.ClassId == addClassExhibitor.ClassId && x.IsDeleted==false);
+            if (checkExhibitor!=null)
+            {
+                _mainResponse.Message = Constants.RECORD_AlREADY_EXIST;
+                _mainResponse.Success = false;
+                return _mainResponse;
+            }
             var addExhibitor = new ExhibitorClass
             {
                 ExhibitorId = addClassExhibitor.ExhibitorId,
                 ClassId = addClassExhibitor.ClassId,
                 HorseId = addClassExhibitor.HorseId,
                 IsScratch=addClassExhibitor.Scratch,
-                Date= addClassExhibitor.Date,
+                Date= DateTime.Now,
                 IsActive = true,
                 CreatedBy = actionBy,
                 CreatedDate = DateTime.Now
@@ -427,28 +434,22 @@ namespace AAYHS.Service.Service
         }
         public async Task<MainResponse> AddClassResult(AddClassResultRequest addClassResultRequest,string actionBy)
         {
-            var resultCheck = _resultRepository.GetSingle(x => x.ClassId == addClassResultRequest.ClassId && x.ExhibitorId == addClassResultRequest.ExhibitorId
-                              && x.IsActive == true && x.IsDeleted == false);
-            if (resultCheck!=null)
-            {
-                _mainResponse.Message = Constants.RECORD_AlREADY_EXIST;
-                _mainResponse.Success = false;
-                return _mainResponse;
-            }
+           
             var ageGroup = _classRepository.GetSingle(x => x.ClassId == addClassResultRequest.ClassId);
-            
-                var addResult = new Result
-                {
-                    ClassId = addClassResultRequest.ClassId,
-                    AgeGroup = ageGroup.AgeGroup,
-                    ExhibitorId = addClassResultRequest.ExhibitorId,
-                    Placement = addClassResultRequest.Place,
-                    IsActive = true,
-                    CreatedBy = actionBy,
-                    CreatedDate = DateTime.Now
-                };
 
-             await _resultRepository.AddAsync(addResult);
+            var addResult = new Result
+            {
+                ClassId = addClassResultRequest.ClassId,
+                AgeGroup = ageGroup.AgeGroup,
+                ExhibitorId = addClassResultRequest.ExhibitorId,
+                HorseId=addClassResultRequest.HorseId,
+                Placement = addClassResultRequest.Place,
+                IsActive = true,
+                CreatedBy = actionBy,
+                CreatedDate = DateTime.Now
+            };
+
+            await _resultRepository.AddAsync(addResult);
          
             _mainResponse.Message = Constants.CLASS_RESULT_ADDED;
             _mainResponse.Success = true;
@@ -478,8 +479,13 @@ namespace AAYHS.Service.Service
                 classExhibitor.IsScratch = classExhibitorScratch.IsScratch;
                 classExhibitor.ModifiedBy = actionBy;
                 classExhibitor.ModifiedDate = DateTime.Now;
-                _exhibitorClassRepositor.Update(classExhibitor);
 
+                if (classExhibitorScratch.IsScratch==true)
+                {
+                    classExhibitor.ScratchDate = DateTime.Now;
+                }
+                
+                _exhibitorClassRepositor.Update(classExhibitor);
                 _mainResponse.Success = true;
                 _mainResponse.Message = Constants.CLASS_EXHIBITOR_SCRATCH;
             }
@@ -497,6 +503,7 @@ namespace AAYHS.Service.Service
             {
                 result.Placement = updateClassResult.Place;
                 result.ExhibitorId = updateClassResult.ExhibitorId;
+                result.HorseId = updateClassResult.HorseId;
                 result.ModifiedDate = DateTime.Now;
                 result.ModifiedBy = actionBy;
                 _resultRepository.Update(result);

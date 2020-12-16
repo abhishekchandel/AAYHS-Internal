@@ -13,10 +13,9 @@ namespace AAYHS.Core.DTOs.Response
         public string Email { get; set; }
         public float AmountReceived { get; set; }
         public string Address { get; set; }
-        public int ZipCodeId { get; set; }
-        public int CityId { get; set; }
-        public string CityName { get; set; }
-        public int StateId { get; set; }
+        public string ZipCode { get; set; }
+        public string City { get; set; }
+        public int? StateId { get; set; }
        public List<GroupStallAssignmentResponse> groupStallAssignmentResponses { get; set; }
     }
 
@@ -54,13 +53,26 @@ namespace AAYHS.Core.DTOs.Response
     {  
         public string HorseName { get; set; }
     }
+
+    public class GetAllGroupsFinacialsModule
+    {
+        public List<GetGroupFinacialsTotals> getGroupFinacialsTotalsList { get; set; }
+    }
+
+  
+
+
+
     public class GetAllGroupFinacials
     {
         public List<GetGroupFinacials> getGroupFinacials {get;set;}
         public GetGroupFinacialsTotals getGroupFinacialsTotals {get;set; }
+        public string GroupName { get; set; }
+        public int GroupId { get; set; }
 
         public int TotalRecords { get; set; }
     }
+  
     public class GetGroupFinacials
     {
 
@@ -68,6 +80,7 @@ namespace AAYHS.Core.DTOs.Response
         public DateTime Date { get; set; }
         public int FeeTypeId { get; set; }
         public string FeeTypeName { get; set; }
+        public string FeeTimeFrame { get; set; }
         public int TimeFrameId { get; set; }
         public string TimeFrameName { get; set; }
         public double Amount { get; set; }
@@ -75,6 +88,8 @@ namespace AAYHS.Core.DTOs.Response
     }
     public class GetGroupFinacialsTotals
     {
+        public string GroupName { get; set; }
+        public int GroupId { get; set; }
         public double PreStallSum { get; set; }
         public double PreTackStallSum { get; set; }
         public double PreTotal { get; set; }

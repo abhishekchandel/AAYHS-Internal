@@ -31,9 +31,18 @@ namespace AAYHS.Service.IService
         MainResponse AddRefund(AddRefundRequest addRefundRequest, string actionBy);
         MainResponse RemoveRefund(int refundId, string actionBy);
         MainResponse GetContactInfo(int yearlyMaintenanceId);
-        MainResponse AddUpdateContactInfo(AddContactInfoRequest addContactInfoRequest, string actionBy);
-        MainResponse AddUpdateLocation(AddLocationRequest addLocationRequest, string actionBy);
-        MainResponse GetLocation(int yearlyMaintenanceId);
-
+        MainResponse AddUpdateContactInfo(AddContactInfoRequest addContactInfoRequest, string actionBy);            
+        MainResponse GetAllScan(GetScanRequest getScanRequest);
+        MainResponse AddUpdateYearlyStatementText(AddStatementTextRequest addStatementTextRequest, string actionBy);
+        MainResponse GetYearlyStatementText(int yearlyMaintenanceId);
+        MainResponse AddAndUpdateSponsorIncentive(AddSponsorIncentiveRequest addSponsorIncentiveRequest, string actionBy);
+        MainResponse GetSponsorIncentive(int yearlyMaintenanceId);
+        MainResponse DeleteSponsorIncentive(int sponsorIncentiveId, string actionBy);
+        MainResponse ActiveInActiveUser(ActiveInActiveRequest activeInActiveRequest);
+        MainResponse ActiveInActiveGeneralFee(ActiveInActiveGeneralFeeRequest activeInActiveGeneralFeeRequest);
+        MainResponse ActiveInActiveAdFee(ActiveInActiveAdFeeRequest activeInActiveAdFeeRequest);
+        MainResponse ActiveInActiveClassCategory(ActiveInActiveClassCategory activeInActiveClassCategory);
+        MainResponse ActiveInActiveScratchRefund(ActiveInActiveScratchRefund activeInActiveScratchRefund);
+        MainResponse YearlyDataForNextYear(int yearlyMaintenanceId,string actionBy);
     }
 }

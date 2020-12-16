@@ -20,8 +20,8 @@ namespace AAYHS.Core.DTOs.Request
         public string PrimaryEmail { get; set; }
         public string SecondaryEmail { get; set; }
         public string Phone { get; set; }
-        public int ZipCodeId { get; set; }
-        public int CityId { get; set; }
+        public string ZipCode { get; set; }
+        public string City { get; set; }
         public int StateId { get; set; }
         public string Address { get; set; }
         public DateTime Date { get; set; }
@@ -41,14 +41,14 @@ namespace AAYHS.Core.DTOs.Request
         public int ExhibitorId { get; set; }
         public int HorseId { get; set; }
         public int? BackNumber { get; set; }
-        public DateTime Date { get; set; }
+        public string Date { get; set; }
     }
     public class AddExhibitorToClass
     {
         public int ExhibitorId { get; set; }
         public int ClassId { get; set; }
         public int HorseId { get; set; }
-        public DateTime Date { get; set; }
+        public string Date { get; set; }
     }
     public class UpdateScratch
     {
@@ -63,6 +63,8 @@ namespace AAYHS.Core.DTOs.Request
         public int SponsorTypeId { get; set; }
         public string TypeId { get; set; }
         public int AdTypeId { get; set; }
+        public int HorseId { get; set; }
+        public decimal SponsorAmount { get; set; }
     }
     public class DocumentUploadRequest
     {
@@ -99,5 +101,11 @@ namespace AAYHS.Core.DTOs.Request
     {
         public string DocumentPath { get; set; }
         public string EmailId { get; set; }
+    }
+    public class UpdateFinancialRequest
+    {
+        public int ExhibitorPaymentId { get; set; }
+        public decimal AmountReceived { get; set; }
+        public decimal RefundAmount { get; set; }
     }
 }

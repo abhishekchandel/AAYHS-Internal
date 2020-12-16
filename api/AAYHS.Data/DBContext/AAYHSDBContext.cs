@@ -37,6 +37,7 @@ namespace AAYHS.Data.DBContext
         public virtual DbSet<ExhibitorHorse> ExhibitorHorse { get; set; }
         public virtual DbSet<ExhibitorPaymentDetail> ExhibitorPaymentDetail { get; set; }
         public virtual DbSet<SponsorExhibitor> SponsorExhibitor { get; set; }
+        public virtual DbSet<SponsorDistributions> SponsorDistributions { get; set; }
         public virtual DbSet<Groups> Groups { get; set; }
         public virtual DbSet<RefundDetail> RefundDetail { get; set; }
         public virtual DbSet<Result> Result { get; set; }
@@ -54,7 +55,8 @@ namespace AAYHS.Data.DBContext
         public virtual DbSet<Roles> Roles { get; set; }
         public virtual DbSet<UserRoles> UserRoles { get; set; }
         public virtual DbSet<AAYHSContactAddresses> AAYHSContactAddresses { get; set; }
-
+        public virtual DbSet<YearlyStatementText> YearlyStatementText { get; set; }
+        public virtual DbSet<SponsorIncentives> SponsorIncentives { get; set; }
 
     }
 
